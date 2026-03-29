@@ -1,0 +1,23 @@
+{
+  "name": "hosty",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.0"
+  },
+  "lint-staged": {
+    "backend/src/**/*.ts": [
+      "pnpm --filter backend lint",
+      "pnpm --filter backend format"
+    ],
+    "frontend/src/**/*.{ts,tsx}": [
+      "pnpm --filter frontend lint"
+    ]
+  }
+}

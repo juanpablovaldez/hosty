@@ -1,0 +1,5 @@
+echo "Running backend type-check..."
+pnpm --filter backend exec tsc --noEmit
+
+echo "Running backend tests..."
+pnpm --filter backend test --passWithNoTests
