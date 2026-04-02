@@ -37,27 +37,32 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY_DEV }}
           envs: GH_TOKEN
           script: |
+            set -e
             export PATH=$PATH:/usr/bin:/usr/local/bin
 
-            # Bootstrap: install Node.js if not present
-            if ! command -v node &> /dev/null; then
+            # Bootstrap: install Node.js 22 if not present or wrong version
+            if ! node --version 2>/dev/null | grep -q "^v22"; then
+              # Wait for any apt locks to release (common on fresh EC2 with unattended-upgrades)
+              sudo apt-get -o DPkg::Lock::Timeout=120 update
               curl -fsSL https://deb.nodesource.com/setup_22.x | sudo bash -
-              sudo apt-get install -y nodejs
+              sudo apt-get -o DPkg::Lock::Timeout=120 install -y nodejs
             fi
 
-            # Bootstrap: install pnpm if not present
+            # Verify correct version
+            node --version | grep -q "^v22" || { echo "ERROR: Node.js 22 not installed"; exit 1; }
+
+            # Bootstrap: install pnpm via corepack (ships with Node.js 22)
             if ! command -v pnpm &> /dev/null; then
-              sudo npm install -g pnpm
+              sudo corepack enable
+              corepack prepare pnpm@latest --activate
             fi
 
             # Bootstrap: install pm2 if not present
             if ! command -v pm2 &> /dev/null; then
               sudo npm install -g pm2
-              sudo env PATH=$PATH /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu || true
+              sudo env PATH=$PATH $(which pm2) startup systemd -u ubuntu --hp /home/ubuntu || true
               sudo systemctl enable pm2-ubuntu || true
             fi
-
-            set -e
 
             # First deploy: clone the repo
             if [ ! -d ~/hosty ]; then
