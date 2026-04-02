@@ -27,3 +27,24 @@
 
 # Misc
 *.local
+
+# Ignorar los directorios locales de Terraform y los binarios descargados
+**/.terraform/*
+
+# Ignorar los archivos de estado locales (¡CRÍTICO POR SEGURIDAD!)
+*.tfstate
+*.tfstate.*
+
+# Ignorar archivos de logs de errores
+crash.log
+crash.*.log
+
+# Ignorar archivos de variables si en el futuro pones secretos ahí
+*.tfvars
+*.tfvars.json
+
+# Ignorar archivos de override locales
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
