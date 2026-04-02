@@ -39,6 +39,15 @@ jobs:
           script: |
             set -e
 
+            # Bootstrap: install Node, pnpm and pm2 if not present
+            if ! command -v pnpm &> /dev/null; then
+              curl -fsSL https://deb.nodesource.com/setup_20.x | sudo bash -
+              sudo apt-get install -y nodejs
+              sudo npm install -g pnpm pm2
+              env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu
+              sudo systemctl enable pm2-ubuntu
+            fi
+
             # First deploy: clone the repo
             if [ ! -d ~/hosty ]; then
               git clone https://x-access-token:${GH_TOKEN}@github.com/juanpablovaldez/hosty.git ~/hosty
