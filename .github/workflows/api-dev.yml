@@ -37,16 +37,27 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY_DEV }}
           envs: GH_TOKEN
           script: |
-            set -e
+            export PATH=$PATH:/usr/bin:/usr/local/bin
 
-            # Bootstrap: install Node, pnpm and pm2 if not present
-            if ! command -v pnpm &> /dev/null; then
+            # Bootstrap: install Node.js if not present
+            if ! command -v node &> /dev/null; then
               curl -fsSL https://deb.nodesource.com/setup_20.x | sudo bash -
               sudo apt-get install -y nodejs
-              sudo npm install -g pnpm pm2
-              env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu
-              sudo systemctl enable pm2-ubuntu
             fi
+
+            # Bootstrap: install pnpm if not present
+            if ! command -v pnpm &> /dev/null; then
+              sudo npm install -g pnpm
+            fi
+
+            # Bootstrap: install pm2 if not present
+            if ! command -v pm2 &> /dev/null; then
+              sudo npm install -g pm2
+              sudo env PATH=$PATH /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu || true
+              sudo systemctl enable pm2-ubuntu || true
+            fi
+
+            set -e
 
             # First deploy: clone the repo
             if [ ! -d ~/hosty ]; then
