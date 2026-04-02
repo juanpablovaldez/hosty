@@ -42,7 +42,5 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Desplegar a S3
-        working-directory: ./frontend
-        run: |
-          aws s3 sync dist/ s3://${{ vars.S3_BUCKET_NAME_DEV }} --delete
+      - name: Deploy to S3
+        run: aws s3 sync dist/ s3://${{ secrets.S3_BUCKET_NAME_DEV }} --delete
