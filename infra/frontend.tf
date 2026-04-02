@@ -1,27 +1,15 @@
-# 0. Generamos un sufijo aleatorio para el bucket (para evitar colisiones de nombres globales)
+# 0. Random suffix to avoid global S3 bucket name collisions
 resource "random_id" "bucket_suffix" {
   byte_length = 4
 }
 
-# 1. Creamos el Bucket
+# 1. S3 Bucket
 resource "aws_s3_bucket" "frontend" {
   bucket = "${var.project_name}-${var.environment}-frontend-${random_id.bucket_suffix.hex}"
-  # Hosty-dev-frontend-xxxxxxxx
+  # hosty-dev-frontend-xxxxxxxx
 }
 
-# 2. Habilitamos el modo "Website"
-resource "aws_s3_bucket_website_configuration" "frontend_website" {
-  bucket = aws_s3_bucket.frontend.id
-
-  index_document {
-    suffix = "index.html"
-  }
-  error_document {
-    key = "index.html" # Clave para SPAs (React) para que el React Router maneje los 404
-  }
-}
-
-# 3. Desactivamos el bloqueo de acceso público (AWS lo bloquea por defecto)
+# 2. Block all public access (CloudFront with OAC handles access, not public S3)
 resource "aws_s3_bucket_public_access_block" "frontend_public_access" {
   bucket = aws_s3_bucket.frontend.id
 
@@ -33,16 +21,16 @@ resource "aws_s3_bucket_public_access_block" "frontend_public_access" {
 
 // ====== CloudFront =======
 
-# 1. Creamos el Origin Access Control (OAC) para CloudFront
+# 1. Origin Access Control — allows CloudFront to read from the private S3 bucket
 resource "aws_cloudfront_origin_access_control" "default" {
   name                              = "OAC-${var.project_name}-${var.environment}"
-  description                       = "OAC para ${var.project_name} frontend"
+  description                       = "OAC for ${var.project_name} frontend"
   origin_access_control_origin_type = "s3"
   signing_behavior                  = "always"
   signing_protocol                  = "sigv4"
 }
 
-# 2. Definimos la política del bucket (Solo CloudFront puede leer)
+# 2. Bucket policy — only CloudFront can read objects
 data "aws_iam_policy_document" "s3_oac_policy" {
   statement {
     actions   = ["s3:GetObject"]
@@ -56,22 +44,21 @@ data "aws_iam_policy_document" "s3_oac_policy" {
     condition {
       test     = "StringEquals"
       variable = "AWS:SourceArn"
-      # Aquí está la magia: referenciamos el ARN de tu futura distribución
-      values = [aws_cloudfront_distribution.s3_distribution.arn]
+      values   = [aws_cloudfront_distribution.s3_distribution.arn]
     }
   }
 }
 
-# 3. Asignamos la política al bucket
+# 3. Attach the policy to the bucket
 resource "aws_s3_bucket_policy" "frontend_policy" {
   bucket = aws_s3_bucket.frontend.id
   policy = data.aws_iam_policy_document.s3_oac_policy.json
 }
 
-# 4. Creamos la Distribución de CloudFront
+# 4. CloudFront Distribution
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
-    # Usamos el dominio regional del bucket (No el de website)
+    # Use the regional domain (REST API), not the website endpoint
     domain_name              = aws_s3_bucket.frontend.bucket_regional_domain_name
     origin_access_control_id = aws_cloudfront_origin_access_control.default.id
     origin_id                = "S3-${var.project_name}-${var.environment}"
@@ -93,16 +80,14 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
       }
     }
 
-    # Forzamos a que todo tráfico HTTP se redirija a HTTPS
     viewer_protocol_policy = "redirect-to-https"
     min_ttl                = 0
     default_ttl            = 3600
     max_ttl                = 86400
   }
 
-  # Configuración VITAL para React/Single Page Applications
-  # S3 con OAC devuelve 403 cuando no encuentra una ruta (ej: /about), 
-  # CloudFront lo atrapa y sirve el index.html
+  # SPA routing: S3 returns 403/404 for unknown paths (e.g. /about),
+  # CloudFront catches them and serves index.html so React Router takes over
   custom_error_response {
     error_caching_min_ttl = 10
     error_code            = 403
@@ -123,7 +108,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
   }
 
-  # Certificado SSL por defecto de CloudFront (te dará un dominio .cloudfront.net)
+  # Default CloudFront certificate — serves via *.cloudfront.net domain
   viewer_certificate {
     cloudfront_default_certificate = true
   }
