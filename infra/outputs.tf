@@ -9,3 +9,8 @@ output "cloudfront_distribution_id" {
 output "s3_bucket_name" {
   value = aws_s3_bucket.frontend.bucket
 }
+
+output "backend_public_ip" {
+  description = "La IP publica y fija de tu servidor backend"
+  value       = aws_eip.backend_ip.public_ip
+}
