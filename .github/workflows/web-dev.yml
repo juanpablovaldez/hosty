@@ -1,10 +1,9 @@
-name: Deploy Frontend to DEV
+name: Deploy Web to DEV
 
 on:
   push:
     branches:
-      - dev # 👈 CAMBIO: Solo se ejecuta al pushear a la rama dev
-    # Buena práctica: Solo ejecutamos este pipeline si hay cambios en la carpeta del frontend
+      - dev
     paths:
       - "frontend/**"
 
@@ -38,6 +37,5 @@ jobs:
 
       - name: Desplegar a S3
         working-directory: ./frontend
-        # 👈 CAMBIO: Usamos la variable de entorno que configuraste en GitHub
         run: |
           aws s3 sync dist/ s3://${{ vars.S3_BUCKET_NAME_DEV }} --delete
