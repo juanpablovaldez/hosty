@@ -1,4 +1,3 @@
-// hosty backend
 import './instrument';
 import { NestFactory, HttpAdapterHost } from '@nestjs/core';
 import { Logger, ValidationPipe } from '@nestjs/common';
