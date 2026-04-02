@@ -1,12 +1,12 @@
-name: Deploy Backend (Dev)
+name: Deploy Backend to DEV
 
 on:
   push:
     branches: [dev]
     paths:
-      - 'backend/**'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
+      - "backend/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
 
 jobs:
   deploy:
