@@ -12,21 +12,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout del código
+      - name: Code checkout
         uses: actions/checkout@v4
 
-      - name: Configurar Node.js
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
+          cache: "pnpm"
+          cache-dependency-path: frontend/pnpm-lock.yaml
 
-      - name: Instalar dependencias
+      - name: Install dependencies
         working-directory: ./frontend
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Construir la aplicación (Build)
         working-directory: ./frontend
-        run: npm run build
+        run: pnpm run build
 
       - name: Configurar credenciales de AWS
         uses: aws-actions/configure-aws-credentials@v4
