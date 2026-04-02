@@ -14,3 +14,8 @@ output "backend_public_ip" {
   description = "La IP publica y fija de tu servidor backend"
   value       = aws_eip.backend_ip.public_ip
 }
+
+output "backend_sg_id" {
+  description = "ID del Security Group del backend"
+  value       = aws_security_group.backend_sg.id
+}
