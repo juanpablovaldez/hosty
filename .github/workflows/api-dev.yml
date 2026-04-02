@@ -1,0 +1,54 @@
+name: Deploy Backend (Dev)
+
+on:
+  push:
+    branches: [dev]
+    paths:
+      - 'backend/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+
+jobs:
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.EC2_HOST_DEV }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY_DEV }}
+          envs: GH_TOKEN
+          script: |
+            set -e
+
+            # First deploy: clone the repo
+            if [ ! -d ~/hosty ]; then
+              git clone https://x-access-token:${GH_TOKEN}@github.com/juanpablovaldez/hosty.git ~/hosty
+            fi
+
+            cd ~/hosty
+
+            # Pull latest changes
+            git fetch origin dev
+            git reset --hard origin/dev
+
+            # Install dependencies
+            pnpm install --frozen-lockfile
+
+            # Apply database migrations
+            cd backend
+            npx prisma migrate deploy
+            cd ..
+
+            # Build backend
+            pnpm --filter backend build
+
+            # Start or restart the service
+            pm2 restart backend --update-env \
+              || pm2 start "node backend/dist/src/main.js" --name backend
+            pm2 save
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
