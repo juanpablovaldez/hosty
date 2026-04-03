@@ -35,7 +35,7 @@ jobs:
           host: ${{ secrets.EC2_HOST_DEV }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY_DEV }}
-          envs: GH_TOKEN
+          envs: GH_TOKEN,DATABASE_URL,FRONTEND_URL
           script: |
             set -e
             export PATH=$PATH:/usr/bin:/usr/local/bin
@@ -75,6 +75,15 @@ jobs:
             git fetch origin dev
             git reset --hard origin/dev
 
+            # Write .env file from GitHub secrets
+            cat > backend/.env << EOF
+            DATABASE_URL="${DATABASE_URL}"
+            NODE_ENV="production"
+            PORT=3000
+            FRONTEND_URL="${FRONTEND_URL}"
+            AWS_REGION="us-east-1"
+            EOF
+
             # Install dependencies
             pnpm install --frozen-lockfile
 
@@ -90,6 +99,8 @@ jobs:
             pm2 save
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL_DEV }}
+          FRONTEND_URL: ${{ secrets.FRONTEND_URL_DEV }}
 
       - name: Remove runner IP from security group
         if: always()
