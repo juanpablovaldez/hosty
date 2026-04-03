@@ -41,8 +41,6 @@ jobs:
 
       - name: Install, generate, and build
         working-directory: backend
-        env:
-          HUSKY: "0"
         run: |
           npm ci
           npx prisma generate
@@ -50,8 +48,6 @@ jobs:
 
       - name: Prune to production dependencies
         working-directory: backend
-        env:
-          HUSKY: "0"
         run: npm ci --omit=dev
 
       - name: Copy build to EC2
