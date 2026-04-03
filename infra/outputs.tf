@@ -19,3 +19,8 @@ output "backend_sg_id" {
   description = "ID del Security Group del backend"
   value       = aws_security_group.backend_sg.id
 }
+
+output "rds_endpoint" {
+  description = "RDS PostgreSQL endpoint (host:port)"
+  value       = aws_db_instance.postgres.endpoint
+}
