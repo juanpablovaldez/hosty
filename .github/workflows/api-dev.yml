@@ -29,27 +29,54 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: us-east-1
 
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install, generate, and build
+        working-directory: backend
+        run: |
+          npm ci
+          npx prisma generate
+          npm run build
+
+      - name: Prune to production dependencies
+        working-directory: backend
+        run: npm ci --omit=dev
+
+      - name: Copy build to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST_DEV }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY_DEV }}
+          source: "backend/dist,backend/node_modules,backend/generated,backend/prisma,backend/package.json"
+          target: ~/hosty
+          overwrite: true
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.EC2_HOST_DEV }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY_DEV }}
-          envs: GH_TOKEN,DATABASE_URL,FRONTEND_URL
+          envs: DATABASE_URL,FRONTEND_URL
           script: |
             set -e
             export PATH=$PATH:/usr/bin:/usr/local/bin
 
             # Bootstrap: install Node.js 22 if not present or wrong version
             if ! node --version 2>/dev/null | grep -q "^v22"; then
-              # Wait for any apt locks to release (common on fresh EC2 with unattended-upgrades)
               sudo apt-get -o DPkg::Lock::Timeout=120 update
               curl -fsSL https://deb.nodesource.com/setup_22.x | sudo bash -
               sudo apt-get -o DPkg::Lock::Timeout=120 install -y nodejs
             fi
-
-            # Verify correct version
-            node --version | grep -q "^v22" || { echo "ERROR: Node.js 22 not installed"; exit 1; }
 
             # Bootstrap: install pm2 if not present
             if ! command -v pm2 &> /dev/null; then
@@ -58,19 +85,10 @@ jobs:
               sudo systemctl enable pm2-ubuntu || true
             fi
 
-            # First deploy: clone the repo
-            if [ ! -d ~/hosty ]; then
-              git clone https://x-access-token:${GH_TOKEN}@github.com/juanpablovaldez/hosty.git ~/hosty
-            fi
-
-            cd ~/hosty
-
-            # Pull latest changes
-            git fetch origin dev
-            git reset --hard origin/dev
+            mkdir -p ~/hosty/backend
 
             # Write .env file from GitHub secrets
-            cat > backend/.env << EOF
+            cat > ~/hosty/backend/.env <<EOF
             DATABASE_URL="${DATABASE_URL}"
             NODE_ENV="production"
             PORT=3000
@@ -78,18 +96,9 @@ jobs:
             AWS_REGION="us-east-1"
             EOF
 
-            # Install backend dependencies only (avoids OOM from installing all workspaces)
-            cd ~/hosty/backend
-            npm ci
-
             # Apply database migrations
-            npm run db:migrate:deploy
-
-            # Generate Prisma client
-            npm run db:generate
-
-            # Build backend
-            npm run build
+            cd ~/hosty/backend
+            npx prisma migrate deploy
 
             cd ~/hosty
             # Start or restart the service
@@ -97,7 +106,6 @@ jobs:
               || pm2 start "node backend/dist/src/main.js" --name backend
             pm2 save
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           DATABASE_URL: ${{ secrets.DATABASE_URL_DEV }}
           FRONTEND_URL: ${{ secrets.FRONTEND_URL_DEV }}
 
