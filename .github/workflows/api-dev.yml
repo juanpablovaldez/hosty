@@ -84,6 +84,9 @@ jobs:
             # Apply database migrations
             npm run db:migrate:deploy --workspace=backend
 
+            # Generate Prisma client
+            npm run db:generate --workspace=backend
+
             # Build backend
             npm run build --workspace=backend
 

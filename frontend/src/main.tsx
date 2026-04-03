@@ -1,3 +1,4 @@
+// trigger: 03-04-26
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
