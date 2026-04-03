@@ -1,5 +1,5 @@
 echo "Running backend type-check..."
-pnpm --filter backend exec tsc --noEmit
+npm run typecheck --workspace=backend
 
 echo "Running backend tests..."
-pnpm --filter backend test --passWithNoTests
+npm test --workspace=backend -- --passWithNoTests
