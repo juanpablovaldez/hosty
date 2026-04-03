@@ -48,6 +48,12 @@ jobs:
           npx prisma generate
           npm run build
 
+      - name: Apply database migrations
+        working-directory: backend
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_DEV }}
+        run: npx prisma migrate deploy
+
       - name: Prune to production dependencies
         working-directory: backend
         env:
@@ -60,7 +66,7 @@ jobs:
           host: ${{ secrets.EC2_HOST_DEV }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY_DEV }}
-          source: "backend/dist,backend/node_modules,backend/generated,backend/prisma,backend/prisma.config.ts,backend/package.json"
+          source: "backend/dist,backend/node_modules,backend/generated,backend/prisma,backend/package.json"
           target: ~/hosty
           overwrite: true
 
@@ -99,10 +105,6 @@ jobs:
             FRONTEND_URL="${FRONTEND_URL}"
             AWS_REGION="us-east-1"
             EOF
-
-            # Apply database migrations
-            cd ~/hosty/backend
-            npx prisma migrate deploy
 
             cd ~/hosty
             # Start or restart the service
