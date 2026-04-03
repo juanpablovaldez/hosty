@@ -24,3 +24,8 @@ output "rds_endpoint" {
   description = "RDS PostgreSQL endpoint (host:port)"
   value       = aws_db_instance.postgres.endpoint
 }
+
+output "rds_sg_id" {
+  description = "ID del Security Group de RDS"
+  value       = aws_security_group.rds_sg.id
+}
