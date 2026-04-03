@@ -1,4 +1,3 @@
-// trigger: 03-04-26
 import './instrument';
 import { NestFactory, HttpAdapterHost } from '@nestjs/core';
 import { Logger, ValidationPipe } from '@nestjs/common';

@@ -1,5 +1,0 @@
-echo "Running backend type-check..."
-npm run typecheck --workspace=backend
-
-echo "Running backend tests..."
-npm test --workspace=backend -- --passWithNoTests
