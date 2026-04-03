@@ -6,7 +6,7 @@ on:
     paths:
       - "backend/**"
       - "package.json"
-      - "pnpm-lock.yaml"
+      - "package-lock.json"
 
 jobs:
   deploy:
@@ -51,12 +51,6 @@ jobs:
             # Verify correct version
             node --version | grep -q "^v22" || { echo "ERROR: Node.js 22 not installed"; exit 1; }
 
-            # Bootstrap: install pnpm via corepack (ships with Node.js 22)
-            if ! command -v pnpm &> /dev/null; then
-              sudo corepack enable
-              corepack prepare pnpm@latest --activate
-            fi
-
             # Bootstrap: install pm2 if not present
             if ! command -v pm2 &> /dev/null; then
               sudo npm install -g pm2
@@ -85,13 +79,13 @@ jobs:
             EOF
 
             # Install dependencies
-            pnpm install --frozen-lockfile
+            npm ci
 
             # Apply database migrations
-            (cd backend && ./node_modules/.bin/prisma migrate deploy)
+            npm run db:migrate:deploy --workspace=backend
 
             # Build backend
-            pnpm --filter backend build
+            npm run build --workspace=backend
 
             # Start or restart the service
             pm2 restart backend --update-env \

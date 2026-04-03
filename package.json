@@ -2,6 +2,10 @@
   "name": "hosty",
   "version": "0.0.1",
   "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
   "scripts": {
     "prepare": "husky"
   },
@@ -13,11 +17,11 @@
   },
   "lint-staged": {
     "backend/src/**/*.ts": [
-      "pnpm --filter backend lint",
-      "pnpm --filter backend format"
+      "npm run lint --workspace=backend",
+      "npm run format --workspace=backend"
     ],
     "frontend/src/**/*.{ts,tsx}": [
-      "pnpm --filter frontend lint"
+      "npm run lint --workspace=frontend"
     ]
   }
 }
