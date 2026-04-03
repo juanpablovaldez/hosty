@@ -60,7 +60,7 @@ jobs:
           host: ${{ secrets.EC2_HOST_DEV }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY_DEV }}
-          source: "backend/dist,backend/node_modules,backend/generated,backend/prisma,backend/prisma.config.ts,backend/package.json"
+          source: "backend/dist,backend/node_modules,backend/generated,backend/prisma,backend/package.json"
           target: ~/hosty
           overwrite: true
 
@@ -102,6 +102,7 @@ jobs:
 
             # Apply database migrations
             cd ~/hosty/backend
+            rm -f prisma.config.ts
             npx prisma migrate deploy
 
             cd ~/hosty
