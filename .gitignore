@@ -28,6 +28,10 @@
 # Misc
 *.local
 
+# lock files
+pnpm-lock.yaml
+yarn.lock
+
 # Ignorar los directorios locales de Terraform y los binarios descargados
 **/.terraform/*
 
