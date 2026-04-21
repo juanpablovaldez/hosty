@@ -2,40 +2,42 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --ring: 240 5.9% 10%;
+    /* Hosty brand — light mode */
+    --background: 38 32% 97%;       /* Hueso #FAF8F5 */
+    --foreground: 210 35% 17%;      /* Tinta #1C2B3A */
+    --muted: 38 20% 92%;
+    --muted-foreground: 210 20% 45%;
+    --border: 210 15% 85%;
+    --input: 210 15% 85%;
+    --primary: 9 80% 54%;           /* Coral #E8452A */
+    --primary-foreground: 38 32% 97%;
+    --secondary: 210 25% 93%;
+    --secondary-foreground: 210 35% 17%;
+    --accent: 37 91% 55%;           /* Ámbar #F5A623 */
+    --accent-foreground: 210 35% 17%;
+    --destructive: 9 80% 54%;
+    --destructive-foreground: 38 32% 97%;
+    --ring: 9 80% 54%;
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --ring: 240 4.9% 83.9%;
+    /* Hosty brand — dark mode */
+    --background: 210 35% 17%;      /* Tinta #1C2B3A */
+    --foreground: 38 32% 97%;       /* Hueso #FAF8F5 */
+    --muted: 210 30% 23%;
+    --muted-foreground: 210 15% 65%;
+    --border: 210 25% 27%;
+    --input: 210 25% 27%;
+    --primary: 9 80% 54%;           /* Coral igual en ambos modos */
+    --primary-foreground: 38 32% 97%;
+    --secondary: 210 30% 23%;
+    --secondary-foreground: 38 32% 97%;
+    --accent: 37 91% 55%;           /* Ámbar igual en ambos modos */
+    --accent-foreground: 210 35% 17%;
+    --destructive: 9 70% 45%;
+    --destructive-foreground: 38 32% 97%;
+    --ring: 9 80% 54%;
   }
 }
 
@@ -46,5 +48,6 @@
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
+    font-family: 'Plus Jakarta Sans', sans-serif;
   }
 }

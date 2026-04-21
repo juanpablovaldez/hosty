@@ -4,8 +4,12 @@ import { createRoot } from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { routeTree } from "./routeTree.gen";
+import { useThemeStore } from "./shared/store/theme.store";
 import "./i18n";
 import "./index.css";
+
+const { theme } = useThemeStore.getState();
+document.documentElement.classList.toggle("dark", theme === "dark");
 
 const queryClient = new QueryClient({
   defaultOptions: {
