@@ -9,12 +9,23 @@ interface ThemeStore {
   setTheme: (theme: Theme) => void;
 }
 
+const applyTheme = (theme: Theme) => {
+  document.documentElement.classList.toggle('dark', theme === 'dark');
+};
+
 export const useThemeStore = create<ThemeStore>()(
   persist(
     (set, get) => ({
       theme: 'light',
-      toggleTheme: () => set({ theme: get().theme === 'light' ? 'dark' : 'light' }),
-      setTheme: (theme) => set({ theme }),
+      toggleTheme: () => {
+        const newTheme = get().theme === 'light' ? 'dark' : 'light';
+        applyTheme(newTheme);
+        set({ theme: newTheme });
+      },
+      setTheme: (theme) => {
+        applyTheme(theme);
+        set({ theme });
+      },
     }),
     { name: 'hosty-theme' },
   ),
