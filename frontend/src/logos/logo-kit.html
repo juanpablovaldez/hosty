@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Hosty — Logo Kit</title>
+<meta name="viewport" content="width=900"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root{--coral:#E8452A;--tinta:#1C2B3A;--ambar:#F5A623;--hueso:#FAF8F5}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Plus Jakarta Sans",sans-serif;background:#E8E5DF;color:var(--tinta);padding:48px 32px 80px;-webkit-font-smoothing:antialiased}
+  h1{font-size:13px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(28,43,58,.55);margin-bottom:48px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .tile{background:var(--hueso);padding:40px 24px 20px;display:flex;flex-direction:column;align-items:center;gap:20px;position:relative}
+  .tile.dark{background:var(--tinta)}
+  .tile.black{background:#000}
+  .tile.amber{background:var(--ambar)}
+  .tile.white{background:#fff}
+  .tag{position:absolute;top:14px;left:16px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:rgba(28,43,58,.45)}
+  .tile.dark .tag,.tile.black .tag{color:rgba(250,248,245,.45)}
+  .tile.amber .tag{color:rgba(28,43,58,.55)}
+  .logo-row{display:flex;align-items:center;gap:16px}
+  .wordmark{font-weight:800;letter-spacing:-.035em;font-size:72px;line-height:1;color:var(--coral)}
+  .wordmark.hueso{color:var(--hueso)}
+  .wordmark.black{color:#000}
+  .wordmark.tinta{color:var(--tinta)}
+  .spec{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(28,43,58,.4);font-weight:600;border-top:1px solid rgba(28,43,58,.1);width:100%;padding-top:12px;text-align:center}
+  .tile.dark .spec,.tile.black .spec{border-top-color:rgba(250,248,245,.12);color:rgba(250,248,245,.4)}
+  .tile.amber .spec{color:rgba(28,43,58,.5)}
+  .download-row{margin-top:40px;display:flex;gap:12px;align-items:center}
+  .btn{display:inline-flex;align-items:center;gap:8px;background:var(--tinta);color:#fff;padding:10px 18px;font-weight:700;font-size:13px;font-family:inherit;border:0;cursor:pointer;letter-spacing:.02em}
+  .btn:hover{background:var(--coral)}
+  .section-label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--tinta);margin:36px 0 12px;opacity:.5}
+</style>
+</head>
+<body>
+
+<h1>Hosty · Logo Kit</h1>
+
+<div class="section-label">Imagotipo · Isotipo + Wordmark</div>
+<div class="grid">
+
+  <!-- A: Principal -->
+  <div class="tile">
+    <span class="tag">A · Principal</span>
+    <div class="logo-row">
+      <svg width="80" height="80" viewBox="0 0 120 120">
+        <rect x="18" y="18" width="20" height="84" rx="3" fill="#E8452A"/>
+        <rect x="82" y="18" width="20" height="84" rx="3" fill="#E8452A"/>
+        <path d="M18 62 a42 42 0 0 1 84 0 v14 h-20 v-14 a22 22 0 0 0 -44 0 v14 h-20 z" fill="#E8452A"/>
+        <circle cx="60" cy="58" r="6" fill="#E8452A"/>
+      </svg>
+      <div class="wordmark">hosty</div>
+    </div>
+    <div class="spec">Coral #E8452A · Fondo hueso</div>
+  </div>
+
+  <!-- B: Fondo oscuro -->
+  <div class="tile dark">
+    <span class="tag">B · Fondo oscuro</span>
+    <div class="logo-row">
+      <svg width="80" height="80" viewBox="0 0 120 120">
+        <rect x="18" y="18" width="20" height="84" rx="3" fill="#FAF8F5"/>
+        <rect x="82" y="18" width="20" height="84" rx="3" fill="#FAF8F5"/>
+        <path d="M18 62 a42 42 0 0 1 84 0 v14 h-20 v-14 a22 22 0 0 0 -44 0 v14 h-20 z" fill="#FAF8F5"/>
+        <circle cx="60" cy="58" r="6" fill="#FAF8F5"/>
+      </svg>
+      <div class="wordmark hueso">hosty</div>
+    </div>
+    <div class="spec">Hueso #FAF8F5 · Fondo Tinta</div>
+  </div>
+
+  <!-- C: Ámbar -->
+  <div class="tile amber">
+    <span class="tag">C · Ámbar</span>
+    <div class="logo-row">
+      <svg width="80" height="80" viewBox="0 0 120 120">
+        <rect x="18" y="18" width="20" height="84" rx="3" fill="#1C2B3A"/>
+        <rect x="82" y="18" width="20" height="84" rx="3" fill="#1C2B3A"/>
+        <path d="M18 62 a42 42 0 0 1 84 0 v14 h-20 v-14 a22 22 0 0 0 -44 0 v14 h-20 z" fill="#1C2B3A"/>
+        <circle cx="60" cy="58" r="6" fill="#1C2B3A"/>
+      </svg>
+      <div class="wordmark tinta">hosty</div>
+    </div>
+    <div class="spec">Tinta #1C2B3A · Fondo Ámbar</div>
+  </div>
+
+  <!-- D: Mono negro -->
+  <div class="tile white">
+    <span class="tag">D · Mono negro</span>
+    <div class="logo-row">
+      <svg width="80" height="80" viewBox="0 0 120 120">
+        <rect x="18" y="18" width="20" height="84" rx="3" fill="#000"/>
+        <rect x="82" y="18" width="20" height="84" rx="3" fill="#000"/>
+        <path d="M18 62 a42 42 0 0 1 84 0 v14 h-20 v-14 a22 22 0 0 0 -44 0 v14 h-20 z" fill="#000"/>
+        <circle cx="60" cy="58" r="6" fill="#000"/>
+      </svg>
+      <div class="wordmark black">hosty</div>
+    </div>
+    <div class="spec">#000000 · Para impresión 1 tinta</div>
+  </div>
+
+  <!-- E: Mono blanco -->
+  <div class="tile black">
+    <span class="tag">E · Mono blanco</span>
+    <div class="logo-row">
+      <svg width="80" height="80" viewBox="0 0 120 120">
+        <rect x="18" y="18" width="20" height="84" rx="3" fill="#fff"/>
+        <rect x="82" y="18" width="20" height="84" rx="3" fill="#fff"/>
+        <path d="M18 62 a42 42 0 0 1 84 0 v14 h-20 v-14 a22 22 0 0 0 -44 0 v14 h-20 z" fill="#fff"/>
+        <circle cx="60" cy="58" r="6" fill="#fff"/>
+      </svg>
+      <div class="wordmark hueso">hosty</div>
+    </div>
+    <div class="spec">#FFFFFF · Para fondo negro</div>
+  </div>
+
+  <!-- F: Solo isotipo -->
+  <div class="tile">
+    <span class="tag">F · Solo isotipo</span>
+    <svg width="120" height="120" viewBox="0 0 120 120">
+      <rect x="18" y="18" width="20" height="84" rx="3" fill="#E8452A"/>
+      <rect x="82" y="18" width="20" height="84" rx="3" fill="#E8452A"/>
+      <path d="M18 62 a42 42 0 0 1 84 0 v14 h-20 v-14 a22 22 0 0 0 -44 0 v14 h-20 z" fill="#E8452A"/>
+      <circle cx="60" cy="58" r="6" fill="#E8452A"/>
+    </svg>
+    <div class="spec">App icon · Favicon · Pin de mapa</div>
+  </div>
+
+</div>
+
+<div class="section-label">Archivos incluidos en este kit</div>
+<div style="background:#fff;padding:20px 24px;display:grid;grid-template-columns:repeat(2,1fr);gap:10px;font-size:13px;color:var(--tinta)">
+  <div>📄 <b>Hosty Logo.svg</b> — todas las variantes en un SVG</div>
+  <div>📄 <b>isotipo-coral.svg</b> — isotipo color coral</div>
+  <div>📄 <b>isotipo-blanco.svg</b> — isotipo blanco (para fondo oscuro)</div>
+  <div>📄 <b>isotipo-negro.svg</b> — isotipo monocromático negro</div>
+  <div>📄 <b>Hosty Brandbook.html</b> — manual de marca completo</div>
+</div>
+
+</body>
+</html>

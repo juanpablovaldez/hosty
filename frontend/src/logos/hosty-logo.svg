@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" width="900" height="600">
+  <defs>
+    
+
+    
+    <symbol id="iso" viewBox="0 0 120 120">
+      <rect x="18" y="18" width="20" height="84" rx="3" fill="currentColor"></rect>
+      <rect x="82" y="18" width="20" height="84" rx="3" fill="currentColor"></rect>
+      <path d="M18 62 a42 42 0 0 1 84 0 v14 h-20 v-14 a22 22 0 0 0 -44 0 v14 h-20 z" fill="currentColor"></path>
+      <circle cx="60" cy="58" r="6" fill="currentColor"></circle>
+    </symbol>
+  </defs>
+
+  
+  <rect x="0" y="0" width="450" height="280" fill="#FAF8F5"></rect>
+  <text x="30" y="250" class="label">A · Principal</text>
+  
+  <g transform="translate(30, 50)" color="#E8452A">
+    <use href="#iso" width="120" height="120"></use>
+  </g>
+  
+  <text x="168" y="145" class="wm" font-size="88" fill="#E8452A">hosty</text>
+
+  
+  <rect x="450" y="0" width="450" height="280" fill="#1C2B3A"></rect>
+  <text x="480" y="250" class="label" fill="rgba(250,248,245,0.55)">B · Fondo oscuro</text>
+  <g transform="translate(480, 50)" color="#FAF8F5">
+    <use href="#iso" width="120" height="120"></use>
+  </g>
+  <text x="618" y="145" class="wm" font-size="88" fill="#FAF8F5">hosty</text>
+
+  
+  <rect x="0" y="280" width="225" height="260" fill="#FAF8F5"></rect>
+  <text x="30" y="520" class="label">C · Isotipo</text>
+  <g transform="translate(52, 310)" color="#E8452A">
+    <use href="#iso" width="120" height="120"></use>
+  </g>
+
+  
+  <rect x="225" y="280" width="225" height="260" fill="#FFFFFF"></rect>
+  <text x="255" y="520" class="label" fill="#9aa5af">D · Mono negro</text>
+  <g transform="translate(277, 310)" color="#000000">
+    <use href="#iso" width="120" height="120"></use>
+  </g>
+
+  
+  <rect x="450" y="280" width="225" height="260" fill="#000000"></rect>
+  <text x="480" y="520" class="label" fill="rgba(255,255,255,0.45)">E · Mono blanco</text>
+  <g transform="translate(502, 310)" color="#FFFFFF">
+    <use href="#iso" width="120" height="120"></use>
+  </g>
+
+  
+  <rect x="675" y="280" width="225" height="260" fill="#F5A623"></rect>
+  <text x="705" y="520" class="label" fill="rgba(28,43,58,0.6)">F · Ámbar</text>
+  <g transform="translate(727, 310)" color="#1C2B3A">
+    <use href="#iso" width="120" height="120"></use>
+  </g>
+</svg>
