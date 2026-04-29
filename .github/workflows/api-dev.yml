@@ -2,7 +2,7 @@ name: Deploy Backend to DEV
 
 on:
   push:
-    branches: [dev]
+    branches: [disabled]
     paths:
       - "backend/**"
       - "package.json"

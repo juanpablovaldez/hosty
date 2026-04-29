@@ -2,7 +2,7 @@ name: Deploy Backend to STG
 
 on:
   push:
-    branches: [staging]
+    branches: [disabled]
     paths:
       - "backend/**"
       - "package.json"
