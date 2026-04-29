@@ -23,7 +23,7 @@ function rowToSalon(row: SalonRow): Salon {
     rentTimeHours: row.rent_time_hours,
     isFavorite: false,
     amenities: row.amenities,
-    availabilityStatus: row.availability_status,
+    availabilityStatus: row.availability_status as Salon['availabilityStatus'],
     eventTypes: row.event_types,
   }
 }

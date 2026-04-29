@@ -29,6 +29,9 @@ jobs:
 
       - name: Build application
         working-directory: ./frontend
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL_DEV }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY_DEV }}
         run: npm run build
 
       - name: Configure AWS credentials
