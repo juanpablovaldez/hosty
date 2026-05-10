@@ -1,6 +1,7 @@
 import { Outlet } from '@tanstack/react-router';
 import { Header } from './Header';
 import { Footer } from './Footer';
+import { ThemeToggle } from './ThemeToggle';
 
 export function RootLayout() {
   return (
@@ -10,6 +11,7 @@ export function RootLayout() {
         <Outlet />
       </main>
       <Footer />
+      <ThemeToggle />
     </div>
   );
 }
