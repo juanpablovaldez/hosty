@@ -27,6 +27,13 @@ export function ThemeToggle() {
         boxShadow: '-4px 4px 20px rgba(0,0,0,0.22)',
         transition: 'transform 0.18s ease, box-shadow 0.18s ease',
       }}
+      onFocus={e => {
+        (e.currentTarget as HTMLButtonElement).style.outline = '2px solid #E8452A';
+        (e.currentTarget as HTMLButtonElement).style.outlineOffset = '3px';
+      }}
+      onBlur={e => {
+        (e.currentTarget as HTMLButtonElement).style.outline = 'none';
+      }}
       onMouseEnter={e => {
         (e.currentTarget as HTMLButtonElement).style.transform = 'translateX(-6px) scale(1.08)';
         (e.currentTarget as HTMLButtonElement).style.boxShadow = '-6px 6px 24px rgba(0,0,0,0.28)';

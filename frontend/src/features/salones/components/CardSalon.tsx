@@ -24,7 +24,7 @@ export function CardSalon({ salon }: CardSalonProps) {
       <CardHeader>
         <CardTitle className='text-lg font-semibold'>{salon.name}</CardTitle>
         <p className='text-sm text-muted-foreground'>{salon.location}</p>
-        {salon.rating && <p className='text-sm text-accent'>{salon.rating}</p>}
+        {salon.rating != null && <p className='text-sm text-accent'>{salon.rating}</p>}
       </CardHeader>
       <CardContent className='flex flex-col gap-3'>
         <div className="flex items-center gap-1 flex-wrap">
@@ -50,7 +50,7 @@ export function CardSalon({ salon }: CardSalonProps) {
         <Badge className={salon.availabilityStatus === 'disponible' ? 'bg-green-500' : 'bg-gray-400'}>
           {salon.availabilityStatus}
         </Badge>
-        <Button variant="ghost" size="icon">
+        <Button variant="ghost" size="icon" aria-label={salon.isFavorite ? 'Quitar de favoritos' : 'Guardar en favoritos'}>
           <Heart className={salon.isFavorite ? 'fill-red-500 text-red-500' : 'text-muted-foreground'} />
         </Button>
       </CardFooter>
