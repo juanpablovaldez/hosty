@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { Link, useNavigate } from '@tanstack/react-router';
 
 const CHIPS = ['Todos', '🎂 Cumpleaños', '💍 Casamientos', '🎓 Graduaciones', '🏢 Corporativo', '👶 Infantiles'];
 
 export function HomePage() {
   const [chipActivo, setChipActivo] = useState('Todos');
+  const navigate = useNavigate();
 
   return (
     <>
@@ -77,7 +79,11 @@ export function HomePage() {
               </div>
 
               {/* Botón buscar */}
-              <button className="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-xl px-5 py-3 transition">
+              <button
+                type="button"
+                onClick={() => navigate({ to: '/salones' })}
+                className="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-xl px-5 py-3 transition"
+              >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                 </svg>
@@ -188,12 +194,12 @@ export function HomePage() {
             <h2 className="text-[32px] lg:text-[40px] font-bold tracking-tight text-foreground">Salones para cada ocasión</h2>
             <p className="text-muted-foreground mt-2">Elegidos por nuestra comunidad. Verificados uno por uno.</p>
           </div>
-          <a href="/salones" className="hidden md:inline-flex items-center gap-1.5 text-[14px] font-semibold text-primary hover:text-primary/80 transition" aria-label="Ver todos los salones">
+          <Link to="/salones" className="hidden md:inline-flex items-center gap-1.5 text-[14px] font-semibold text-primary hover:text-primary/80 transition" aria-label="Ver todos los salones">
             Ver todos
             <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
             </svg>
-          </a>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

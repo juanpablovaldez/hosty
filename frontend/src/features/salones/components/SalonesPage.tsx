@@ -235,6 +235,7 @@ function CardResultado({ salon }: { salon: SalonBusqueda }) {
 
 /* ─── Página principal ───────────────────────────────────── */
 export function SalonesPage() {
+  const [busqueda, setBusqueda] = useState('');
   const [chipActivo, setChipActivo] = useState('Todos los tipos');
   const [zonasActivas, setZonasActivas] = useState<string[]>([]);
   const [serviciosActivos, setServiciosActivos] = useState<string[]>([]);
@@ -263,6 +264,9 @@ export function SalonesPage() {
   /* ─── Salones filtrados y ordenados (derivado) ─── */
   const salonesFilteredAndSorted = useMemo(() => {
     let result = SALONES.filter((s) => {
+      if (busqueda.trim() !== '' && !s.nombre.toLowerCase().includes(busqueda.toLowerCase())) {
+        return false;
+      }
       if (chipActivo !== 'Todos los tipos' && !s.tipos.toLowerCase().includes(chipActivo.toLowerCase())) {
         return false;
       }
@@ -292,7 +296,7 @@ export function SalonesPage() {
     }
 
     return result;
-  }, [chipActivo, zonasActivas, serviciosActivos, capacidadMin, capacidadMax, ordenamiento]);
+  }, [busqueda, chipActivo, zonasActivas, serviciosActivos, capacidadMin, capacidadMax, ordenamiento]);
 
   /* ─── Paginación ─── */
   const totalPaginas = Math.max(1, Math.ceil(salonesFilteredAndSorted.length / ITEMS_PER_PAGE));
@@ -325,6 +329,7 @@ export function SalonesPage() {
   };
 
   const limpiarFiltros = () => {
+    setBusqueda('');
     setZonasActivas([]);
     setServiciosActivos([]);
     setChipActivo('Todos los tipos');
@@ -393,6 +398,30 @@ export function SalonesPage() {
         <span className="ml-auto text-[13px] text-muted-foreground hidden md:inline">
           Mostrando <strong className="text-foreground">{salonesFilteredAndSorted.length}</strong> salones
         </span>
+      </div>
+
+      {/* ── Buscador por nombre ─── */}
+      <div className="max-w-7xl mx-auto px-5 lg:px-8 mt-4">
+        <div className="relative">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
+          <input
+            type="text"
+            placeholder="Buscar por nombre de salón..."
+            value={busqueda}
+            onChange={(e) => { setBusqueda(e.target.value); setPaginaActual(1); }}
+            className="w-full pl-12 pr-4 py-3 rounded-xl border border-border bg-card text-foreground text-[15px] placeholder:text-muted-foreground focus:outline-none focus:border-primary transition"
+          />
+          {busqueda && (
+            <button
+              type="button"
+              aria-label="Limpiar búsqueda"
+              onClick={() => { setBusqueda(''); setPaginaActual(1); }}
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-full hover:bg-muted transition"
+            >
+              <X className="w-4 h-4 text-muted-foreground" />
+            </button>
+          )}
+        </div>
       </div>
 
       {/* ── Layout principal ─── */}
