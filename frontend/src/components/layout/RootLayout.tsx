@@ -1,7 +1,7 @@
-import { Outlet } from '@tanstack/react-router';
-import { Header } from './Header';
-import { Footer } from './Footer';
-import { ThemeToggle } from './ThemeToggle';
+import { Outlet } from '@tanstack/react-router'
+import { Toaster } from '@/components/ui/sonner'
+import { Header } from './Header'
+import { Footer } from './Footer'
 
 export function RootLayout() {
   return (
@@ -11,7 +11,7 @@ export function RootLayout() {
         <Outlet />
       </main>
       <Footer />
-      <ThemeToggle />
+      <Toaster richColors position="top-right" />
     </div>
-  );
+  )
 }
