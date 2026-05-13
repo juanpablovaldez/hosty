@@ -13,6 +13,8 @@ import { Route as SalonesRouteImport } from './routes/salones'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SalonesIndexRouteImport } from './routes/salones/index'
 import { Route as SalonesIdRouteImport } from './routes/salones/$id'
+import { Route as HostDashboardRouteImport } from './routes/host/dashboard'
+import { Route as HostCreateRouteImport } from './routes/host/create'
 import { Route as SalonesIdReservarRouteImport } from './routes/salones/$id.reservar'
 
 const SalonesRoute = SalonesRouteImport.update({
@@ -35,6 +37,16 @@ const SalonesIdRoute = SalonesIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => SalonesRoute,
 } as any)
+const HostDashboardRoute = HostDashboardRouteImport.update({
+  id: '/host/dashboard',
+  path: '/host/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HostCreateRoute = HostCreateRouteImport.update({
+  id: '/host/create',
+  path: '/host/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SalonesIdReservarRoute = SalonesIdReservarRouteImport.update({
   id: '/reservar',
   path: '/reservar',
@@ -44,12 +56,16 @@ const SalonesIdReservarRoute = SalonesIdReservarRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/salones': typeof SalonesRouteWithChildren
+  '/host/create': typeof HostCreateRoute
+  '/host/dashboard': typeof HostDashboardRoute
   '/salones/$id': typeof SalonesIdRouteWithChildren
   '/salones/': typeof SalonesIndexRoute
   '/salones/$id/reservar': typeof SalonesIdReservarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/host/create': typeof HostCreateRoute
+  '/host/dashboard': typeof HostDashboardRoute
   '/salones/$id': typeof SalonesIdRouteWithChildren
   '/salones': typeof SalonesIndexRoute
   '/salones/$id/reservar': typeof SalonesIdReservarRoute
@@ -58,6 +74,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/salones': typeof SalonesRouteWithChildren
+  '/host/create': typeof HostCreateRoute
+  '/host/dashboard': typeof HostDashboardRoute
   '/salones/$id': typeof SalonesIdRouteWithChildren
   '/salones/': typeof SalonesIndexRoute
   '/salones/$id/reservar': typeof SalonesIdReservarRoute
@@ -67,15 +85,25 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/salones'
+    | '/host/create'
+    | '/host/dashboard'
     | '/salones/$id'
     | '/salones/'
     | '/salones/$id/reservar'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/salones/$id' | '/salones' | '/salones/$id/reservar'
+  to:
+    | '/'
+    | '/host/create'
+    | '/host/dashboard'
+    | '/salones/$id'
+    | '/salones'
+    | '/salones/$id/reservar'
   id:
     | '__root__'
     | '/'
     | '/salones'
+    | '/host/create'
+    | '/host/dashboard'
     | '/salones/$id'
     | '/salones/'
     | '/salones/$id/reservar'
@@ -84,6 +112,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SalonesRoute: typeof SalonesRouteWithChildren
+  HostCreateRoute: typeof HostCreateRoute
+  HostDashboardRoute: typeof HostDashboardRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -115,6 +145,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/salones/$id'
       preLoaderRoute: typeof SalonesIdRouteImport
       parentRoute: typeof SalonesRoute
+    }
+    '/host/dashboard': {
+      id: '/host/dashboard'
+      path: '/host/dashboard'
+      fullPath: '/host/dashboard'
+      preLoaderRoute: typeof HostDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/host/create': {
+      id: '/host/create'
+      path: '/host/create'
+      fullPath: '/host/create'
+      preLoaderRoute: typeof HostCreateRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/salones/$id/reservar': {
       id: '/salones/$id/reservar'
@@ -154,6 +198,8 @@ const SalonesRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SalonesRoute: SalonesRouteWithChildren,
+  HostCreateRoute: HostCreateRoute,
+  HostDashboardRoute: HostDashboardRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

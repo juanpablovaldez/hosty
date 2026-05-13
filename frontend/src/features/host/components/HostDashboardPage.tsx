@@ -208,7 +208,7 @@ export function HostDashboardPage() {
           </p>
         </div>
         <Button asChild className="gap-2 hidden sm:flex">
-          <Link to="/">
+          <Link to="/host/create">
             <Plus className="w-4 h-4" strokeWidth={1.5} />
             Nuevo salón
           </Link>
@@ -229,7 +229,7 @@ export function HostDashboardPage() {
           <p className="text-[17px] font-semibold text-foreground">Todavía no tenés salones publicados</p>
           <p className="text-muted-foreground text-sm">Publicá tu primer salón y empezá a recibir reservas</p>
           <Button asChild className="gap-2 mt-2">
-            <Link to="/">
+            <Link to="/host/create">
               <Plus className="w-4 h-4" strokeWidth={1.5} />
               Publicar mi salón
             </Link>
