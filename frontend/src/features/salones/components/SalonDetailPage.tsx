@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, Link } from '@tanstack/react-router'
 import { useSalon } from '../api/salones.queries'
 import { Badge } from '@/components/ui/badge'
@@ -291,6 +291,42 @@ function DetailSkeleton() {
 export function SalonDetailPage() {
   const { id } = useParams({ from: '/salones/$id' })
   const { data: salon, isLoading, isError } = useSalon(id)
+
+  const DEFAULT_TITLE = 'Hosty — Encontrá el salón perfecto para tu evento en Tucumán'
+
+  useEffect(() => {
+    if (!salon) return
+
+    const title = `${salon.name} — Hosty`
+    const description = `${salon.description ?? `Salón de eventos en ${salon.location}`}. Capacidad hasta ${salon.capacity} personas. Desde ${salon.pricePerHour.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 })}/hora.`
+    const url = `${window.location.origin}/salones/${salon.id}`
+
+    document.title = title
+
+    const setMeta = (attr: 'name' | 'property', key: string, content: string) => {
+      let el = document.querySelector(`meta[${attr}="${key}"]`) as HTMLMetaElement | null
+      if (!el) {
+        el = document.createElement('meta')
+        el.setAttribute(attr, key)
+        document.head.appendChild(el)
+      }
+      el.content = content
+    }
+
+    setMeta('name', 'description', description)
+    setMeta('property', 'og:title', title)
+    setMeta('property', 'og:description', description)
+    setMeta('property', 'og:url', url)
+    setMeta('property', 'og:type', 'place')
+    if (salon.images[0]) setMeta('property', 'og:image', salon.images[0])
+    setMeta('name', 'twitter:title', title)
+    setMeta('name', 'twitter:description', description)
+    if (salon.images[0]) setMeta('name', 'twitter:image', salon.images[0])
+
+    return () => {
+      document.title = DEFAULT_TITLE
+    }
+  }, [salon])
 
   if (isLoading) {
     return (
