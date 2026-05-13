@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, Link } from '@tanstack/react-router'
 import { useSalon } from '../api/salones.queries'
 import { Badge } from '@/components/ui/badge'
@@ -50,6 +50,8 @@ function Gallery({ images, name }: { images: string[]; name: string }) {
           <img
             src={images[activeIdx]}
             alt={name}
+            decoding="async"
+            fetchPriority="high"
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
           />
 
@@ -106,6 +108,8 @@ function Gallery({ images, name }: { images: string[]; name: string }) {
                 <img
                   src={img}
                   alt={`${name} foto ${i + 2}`}
+                  loading="lazy"
+                  decoding="async"
                   className="h-full w-full object-cover hover:scale-[1.03] transition-transform duration-300"
                 />
                 {i === 1 && images.length > 3 && (
@@ -135,7 +139,7 @@ function Gallery({ images, name }: { images: string[]; name: string }) {
                 activeIdx === i ? 'border-primary' : 'border-transparent',
               )}
             >
-              <img src={img} alt={`Foto ${i + 1}`} className="w-full h-full object-cover" />
+              <img src={img} alt={`Foto ${i + 1}`} loading="lazy" decoding="async" className="w-full h-full object-cover" />
             </button>
           ))}
         </div>
@@ -287,6 +291,42 @@ function DetailSkeleton() {
 export function SalonDetailPage() {
   const { id } = useParams({ from: '/salones/$id' })
   const { data: salon, isLoading, isError } = useSalon(id)
+
+  const DEFAULT_TITLE = 'Hosty — Encontrá el salón perfecto para tu evento en Tucumán'
+
+  useEffect(() => {
+    if (!salon) return
+
+    const title = `${salon.name} — Hosty`
+    const description = `${salon.description ?? `Salón de eventos en ${salon.location}`}. Capacidad hasta ${salon.capacity} personas. Desde ${salon.pricePerHour.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 })}/hora.`
+    const url = `${window.location.origin}/salones/${salon.id}`
+
+    document.title = title
+
+    const setMeta = (attr: 'name' | 'property', key: string, content: string) => {
+      let el = document.querySelector(`meta[${attr}="${key}"]`) as HTMLMetaElement | null
+      if (!el) {
+        el = document.createElement('meta')
+        el.setAttribute(attr, key)
+        document.head.appendChild(el)
+      }
+      el.content = content
+    }
+
+    setMeta('name', 'description', description)
+    setMeta('property', 'og:title', title)
+    setMeta('property', 'og:description', description)
+    setMeta('property', 'og:url', url)
+    setMeta('property', 'og:type', 'place')
+    if (salon.images[0]) setMeta('property', 'og:image', salon.images[0])
+    setMeta('name', 'twitter:title', title)
+    setMeta('name', 'twitter:description', description)
+    if (salon.images[0]) setMeta('name', 'twitter:image', salon.images[0])
+
+    return () => {
+      document.title = DEFAULT_TITLE
+    }
+  }, [salon])
 
   if (isLoading) {
     return (
