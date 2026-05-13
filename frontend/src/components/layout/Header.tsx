@@ -9,6 +9,7 @@ import { cn } from '@/shared/lib/utils'
 const NAV_LINKS = [
   { to: '/', label: 'Inicio' },
   { to: '/salones', label: 'Salones' },
+  { to: '/#como-funciona', label: 'Cómo funciona' },
 ] as const
 
 export function Header() {
@@ -17,10 +18,13 @@ export function Header() {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur-sm">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+    <header className="sticky top-0 z-40 border-b border-border bg-card/95 backdrop-blur-sm">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 lg:px-8">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md">
+        <Link
+          to="/"
+          className="flex items-center gap-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        >
           <span className="text-2xl font-extrabold tracking-tight text-primary">hosty</span>
         </Link>
 
@@ -42,10 +46,19 @@ export function Header() {
 
         {/* Actions */}
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label="Cambiar tema">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleTheme}
+            aria-label={theme === 'light' ? 'Activar modo oscuro' : 'Activar modo claro'}
+          >
             {theme === 'light'
               ? <Moon className="h-5 w-5" strokeWidth={1.5} />
               : <Sun className="h-5 w-5" strokeWidth={1.5} />}
+          </Button>
+
+          <Button variant="ghost" size="sm" className="hidden md:flex">
+            Iniciar sesión
           </Button>
 
           <Button size="sm" className="hidden md:flex">
@@ -55,7 +68,7 @@ export function Header() {
           {/* Mobile burger */}
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden" aria-label="Menú">
+              <Button variant="ghost" size="icon" className="md:hidden" aria-label="Abrir menú">
                 <Menu className="h-5 w-5" strokeWidth={1.5} />
               </Button>
             </SheetTrigger>
@@ -77,7 +90,8 @@ export function Header() {
                     {label}
                   </Link>
                 ))}
-                <div className="mt-4">
+                <div className="mt-4 flex flex-col gap-2">
+                  <Button variant="outline" className="w-full">Iniciar sesión</Button>
                   <Button className="w-full">Publicar mi salón</Button>
                 </div>
               </nav>
