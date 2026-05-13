@@ -12,7 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SalonesIndexRouteImport } from './routes/salones/index'
 import { Route as SalonesIdRouteImport } from './routes/salones/$id'
-import { Route as SalonesIdReservarRouteImport } from './routes/salones/$id.reservar'
+import { Route as SalonesIdReservarRouteImport } from './routes/salones/$id_.reservar'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -30,42 +30,43 @@ const SalonesIdRoute = SalonesIdRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const SalonesIdReservarRoute = SalonesIdReservarRouteImport.update({
-  id: '/reservar',
-  path: '/reservar',
-  getParentRoute: () => SalonesIdRoute,
+  id: '/salones/$id_/reservar',
+  path: '/salones/$id/reservar',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/salones/$id': typeof SalonesIdRouteWithChildren
+  '/salones/$id': typeof SalonesIdRoute
   '/salones/': typeof SalonesIndexRoute
   '/salones/$id/reservar': typeof SalonesIdReservarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/salones/$id': typeof SalonesIdRouteWithChildren
+  '/salones/$id': typeof SalonesIdRoute
   '/salones': typeof SalonesIndexRoute
   '/salones/$id/reservar': typeof SalonesIdReservarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/salones/$id': typeof SalonesIdRouteWithChildren
+  '/salones/$id': typeof SalonesIdRoute
   '/salones/': typeof SalonesIndexRoute
-  '/salones/$id/reservar': typeof SalonesIdReservarRoute
+  '/salones/$id_/reservar': typeof SalonesIdReservarRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths: '/' | '/salones/$id' | '/salones/' | '/salones/$id/reservar'
   fileRoutesByTo: FileRoutesByTo
   to: '/' | '/salones/$id' | '/salones' | '/salones/$id/reservar'
-  id: '__root__' | '/' | '/salones/$id' | '/salones/' | '/salones/$id/reservar'
+  id: '__root__' | '/' | '/salones/$id' | '/salones/' | '/salones/$id_/reservar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  SalonesIdRoute: typeof SalonesIdRouteWithChildren
+  SalonesIdRoute: typeof SalonesIdRoute
   SalonesIndexRoute: typeof SalonesIndexRoute
+  SalonesIdReservarRoute: typeof SalonesIdReservarRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -91,32 +92,21 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SalonesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/salones/$id/reservar': {
-      id: '/salones/$id/reservar'
-      path: '/reservar'
+    '/salones/$id_/reservar': {
+      id: '/salones/$id_/reservar'
+      path: '/salones/$id/reservar'
       fullPath: '/salones/$id/reservar'
       preLoaderRoute: typeof SalonesIdReservarRouteImport
-      parentRoute: typeof SalonesIdRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
-interface SalonesIdRouteChildren {
-  SalonesIdReservarRoute: typeof SalonesIdReservarRoute
-}
-
-const SalonesIdRouteChildren: SalonesIdRouteChildren = {
-  SalonesIdReservarRoute: SalonesIdReservarRoute,
-}
-
-const SalonesIdRouteWithChildren = SalonesIdRoute._addFileChildren(
-  SalonesIdRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  SalonesIdRoute: SalonesIdRouteWithChildren,
+  SalonesIdRoute: SalonesIdRoute,
   SalonesIndexRoute: SalonesIndexRoute,
+  SalonesIdReservarRoute: SalonesIdReservarRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
