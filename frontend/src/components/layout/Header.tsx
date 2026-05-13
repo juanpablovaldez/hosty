@@ -6,11 +6,10 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { Moon, Sun, Menu } from 'lucide-react'
 import { cn } from '@/shared/lib/utils'
 
-const NAV_LINKS = [
-  { to: '/', label: 'Inicio' },
-  { to: '/salones', label: 'Salones' },
-  { to: '/#como-funciona', label: 'Cómo funciona' },
-] as const
+const ROUTER_LINKS = [
+  { to: '/' as const, label: 'Inicio' },
+  { to: '/salones' as const, label: 'Salones' },
+]
 
 export function Header() {
   const { theme, toggleTheme } = useThemeStore()
@@ -30,7 +29,7 @@ export function Header() {
 
         {/* Desktop nav */}
         <nav className="hidden items-center gap-6 md:flex">
-          {NAV_LINKS.map(({ to, label }) => (
+          {ROUTER_LINKS.map(({ to, label }) => (
             <Link
               key={to}
               to={to}
@@ -42,6 +41,12 @@ export function Header() {
               {label}
             </Link>
           ))}
+          <a
+            href="/#como-funciona"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+          >
+            Cómo funciona
+          </a>
         </nav>
 
         {/* Actions */}
@@ -77,7 +82,7 @@ export function Header() {
                 <SheetTitle className="text-left text-2xl font-extrabold text-primary">hosty</SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col gap-1">
-                {NAV_LINKS.map(({ to, label }) => (
+                {ROUTER_LINKS.map(({ to, label }) => (
                   <Link
                     key={to}
                     to={to}
@@ -90,6 +95,13 @@ export function Header() {
                     {label}
                   </Link>
                 ))}
+                <a
+                  href="/#como-funciona"
+                  onClick={() => setMobileOpen(false)}
+                  className="rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+                >
+                  Cómo funciona
+                </a>
                 <div className="mt-4 flex flex-col gap-2">
                   <Button variant="outline" className="w-full">Iniciar sesión</Button>
                   <Button className="w-full">Publicar mi salón</Button>
