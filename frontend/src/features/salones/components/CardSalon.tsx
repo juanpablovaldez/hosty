@@ -1,9 +1,8 @@
+import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import type { Salon } from '../types'
-import { Card, CardContent, CardFooter } from '@/components/ui/card'
+import { Heart, Users, Star, MapPin } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Heart, Users, Star, ShieldCheck, MapPin } from 'lucide-react'
 import { cn } from '@/shared/lib/utils'
 
 interface CardSalonProps {
@@ -18,113 +17,131 @@ const AVAILABILITY_STYLES = {
 } as const
 
 export function CardSalon({ salon, onFavoriteToggle }: CardSalonProps) {
+  const [fav, setFav] = useState(salon.isFavorite)
   const coverImage = salon.images[0] ?? '/placeholder-salon.jpg'
 
   function handleFavorite(e: React.MouseEvent) {
     e.preventDefault()
     e.stopPropagation()
+    setFav(!fav)
     onFavoriteToggle?.(salon.id)
   }
 
   return (
-    <article className="group h-full">
-      <Link to="/salones/$id" params={{ id: salon.id }} className="block h-full focus-visible:outline-none">
-        <Card className="h-full overflow-hidden transition-shadow group-hover:shadow-lg group-focus-visible:ring-2 group-focus-visible:ring-ring">
-          {/* Image */}
-          <div className="relative aspect-[4/3] overflow-hidden bg-muted">
-            <img
-              src={coverImage}
-              alt={salon.name}
-              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-            />
+    <article className="group cursor-pointer bg-card rounded-[20px] overflow-hidden shadow-[0_1px_3px_rgba(28,43,58,0.06),0_8px_24px_-12px_rgba(28,43,58,0.12)] hover:shadow-[0_4px_12px_rgba(28,43,58,0.08),0_16px_40px_-16px_rgba(28,43,58,0.18)] transition border border-border">
+      <Link
+        to="/salones/$id"
+        params={{ id: salon.id }}
+        className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-[20px]"
+      >
+        {/* Imagen */}
+        <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+          <img
+            src={coverImage}
+            alt={salon.name}
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
 
-            {/* Verified badge */}
-            {salon.isVerified && (
-              <div className="absolute right-2 top-2 flex items-center gap-1 rounded-full bg-background/90 px-2 py-1 shadow-sm backdrop-blur-sm">
-                <ShieldCheck className="h-4 w-4 text-primary" strokeWidth={1.5} />
-                <span className="text-xs font-semibold text-primary">Verificado</span>
-              </div>
-            )}
-
-            {/* Availability pill */}
-            <div className="absolute bottom-2 left-2">
-              <span
-                className={cn(
-                  'rounded-full px-2.5 py-0.5 text-xs font-semibold',
-                  AVAILABILITY_STYLES[salon.availabilityStatus],
-                )}
-              >
-                {salon.availabilityStatus}
-              </span>
+          {/* Badge verificado */}
+          {salon.isVerified && (
+            <div className="absolute top-3 left-3 flex items-center gap-1 bg-background/90 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm">
+              <svg className="w-3 h-3 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fillRule="evenodd"
+                  d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <span className="text-xs font-semibold text-primary">Verificado</span>
             </div>
+          )}
 
-            {/* Favorite button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-2 bottom-2 h-8 w-8 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background"
-              onClick={handleFavorite}
-              aria-label={salon.isFavorite ? 'Quitar de favoritos' : 'Guardar como favorito'}
+          {/* Pill de disponibilidad */}
+          <div className="absolute bottom-3 left-3">
+            <span
+              className={cn(
+                'rounded-full px-2.5 py-1 text-[11px] font-semibold',
+                AVAILABILITY_STYLES[salon.availabilityStatus],
+              )}
             >
-              <Heart
-                className={cn(
-                  'h-4 w-4 transition-colors',
-                  salon.isFavorite ? 'fill-primary text-primary' : 'text-muted-foreground',
-                )}
-              />
-            </Button>
+              {salon.availabilityStatus}
+            </span>
           </div>
 
-          {/* Body */}
-          <CardContent className="flex flex-col gap-2 p-4">
-            <div className="flex items-start justify-between gap-2">
-              <h3 className="line-clamp-1 text-base font-semibold leading-tight text-foreground">
-                {salon.name}
-              </h3>
-              {salon.rating && (
-                <div className="flex shrink-0 items-center gap-1 text-accent">
-                  <Star className="h-3.5 w-3.5 fill-current" />
-                  <span className="text-sm font-semibold">{salon.rating.value.toFixed(1)}</span>
-                  <span className="text-xs text-muted-foreground">({salon.rating.count})</span>
-                </div>
+          {/* Botón favorito */}
+          <button
+            type="button"
+            aria-label={fav ? 'Quitar de favoritos' : 'Guardar en favoritos'}
+            onClick={handleFavorite}
+            className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/95 hover:bg-white flex items-center justify-center transition shadow-sm"
+          >
+            <Heart
+              className={cn(
+                'w-5 h-5 transition',
+                fav ? 'fill-red-500 text-red-500' : 'text-foreground/70',
               )}
-            </div>
+              strokeWidth={1.5}
+            />
+          </button>
+        </div>
 
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <MapPin className="h-3.5 w-3.5 shrink-0" strokeWidth={1.5} />
-              <span className="line-clamp-1">{salon.location}</span>
-            </div>
+        {/* Contenido */}
+        <div className="p-5">
+          {/* Nombre + rating */}
+          <div className="flex items-start justify-between gap-3 mb-1">
+            <h3 className="font-bold text-[17px] text-foreground leading-tight line-clamp-1">
+              {salon.name}
+            </h3>
+            {salon.rating != null && (
+              <div className="flex items-center gap-1 flex-shrink-0">
+                <Star className="w-4 h-4 fill-amber-400 text-amber-400" strokeWidth={1.5} />
+                <span className="font-bold text-[14px] text-foreground">
+                  {salon.rating.value.toFixed(1)}
+                </span>
+                <span className="text-muted-foreground text-[13px]">({salon.rating.count})</span>
+              </div>
+            )}
+          </div>
 
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <Users className="h-3.5 w-3.5 shrink-0" strokeWidth={1.5} />
-              <span>hasta {salon.capacity} personas</span>
-            </div>
+          {/* Ubicación */}
+          <div className="flex items-center gap-1 text-[13px] text-muted-foreground mb-2">
+            <MapPin className="w-4 h-4 flex-shrink-0" strokeWidth={1.5} />
+            <span className="line-clamp-1">{salon.location}</span>
+          </div>
 
-            {/* Event type badges */}
-            <div className="flex flex-wrap gap-1">
-              {salon.eventTypes.slice(0, 3).map((tipo) => (
-                <Badge key={tipo} variant="secondary" className="text-xs">
-                  {tipo}
-                </Badge>
-              ))}
-              {salon.eventTypes.length > 3 && (
-                <Badge variant="outline" className="text-xs">
-                  +{salon.eventTypes.length - 3}
-                </Badge>
-              )}
-            </div>
-          </CardContent>
+          {/* Capacidad */}
+          <div className="flex items-center gap-1 text-[13px] text-muted-foreground mb-3">
+            <Users className="w-4 h-4 flex-shrink-0" strokeWidth={1.5} />
+            <span>hasta {salon.capacity} personas</span>
+          </div>
 
-          {/* Price */}
-          <CardFooter className="border-t px-4 py-3">
-            <p className="text-sm text-muted-foreground">
-              <span className="text-lg font-bold text-foreground">
-                {salon.pricePerHour.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 })}
-              </span>
-              {' '}/ hora
-            </p>
-          </CardFooter>
-        </Card>
+          {/* Badges de tipo de evento */}
+          <div className="flex flex-wrap gap-1.5">
+            {salon.eventTypes.slice(0, 3).map((tipo) => (
+              <Badge key={tipo} variant="secondary" className="text-xs">
+                {tipo}
+              </Badge>
+            ))}
+            {salon.eventTypes.length > 3 && (
+              <Badge variant="outline" className="text-xs">
+                +{salon.eventTypes.length - 3}
+              </Badge>
+            )}
+          </div>
+
+          {/* Precio */}
+          <div className="mt-4 pt-4 border-t border-border">
+            <span className="text-[11px] text-muted-foreground uppercase tracking-wider">desde</span>
+            <div className="font-bold text-[20px] leading-tight text-foreground">
+              {salon.pricePerHour.toLocaleString('es-AR', {
+                style: 'currency',
+                currency: 'ARS',
+                maximumFractionDigits: 0,
+              })}{' '}
+              <span className="text-[12px] font-medium text-muted-foreground">/ hora</span>
+            </div>
+          </div>
+        </div>
       </Link>
     </article>
   )
