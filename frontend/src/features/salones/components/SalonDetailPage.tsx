@@ -50,6 +50,8 @@ function Gallery({ images, name }: { images: string[]; name: string }) {
           <img
             src={images[activeIdx]}
             alt={name}
+            decoding="async"
+            fetchPriority="high"
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
           />
 
@@ -106,6 +108,8 @@ function Gallery({ images, name }: { images: string[]; name: string }) {
                 <img
                   src={img}
                   alt={`${name} foto ${i + 2}`}
+                  loading="lazy"
+                  decoding="async"
                   className="h-full w-full object-cover hover:scale-[1.03] transition-transform duration-300"
                 />
                 {i === 1 && images.length > 3 && (
@@ -135,7 +139,7 @@ function Gallery({ images, name }: { images: string[]; name: string }) {
                 activeIdx === i ? 'border-primary' : 'border-transparent',
               )}
             >
-              <img src={img} alt={`Foto ${i + 1}`} className="w-full h-full object-cover" />
+              <img src={img} alt={`Foto ${i + 1}`} loading="lazy" decoding="async" className="w-full h-full object-cover" />
             </button>
           ))}
         </div>
