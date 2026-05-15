@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { MapPin, Calendar, Users, Search, SlidersHorizontal, X, ChevronLeft, ChevronRight, Star, Map } from 'lucide-react'
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { useSearchSalones } from '../api/salones.queries'
 import { CardSalon } from './CardSalon'
 import type { Salon, SalonSearchParams } from '../types'
@@ -40,6 +41,7 @@ export function SalonesPage() {
   const [ordenamiento, setOrdenamiento] = useState('Relevancia')
   const [vistaLista, setVistaLista] = useState(true)
   const [paginaActual, setPaginaActual] = useState(1)
+  const [filterSheetOpen, setFilterSheetOpen] = useState(false)
 
   /* ─── Parámetros para Supabase ─── */
   const params: SalonSearchParams = useMemo(() => ({
@@ -182,9 +184,6 @@ export function SalonesPage() {
             {chip}
           </button>
         ))}
-        <span className="ml-auto text-[13px] text-muted-foreground hidden md:inline">
-          Mostrando <strong className="text-foreground">{isLoading ? '…' : salonesFiltrados.length}</strong> salones
-        </span>
       </div>
 
       {/* ── Buscador por nombre ─── */}
@@ -318,16 +317,90 @@ export function SalonesPage() {
         {/* ── Resultados ─── */}
         <div>
           {/* Toolbar */}
-          <div className="flex items-center justify-between mb-5">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-5">
             <div>
               <h1 className="text-[28px] lg:text-[34px] font-bold tracking-tight text-foreground">
                 Salones cerca tuyo<span className="text-primary">.</span>
               </h1>
               <p className="text-[13px] text-muted-foreground mt-1">
-                Ordenado por {ordenamiento.toLowerCase()}
+                {isLoading ? '…' : salonesFiltrados.length} salones · ordenado por {ordenamiento.toLowerCase()}
               </p>
             </div>
             <div className="flex items-center gap-2">
+              <Sheet open={filterSheetOpen} onOpenChange={setFilterSheetOpen}>
+                <button
+                  type="button"
+                  onClick={() => setFilterSheetOpen(true)}
+                  className="lg:hidden inline-flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-[13px] font-medium text-foreground transition hover:bg-muted"
+                >
+                  <SlidersHorizontal className="w-4 h-4" strokeWidth={1.5} />
+                  Filtros
+                  {filtrosActivos.length > 0 && (
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground">
+                      {filtrosActivos.length}
+                    </span>
+                  )}
+                </button>
+                <SheetContent side="left" className="w-80 overflow-y-auto">
+                  <SheetHeader className="mb-6">
+                    <div className="flex items-center justify-between">
+                      <SheetTitle>Filtros</SheetTitle>
+                      <button type="button" onClick={limpiarFiltros} className="text-[13px] font-semibold text-primary transition hover:text-primary/80">
+                        Limpiar
+                      </button>
+                    </div>
+                  </SheetHeader>
+                  <div className="space-y-6">
+                    <div>
+                      <label className="mb-2 block text-[13px] font-semibold tracking-wide text-muted-foreground">Capacidad</label>
+                      <div className="flex items-center gap-2">
+                        <div className="flex flex-1 items-center gap-1 rounded-lg border border-border p-2">
+                          <span className="text-[11px] text-muted-foreground">Mín</span>
+                          <input
+                            type="number"
+                            value={capacidadMin || ''}
+                            placeholder="0"
+                            onChange={(e) => { setCapacidadMin(Number(e.target.value)); setPaginaActual(1) }}
+                            className="w-full bg-transparent text-[14px] font-semibold text-foreground focus:outline-none"
+                          />
+                        </div>
+                        <div className="flex flex-1 items-center gap-1 rounded-lg border border-border p-2">
+                          <span className="text-[11px] text-muted-foreground">Máx</span>
+                          <input
+                            type="number"
+                            value={capacidadMax === 500 ? '' : capacidadMax}
+                            placeholder="Sin límite"
+                            onChange={(e) => { setCapacidadMax(e.target.value ? Number(e.target.value) : 500); setPaginaActual(1) }}
+                            className="w-full bg-transparent text-[14px] font-semibold text-foreground focus:outline-none"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="mb-2 block text-[13px] font-semibold tracking-wide text-muted-foreground">Zona</label>
+                      <div className="space-y-2">
+                        {ZONAS.map((zona) => (
+                          <label key={zona} className="flex cursor-pointer items-center gap-2 text-[14px] text-foreground">
+                            <input type="checkbox" checked={zonasActivas.includes(zona)} onChange={() => toggleZona(zona)} className="h-4 w-4 accent-primary" />
+                            {zona}
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="mb-2 block text-[13px] font-semibold tracking-wide text-muted-foreground">Servicios incluidos</label>
+                      <div className="space-y-2">
+                        {SERVICIOS.map((servicio) => (
+                          <label key={servicio} className="flex cursor-pointer items-center gap-2 text-[14px] text-foreground">
+                            <input type="checkbox" checked={serviciosActivos.includes(servicio)} onChange={() => toggleServicio(servicio)} className="h-4 w-4 accent-primary" />
+                            {servicio}
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </SheetContent>
+              </Sheet>
               <div className="hidden md:flex bg-card rounded-full border border-border p-1">
                 <button
                   type="button"

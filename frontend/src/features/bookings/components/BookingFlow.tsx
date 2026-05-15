@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import { useParams, Link, useNavigate } from '@tanstack/react-router'
 import { useForm } from '@tanstack/react-form'
 import { z } from 'zod'
@@ -150,10 +150,10 @@ export function BookingFlow() {
       <h1 className="mb-8 text-2xl font-bold text-foreground">Reservar salón</h1>
 
       {/* Steps indicator */}
-      <div className="mb-10 flex items-center gap-2">
+      <div className="mb-10 flex items-center">
         {STEPS.map(({ label, icon: Icon }, i) => (
-          <div key={i} className="flex items-center gap-2">
-            <div className="flex flex-col items-center gap-1">
+          <Fragment key={i}>
+            <div className="flex flex-shrink-0 flex-col items-center gap-1">
               <div
                 className={cn(
                   'flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold transition-colors',
@@ -173,7 +173,7 @@ export function BookingFlow() {
             {i < STEPS.length - 1 && (
               <div className={cn('mb-4 h-px flex-1', i < step ? 'bg-primary' : 'bg-muted')} />
             )}
-          </div>
+          </Fragment>
         ))}
       </div>
 
