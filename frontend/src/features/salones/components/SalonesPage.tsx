@@ -50,7 +50,7 @@ export function SalonesPage() {
     amenities: serviciosActivos.length > 0 ? serviciosActivos : undefined,
   }), [chipActivo, capacidadMin, serviciosActivos])
 
-  const { data: rawSalones, isLoading, isError } = useSearchSalones(params)
+  const { data: rawSalones, isLoading, isError, refetch } = useSearchSalones(params)
 
   /* ─── Filtros client-side (nombre y zona) ─── */
   const salonesFiltrados = useMemo(() => {
@@ -173,9 +173,10 @@ export function SalonesPage() {
           <button
             key={chip}
             type="button"
+            disabled={isLoading}
             onClick={() => { setChipActivo(chip); setPaginaActual(1) }}
             aria-pressed={chipActivo === chip}
-            className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full border text-[14px] font-medium transition cursor-pointer ${
+            className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full border text-[14px] font-medium transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
               chipActivo === chip
                 ? 'bg-foreground text-background border-foreground'
                 : 'bg-card text-foreground border-border hover:border-primary hover:text-primary'
@@ -194,8 +195,9 @@ export function SalonesPage() {
             type="text"
             placeholder="Buscar por nombre de salón..."
             value={busqueda}
+            disabled={isLoading}
             onChange={(e) => { setBusqueda(e.target.value); setPaginaActual(1) }}
-            className="w-full pl-12 pr-4 py-3 rounded-xl border border-border bg-card text-foreground text-[15px] placeholder:text-muted-foreground focus:outline-none focus:border-primary transition"
+            className="w-full pl-12 pr-4 py-3 rounded-xl border border-border bg-card text-foreground text-[15px] placeholder:text-muted-foreground focus:outline-none focus:border-primary transition disabled:opacity-50 disabled:cursor-not-allowed"
           />
           {busqueda && (
             <button
@@ -424,8 +426,9 @@ export function SalonesPage() {
               </div>
               <select
                 value={ordenamiento}
+                disabled={isLoading}
                 onChange={(e) => { setOrdenamiento(e.target.value); setPaginaActual(1) }}
-                className="w-auto px-3 py-2 rounded-xl border border-border bg-card text-foreground text-[13px] font-medium focus:outline-none focus:border-primary"
+                className="w-auto px-3 py-2 rounded-xl border border-border bg-card text-foreground text-[13px] font-medium focus:outline-none focus:border-primary disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <option>Relevancia</option>
                 <option>Mejor puntuados</option>
@@ -455,9 +458,16 @@ export function SalonesPage() {
 
           {/* Estado de error */}
           {isError && (
-            <div className="py-20 text-center">
-              <p className="text-[18px] font-semibold text-foreground mb-2">No pudimos cargar los salones</p>
+            <div className="py-20 text-center flex flex-col items-center gap-4">
+              <p className="text-[18px] font-semibold text-foreground">No pudimos cargar los salones</p>
               <p className="text-[14px] text-muted-foreground">Verificá tu conexión e intentá de nuevo.</p>
+              <button
+                type="button"
+                onClick={() => void refetch()}
+                className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2 text-[14px] font-medium text-foreground hover:bg-muted transition"
+              >
+                Reintentar
+              </button>
             </div>
           )}
 
