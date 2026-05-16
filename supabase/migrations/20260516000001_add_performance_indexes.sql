@@ -9,7 +9,10 @@ create extension if not exists pg_trgm;
 create index idx_salones_featured
   on public.salones (availability_status, is_verified, rating_value desc);
 
--- Trigram index for ilike '%location%' full-text partial match
+-- Trigram indexes for ilike '%...%' partial match on name and location
+create index idx_salones_name_trgm
+  on public.salones using gin (name gin_trgm_ops);
+
 create index idx_salones_location_trgm
   on public.salones using gin (location gin_trgm_ops);
 
