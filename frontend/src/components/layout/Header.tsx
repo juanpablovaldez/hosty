@@ -9,6 +9,7 @@ import { cn } from '@/shared/lib/utils'
 const ROUTER_LINKS = [
   { to: '/' as const, label: 'Inicio' },
   { to: '/salones' as const, label: 'Salones' },
+  { to: '/mis-reservas' as const, label: 'Mis Reservas' },
 ]
 
 export function Header() {
