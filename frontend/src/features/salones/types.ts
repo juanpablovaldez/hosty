@@ -25,4 +25,19 @@ export interface SalonSearchParams {
   eventTypes?: string[]
   amenities?: string[]
   availability?: 'disponible' | 'reservado' | 'no disponible'
+  // Paginación server-side
+  page?: number
+  pageSize?: number
+  // Filtros adicionales (server-side)
+  name?: string
+  locations?: string[]
+  sortBy?: 'rating' | 'price_asc' | 'price_desc' | 'capacity'
+}
+
+export interface PaginatedSalones {
+  salones: Salon[]
+  total: number
+  page: number
+  pageSize: number
+  totalPages: number
 }

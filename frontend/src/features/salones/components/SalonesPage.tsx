@@ -1,14 +1,17 @@
 import { useState, useMemo } from 'react'
-import { MapPin, Calendar, Users, Search, SlidersHorizontal, X, ChevronLeft, ChevronRight, Star, Map } from 'lucide-react'
+import { useNavigate, useSearch } from '@tanstack/react-router'
+import {
+  MapPin, Calendar, Users, Search, SlidersHorizontal, X,
+  ChevronLeft, ChevronRight, Star, Map,
+} from 'lucide-react'
 import { useSearchSalones } from '../api/salones.queries'
 import { CardSalon } from './CardSalon'
-import type { Salon, SalonSearchParams } from '../types'
 
 /* ─── Constantes ─────────────────────────────────────────── */
 const CHIPS_TIPO = ['Todos los tipos', 'Cumpleaños', 'Casamientos', 'Corporativo', 'Egresos', 'Infantiles']
 const ZONAS = ['Centro', 'Yerba Buena', 'Tafí Viejo', 'Banda del Río Salí']
 const SERVICIOS = ['Catering', 'Estacionamiento', 'Climatización', 'Sonido', 'Wi-Fi', 'Iluminación']
-const ITEMS_PER_PAGE = 4
+const PAGE_SIZE = 20
 
 /* ─── Skeleton card ──────────────────────────────────────── */
 function CardSkeleton() {
@@ -29,94 +32,178 @@ function CardSkeleton() {
   )
 }
 
+/* ─── Componente de paginación con elipsis ───────────────── */
+interface PaginationProps {
+  paginaActual: number
+  totalPaginas: number
+  onPageChange: (p: number) => void
+}
+
+function Pagination({ paginaActual, totalPaginas, onPageChange }: PaginationProps) {
+  if (totalPaginas <= 1) return null
+
+  // Genera el array de páginas con elipsis
+  function getPages(): (number | '...')[] {
+    if (totalPaginas <= 7) {
+      return Array.from({ length: totalPaginas }, (_, i) => i + 1)
+    }
+    const pages: (number | '...')[] = [1]
+    if (paginaActual > 3) pages.push('...')
+    for (
+      let i = Math.max(2, paginaActual - 1);
+      i <= Math.min(totalPaginas - 1, paginaActual + 1);
+      i++
+    ) {
+      pages.push(i)
+    }
+    if (paginaActual < totalPaginas - 2) pages.push('...')
+    pages.push(totalPaginas)
+    return pages
+  }
+
+  const pages = getPages()
+
+  return (
+    <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
+      {/* Navegación */}
+      <div className="flex items-center gap-1">
+        <button
+          type="button"
+          id="pagination-prev"
+          disabled={paginaActual === 1}
+          onClick={() => onPageChange(paginaActual - 1)}
+          className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground disabled:opacity-40 hover:bg-muted transition"
+          aria-label="Página anterior"
+        >
+          <ChevronLeft className="w-5 h-5" strokeWidth={1.5} />
+        </button>
+
+        {pages.map((p, idx) =>
+          p === '...' ? (
+            <span
+              key={`ellipsis-${idx}`}
+              className="w-9 h-9 flex items-center justify-center text-muted-foreground text-[14px] select-none"
+            >
+              …
+            </span>
+          ) : (
+            <button
+              key={p}
+              type="button"
+              id={`pagination-page-${p}`}
+              onClick={() => onPageChange(p)}
+              aria-current={paginaActual === p ? 'page' : undefined}
+              className={`w-9 h-9 rounded-lg text-[14px] font-semibold transition ${
+                paginaActual === p
+                  ? 'bg-primary text-primary-foreground shadow-sm'
+                  : 'border border-border hover:bg-muted text-foreground'
+              }`}
+            >
+              {p}
+            </button>
+          ),
+        )}
+
+        <button
+          type="button"
+          id="pagination-next"
+          disabled={paginaActual === totalPaginas}
+          onClick={() => onPageChange(paginaActual + 1)}
+          className="w-9 h-9 rounded-lg border border-border flex items-center justify-center hover:bg-muted transition disabled:opacity-40"
+          aria-label="Página siguiente"
+        >
+          <ChevronRight className="w-5 h-5" strokeWidth={1.5} />
+        </button>
+      </div>
+    </div>
+  )
+}
+
+/* ─── Mapeo de label de ordenamiento ─── */
+const SORT_OPTIONS = [
+  { value: 'rating', label: 'Relevancia' },
+  { value: 'price_asc', label: 'Precio: menor a mayor' },
+  { value: 'price_desc', label: 'Precio: mayor a menor' },
+  { value: 'capacity', label: 'Capacidad' },
+] as const
+
+type SortValue = typeof SORT_OPTIONS[number]['value']
+
 /* ─── Página principal ───────────────────────────────────── */
 export function SalonesPage() {
+  const navigate = useNavigate({ from: '/salones/' })
+  const search = useSearch({ from: '/salones/' })
+
+  // Estado local — solo lo que NO necesita ser bookmarkeable
   const [busqueda, setBusqueda] = useState('')
   const [chipActivo, setChipActivo] = useState('Todos los tipos')
   const [zonasActivas, setZonasActivas] = useState<string[]>([])
   const [serviciosActivos, setServiciosActivos] = useState<string[]>([])
   const [capacidadMin, setCapacidadMin] = useState(0)
   const [capacidadMax, setCapacidadMax] = useState(500)
-  const [ordenamiento, setOrdenamiento] = useState('Relevancia')
   const [vistaLista, setVistaLista] = useState(true)
-  const [paginaActual, setPaginaActual] = useState(1)
+
+  // Estado en URL — página y ordenamiento
+  const paginaActual = search.page ?? 1
+  const sortBy = (search.sortBy ?? 'rating') as SortValue
+
+  function setPage(p: number) {
+    navigate({ search: (prev) => ({ ...prev, page: p === 1 ? undefined : p }) })
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  function setSortBy(value: SortValue) {
+    navigate({ search: (prev) => ({ ...prev, sortBy: value === 'rating' ? undefined : value, page: undefined }) })
+  }
 
   /* ─── Parámetros para Supabase ─── */
-  const params: SalonSearchParams = useMemo(() => ({
+  const params = useMemo(() => ({
+    name: busqueda.trim() || undefined,
+    locations: zonasActivas.length > 0 ? zonasActivas : undefined,
     eventTypes: chipActivo !== 'Todos los tipos' ? [chipActivo] : undefined,
     capacity: capacidadMin > 0 ? capacidadMin : undefined,
     amenities: serviciosActivos.length > 0 ? serviciosActivos : undefined,
-  }), [chipActivo, capacidadMin, serviciosActivos])
+    // Capacidad máx server-side
+    ...(capacidadMax < 500 ? { maxCapacity: capacidadMax } : {}),
+    sortBy,
+    page: paginaActual,
+    pageSize: PAGE_SIZE,
+  }), [busqueda, zonasActivas, chipActivo, capacidadMin, capacidadMax, serviciosActivos, sortBy, paginaActual])
 
-  const { data: rawSalones, isLoading, isError } = useSearchSalones(params)
+  const { data, isLoading, isError } = useSearchSalones(params)
 
-  /* ─── Filtros client-side (nombre y zona) ─── */
-  const salonesFiltrados = useMemo(() => {
-    let result: Salon[] = rawSalones ?? []
+  const salones = data?.salones ?? []
+  const total = data?.total ?? 0
+  const totalPaginas = data?.totalPages ?? 1
 
-    if (busqueda.trim()) {
-      result = result.filter((s) =>
-        s.name.toLowerCase().includes(busqueda.toLowerCase()),
-      )
-    }
+  // Indicador de rango visible
+  const inicio = total === 0 ? 0 : (paginaActual - 1) * PAGE_SIZE + 1
+  const fin = Math.min(paginaActual * PAGE_SIZE, total)
 
-    if (zonasActivas.length > 0) {
-      result = result.filter((s) =>
-        zonasActivas.some((z) => s.location.toLowerCase().includes(z.toLowerCase())),
-      )
-    }
-
-    if (capacidadMax < 500) {
-      result = result.filter((s) => s.capacity <= capacidadMax)
-    }
-
-    if (ordenamiento === 'Mejor puntuados') {
-      result = [...result].sort((a, b) => (b.rating?.value ?? 0) - (a.rating?.value ?? 0))
-    } else if (ordenamiento === 'Precio: menor a mayor') {
-      result = [...result].sort((a, b) => a.pricePerHour - b.pricePerHour)
-    } else if (ordenamiento === 'Precio: mayor a menor') {
-      result = [...result].sort((a, b) => b.pricePerHour - a.pricePerHour)
-    } else if (ordenamiento === 'Capacidad') {
-      result = [...result].sort((a, b) => b.capacity - a.capacity)
-    }
-
-    return result
-  }, [rawSalones, busqueda, zonasActivas, capacidadMax, ordenamiento])
-
-  /* ─── Filtros activos (derivado) ─── */
+  /* ─── Filtros activos (para chips removibles) ─── */
   const filtrosActivos = useMemo(
     () => [...zonasActivas, ...serviciosActivos],
     [zonasActivas, serviciosActivos],
   )
 
-  /* ─── Paginación ─── */
-  const totalPaginas = Math.max(1, Math.ceil(salonesFiltrados.length / ITEMS_PER_PAGE))
-  const paginaSegura = Math.min(paginaActual, totalPaginas)
-  const salonesPagina = salonesFiltrados.slice(
-    (paginaSegura - 1) * ITEMS_PER_PAGE,
-    paginaSegura * ITEMS_PER_PAGE,
-  )
-  const inicio = salonesFiltrados.length === 0 ? 0 : (paginaSegura - 1) * ITEMS_PER_PAGE + 1
-  const fin = Math.min(paginaSegura * ITEMS_PER_PAGE, salonesFiltrados.length)
-
   const toggleZona = (zona: string) => {
-    setPaginaActual(1)
     setZonasActivas((prev) =>
       prev.includes(zona) ? prev.filter((z) => z !== zona) : [...prev, zona],
     )
+    setPage(1)
   }
 
   const toggleServicio = (servicio: string) => {
-    setPaginaActual(1)
     setServiciosActivos((prev) =>
       prev.includes(servicio) ? prev.filter((s) => s !== servicio) : [...prev, servicio],
     )
+    setPage(1)
   }
 
   const quitarFiltro = (filtro: string) => {
     setZonasActivas((prev) => prev.filter((z) => z !== filtro))
     setServiciosActivos((prev) => prev.filter((s) => s !== filtro))
-    setPaginaActual(1)
+    setPage(1)
   }
 
   const limpiarFiltros = () => {
@@ -126,8 +213,10 @@ export function SalonesPage() {
     setChipActivo('Todos los tipos')
     setCapacidadMin(0)
     setCapacidadMax(500)
-    setPaginaActual(1)
+    setPage(1)
   }
+
+  const sortLabel = SORT_OPTIONS.find((o) => o.value === sortBy)?.label ?? 'Relevancia'
 
   return (
     <>
@@ -171,7 +260,7 @@ export function SalonesPage() {
           <button
             key={chip}
             type="button"
-            onClick={() => { setChipActivo(chip); setPaginaActual(1) }}
+            onClick={() => { setChipActivo(chip); setPage(1) }}
             aria-pressed={chipActivo === chip}
             className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full border text-[14px] font-medium transition cursor-pointer ${
               chipActivo === chip
@@ -182,9 +271,6 @@ export function SalonesPage() {
             {chip}
           </button>
         ))}
-        <span className="ml-auto text-[13px] text-muted-foreground hidden md:inline">
-          Mostrando <strong className="text-foreground">{isLoading ? '…' : salonesFiltrados.length}</strong> salones
-        </span>
       </div>
 
       {/* ── Buscador por nombre ─── */}
@@ -192,17 +278,18 @@ export function SalonesPage() {
         <div className="relative">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" strokeWidth={1.5} />
           <input
+            id="salones-search-input"
             type="text"
             placeholder="Buscar por nombre de salón..."
             value={busqueda}
-            onChange={(e) => { setBusqueda(e.target.value); setPaginaActual(1) }}
+            onChange={(e) => { setBusqueda(e.target.value); setPage(1) }}
             className="w-full pl-12 pr-4 py-3 rounded-xl border border-border bg-card text-foreground text-[15px] placeholder:text-muted-foreground focus:outline-none focus:border-primary transition"
           />
           {busqueda && (
             <button
               type="button"
               aria-label="Limpiar búsqueda"
-              onClick={() => { setBusqueda(''); setPaginaActual(1) }}
+              onClick={() => { setBusqueda(''); setPage(1) }}
               className="absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-full hover:bg-muted transition"
             >
               <X className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
@@ -244,7 +331,7 @@ export function SalonesPage() {
                       type="number"
                       value={capacidadMin || ''}
                       placeholder="0"
-                      onChange={(e) => { setCapacidadMin(Number(e.target.value)); setPaginaActual(1) }}
+                      onChange={(e) => { setCapacidadMin(Number(e.target.value)); setPage(1) }}
                       className="w-full bg-transparent text-[14px] font-semibold focus:outline-none text-foreground"
                     />
                   </div>
@@ -254,7 +341,7 @@ export function SalonesPage() {
                       type="number"
                       value={capacidadMax === 500 ? '' : capacidadMax}
                       placeholder="Sin límite"
-                      onChange={(e) => { setCapacidadMax(e.target.value ? Number(e.target.value) : 500); setPaginaActual(1) }}
+                      onChange={(e) => { setCapacidadMax(e.target.value ? Number(e.target.value) : 500); setPage(1) }}
                       className="w-full bg-transparent text-[14px] font-semibold focus:outline-none text-foreground"
                     />
                   </div>
@@ -324,7 +411,7 @@ export function SalonesPage() {
                 Salones cerca tuyo<span className="text-primary">.</span>
               </h1>
               <p className="text-[13px] text-muted-foreground mt-1">
-                Ordenado por {ordenamiento.toLowerCase()}
+                Ordenado por {sortLabel.toLowerCase()}
               </p>
             </div>
             <div className="flex items-center gap-2">
@@ -350,17 +437,39 @@ export function SalonesPage() {
                 </button>
               </div>
               <select
-                value={ordenamiento}
-                onChange={(e) => { setOrdenamiento(e.target.value); setPaginaActual(1) }}
+                id="salones-sort-select"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as SortValue)}
                 className="w-auto px-3 py-2 rounded-xl border border-border bg-card text-foreground text-[13px] font-medium focus:outline-none focus:border-primary"
               >
-                <option>Relevancia</option>
-                <option>Mejor puntuados</option>
-                <option>Precio: menor a mayor</option>
-                <option>Precio: mayor a menor</option>
-                <option>Capacidad</option>
+                {SORT_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
               </select>
             </div>
+          </div>
+
+          {/* ── Indicador de total — siempre visible ─── */}
+          <div className="flex items-center justify-between mb-5">
+            <p className="text-[13px] text-muted-foreground" id="salones-total-indicator">
+              {isLoading ? (
+                <span className="inline-block h-4 w-48 bg-muted animate-pulse rounded" />
+              ) : isError ? null : (
+                <>
+                  Mostrando{' '}
+                  <strong className="text-foreground">{inicio}–{fin}</strong>
+                  {' '}de{' '}
+                  <strong className="text-foreground">{total.toLocaleString('es-AR')}</strong>
+                  {' '}salones
+                </>
+              )}
+            </p>
+            {totalPaginas > 1 && !isLoading && (
+              <p className="text-[13px] text-muted-foreground">
+                Página <strong className="text-foreground">{paginaActual}</strong> de{' '}
+                <strong className="text-foreground">{totalPaginas}</strong>
+              </p>
+            )}
           </div>
 
           {/* Filtros activos */}
@@ -397,9 +506,9 @@ export function SalonesPage() {
 
           {/* Grid de resultados */}
           {!isLoading && !isError && (
-            salonesPagina.length > 0 ? (
+            salones.length > 0 ? (
               <div className="grid sm:grid-cols-2 gap-6">
-                {salonesPagina.map((salon) => (
+                {salones.map((salon) => (
                   <CardSalon key={salon.id} salon={salon} />
                 ))}
               </div>
@@ -413,46 +522,13 @@ export function SalonesPage() {
             )
           )}
 
-          {/* Paginación */}
-          {!isLoading && !isError && totalPaginas > 1 && (
-            <div className="mt-10 flex items-center justify-between">
-              <p className="text-[13px] text-muted-foreground">
-                Mostrando <strong className="text-foreground">{inicio}–{fin}</strong> de{' '}
-                <strong className="text-foreground">{salonesFiltrados.length}</strong> salones
-              </p>
-              <div className="flex items-center gap-1">
-                <button
-                  type="button"
-                  disabled={paginaSegura === 1}
-                  onClick={() => setPaginaActual((p) => Math.max(1, p - 1))}
-                  className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground disabled:opacity-40 hover:bg-muted transition"
-                >
-                  <ChevronLeft className="w-5 h-5" strokeWidth={1.5} />
-                </button>
-                {Array.from({ length: totalPaginas }, (_, i) => i + 1).map((p) => (
-                  <button
-                    key={p}
-                    type="button"
-                    onClick={() => setPaginaActual(p)}
-                    className={`w-9 h-9 rounded-lg text-[14px] font-semibold transition ${
-                      paginaSegura === p
-                        ? 'bg-primary text-primary-foreground'
-                        : 'border border-border hover:bg-muted text-foreground'
-                    }`}
-                  >
-                    {p}
-                  </button>
-                ))}
-                <button
-                  type="button"
-                  disabled={paginaSegura === totalPaginas}
-                  onClick={() => setPaginaActual((p) => Math.min(totalPaginas, p + 1))}
-                  className="w-9 h-9 rounded-lg border border-border flex items-center justify-center hover:bg-muted transition disabled:opacity-40"
-                >
-                  <ChevronRight className="w-5 h-5" strokeWidth={1.5} />
-                </button>
-              </div>
-            </div>
+          {/* Paginación con elipsis */}
+          {!isLoading && !isError && salones.length > 0 && (
+            <Pagination
+              paginaActual={paginaActual}
+              totalPaginas={totalPaginas}
+              onPageChange={setPage}
+            />
           )}
         </div>
       </div>

@@ -46,13 +46,28 @@ export function useFeaturedSalones() {
 }
 
 export function useSearchSalones(params: SalonSearchParams) {
+  const page = params.page ?? 1
+  const pageSize = params.pageSize ?? 20
+  const from = (page - 1) * pageSize
+  const to = from + pageSize - 1
+
   return useQuery({
     queryKey: ['salones', 'search', params],
     queryFn: async () => {
-      let query = supabase.from('salones').select('*')
+      let query = supabase.from('salones').select('*', { count: 'exact' })
 
+      // Filtros server-side
+      if (params.name) {
+        query = query.ilike('name', `%${params.name}%`)
+      }
       if (params.location) {
         query = query.ilike('location', `%${params.location}%`)
+      }
+      if (params.locations?.length) {
+        const orClause = params.locations
+          .map((z) => `location.ilike.%${z}%`)
+          .join(',')
+        query = query.or(orClause)
       }
       if (params.capacity) {
         query = query.gte('capacity', params.capacity)
@@ -73,12 +88,36 @@ export function useSearchSalones(params: SalonSearchParams) {
         query = query.overlaps('amenities', params.amenities)
       }
 
-      const { data, error } = await query.order('rating_value', { ascending: false })
+      // Ordenamiento server-side
+      if (params.sortBy === 'price_asc') {
+        query = query.order('price_per_hour', { ascending: true })
+      } else if (params.sortBy === 'price_desc') {
+        query = query.order('price_per_hour', { ascending: false })
+      } else if (params.sortBy === 'capacity') {
+        query = query.order('capacity', { ascending: false })
+      } else {
+        // Default: relevancia (rating desc)
+        query = query.order('rating_value', { ascending: false, nullsFirst: false })
+      }
+
+      // Paginación server-side
+      query = query.range(from, to)
+
+      const { data, error, count } = await query
       if (error) throw error
-      return (data ?? []).map(rowToSalon)
+
+      const total = count ?? 0
+      return {
+        salones: (data ?? []).map(rowToSalon),
+        total,
+        page,
+        pageSize,
+        totalPages: Math.max(1, Math.ceil(total / pageSize)),
+      }
     },
   })
 }
+
 
 export function useSalon(id: string) {
   return useQuery({

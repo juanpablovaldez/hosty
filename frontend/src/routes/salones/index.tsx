@@ -11,6 +11,8 @@ const searchSchema = z.object({
   eventTypes: z.array(z.string()).optional(),
   amenities: z.array(z.string()).optional(),
   availability: z.enum(['disponible', 'reservado', 'no disponible']).optional(),
+  page: z.coerce.number().min(1).optional(),
+  sortBy: z.enum(['rating', 'price_asc', 'price_desc', 'capacity']).optional(),
 })
 
 export const Route = createFileRoute('/salones/')({
