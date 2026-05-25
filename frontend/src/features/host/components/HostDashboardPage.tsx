@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
 import { Link } from '@tanstack/react-router'
-import { supabase } from '@/shared/lib/supabase'
+import { useAuthStore } from '@/features/auth/store/auth.store'
 import { useHostSalones, useHostBookings } from '../api/host.queries'
 import { useUpdateBookingStatus } from '../api/host.mutations'
 import type { Salon } from '@/features/salones/types'
@@ -162,38 +161,16 @@ function SalonRow({ salon, bookings }: { salon: Salon; bookings: Booking[] }) {
 }
 
 export function HostDashboardPage() {
-  const [userId, setUserId] = useState<string | null>(null)
-  const [authChecked, setAuthChecked] = useState(false)
+  const user = useAuthStore((s) => s.user)
 
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      setUserId(data.user?.id ?? null)
-      setAuthChecked(true)
-    })
-  }, [])
-
-  const { data: salones = [], isLoading: loadingSalones } = useHostSalones(userId)
+  const { data: salones = [], isLoading: loadingSalones } = useHostSalones(user?.id ?? null)
   const salonIds = salones.map((s) => s.id)
   const { data: bookings = [], isLoading: loadingBookings } = useHostBookings(salonIds)
 
-  const isLoading = !authChecked || loadingSalones || (salonIds.length > 0 && loadingBookings)
+  const isLoading = loadingSalones || (salonIds.length > 0 && loadingBookings)
 
   function bookingsForSalon(salonId: string): Booking[] {
     return bookings.filter((b) => b.salonId === salonId)
-  }
-
-  if (!authChecked) return null
-
-  if (!userId) {
-    return (
-      <div className="flex flex-col items-center gap-4 py-24 text-center px-6">
-        <Building2 className="w-12 h-12 text-muted-foreground" strokeWidth={1.5} />
-        <h2 className="text-xl font-bold text-foreground">Iniciá sesión para ver tu dashboard</h2>
-        <Button asChild>
-          <Link to="/">Ir al inicio</Link>
-        </Button>
-      </div>
-    )
   }
 
   return (

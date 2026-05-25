@@ -63,6 +63,24 @@ export function useHostSalones(userId: string | null) {
   })
 }
 
+export function useHostSalon(id: string | null) {
+  return useQuery({
+    queryKey: ['host', 'salon', id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('salones')
+        .select('*')
+        .eq('id', id!)
+        .single()
+      if (error) throw error
+      const salon = rowToSalon(data)
+      const hostSalon: HostSalon = { ...salon, hostId: data.host_id ?? '' }
+      return hostSalon
+    },
+    enabled: !!id,
+  })
+}
+
 export function useHostBookings(salonIds: string[]) {
   return useQuery({
     queryKey: ['host', 'bookings', salonIds],
@@ -76,5 +94,37 @@ export function useHostBookings(salonIds: string[]) {
       return (data ?? []).map(rowToBooking)
     },
     enabled: salonIds.length > 0,
+  })
+}
+
+export interface HostSalon extends Salon {
+  hostId: string
+}
+
+export interface BookingDetail extends Booking {
+  salonName: string
+  salonHostId: string
+}
+
+export function useHostBooking(id: string | null) {
+  return useQuery({
+    queryKey: ['host', 'booking', id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('bookings')
+        .select('*, salones(name, host_id)')
+        .eq('id', id!)
+        .single()
+      if (error) throw error
+      const salon = data.salones as { name: string; host_id: string } | null
+      const booking = rowToBooking(data as BookingRow)
+      const detail: BookingDetail = {
+        ...booking,
+        salonName: salon?.name ?? '',
+        salonHostId: salon?.host_id ?? '',
+      }
+      return detail
+    },
+    enabled: !!id,
   })
 }
