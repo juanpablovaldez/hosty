@@ -3,7 +3,7 @@ import { useSearch, useNavigate } from '@tanstack/react-router'
 import { MapPin, Calendar, Users, Search, SlidersHorizontal, X, ChevronLeft, ChevronRight, Star, Map } from 'lucide-react'
 import { useSearchSalones } from '../api/salones.queries'
 import { CardSalon } from './CardSalon'
-import type { Salon, SalonSearchParams } from '../types'
+import type { SalonSearchParams } from '../types'
 
 /* ─── Constantes ─────────────────────────────────────────── */
 const CHIPS_TIPO = ['Todos los tipos', 'Cumpleaños', 'Casamientos', 'Corporativo', 'Egresos', 'Infantiles']
@@ -105,60 +105,30 @@ export function SalonesPage() {
     navigate({ search: (prev) => ({ ...prev, sortBy: value === 'rating' ? undefined : value, page: undefined }) })
   }
 
-  /* ─── Parámetros para Supabase ─── */
+  /* ─── Parámetros para Supabase (server-side filters + pagination) ─── */
   const params: SalonSearchParams = useMemo(() => ({
+    name: busqueda.trim() || undefined,
+    locations: zonasActivas.length > 0 ? zonasActivas : undefined,
     eventTypes: chipActivo !== 'Todos los tipos' ? [chipActivo] : undefined,
     capacity: capacidadMin > 0 ? capacidadMin : undefined,
+    ...(capacidadMax < 500 ? { maxCapacity: capacidadMax } : {}),
     amenities: serviciosActivos.length > 0 ? serviciosActivos : undefined,
-  }), [chipActivo, capacidadMin, serviciosActivos])
+    sortBy,
+    page: paginaActual,
+    pageSize: ITEMS_PER_PAGE,
+  }), [busqueda, zonasActivas, chipActivo, capacidadMin, capacidadMax, serviciosActivos, sortBy, paginaActual])
 
-  const { data: rawSalones, isLoading, isError } = useSearchSalones(params)
+  const { data, isLoading, isError } = useSearchSalones(params)
 
-  /* ─── Filtros client-side (nombre y zona) ─── */
-  const salonesFiltrados = useMemo(() => {
-    let result: Salon[] = rawSalones ?? []
-
-    if (busqueda.trim()) {
-      result = result.filter((s) =>
-        s.name.toLowerCase().includes(busqueda.toLowerCase()),
-      )
-    }
-
-    if (zonasActivas.length > 0) {
-      result = result.filter((s) =>
-        zonasActivas.some((z) => s.location.toLowerCase().includes(z.toLowerCase())),
-      )
-    }
-
-    if (capacidadMax < 500) {
-      result = result.filter((s) => s.capacity <= capacidadMax)
-    }
-
-    if (sortBy === 'rating') {
-      result = [...result].sort((a, b) => (b.rating?.value ?? 0) - (a.rating?.value ?? 0))
-    } else if (sortBy === 'price_asc') {
-      result = [...result].sort((a, b) => a.pricePerHour - b.pricePerHour)
-    } else if (sortBy === 'price_desc') {
-      result = [...result].sort((a, b) => b.pricePerHour - a.pricePerHour)
-    } else if (sortBy === 'capacity') {
-      result = [...result].sort((a, b) => b.capacity - a.capacity)
-    }
-
-    return result
-  }, [rawSalones, busqueda, zonasActivas, capacidadMax, sortBy])
+  const salonesFiltrados = data?.salones ?? []
+  const totalPaginas = data?.totalPages ?? 1
+  const paginaSegura = Math.min(paginaActual, totalPaginas)
+  const salonesPagina = salonesFiltrados
 
   /* ─── Filtros activos (derivado) ─── */
   const filtrosActivos = useMemo(
     () => [...zonasActivas, ...serviciosActivos],
     [zonasActivas, serviciosActivos],
-  )
-
-  /* ─── Paginación ─── */
-  const totalPaginas = Math.max(1, Math.ceil(salonesFiltrados.length / ITEMS_PER_PAGE))
-  const paginaSegura = Math.min(paginaActual, totalPaginas)
-  const salonesPagina = salonesFiltrados.slice(
-    (paginaSegura - 1) * ITEMS_PER_PAGE,
-    paginaSegura * ITEMS_PER_PAGE,
   )
 
 

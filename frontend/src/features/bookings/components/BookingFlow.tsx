@@ -43,7 +43,7 @@ function calcHours(start: string, end: string) {
 }
 
 export function BookingFlow() {
-  const { id } = useParams({ from: '/salones/$id/reservar' })
+  const { id } = useParams({ from: '/salones/$id_/reservar' })
   const { data: salon, isLoading } = useSalon(id)
   const createBooking = useCreateBooking()
 
