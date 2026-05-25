@@ -1,0 +1,68 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: hosty
+      POSTGRES_PASSWORD: hosty_dev
+      POSTGRES_DB: hosty_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hosty -d hosty_dev"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend/src:/app/src
+      - ./backend/prisma:/app/prisma
+      - ./backend/prisma.config.ts:/app/prisma.config.ts
+      - ./backend/nest-cli.json:/app/nest-cli.json
+      - ./backend/tsconfig.json:/app/tsconfig.json
+      - ./backend/tsconfig.build.json:/app/tsconfig.build.json
+      # node_modules and generated/ are intentionally NOT mounted:
+      # Prisma engine binaries are platform-specific (Linux in container).
+    environment:
+      DATABASE_URL: "postgresql://hosty:hosty_dev@postgres:5432/hosty_dev?schema=public"
+      NODE_ENV: development
+      PORT: 3000
+      FRONTEND_URL: "http://localhost:5173"
+      AWS_REGION: "us-east-1"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: >
+      sh -c "npx prisma migrate deploy &&
+             npm run start:dev"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+      - ./frontend/index.html:/app/index.html
+      - ./frontend/vite.config.ts:/app/vite.config.ts
+      - ./frontend/tsconfig.json:/app/tsconfig.json
+      - ./frontend/tsconfig.app.json:/app/tsconfig.app.json
+      # node_modules intentionally NOT mounted
+    environment:
+      # VITE_API_URL must point to localhost because Vite injects it into
+      # browser-side JS at serve time — the browser runs on the host, not inside Docker.
+      VITE_API_URL: "http://localhost:3000"
+
+volumes:
+  pgdata:

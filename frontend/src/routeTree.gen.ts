@@ -9,38 +9,208 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SalonesRouteImport } from './routes/salones'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as MisReservasRouteImport } from './routes/mis-reservas'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SalonesIndexRouteImport } from './routes/salones/index'
+import { Route as SalonesIdRouteImport } from './routes/salones/$id'
+import { Route as HostDashboardRouteImport } from './routes/host/dashboard'
+import { Route as HostCreateRouteImport } from './routes/host/create'
+import { Route as HostBookingIdRouteImport } from './routes/host/$bookingId'
+import { Route as SalonesIdReservarRouteImport } from './routes/salones/$id_.reservar'
+import { Route as HostIdEditRouteImport } from './routes/host/$id_.edit'
 
+const SalonesRoute = SalonesRouteImport.update({
+  id: '/salones',
+  path: '/salones',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MisReservasRoute = MisReservasRouteImport.update({
+  id: '/mis-reservas',
+  path: '/mis-reservas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SalonesIndexRoute = SalonesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SalonesRoute,
+} as any)
+const SalonesIdRoute = SalonesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => SalonesRoute,
+} as any)
+const HostDashboardRoute = HostDashboardRouteImport.update({
+  id: '/host/dashboard',
+  path: '/host/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HostCreateRoute = HostCreateRouteImport.update({
+  id: '/host/create',
+  path: '/host/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HostBookingIdRoute = HostBookingIdRouteImport.update({
+  id: '/host/$bookingId',
+  path: '/host/$bookingId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SalonesIdReservarRoute = SalonesIdReservarRouteImport.update({
+  id: '/$id_/reservar',
+  path: '/$id/reservar',
+  getParentRoute: () => SalonesRoute,
+} as any)
+const HostIdEditRoute = HostIdEditRouteImport.update({
+  id: '/host/$id_/edit',
+  path: '/host/$id/edit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/mis-reservas': typeof MisReservasRoute
+  '/register': typeof RegisterRoute
+  '/salones': typeof SalonesRouteWithChildren
+  '/host/$bookingId': typeof HostBookingIdRoute
+  '/host/create': typeof HostCreateRoute
+  '/host/dashboard': typeof HostDashboardRoute
+  '/salones/$id': typeof SalonesIdRoute
+  '/salones/': typeof SalonesIndexRoute
+  '/host/$id/edit': typeof HostIdEditRoute
+  '/salones/$id/reservar': typeof SalonesIdReservarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/mis-reservas': typeof MisReservasRoute
+  '/register': typeof RegisterRoute
+  '/host/$bookingId': typeof HostBookingIdRoute
+  '/host/create': typeof HostCreateRoute
+  '/host/dashboard': typeof HostDashboardRoute
+  '/salones/$id': typeof SalonesIdRoute
+  '/salones': typeof SalonesIndexRoute
+  '/host/$id/edit': typeof HostIdEditRoute
+  '/salones/$id/reservar': typeof SalonesIdReservarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/mis-reservas': typeof MisReservasRoute
+  '/register': typeof RegisterRoute
+  '/salones': typeof SalonesRouteWithChildren
+  '/host/$bookingId': typeof HostBookingIdRoute
+  '/host/create': typeof HostCreateRoute
+  '/host/dashboard': typeof HostDashboardRoute
+  '/salones/$id': typeof SalonesIdRoute
+  '/salones/': typeof SalonesIndexRoute
+  '/host/$id_/edit': typeof HostIdEditRoute
+  '/salones/$id_/reservar': typeof SalonesIdReservarRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/mis-reservas'
+    | '/register'
+    | '/salones'
+    | '/host/$bookingId'
+    | '/host/create'
+    | '/host/dashboard'
+    | '/salones/$id'
+    | '/salones/'
+    | '/host/$id/edit'
+    | '/salones/$id/reservar'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/login'
+    | '/mis-reservas'
+    | '/register'
+    | '/host/$bookingId'
+    | '/host/create'
+    | '/host/dashboard'
+    | '/salones/$id'
+    | '/salones'
+    | '/host/$id/edit'
+    | '/salones/$id/reservar'
+  id:
+    | '__root__'
+    | '/'
+    | '/login'
+    | '/mis-reservas'
+    | '/register'
+    | '/salones'
+    | '/host/$bookingId'
+    | '/host/create'
+    | '/host/dashboard'
+    | '/salones/$id'
+    | '/salones/'
+    | '/host/$id_/edit'
+    | '/salones/$id_/reservar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LoginRoute: typeof LoginRoute
+  MisReservasRoute: typeof MisReservasRoute
+  RegisterRoute: typeof RegisterRoute
+  SalonesRoute: typeof SalonesRouteWithChildren
+  HostBookingIdRoute: typeof HostBookingIdRoute
+  HostCreateRoute: typeof HostCreateRoute
+  HostDashboardRoute: typeof HostDashboardRoute
+  HostIdEditRoute: typeof HostIdEditRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/salones': {
+      id: '/salones'
+      path: '/salones'
+      fullPath: '/salones'
+      preLoaderRoute: typeof SalonesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mis-reservas': {
+      id: '/mis-reservas'
+      path: '/mis-reservas'
+      fullPath: '/mis-reservas'
+      preLoaderRoute: typeof MisReservasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +218,83 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/salones/': {
+      id: '/salones/'
+      path: '/'
+      fullPath: '/salones/'
+      preLoaderRoute: typeof SalonesIndexRouteImport
+      parentRoute: typeof SalonesRoute
+    }
+    '/salones/$id': {
+      id: '/salones/$id'
+      path: '/$id'
+      fullPath: '/salones/$id'
+      preLoaderRoute: typeof SalonesIdRouteImport
+      parentRoute: typeof SalonesRoute
+    }
+    '/host/dashboard': {
+      id: '/host/dashboard'
+      path: '/host/dashboard'
+      fullPath: '/host/dashboard'
+      preLoaderRoute: typeof HostDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/host/create': {
+      id: '/host/create'
+      path: '/host/create'
+      fullPath: '/host/create'
+      preLoaderRoute: typeof HostCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/host/$bookingId': {
+      id: '/host/$bookingId'
+      path: '/host/$bookingId'
+      fullPath: '/host/$bookingId'
+      preLoaderRoute: typeof HostBookingIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/salones/$id_/reservar': {
+      id: '/salones/$id_/reservar'
+      path: '/$id/reservar'
+      fullPath: '/salones/$id/reservar'
+      preLoaderRoute: typeof SalonesIdReservarRouteImport
+      parentRoute: typeof SalonesRoute
+    }
+    '/host/$id_/edit': {
+      id: '/host/$id_/edit'
+      path: '/host/$id/edit'
+      fullPath: '/host/$id/edit'
+      preLoaderRoute: typeof HostIdEditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface SalonesRouteChildren {
+  SalonesIdRoute: typeof SalonesIdRoute
+  SalonesIndexRoute: typeof SalonesIndexRoute
+  SalonesIdReservarRoute: typeof SalonesIdReservarRoute
+}
+
+const SalonesRouteChildren: SalonesRouteChildren = {
+  SalonesIdRoute: SalonesIdRoute,
+  SalonesIndexRoute: SalonesIndexRoute,
+  SalonesIdReservarRoute: SalonesIdReservarRoute,
+}
+
+const SalonesRouteWithChildren =
+  SalonesRoute._addFileChildren(SalonesRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LoginRoute: LoginRoute,
+  MisReservasRoute: MisReservasRoute,
+  RegisterRoute: RegisterRoute,
+  SalonesRoute: SalonesRouteWithChildren,
+  HostBookingIdRoute: HostBookingIdRoute,
+  HostCreateRoute: HostCreateRoute,
+  HostDashboardRoute: HostDashboardRoute,
+  HostIdEditRoute: HostIdEditRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

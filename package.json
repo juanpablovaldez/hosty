@@ -2,8 +2,23 @@
   "name": "hosty",
   "version": "0.0.1",
   "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
   "scripts": {
-    "prepare": "husky"
+    "prepare": "husky || true",
+    "docker:up": "docker compose up",
+    "docker:up:build": "docker compose up --build",
+    "docker:down": "docker compose down",
+    "docker:down:clean": "docker compose down -v",
+    "docker:logs": "docker compose logs -f",
+    "docker:logs:backend": "docker compose logs -f backend",
+    "docker:logs:frontend": "docker compose logs -f frontend",
+    "docker:migrate": "docker compose exec backend npx prisma migrate dev",
+    "docker:migrate:deploy": "docker compose exec backend npx prisma migrate deploy",
+    "docker:generate": "docker compose exec backend npx prisma generate",
+    "docker:studio": "docker compose exec backend npx prisma studio"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.0",
@@ -13,11 +28,11 @@
   },
   "lint-staged": {
     "backend/src/**/*.ts": [
-      "pnpm --filter backend lint",
-      "pnpm --filter backend format"
+      "npm run lint --workspace=backend",
+      "npm run format --workspace=backend"
     ],
     "frontend/src/**/*.{ts,tsx}": [
-      "pnpm --filter frontend lint"
+      "npm run lint --workspace=frontend"
     ]
   }
 }
