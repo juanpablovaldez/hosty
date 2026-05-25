@@ -35,7 +35,7 @@ export function HomePage() {
             </span>
 
             {/* Título */}
-            <h1 className="mt-4 text-[44px] lg:text-[68px] leading-[0.95] font-extrabold text-foreground tracking-tight">
+            <h1 className="mt-4 text-[32px] sm:text-[44px] lg:text-[68px] leading-[0.95] font-extrabold text-foreground tracking-tight">
               Celebrá cerca<span className="text-primary">.</span>
             </h1>
 

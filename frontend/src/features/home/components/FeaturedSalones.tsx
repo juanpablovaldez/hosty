@@ -26,7 +26,7 @@ function CardSkeleton() {
 }
 
 export function FeaturedSalones() {
-  const { data: salones, isLoading, isError } = useFeaturedSalones()
+  const { data: salones, isLoading, isError, refetch } = useFeaturedSalones()
 
   return (
     <section className="bg-muted/30 py-16">
@@ -45,9 +45,12 @@ export function FeaturedSalones() {
         </div>
 
         {isError && (
-          <p className="py-12 text-center text-muted-foreground">
-            No pudimos cargar los salones. Intentá de nuevo más tarde.
-          </p>
+          <div className="flex flex-col items-center gap-3 py-12 text-center">
+            <p className="text-muted-foreground">No pudimos cargar los salones.</p>
+            <Button variant="outline" size="sm" onClick={() => void refetch()}>
+              Reintentar
+            </Button>
+          </div>
         )}
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

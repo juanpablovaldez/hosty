@@ -350,7 +350,8 @@ export function SalonDetailPage() {
   const mapQuery = encodeURIComponent(`${salon.address}, Tucumán, Argentina`)
 
   return (
-    <div className="max-w-7xl mx-auto px-5 lg:px-8 py-8">
+    <>
+    <div className="max-w-7xl mx-auto px-5 lg:px-8 py-8 pb-28 lg:pb-8">
 
       {/* Back */}
       <Link
@@ -474,5 +475,28 @@ export function SalonDetailPage() {
 
       </div>
     </div>
+
+    {/* Sticky bottom bar — mobile only */}
+    <div className="fixed bottom-0 left-0 right-0 z-30 flex items-center justify-between gap-4 border-t border-border bg-card/95 px-5 py-4 backdrop-blur-sm lg:hidden">
+      <div>
+        <p className="text-[11px] uppercase tracking-wider text-muted-foreground">desde</p>
+        <p className="text-[18px] font-extrabold leading-tight text-foreground">
+          {salon.pricePerHour.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 })}
+          <span className="text-[12px] font-medium text-muted-foreground"> / hora</span>
+        </p>
+      </div>
+      <Button
+        asChild
+        size="lg"
+        className="flex-1 gap-2 rounded-xl text-[15px] font-semibold"
+        disabled={salon.availabilityStatus !== 'disponible'}
+      >
+        <Link to="/salones/$id/reservar" params={{ id: salon.id }}>
+          <Calendar className="h-4 w-4" strokeWidth={1.5} />
+          {salon.availabilityStatus === 'disponible' ? 'Reservar' : 'No disponible'}
+        </Link>
+      </Button>
+    </div>
+    </>
   )
 }
