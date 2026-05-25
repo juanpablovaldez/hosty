@@ -1,8 +1,10 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '@/shared/lib/supabase'
 import type { BookingPayload } from '../types'
 
 export function useCreateBooking() {
+  const queryClient = useQueryClient()
+
   return useMutation({
     mutationFn: async (payload: BookingPayload) => {
       const { data, error } = await supabase
@@ -23,6 +25,29 @@ export function useCreateBooking() {
         .single()
       if (error) throw error
       return data
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['bookings', 'mine'] })
+    },
+  })
+}
+
+export function useCancelBooking() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (bookingId: string) => {
+      const { data, error } = await supabase
+        .from('bookings')
+        .update({ status: 'cancelled' })
+        .eq('id', bookingId)
+        .select()
+        .single()
+      if (error) throw error
+      return data
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['bookings', 'mine'] })
     },
   })
 }

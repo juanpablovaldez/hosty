@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SalonesRouteImport } from './routes/salones'
+import { Route as MisReservasRouteImport } from './routes/mis-reservas'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SalonesIndexRouteImport } from './routes/salones/index'
 import { Route as SalonesIdRouteImport } from './routes/salones/$id'
@@ -18,6 +19,11 @@ import { Route as SalonesIdReservarRouteImport } from './routes/salones/$id.rese
 const SalonesRoute = SalonesRouteImport.update({
   id: '/salones',
   path: '/salones',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MisReservasRoute = MisReservasRouteImport.update({
+  id: '/mis-reservas',
+  path: '/mis-reservas',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -43,6 +49,7 @@ const SalonesIdReservarRoute = SalonesIdReservarRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/mis-reservas': typeof MisReservasRoute
   '/salones': typeof SalonesRouteWithChildren
   '/salones/$id': typeof SalonesIdRouteWithChildren
   '/salones/': typeof SalonesIndexRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/mis-reservas': typeof MisReservasRoute
   '/salones/$id': typeof SalonesIdRouteWithChildren
   '/salones': typeof SalonesIndexRoute
   '/salones/$id/reservar': typeof SalonesIdReservarRoute
@@ -57,6 +65,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/mis-reservas': typeof MisReservasRoute
   '/salones': typeof SalonesRouteWithChildren
   '/salones/$id': typeof SalonesIdRouteWithChildren
   '/salones/': typeof SalonesIndexRoute
@@ -66,15 +75,22 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/mis-reservas'
     | '/salones'
     | '/salones/$id'
     | '/salones/'
     | '/salones/$id/reservar'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/salones/$id' | '/salones' | '/salones/$id/reservar'
+  to:
+    | '/'
+    | '/mis-reservas'
+    | '/salones/$id'
+    | '/salones'
+    | '/salones/$id/reservar'
   id:
     | '__root__'
     | '/'
+    | '/mis-reservas'
     | '/salones'
     | '/salones/$id'
     | '/salones/'
@@ -83,6 +99,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  MisReservasRoute: typeof MisReservasRoute
   SalonesRoute: typeof SalonesRouteWithChildren
 }
 
@@ -93,6 +110,13 @@ declare module '@tanstack/react-router' {
       path: '/salones'
       fullPath: '/salones'
       preLoaderRoute: typeof SalonesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mis-reservas': {
+      id: '/mis-reservas'
+      path: '/mis-reservas'
+      fullPath: '/mis-reservas'
+      preLoaderRoute: typeof MisReservasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -153,6 +177,7 @@ const SalonesRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  MisReservasRoute: MisReservasRoute,
   SalonesRoute: SalonesRouteWithChildren,
 }
 export const routeTree = rootRouteImport

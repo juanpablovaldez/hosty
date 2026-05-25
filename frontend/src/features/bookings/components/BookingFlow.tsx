@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams, Link, useNavigate } from '@tanstack/react-router'
+import { useParams, Link } from '@tanstack/react-router'
 import { useForm } from '@tanstack/react-form'
 import { z } from 'zod'
 import { toast } from 'sonner'
@@ -11,7 +11,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
-import { ChevronLeft, ChevronRight, Check, Calendar, Users, FileText, LogIn } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { ChevronLeft, ChevronRight, Check, Calendar, Users, FileText, LogIn, CheckCircle2, ClipboardList, Home } from 'lucide-react'
 import { cn } from '@/shared/lib/utils'
 
 const EVENT_TYPES = ['Cumpleaños', 'Casamiento', 'Corporativo', 'Baby shower', 'Quince años', 'Graduación']
@@ -43,13 +44,13 @@ function calcHours(start: string, end: string) {
 
 export function BookingFlow() {
   const { id } = useParams({ from: '/salones/$id/reservar' })
-  const navigate = useNavigate()
   const { data: salon, isLoading } = useSalon(id)
   const createBooking = useCreateBooking()
 
   const [step, setStep] = useState(0)
   const [userId, setUserId] = useState<string | null>(null)
   const [authChecked, setAuthChecked] = useState(false)
+  const [bookingConfirmed, setBookingConfirmed] = useState(false)
 
   const [step1Snapshot, setStep1Snapshot] = useState({ eventDate: '', startTime: '', endTime: '' })
   const [step2Snapshot, setStep2Snapshot] = useState({ eventType: '', attendees: 1, notes: '' })
@@ -96,8 +97,8 @@ export function BookingFlow() {
         notes: step2Snapshot.notes,
         totalPrice,
       })
-      toast.success('¡Reserva confirmada! Te contactaremos pronto.')
-      navigate({ to: '/salones/$id', params: { id } })
+      setBookingConfirmed(true)
+      setStep(3)
     } catch {
       toast.error('No pudimos procesar tu reserva. Intentá de nuevo.')
     }
@@ -132,6 +133,80 @@ export function BookingFlow() {
         <Button asChild variant="ghost">
           <Link to="/salones/$id" params={{ id }}>Volver al salón</Link>
         </Button>
+      </div>
+    )
+  }
+
+  if (bookingConfirmed) {
+    return (
+      <div className="mx-auto max-w-lg px-6 py-12">
+        <div className="flex flex-col items-center gap-6 rounded-2xl border bg-card p-8 text-center shadow-sm">
+          <div className="relative">
+            <div className="absolute inset-0 animate-ping rounded-full bg-green-400/20" />
+            <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-green-500/10">
+              <CheckCircle2 className="h-10 w-10 text-green-500" strokeWidth={1.5} />
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <h2 className="text-2xl font-bold text-foreground">
+              ¡Tu reserva fue enviada!
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              El salón revisará tu solicitud y te confirmaremos a la brevedad.
+            </p>
+          </div>
+
+          <Badge className="border-amber-200 bg-amber-50 px-3 py-1 text-amber-700 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-400">
+            Pendiente de confirmación
+          </Badge>
+
+          <div className="w-full rounded-xl bg-muted/50 p-4">
+            <p className="mb-3 font-medium text-foreground">{salon?.name}</p>
+            <div className="flex flex-col gap-2 text-sm">
+              {([
+                ['Fecha', new Date(step1Snapshot.eventDate + 'T12:00:00').toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })],
+                ['Horario', `${step1Snapshot.startTime} – ${step1Snapshot.endTime}`],
+                ['Tipo', step2Snapshot.eventType],
+                ['Asistentes', String(step2Snapshot.attendees)],
+              ] as [string, string][]).map(([label, value]) => (
+                <div key={label} className="flex justify-between">
+                  <span className="text-muted-foreground">{label}</span>
+                  <span className="font-medium">{value}</span>
+                </div>
+              ))}
+              <Separator className="my-2" />
+              <div className="flex justify-between text-base font-semibold text-foreground">
+                <span>Total</span>
+                <span>
+                  {totalPrice.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 })}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex w-full flex-col gap-3 sm:flex-row">
+            <Button
+              asChild
+              className="flex-1 gap-2"
+            >
+              <Link to="/mis-reservas">
+                <ClipboardList className="h-4 w-4" strokeWidth={1.5} />
+                Ver mis reservas
+              </Link>
+            </Button>
+            <Button
+              asChild
+              variant="outline"
+              className="flex-1 gap-2"
+            >
+              <Link to="/">
+                <Home className="h-4 w-4" strokeWidth={1.5} />
+                Volver al inicio
+              </Link>
+            </Button>
+          </div>
+        </div>
       </div>
     )
   }
