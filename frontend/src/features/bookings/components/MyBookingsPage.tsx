@@ -1,7 +1,7 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import { Link } from '@tanstack/react-router'
 import { toast } from 'sonner'
-import { supabase } from '@/shared/lib/supabase'
+import { useAuthStore } from '@/features/auth/store/auth.store'
 import { useMyBookings } from '../api/bookings.queries'
 import { useCancelBooking } from '../api/bookings.mutations'
 import type { Booking, BookingStatus } from '../types'
@@ -22,7 +22,6 @@ import {
   Clock,
   Users,
   MapPin,
-  LogIn,
   CalendarX2,
   PartyPopper,
   XCircle,
@@ -30,75 +29,6 @@ import {
   AlertTriangle,
 } from 'lucide-react'
 import { cn } from '@/shared/lib/utils'
-
-const IS_DEV = import.meta.env.DEV
-
-const DEV_MOCK_BOOKINGS: Booking[] = [
-  {
-    id: 'mock-1',
-    salonId: 'mock-salon-1',
-    salonName: 'Salón Aurora — Yerba Buena',
-    salonImage: '',
-    userId: 'dev-user',
-    eventDate: '2026-06-15',
-    startTime: '18:00',
-    endTime: '23:00',
-    attendees: 80,
-    eventType: 'Casamiento',
-    notes: 'Decoración con flores blancas. Necesitamos proyector.',
-    totalPrice: 250000,
-    status: 'pending',
-    createdAt: '2026-05-17T10:00:00Z',
-  },
-  {
-    id: 'mock-2',
-    salonId: 'mock-salon-2',
-    salonName: 'Espacio Jardín del Norte',
-    salonImage: '',
-    userId: 'dev-user',
-    eventDate: '2026-07-20',
-    startTime: '20:00',
-    endTime: '02:00',
-    attendees: 120,
-    eventType: 'Cumpleaños',
-    notes: null,
-    totalPrice: 180000,
-    status: 'confirmed',
-    createdAt: '2026-05-10T14:30:00Z',
-  },
-  {
-    id: 'mock-3',
-    salonId: 'mock-salon-3',
-    salonName: 'Terraza Mirador',
-    salonImage: '',
-    userId: 'dev-user',
-    eventDate: '2026-05-10',
-    startTime: '15:00',
-    endTime: '19:00',
-    attendees: 30,
-    eventType: 'Corporativo',
-    notes: 'Evento cancelado por cambio de fecha.',
-    totalPrice: 95000,
-    status: 'cancelled',
-    createdAt: '2026-04-28T09:00:00Z',
-  },
-  {
-    id: 'mock-4',
-    salonId: 'mock-salon-1',
-    salonName: 'Salón Aurora — Yerba Buena',
-    salonImage: '',
-    userId: 'dev-user',
-    eventDate: '2026-08-05',
-    startTime: '16:00',
-    endTime: '21:00',
-    attendees: 50,
-    eventType: 'Baby shower',
-    notes: null,
-    totalPrice: 150000,
-    status: 'pending',
-    createdAt: '2026-05-16T18:00:00Z',
-  },
-]
 
 type FilterTab = 'all' | BookingStatus
 
@@ -297,23 +227,13 @@ function LoadingSkeleton() {
 }
 
 export function MyBookingsPage() {
-  const [userId, setUserId] = useState<string | null>(null)
-  const [authChecked, setAuthChecked] = useState(false)
+  const user = useAuthStore((s) => s.user)
   const [activeTab, setActiveTab] = useState<FilterTab>('all')
   const [cancelTarget, setCancelTarget] = useState<Booking | null>(null)
 
   const cancelBooking = useCancelBooking()
 
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      setUserId(data.user?.id ?? null)
-      setAuthChecked(true)
-    })
-  }, [])
-
-  const isDevNoAuth = IS_DEV && authChecked && !userId
-  const { data: realBookings, isLoading } = useMyBookings(userId)
-  const bookings = isDevNoAuth ? DEV_MOCK_BOOKINGS : realBookings
+  const { data: bookings, isLoading } = useMyBookings(user?.id ?? null)
 
   const filteredBookings = useMemo(() => {
     if (!bookings) return []
@@ -340,36 +260,6 @@ export function MyBookingsPage() {
     } catch {
       toast.error('No pudimos cancelar la reserva. Intentá de nuevo.')
     }
-  }
-
-  if (!authChecked) {
-    return (
-      <div className="mx-auto max-w-4xl px-6 py-12">
-        <Skeleton className="mb-2 h-8 w-48" />
-        <Skeleton className="mb-8 h-5 w-72" />
-        <LoadingSkeleton />
-      </div>
-    )
-  }
-
-  if (!userId && !isDevNoAuth) {
-    return (
-      <div className="mx-auto flex max-w-md flex-col items-center gap-6 px-6 py-20 text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-          <LogIn className="h-8 w-8 text-primary" strokeWidth={1.5} />
-        </div>
-        <h2 className="text-xl font-bold text-foreground">Iniciá sesión para ver tus reservas</h2>
-        <p className="text-muted-foreground">
-          Necesitás una cuenta para acceder a tu panel de reservas.
-        </p>
-        <Button asChild size="lg" className="w-full gap-2">
-          <Link to="/">
-            <LogIn className="h-4 w-4" strokeWidth={1.5} />
-            Iniciar sesión
-          </Link>
-        </Button>
-      </div>
-    )
   }
 
   return (

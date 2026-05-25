@@ -1,19 +1,19 @@
-import { useState, useEffect, Fragment } from 'react'
+import { useState, Fragment } from 'react'
 import { useParams, Link } from '@tanstack/react-router'
 import { useForm } from '@tanstack/react-form'
 import { z } from 'zod'
 import { toast } from 'sonner'
 import { useSalon } from '@/features/salones/api/salones.queries'
 import { useCreateBooking } from '../api/bookings.mutations'
-import { supabase } from '@/shared/lib/supabase'
+import { useAuthStore } from '@/features/auth/store/auth.store'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
-import { ChevronLeft, ChevronRight, Check, Calendar, Users, FileText, LogIn, CheckCircle2, ClipboardList, Home } from 'lucide-react'
-import { cn } from '@/shared/lib/utils'
+import { ChevronLeft, ChevronRight, Check, Calendar, Users, FileText, CheckCircle2, ClipboardList, Home } from 'lucide-react'
+import { cn, formError } from '@/shared/lib/utils'
 
 const EVENT_TYPES = ['Cumpleaños', 'Casamiento', 'Corporativo', 'Baby shower', 'Quince años', 'Graduación']
 
@@ -46,21 +46,13 @@ export function BookingFlow() {
   const { id } = useParams({ from: '/salones/$id_/reservar' })
   const { data: salon, isLoading } = useSalon(id)
   const createBooking = useCreateBooking()
+  const user = useAuthStore((s) => s.user)
 
   const [step, setStep] = useState(0)
-  const [userId, setUserId] = useState<string | null>(null)
-  const [authChecked, setAuthChecked] = useState(false)
   const [bookingConfirmed, setBookingConfirmed] = useState(false)
 
   const [step1Snapshot, setStep1Snapshot] = useState({ eventDate: '', startTime: '', endTime: '' })
   const [step2Snapshot, setStep2Snapshot] = useState({ eventType: '', attendees: 1, notes: '' })
-
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      setUserId(data.user?.id ?? null)
-      setAuthChecked(true)
-    })
-  }, [])
 
   const hours = calcHours(step1Snapshot.startTime, step1Snapshot.endTime)
   const totalPrice = salon ? salon.pricePerHour * hours : 0
@@ -84,11 +76,11 @@ export function BookingFlow() {
   })
 
   async function confirmBooking() {
-    if (!userId || !salon) return
+    if (!user || !salon) return
     try {
       await createBooking.mutateAsync({
         salonId: salon.id,
-        userId,
+        userId: user.id,
         eventDate: step1Snapshot.eventDate,
         startTime: step1Snapshot.startTime,
         endTime: step1Snapshot.endTime,
@@ -104,35 +96,11 @@ export function BookingFlow() {
     }
   }
 
-  if (isLoading || !authChecked) {
+  if (isLoading) {
     return (
       <div className="mx-auto max-w-2xl px-6 py-12">
         <Skeleton className="mb-6 h-8 w-48" />
         <Skeleton className="h-64 w-full rounded-2xl" />
-      </div>
-    )
-  }
-
-  if (!userId) {
-    return (
-      <div className="mx-auto flex max-w-md flex-col items-center gap-6 px-6 py-20 text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-          <LogIn className="h-8 w-8 text-primary" strokeWidth={1.5} />
-        </div>
-        <h2 className="text-xl font-bold text-foreground">Iniciá sesión para reservar</h2>
-        <p className="text-muted-foreground">
-          Necesitás una cuenta para confirmar tu reserva en{' '}
-          <span className="font-medium text-foreground">{salon?.name}</span>.
-        </p>
-        <Button asChild size="lg" className="w-full gap-2">
-          <Link to="/">
-            <LogIn className="h-4 w-4" strokeWidth={1.5} />
-            Iniciar sesión
-          </Link>
-        </Button>
-        <Button asChild variant="ghost">
-          <Link to="/salones/$id" params={{ id }}>Volver al salón</Link>
-        </Button>
       </div>
     )
   }
@@ -273,8 +241,8 @@ export function BookingFlow() {
                     onChange={(e) => field.handleChange(e.target.value)}
                     onBlur={field.handleBlur}
                   />
-                  {field.state.meta.errors[0] && (
-                    <p className="text-xs text-destructive">{String(field.state.meta.errors[0])}</p>
+                  {formError(field.state.meta.errors[0]) && (
+                    <p className="text-xs text-destructive">{formError(field.state.meta.errors[0])}</p>
                   )}
                 </div>
               )}
@@ -292,8 +260,8 @@ export function BookingFlow() {
                       onChange={(e) => field.handleChange(e.target.value)}
                       onBlur={field.handleBlur}
                     />
-                    {field.state.meta.errors[0] && (
-                      <p className="text-xs text-destructive">{String(field.state.meta.errors[0])}</p>
+                    {formError(field.state.meta.errors[0]) && (
+                      <p className="text-xs text-destructive">{formError(field.state.meta.errors[0])}</p>
                     )}
                   </div>
                 )}
@@ -310,8 +278,8 @@ export function BookingFlow() {
                       onChange={(e) => field.handleChange(e.target.value)}
                       onBlur={field.handleBlur}
                     />
-                    {field.state.meta.errors[0] && (
-                      <p className="text-xs text-destructive">{String(field.state.meta.errors[0])}</p>
+                    {formError(field.state.meta.errors[0]) && (
+                      <p className="text-xs text-destructive">{formError(field.state.meta.errors[0])}</p>
                     )}
                   </div>
                 )}
@@ -356,8 +324,8 @@ export function BookingFlow() {
                       </button>
                     ))}
                   </div>
-                  {field.state.meta.errors[0] && (
-                    <p className="text-xs text-destructive">{String(field.state.meta.errors[0])}</p>
+                  {formError(field.state.meta.errors[0]) && (
+                    <p className="text-xs text-destructive">{formError(field.state.meta.errors[0])}</p>
                   )}
                 </div>
               )}
@@ -377,8 +345,8 @@ export function BookingFlow() {
                     onBlur={field.handleBlur}
                   />
                   {salon && <p className="text-xs text-muted-foreground">Máximo: {salon.capacity} personas</p>}
-                  {field.state.meta.errors[0] && (
-                    <p className="text-xs text-destructive">{String(field.state.meta.errors[0])}</p>
+                  {formError(field.state.meta.errors[0]) && (
+                    <p className="text-xs text-destructive">{formError(field.state.meta.errors[0])}</p>
                   )}
                 </div>
               )}
