@@ -1,4 +1,5 @@
-import { useState, useMemo } from 'react'
+import { useMemo } from 'react'
+import { useSearch, useNavigate } from '@tanstack/react-router'
 import { MapPin, Calendar, Users, Search, SlidersHorizontal, X, ChevronLeft, ChevronRight, Star, Map } from 'lucide-react'
 import { useSearchSalones } from '../api/salones.queries'
 import { CardSalon } from './CardSalon'
@@ -31,15 +32,22 @@ function CardSkeleton() {
 
 /* ─── Página principal ───────────────────────────────────── */
 export function SalonesPage() {
-  const [busqueda, setBusqueda] = useState('')
-  const [chipActivo, setChipActivo] = useState('Todos los tipos')
-  const [zonasActivas, setZonasActivas] = useState<string[]>([])
-  const [serviciosActivos, setServiciosActivos] = useState<string[]>([])
-  const [capacidadMin, setCapacidadMin] = useState(0)
-  const [capacidadMax, setCapacidadMax] = useState(500)
-  const [ordenamiento, setOrdenamiento] = useState('Relevancia')
-  const [vistaLista, setVistaLista] = useState(true)
-  const [paginaActual, setPaginaActual] = useState(1)
+  const search = useSearch({ from: '/salones/' })
+  const navigate = useNavigate({ from: '/salones/' })
+
+  const busqueda = search.busqueda ?? ''
+  const chipActivo = search.tipoEvento ?? 'Todos los tipos'
+  const zonasActivas = search.zonas ?? []
+  const serviciosActivos = search.servicios ?? []
+  const capacidadMin = search.capacidadMin ?? 0
+  const capacidadMax = search.capacidadMax ?? 500
+  const ordenamiento = search.ordenamiento ?? 'Relevancia'
+  const vistaLista = true
+  const paginaActual = search.pagina ?? 1
+
+  function setFilter(patch: Record<string, unknown>) {
+    navigate({ search: (prev) => ({ ...prev, ...patch }), replace: true })
+  }
 
   /* ─── Parámetros para Supabase ─── */
   const params: SalonSearchParams = useMemo(() => ({
@@ -100,33 +108,34 @@ export function SalonesPage() {
   const fin = Math.min(paginaSegura * ITEMS_PER_PAGE, salonesFiltrados.length)
 
   const toggleZona = (zona: string) => {
-    setPaginaActual(1)
-    setZonasActivas((prev) =>
-      prev.includes(zona) ? prev.filter((z) => z !== zona) : [...prev, zona],
-    )
+    const next = zonasActivas.includes(zona)
+      ? zonasActivas.filter((z) => z !== zona)
+      : [...zonasActivas, zona]
+    setFilter({ zonas: next.length ? next : undefined, pagina: undefined })
   }
 
   const toggleServicio = (servicio: string) => {
-    setPaginaActual(1)
-    setServiciosActivos((prev) =>
-      prev.includes(servicio) ? prev.filter((s) => s !== servicio) : [...prev, servicio],
-    )
+    const next = serviciosActivos.includes(servicio)
+      ? serviciosActivos.filter((s) => s !== servicio)
+      : [...serviciosActivos, servicio]
+    setFilter({ servicios: next.length ? next : undefined, pagina: undefined })
   }
 
   const quitarFiltro = (filtro: string) => {
-    setZonasActivas((prev) => prev.filter((z) => z !== filtro))
-    setServiciosActivos((prev) => prev.filter((s) => s !== filtro))
-    setPaginaActual(1)
+    const nextZonas = zonasActivas.filter((z) => z !== filtro)
+    const nextServicios = serviciosActivos.filter((s) => s !== filtro)
+    setFilter({
+      zonas: nextZonas.length ? nextZonas : undefined,
+      servicios: nextServicios.length ? nextServicios : undefined,
+      pagina: undefined,
+    })
   }
 
   const limpiarFiltros = () => {
-    setBusqueda('')
-    setZonasActivas([])
-    setServiciosActivos([])
-    setChipActivo('Todos los tipos')
-    setCapacidadMin(0)
-    setCapacidadMax(500)
-    setPaginaActual(1)
+    navigate({
+      search: {},
+      replace: true,
+    })
   }
 
   return (
@@ -171,7 +180,7 @@ export function SalonesPage() {
           <button
             key={chip}
             type="button"
-            onClick={() => { setChipActivo(chip); setPaginaActual(1) }}
+            onClick={() => setFilter({ tipoEvento: chip === 'Todos los tipos' ? undefined : chip, pagina: undefined })}
             aria-pressed={chipActivo === chip}
             className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full border text-[14px] font-medium transition cursor-pointer ${
               chipActivo === chip
@@ -195,14 +204,14 @@ export function SalonesPage() {
             type="text"
             placeholder="Buscar por nombre de salón..."
             value={busqueda}
-            onChange={(e) => { setBusqueda(e.target.value); setPaginaActual(1) }}
+            onChange={(e) => setFilter({ busqueda: e.target.value || undefined, pagina: undefined })}
             className="w-full pl-12 pr-4 py-3 rounded-xl border border-border bg-card text-foreground text-[15px] placeholder:text-muted-foreground focus:outline-none focus:border-primary transition"
           />
           {busqueda && (
             <button
               type="button"
               aria-label="Limpiar búsqueda"
-              onClick={() => { setBusqueda(''); setPaginaActual(1) }}
+              onClick={() => setFilter({ busqueda: undefined, pagina: undefined })}
               className="absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-full hover:bg-muted transition"
             >
               <X className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
@@ -244,7 +253,7 @@ export function SalonesPage() {
                       type="number"
                       value={capacidadMin || ''}
                       placeholder="0"
-                      onChange={(e) => { setCapacidadMin(Number(e.target.value)); setPaginaActual(1) }}
+                      onChange={(e) => setFilter({ capacidadMin: Number(e.target.value) || undefined, pagina: undefined })}
                       className="w-full bg-transparent text-[14px] font-semibold focus:outline-none text-foreground"
                     />
                   </div>
@@ -254,7 +263,7 @@ export function SalonesPage() {
                       type="number"
                       value={capacidadMax === 500 ? '' : capacidadMax}
                       placeholder="Sin límite"
-                      onChange={(e) => { setCapacidadMax(e.target.value ? Number(e.target.value) : 500); setPaginaActual(1) }}
+                      onChange={(e) => setFilter({ capacidadMax: e.target.value ? Number(e.target.value) : undefined, pagina: undefined })}
                       className="w-full bg-transparent text-[14px] font-semibold focus:outline-none text-foreground"
                     />
                   </div>
@@ -331,7 +340,6 @@ export function SalonesPage() {
               <div className="hidden md:flex bg-card rounded-full border border-border p-1">
                 <button
                   type="button"
-                  onClick={() => setVistaLista(true)}
                   className={`px-3 py-1.5 text-[13px] font-semibold rounded-full transition ${
                     vistaLista ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground'
                   }`}
@@ -340,7 +348,6 @@ export function SalonesPage() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => setVistaLista(false)}
                   className={`px-3 py-1.5 text-[13px] font-medium rounded-full flex items-center gap-1 transition ${
                     !vistaLista ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground'
                   }`}
@@ -351,7 +358,7 @@ export function SalonesPage() {
               </div>
               <select
                 value={ordenamiento}
-                onChange={(e) => { setOrdenamiento(e.target.value); setPaginaActual(1) }}
+                onChange={(e) => setFilter({ ordenamiento: e.target.value === 'Relevancia' ? undefined : e.target.value, pagina: undefined })}
                 className="w-auto px-3 py-2 rounded-xl border border-border bg-card text-foreground text-[13px] font-medium focus:outline-none focus:border-primary"
               >
                 <option>Relevancia</option>
@@ -424,7 +431,7 @@ export function SalonesPage() {
                 <button
                   type="button"
                   disabled={paginaSegura === 1}
-                  onClick={() => setPaginaActual((p) => Math.max(1, p - 1))}
+                  onClick={() => setFilter({ pagina: Math.max(1, paginaActual - 1) })}
                   className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground disabled:opacity-40 hover:bg-muted transition"
                 >
                   <ChevronLeft className="w-5 h-5" strokeWidth={1.5} />
@@ -433,7 +440,7 @@ export function SalonesPage() {
                   <button
                     key={p}
                     type="button"
-                    onClick={() => setPaginaActual(p)}
+                    onClick={() => setFilter({ pagina: p === 1 ? undefined : p })}
                     className={`w-9 h-9 rounded-lg text-[14px] font-semibold transition ${
                       paginaSegura === p
                         ? 'bg-primary text-primary-foreground'
@@ -446,7 +453,7 @@ export function SalonesPage() {
                 <button
                   type="button"
                   disabled={paginaSegura === totalPaginas}
-                  onClick={() => setPaginaActual((p) => Math.min(totalPaginas, p + 1))}
+                  onClick={() => setFilter({ pagina: Math.min(totalPaginas, paginaActual + 1) })}
                   className="w-9 h-9 rounded-lg border border-border flex items-center justify-center hover:bg-muted transition disabled:opacity-40"
                 >
                   <ChevronRight className="w-5 h-5" strokeWidth={1.5} />
