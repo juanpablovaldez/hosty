@@ -16,8 +16,8 @@ const searchSchema = z.object({
   servicios: z.array(z.string()).optional(),
   capacidadMin: z.coerce.number().optional(),
   capacidadMax: z.coerce.number().optional(),
-  ordenamiento: z.string().optional(),
-  pagina: z.coerce.number().optional(),
+  page: z.coerce.number().min(1).optional(),
+  sortBy: z.enum(['rating', 'price_asc', 'price_desc', 'capacity']).optional(),
   tipoEvento: z.string().optional(),
 })
 
