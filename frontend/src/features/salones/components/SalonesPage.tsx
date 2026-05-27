@@ -249,9 +249,12 @@ export function SalonesPage() {
       <div className="max-w-7xl mx-auto px-5 lg:px-8 py-6 grid lg:grid-cols-[280px_1fr] gap-8">
 
         {/* ── Sidebar filtros ─── */}
-        <aside className="hidden lg:block">
-          <div className="sticky top-40 space-y-6">
-            <div className="bg-card rounded-[20px] p-5 shadow-[0_1px_3px_rgba(28,43,58,0.06),0_8px_24px_-12px_rgba(28,43,58,0.12)] border border-border">
+        <aside
+          className="hidden lg:block rounded-xl border border-border sticky top-[152px] overflow-hidden self-start"
+          style={{ background: 'var(--surface-warm)' }}
+        >
+          <div className="p-5 space-y-6">
+            <div>
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold text-[16px] text-foreground flex items-center gap-2">
                   <SlidersHorizontal className="w-4 h-4" strokeWidth={1.5} />
