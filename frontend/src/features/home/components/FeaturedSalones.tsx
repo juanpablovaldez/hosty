@@ -31,12 +31,15 @@ export function FeaturedSalones() {
   return (
     <section className="bg-muted/30 py-16">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-8 flex items-end justify-between">
+        <div className="mb-10 flex items-end justify-between">
           <div>
+            <p className="mb-1 text-xs font-bold uppercase tracking-[0.15em] text-primary">
+              Disponibles ahora
+            </p>
             <h2 className="text-2xl font-bold text-foreground md:text-3xl">Salones destacados</h2>
-            <p className="mt-1 text-muted-foreground">Verificados y listos para tu próximo evento</p>
+            <p className="mt-1.5 text-muted-foreground">Verificados y listos para tu próximo evento</p>
           </div>
-          <Button asChild variant="ghost" className="hidden gap-1 sm:flex">
+          <Button asChild variant="ghost" className="hidden gap-1 sm:flex text-primary hover:text-primary">
             <Link to="/salones">
               Ver todos
               <ArrowRight className="h-4 w-4" strokeWidth={1.5} />

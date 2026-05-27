@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { Moon, Sun, Menu, LogOut, User } from 'lucide-react'
 import { cn } from '@/shared/lib/utils'
+import { HostyLogo } from './HostyLogo'
 
 const ROUTER_LINKS = [
   { to: '/' as const, label: 'Inicio' },
@@ -32,9 +33,9 @@ export function Header() {
         {/* Logo */}
         <Link
           to="/"
-          className="flex items-center gap-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
-          <span className="text-2xl font-extrabold tracking-tight text-primary">hosty</span>
+          <HostyLogo size="md" />
         </Link>
 
         {/* Desktop nav */}
@@ -110,7 +111,9 @@ export function Header() {
             </SheetTrigger>
             <SheetContent side="right" className="w-72">
               <SheetHeader className="mb-6">
-                <SheetTitle className="text-left text-2xl font-extrabold text-primary">hosty</SheetTitle>
+                <SheetTitle className="text-left">
+                  <HostyLogo size="md" />
+                </SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col gap-1">
                 {ROUTER_LINKS.map(({ to, label }) => (

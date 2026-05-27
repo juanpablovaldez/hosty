@@ -30,7 +30,7 @@ export function HomePage() {
           {/* Columna izquierda */}
           <div>
             {/* Badge ámbar */}
-            <span className="inline-block bg-amber-50 text-amber-800 border border-amber-200 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-700/50 text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
+            <span className="inline-block bg-amber-light text-amber-dark border border-amber/30 text-[11px] font-bold uppercase tracking-[0.12em] px-3 py-1 rounded-full">
               TUCUMÁN · 2026
             </span>
 
@@ -95,7 +95,7 @@ export function HomePage() {
           <div className="relative hidden lg:block">
             <div
               className="rounded-[28px] aspect-[4/5] relative overflow-hidden shadow-[0_4px_12px_rgba(28,43,58,0.08),0_16px_40px_-16px_rgba(28,43,58,0.18)]"
-              style={{ background: 'linear-gradient(135deg, #FCE3DC 0%, #F1ECE4 100%)' }}
+              style={{ background: 'linear-gradient(135deg, #FCE3DC 0%, var(--color-bone-dark) 100%)' }}
             >
               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/30" />
               <div className="absolute top-5 left-5">
@@ -108,7 +108,7 @@ export function HomePage() {
                 <div className="flex items-start gap-3">
                   <div
                     className="w-14 h-14 rounded-xl flex-shrink-0"
-                    style={{ background: 'linear-gradient(135deg, #FCEAC4 0%, #F5A623 100%)' }}
+                    style={{ background: 'linear-gradient(135deg, var(--color-amber-light) 0%, var(--color-amber) 100%)' }}
                   />
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 mb-1">
@@ -120,7 +120,7 @@ export function HomePage() {
                     <p className="text-[12px] text-muted-foreground">Yerba Buena · hasta 180 personas</p>
                     <div className="flex items-center justify-between mt-2">
                       <div className="flex items-center gap-1 text-[12px]">
-                        <span className="text-amber-400">★</span>
+                        <span className="text-amber">★</span>
                         <span className="font-semibold text-foreground">4.9</span>
                         <span className="text-muted-foreground">(42)</span>
                       </div>
@@ -135,7 +135,7 @@ export function HomePage() {
             <div className="absolute -left-6 top-10 bg-card rounded-2xl shadow-[0_4px_12px_rgba(28,43,58,0.08)] border border-border p-4 w-56 hidden xl:block">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                  <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                   </svg>
                 </div>

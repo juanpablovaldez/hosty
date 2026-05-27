@@ -20,19 +20,29 @@ const PROPS = [
 
 export function ValueProps() {
   return (
-    <section className="py-16">
+    <section className="py-20 bg-background">
       <div className="mx-auto max-w-7xl px-6">
-        <h2 className="mb-10 text-center text-2xl font-bold text-foreground md:text-3xl">
-          Tu evento, sin complicaciones
-        </h2>
-        <div className="grid gap-8 sm:grid-cols-3">
+        <div className="mb-12 text-center">
+          <p className="mb-2 text-xs font-bold uppercase tracking-[0.15em] text-primary">
+            Por qué Hosty
+          </p>
+          <h2 className="text-2xl font-bold text-foreground md:text-3xl">
+            Tu evento, sin complicaciones
+          </h2>
+        </div>
+        <div className="grid gap-6 sm:grid-cols-3">
           {PROPS.map(({ icon: Icon, title, description }) => (
-            <div key={title} className="flex flex-col items-center gap-4 text-center">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
-                <Icon className="h-7 w-7 text-primary" strokeWidth={1.5} />
+            <div
+              key={title}
+              className="group flex flex-col gap-5 rounded-2xl border border-border bg-card p-7 shadow-sm transition-shadow hover:shadow-md"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary/15">
+                <Icon className="h-6 w-6 text-primary" strokeWidth={1.5} />
               </div>
-              <h3 className="text-lg font-semibold text-foreground">{title}</h3>
-              <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>
+              <div>
+                <h3 className="mb-1.5 text-[17px] font-semibold text-foreground">{title}</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>
+              </div>
             </div>
           ))}
         </div>
