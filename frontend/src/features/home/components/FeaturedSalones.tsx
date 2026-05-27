@@ -5,6 +5,10 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
 import { ArrowRight } from 'lucide-react'
 
+/* El mismo grain que ValueProps — en dark mode sobre bg-background (ink) se
+   siente rico y editorial, no flat. Opacidad más baja (1.8%) para no competir. */
+const GRAIN = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")`
+
 function CardSkeleton() {
   return (
     <div className="overflow-hidden rounded-xl border bg-card">
@@ -29,8 +33,27 @@ export function FeaturedSalones() {
   const { data: salones, isLoading, isError, refetch } = useFeaturedSalones()
 
   return (
-    <section className="bg-muted/30 py-16">
-      <div className="mx-auto max-w-7xl px-6">
+    <section className="bg-background py-16 relative overflow-hidden">
+
+      {/* Grain — sutil textura que rompe la planeza, especialmente en dark mode */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none select-none"
+        style={{ backgroundImage: GRAIN, backgroundSize: '200px 200px', opacity: 0.018 }}
+      />
+
+      {/* Glow coral en esquina inferior-izquierda — espeja el del hero (top-right)
+          crea profundidad y continuidad visual entre secciones */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage:
+            'radial-gradient(ellipse 55% 45% at 5% 100%, rgba(232,69,42,0.055) 0%, transparent 60%)',
+        }}
+      />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6">
         <div className="mb-10 flex items-end justify-between">
           <div>
             <p className="mb-1 text-xs font-bold uppercase tracking-[0.15em] text-primary">

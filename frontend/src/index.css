@@ -9,7 +9,9 @@
 
 /* Colores brand estáticos: bg-coral, text-ink, bg-bone, etc. */
 @theme {
-  --font-sans: 'Plus Jakarta Sans', sans-serif;
+  --font-sans:         'Plus Jakarta Sans', sans-serif;
+  --font-serif-accent: 'Instrument Serif', serif;
+
   --color-coral:       #E8452A;
   --color-coral-dark:  #C93820;
   --color-coral-light: #FF6B50;
@@ -20,6 +22,7 @@
   --color-amber:       #F5A623;
   --color-amber-light: #FEF3DC;
   --color-amber-dark:  #B87A10;
+
 }
 
 /* Mapeo semántico → clases Tailwind v4 (bg-primary, text-foreground, bg-card, etc.)
@@ -52,6 +55,14 @@
 
 @layer base {
   :root {
+    /* Handoff v2 — tokens nuevos */
+    --color-arena:     #EBE3D5;
+    --surface-warm:    #EBE3D5;   /* arena en light — superficie cálida secundaria */
+    --font-serif-accent: 'Instrument Serif', serif;
+    --shadow-sm: 0 1px 3px rgba(28,43,58,0.05), 0 5px 14px rgba(28,43,58,0.07);
+    --shadow-md: 0 2px 4px rgba(28,43,58,0.04), 0 10px 30px rgba(28,43,58,0.09);
+    --shadow-lg: 0 4px 8px rgba(28,43,58,0.04), 0 20px 56px rgba(28,43,58,0.12), 0 48px 88px rgba(28,43,58,0.05);
+
     /* Hosty brand — light mode */
     --background:             38 32% 97%;    /* Hueso  #FAF8F5 */
     --foreground:             210 35% 17%;   /* Tinta  #1C2B3A */
@@ -77,6 +88,7 @@
 
   .dark {
     /* Hosty brand — dark mode */
+    --surface-warm:    hsl(210 28% 19%);  /* superficie cálida en dark — entre card y muted */
     --background:             210 35% 17%;   /* Tinta  #1C2B3A */
     --foreground:             38 32% 97%;    /* Hueso  #FAF8F5 */
     --card:                   210 30% 21%;
@@ -97,6 +109,16 @@
     --destructive-foreground: 38 32% 97%;
     --ring:                   9 80% 54%;
   }
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes heroReveal {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @layer base {

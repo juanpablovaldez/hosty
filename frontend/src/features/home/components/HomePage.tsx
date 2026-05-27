@@ -3,151 +3,174 @@ import { SearchBar } from './SearchBar'
 import { FeaturedSalones } from './FeaturedSalones'
 import { ValueProps } from './ValueProps'
 import { HostCTA } from './HostCTA'
+import { CheckCircle2, Zap, MapPin, Users, Star } from 'lucide-react'
+import { HostyIso, HostyBadge } from '@/components/ui/hosty-badge'
 
-const CHIPS = ['Todos', '🎂 Cumpleaños', '💍 Casamientos', '🎓 Graduaciones', '🏢 Corporativo', '👶 Infantiles']
+const CHIPS = ['Todos', 'Cumpleaños', 'Casamientos', 'Graduaciones', 'Corporativo', 'Infantiles']
+
+/* ─── Tarjeta decorativa del hero ───────────────────────────
+   Muestra un preview estilizado de una venue card con el
+   isotipo de fondo y badges del sistema.
+─────────────────────────────────────────────────────────── */
+function HeroCard() {
+  return (
+    <div className="hidden lg:block relative w-[240px] h-[290px] shrink-0 pb-1">
+      {/* Carta de fondo — amber, rotada */}
+      <div
+        className="absolute top-4 right-0 w-[210px] rounded-[18px] overflow-hidden border border-amber/40"
+        style={{
+          transform: 'rotate(5deg)',
+          background: 'var(--color-amber-light)',
+          boxShadow: 'var(--shadow-sm)',
+        }}
+      >
+        <div
+          className="h-[108px] flex items-center justify-center"
+          style={{ background: 'linear-gradient(140deg, var(--color-amber-light), var(--color-amber))' }}
+        >
+          <HostyIso size={42} color="rgba(28,43,58,0.18)" />
+        </div>
+        <div className="px-4 py-3">
+          <div className="h-2.5 rounded-full bg-ink/10 w-3/4 mb-2" />
+          <div className="h-2 rounded-full bg-ink/7 w-1/2" />
+        </div>
+      </div>
+
+      {/* Carta delantera — adaptable a dark mode */}
+      <div
+        className="absolute bottom-0 left-0 w-[210px] rounded-[18px] overflow-hidden bg-card border border-border"
+        style={{ transform: 'rotate(-1.5deg)', boxShadow: 'var(--shadow-lg)' }}
+      >
+        {/* Imagen — gradiente coral */}
+        <div
+          className="h-[118px] relative flex items-end"
+          style={{
+            background: 'linear-gradient(135deg, var(--color-coral-light) 0%, var(--color-coral) 60%, var(--color-coral-dark) 100%)',
+          }}
+        >
+          {/* Isotipo de fondo — watermark */}
+          <div className="absolute right-3 bottom-2 opacity-[0.15]">
+            <HostyIso size={56} color="white" />
+          </div>
+          {/* Badge */}
+          <div className="absolute top-3 left-3">
+            <HostyBadge variant="verificado" size="sm" />
+          </div>
+        </div>
+
+        {/* Contenido */}
+        <div className="px-4 pt-3 pb-4">
+          <div className="flex items-start justify-between gap-2 mb-1.5">
+            <p className="text-[13px] font-bold text-foreground leading-tight">Palacio San Roque</p>
+            <div className="flex items-center gap-0.5 shrink-0">
+              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" strokeWidth={1.5} />
+              <span className="text-[12px] font-bold text-foreground">4.9</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-1 text-[11px] text-muted-foreground mb-3">
+            <MapPin className="w-3 h-3 shrink-0" strokeWidth={1.5} />
+            <span>Yerba Buena, Tucumán</span>
+          </div>
+          <div className="flex items-center justify-between pt-2.5 border-t border-border">
+            <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
+              <Users className="w-3 h-3 shrink-0" strokeWidth={1.5} />
+              <span>hasta 200 personas</span>
+            </div>
+            <p className="text-[13px] font-extrabold text-foreground">$8.000/h</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export function HomePage() {
   const [chipActivo, setChipActivo] = useState('Todos')
 
   return (
     <>
-      {/* ── HERO ──────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-background">
-        {/* Mancha coral decorativa — solo visible en modo claro */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-32 -right-32 w-[520px] h-[520px] rounded-full dark:opacity-0 transition-opacity"
-          style={{ background: 'radial-gradient(circle, rgba(232,69,42,0.10) 0%, transparent 70%)' }}
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute bottom-0 left-1/3 w-[360px] h-[360px] rounded-full dark:opacity-0 transition-opacity"
-          style={{ background: 'radial-gradient(circle, rgba(232,69,42,0.06) 0%, transparent 70%)' }}
-        />
+      {/* ══════════════════════════════════════════════
+          HERO — bg-background (hueso)
+      ══════════════════════════════════════════════ */}
+      <section
+        className="bg-background relative overflow-hidden"
+        style={{
+          backgroundImage:
+            'radial-gradient(ellipse 70% 55% at 95% 0%, rgba(232,69,42,0.07) 0%, transparent 55%)',
+        }}
+      >
+        <div className="mx-auto max-w-7xl px-5 lg:px-8 pt-16 pb-0 lg:pt-24">
 
-        <div className="max-w-7xl mx-auto px-5 lg:px-8 pt-10 lg:pt-16 pb-10 lg:pb-20 grid lg:grid-cols-[1.15fr_1fr] gap-10 items-center">
-
-          {/* Columna izquierda */}
-          <div>
-            {/* Badge ámbar */}
-            <span className="inline-block bg-amber-light text-amber-dark border border-amber/30 text-[11px] font-bold uppercase tracking-[0.12em] px-3 py-1 rounded-full">
-              TUCUMÁN · 2026
-            </span>
-
-            {/* Título */}
-            <h1 className="mt-4 text-[32px] sm:text-[44px] lg:text-[68px] leading-[0.95] font-extrabold text-foreground tracking-tight">
-              Celebrá cerca<span className="text-primary">.</span>
-            </h1>
-
-            <p className="mt-5 text-[17px] lg:text-[18px] leading-relaxed text-muted-foreground max-w-xl">
-              Encontrá el salón perfecto para tu próximo evento. Filtrá por zona, capacidad y
-              presupuesto, y reservá en minutos — sin llamadas ni idas y vueltas.
-            </p>
-
-            {/* SearchBar funcional — navega a /salones con parámetros reales */}
-            <div className="mt-8">
-              <SearchBar />
+          {/* Headline + decoración derecha */}
+          <div className="grid lg:grid-cols-[1fr_auto] lg:items-end gap-8 lg:gap-12 pb-10 lg:pb-14">
+            <div>
+              <h1
+                className="font-extrabold text-foreground leading-[1.0] tracking-tight"
+                style={{ fontSize: 'clamp(44px, 5.8vw, 86px)' }}
+              >
+                El salón perfecto<br />
+                para tu próximo<br />
+                <span className="text-primary">evento.</span>
+              </h1>
+              <p className="mt-5 text-[16px] lg:text-[17px] text-muted-foreground leading-relaxed max-w-[480px]">
+                Reservá espacios de eventos en Tucumán.
+                Más de 120 salones verificados, confirmación en menos de 24 horas.
+              </p>
             </div>
 
-            {/* Chips de tipo de evento */}
-            <div className="mt-6 flex flex-wrap gap-2">
+            {/* Tarjeta decorativa — solo desktop */}
+            <HeroCard />
+          </div>
+
+          <div className="h-px bg-border" />
+
+          {/* SearchBar + chips — grupo visual unificado */}
+          <div className="pt-8 max-w-3xl">
+            <SearchBar />
+
+            {/* Chips — pegados al search bar */}
+            <div className="flex flex-wrap gap-[7px] mt-3 pb-5">
               {CHIPS.map((chip) => (
                 <button
                   key={chip}
                   type="button"
                   onClick={() => setChipActivo(chip)}
                   aria-pressed={chipActivo === chip}
-                  className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full border text-[14px] font-medium transition cursor-pointer ${
+                  className={[
+                    'inline-flex items-center px-[18px] py-2 rounded-full text-[13px] font-semibold border-[1.5px] transition-all duration-[180ms] cursor-pointer',
                     chipActivo === chip
-                      ? 'bg-foreground text-background border-foreground'
-                      : 'bg-card text-foreground border-border hover:border-primary hover:text-primary'
-                  }`}
+                      ? 'bg-primary text-primary-foreground border-primary shadow-[0_2px_10px_rgba(232,69,42,0.24)]'
+                      : 'bg-transparent text-muted-foreground border-border hover:border-primary hover:text-primary',
+                  ].join(' ')}
                 >
                   {chip}
                 </button>
               ))}
             </div>
-
-            {/* Trust indicators */}
-            <div className="mt-8 flex flex-wrap items-center gap-6 text-[13px] text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span><strong className="text-foreground">+120</strong> salones verificados</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-                <span>Confirmación en <strong className="text-foreground">menos de 24h</strong></span>
-              </div>
-              <div className="flex items-center gap-2">
-                <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zM5 21h14a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2z" />
-                </svg>
-                <span>Precios claros, <strong className="text-foreground">sin sorpresas</strong></span>
-              </div>
-            </div>
           </div>
 
-          {/* Columna derecha — visual hero */}
-          <div className="relative hidden lg:block">
-            <div
-              className="rounded-[28px] aspect-[4/5] relative overflow-hidden shadow-[0_4px_12px_rgba(28,43,58,0.08),0_16px_40px_-16px_rgba(28,43,58,0.18)]"
-              style={{ background: 'linear-gradient(135deg, #FCE3DC 0%, var(--color-bone-dark) 100%)' }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/30" />
-              <div className="absolute top-5 left-5">
-                <span className="bg-primary text-primary-foreground text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">
-                  Nuevo en Hosty
-                </span>
-              </div>
-              {/* Mini card inferior */}
-              <div className="absolute bottom-5 left-5 right-5 bg-card border border-border rounded-2xl p-4 shadow-sm">
-                <div className="flex items-start gap-3">
-                  <div
-                    className="w-14 h-14 rounded-xl flex-shrink-0"
-                    style={{ background: 'linear-gradient(135deg, var(--color-amber-light) 0%, var(--color-amber) 100%)' }}
-                  />
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-bold text-[15px] truncate text-foreground">Salón Los Jazmines</h3>
-                      <svg className="w-4 h-4 text-primary flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <p className="text-[12px] text-muted-foreground">Yerba Buena · hasta 180 personas</p>
-                    <div className="flex items-center justify-between mt-2">
-                      <div className="flex items-center gap-1 text-[12px]">
-                        <span className="text-amber">★</span>
-                        <span className="font-semibold text-foreground">4.9</span>
-                        <span className="text-muted-foreground">(42)</span>
-                      </div>
-                      <span className="text-[13px] font-bold text-foreground">desde $ 85.000</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          {/* Trust indicators */}
+          <div className="flex flex-wrap items-center gap-4 lg:gap-6 pb-14 text-[13px] text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-primary shrink-0" strokeWidth={1.5} />
+              <span>
+                <strong className="text-foreground font-semibold">+120</strong> salones verificados
+              </span>
             </div>
-
-            {/* Floating card "Reserva confirmada" */}
-            <div className="absolute -left-6 top-10 bg-card rounded-2xl shadow-[0_4px_12px_rgba(28,43,58,0.08)] border border-border p-4 w-56 hidden xl:block">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                  <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                  </svg>
-                </div>
-                <span className="font-semibold text-[13px] text-foreground">Reserva confirmada</span>
-              </div>
-              <p className="text-[12px] text-muted-foreground">15 · Mayo · 2026 — 21:00 hs</p>
+            <div className="h-3 w-px bg-border hidden sm:block" />
+            <div className="flex items-center gap-2">
+              <Zap className="w-4 h-4 text-primary shrink-0" strokeWidth={1.5} />
+              <span>
+                Confirmación en <strong className="text-foreground font-semibold">menos de 24h</strong>
+              </span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── SECCIONES DE DEV (datos reales de Supabase) ─── */}
+      {/* ══════════════════════════════════════════════
+          SECCIONES
+      ══════════════════════════════════════════════ */}
       <ValueProps />
       <FeaturedSalones />
       <HostCTA />
