@@ -6,39 +6,35 @@ interface HostyLogoProps {
   showWordmark?: boolean
 }
 
+const SIZE_MAP = {
+  sm: { iso: 'w-5 h-5', text: 'text-base' },
+  md: { iso: 'w-7 h-7', text: 'text-xl' },
+  lg: { iso: 'w-9 h-9', text: 'text-2xl' },
+}
+
 function HostyIsotipo({ className }: { className?: string }) {
   return (
     <svg
-      width="22"
-      height="26"
-      viewBox="0 0 20 24"
+      viewBox="0 0 120 120"
       fill="currentColor"
       aria-hidden
       className={className}
     >
-      {/*
-        "n" arch shape — single compound path with evenodd fill:
-        - Outer arch: semicircle from (0,10) to (20,10) peaking at (10,0)
-        - Inner arch: semicircle from (14,10) to (6,10) peaking at (10,6)
-        - Two rectangular legs connecting arch to base (y=10 → y=24)
-        - Dot: circle at (10,8) r=2, punched out via evenodd as pin marker
-      */}
-      <path
-        fillRule="evenodd"
-        d="M0 24V10A10 10 0 0 0 20 10V24H14V10A4 4 0 0 0 6 10V24H0Z M8 8a2 2 0 1 0 4 0a2 2 0 1 0-4 0"
-      />
+      <rect x="18" y="18" width="20" height="84" rx="3" />
+      <rect x="82" y="18" width="20" height="84" rx="3" />
+      <path d="M18 62 a42 42 0 0 1 84 0 v14 h-20 v-14 a22 22 0 0 0 -44 0 v14 h-20 z" />
+      <circle cx="60" cy="58" r="6" />
     </svg>
   )
 }
 
 export function HostyLogo({ className, size = 'md', showWordmark = true }: HostyLogoProps) {
-  const textSize = size === 'sm' ? 'text-lg' : size === 'lg' ? 'text-2xl' : 'text-xl'
-
+  const { iso, text } = SIZE_MAP[size]
   return (
-    <div className={cn('flex items-center gap-2 text-primary', className)}>
-      <HostyIsotipo />
+    <div className={cn('flex items-center gap-2.5 text-primary', className)}>
+      <HostyIsotipo className={iso} />
       {showWordmark && (
-        <span className={cn('font-extrabold tracking-tight', textSize)}>hosty</span>
+        <span className={cn('font-extrabold tracking-tight', text)}>hosty</span>
       )}
     </div>
   )
