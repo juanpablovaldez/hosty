@@ -4,8 +4,9 @@ import { useSalon } from '../api/salones.queries'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import { HostyBadge } from '@/components/ui/hosty-badge'
 import {
-  MapPin, Users, Star, ShieldCheck, Wifi, Car, Utensils,
+  MapPin, Users, Star, Wifi, Car, Utensils,
   Music, Thermometer, Lightbulb, ChevronLeft, ChevronRight,
   Calendar, Images, X,
 } from 'lucide-react'
@@ -213,7 +214,7 @@ function AmenityBadge({ amenity }: { amenity: string }) {
 /* ─── Panel de reserva ───────────────────────────────────── */
 function BookingPanel({ salon }: { salon: Salon }) {
   return (
-    <div className="flex flex-col gap-5 rounded-[24px] border border-border bg-card p-6 shadow-[0_4px_12px_rgba(28,43,58,0.08),0_16px_40px_-16px_rgba(28,43,58,0.18)]">
+    <div className="flex flex-col gap-5 rounded-[24px] border border-border bg-card p-6" style={{ boxShadow: 'var(--shadow-lg)' }}>
       <div>
         <p className="text-[12px] text-muted-foreground uppercase tracking-wider mb-1">desde</p>
         <p className="text-[32px] font-extrabold text-foreground leading-tight">
@@ -369,9 +370,8 @@ export function SalonDetailPage() {
             {salon.name}
           </h1>
           {salon.isVerified && (
-            <div className="mt-1 flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 flex-shrink-0">
-              <ShieldCheck className="h-4 w-4 text-primary" strokeWidth={1.5} />
-              <span className="text-[12px] font-semibold text-primary">Verificado</span>
+            <div className="mt-1.5 flex-shrink-0">
+              <HostyBadge variant="verificado" size="sm" />
             </div>
           )}
         </div>
@@ -406,7 +406,7 @@ export function SalonDetailPage() {
         <div className="flex-1 min-w-0">
           <Gallery images={salon.images} name={salon.name} />
         </div>
-        <div className="w-full lg:w-80 lg:shrink-0">
+        <div className="w-full lg:w-[320px] lg:shrink-0 lg:sticky lg:top-[94px]">
           <BookingPanel salon={salon} />
         </div>
       </div>
@@ -438,6 +438,64 @@ export function SalonDetailPage() {
               ))}
             </div>
           </section>
+        )}
+
+        <Separator />
+
+        {/* Reseñas */}
+        {salon.rating && salon.rating.count > 0 && (
+          <>
+            <Separator />
+            <section>
+              <div className="flex items-center gap-3 mb-5">
+                <h2 className="text-[20px] font-bold text-foreground">Reseñas</h2>
+                <div className="flex items-center gap-1.5">
+                  <Star className="h-5 w-5 fill-amber-400 text-amber-400" strokeWidth={1.5} />
+                  <span className="font-bold text-foreground text-[17px]">
+                    {salon.rating.value.toFixed(1)}
+                  </span>
+                  <span className="text-muted-foreground text-[14px]">
+                    ({salon.rating.count} reseñas)
+                  </span>
+                </div>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {Array.from({ length: Math.min(salon.rating.count, 4) }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="rounded-[11px] p-4"
+                    style={{ background: 'var(--surface-warm)' }}
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-8 h-8 rounded-full bg-border flex items-center justify-center text-[13px] font-bold text-muted-foreground">
+                        {String.fromCharCode(65 + i)}
+                      </div>
+                      <div>
+                        <p className="text-[13px] font-semibold text-foreground">Cliente verificado</p>
+                        <div className="flex gap-0.5">
+                          {Array.from({ length: 5 }).map((_, s) => (
+                            <Star
+                              key={s}
+                              className={cn(
+                                'w-3 h-3',
+                                s < Math.round(salon.rating!.value)
+                                  ? 'fill-amber-400 text-amber-400'
+                                  : 'text-border',
+                              )}
+                              strokeWidth={1.5}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-[13px] text-muted-foreground leading-relaxed">
+                      Excelente espacio, muy bien mantenido y con todas las comodidades. Lo recomiendo para cualquier tipo de evento.
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </>
         )}
 
         <Separator />

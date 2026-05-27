@@ -3,6 +3,7 @@ import { Link } from '@tanstack/react-router'
 import type { Salon } from '../types'
 import { Heart, Users, Star, MapPin } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
+import { HostyBadge } from '@/components/ui/hosty-badge'
 import { cn } from '@/shared/lib/utils'
 
 interface CardSalonProps {
@@ -28,33 +29,33 @@ export function CardSalon({ salon, onFavoriteToggle }: CardSalonProps) {
   }
 
   return (
-    <article className="group cursor-pointer bg-card rounded-[20px] overflow-hidden shadow-[0_1px_3px_rgba(28,43,58,0.06),0_8px_24px_-12px_rgba(28,43,58,0.12)] hover:shadow-[0_4px_12px_rgba(28,43,58,0.08),0_16px_40px_-16px_rgba(28,43,58,0.18)] transition border border-border">
+    <article
+      className="group cursor-pointer bg-card rounded-[14px] overflow-hidden border border-border transition-all duration-[250ms] hover:-translate-y-[5px] hover:border-primary/20"
+      style={{ boxShadow: 'var(--shadow-sm)' }}
+      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = 'var(--shadow-lg)' }}
+      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = 'var(--shadow-sm)' }}
+    >
       <Link
         to="/salones/$id"
         params={{ id: salon.id }}
-        className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-[20px]"
+        className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-[14px]"
       >
         {/* Imagen */}
-        <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+        <div className="relative h-[214px] overflow-hidden bg-muted">
+          <div className="w-full h-full transition-transform duration-[550ms] ease-in-out group-hover:scale-[1.05]">
           <img
             src={coverImage}
             alt={salon.name}
             loading="lazy"
             decoding="async"
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            className="h-full w-full object-cover"
           />
+          </div>
 
           {/* Badge verificado */}
           {salon.isVerified && (
-            <div className="absolute top-3 left-3 flex items-center gap-1 bg-background/90 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm">
-              <svg className="w-3 h-3 text-primary" fill="currentColor" viewBox="0 0 20 20">
-                <path
-                  fillRule="evenodd"
-                  d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span className="text-xs font-semibold text-primary">Verificado</span>
+            <div className="absolute top-3 left-3">
+              <HostyBadge variant="verificado" size="sm" />
             </div>
           )}
 
@@ -75,7 +76,7 @@ export function CardSalon({ salon, onFavoriteToggle }: CardSalonProps) {
             type="button"
             aria-label={fav ? 'Quitar de favoritos' : 'Guardar en favoritos'}
             onClick={handleFavorite}
-            className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/95 hover:bg-white flex items-center justify-center transition shadow-sm"
+            className="absolute top-3 right-3 w-9 h-9 rounded-full bg-card/95 hover:bg-card flex items-center justify-center transition shadow-sm backdrop-blur-sm"
           >
             <Heart
               className={cn(

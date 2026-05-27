@@ -7,12 +7,20 @@ import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { Moon, Sun, Menu, LogOut, User } from 'lucide-react'
 import { cn } from '@/shared/lib/utils'
+import { HostyLogo } from './HostyLogo'
 
 const ROUTER_LINKS = [
   { to: '/' as const, label: 'Inicio' },
   { to: '/salones' as const, label: 'Salones' },
   { to: '/mis-reservas' as const, label: 'Mis Reservas' },
 ]
+
+const navLinkBase = [
+  'relative pb-0.5 text-[14px] font-semibold transition-colors duration-[180ms]',
+  'after:absolute after:bottom-[-2px] after:left-0 after:right-0',
+  'after:h-[1.5px] after:bg-primary',
+  'after:transition-transform after:duration-[220ms] after:origin-left',
+].join(' ')
 
 export function Header() {
   const { theme, toggleTheme } = useThemeStore()
@@ -27,25 +35,30 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-card/95 backdrop-blur-sm">
+    <header className="sticky top-0 z-[100] border-b border-border bg-background/94 backdrop-blur-lg relative">
+      {/* Línea coral 2.5px — tope del header (handoff §2a) */}
+      <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-primary" />
+
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 lg:px-8">
         {/* Logo */}
         <Link
           to="/"
-          className="flex items-center gap-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
-          <span className="text-2xl font-extrabold tracking-tight text-primary">hosty</span>
+          <HostyLogo size="md" />
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-6 md:flex">
+        <nav className="hidden items-center gap-[34px] md:flex">
           {ROUTER_LINKS.map(({ to, label }) => (
             <Link
               key={to}
               to={to}
               className={cn(
-                'text-sm font-medium transition-colors hover:text-primary',
-                pathname === to ? 'text-primary' : 'text-muted-foreground',
+                navLinkBase,
+                pathname === to
+                  ? 'text-foreground after:scale-x-100'
+                  : 'text-muted-foreground after:scale-x-0 hover:text-foreground hover:after:scale-x-100',
               )}
             >
               {label}
@@ -53,7 +66,10 @@ export function Header() {
           ))}
           <a
             href="/#como-funciona"
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+            className={cn(
+              navLinkBase,
+              'text-muted-foreground after:scale-x-0 hover:text-foreground hover:after:scale-x-100',
+            )}
           >
             Cómo funciona
           </a>
@@ -86,16 +102,16 @@ export function Header() {
                 <LogOut className="h-4 w-4" strokeWidth={1.5} />
                 Salir
               </Button>
-              <Button asChild size="sm" className="hidden md:flex">
+              <Button asChild size="sm" className="hidden md:flex font-semibold" style={{ boxShadow: '0 2px 10px rgba(232,69,42,.28)' }}>
                 <Link to="/host/create">Publicar salón</Link>
               </Button>
             </>
           ) : (
             <>
-              <Button asChild variant="ghost" size="sm" className="hidden md:flex">
+              <Button asChild variant="ghost" size="sm" className="hidden md:flex text-[14px] font-semibold">
                 <Link to="/login">Iniciar sesión</Link>
               </Button>
-              <Button asChild size="sm" className="hidden md:flex">
+              <Button asChild size="sm" className="hidden md:flex font-semibold" style={{ boxShadow: '0 2px 10px rgba(232,69,42,.28)' }}>
                 <Link to="/login">Publicar salón</Link>
               </Button>
             </>
@@ -110,7 +126,9 @@ export function Header() {
             </SheetTrigger>
             <SheetContent side="right" className="w-72">
               <SheetHeader className="mb-6">
-                <SheetTitle className="text-left text-2xl font-extrabold text-primary">hosty</SheetTitle>
+                <SheetTitle className="text-left">
+                  <HostyLogo size="md" />
+                </SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col gap-1">
                 {ROUTER_LINKS.map(({ to, label }) => (
@@ -119,7 +137,7 @@ export function Header() {
                     to={to}
                     onClick={() => setMobileOpen(false)}
                     className={cn(
-                      'rounded-lg px-3 py-2.5 text-sm font-medium transition-colors hover:bg-muted',
+                      'rounded-lg px-3 py-2.5 text-sm font-semibold transition-colors hover:bg-muted',
                       pathname === to ? 'bg-primary/10 text-primary' : 'text-foreground',
                     )}
                   >
@@ -129,7 +147,7 @@ export function Header() {
                 <a
                   href="/#como-funciona"
                   onClick={() => setMobileOpen(false)}
-                  className="rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+                  className="rounded-lg px-3 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
                 >
                   Cómo funciona
                 </a>
@@ -140,7 +158,7 @@ export function Header() {
                         <User className="h-4 w-4 flex-shrink-0 text-muted-foreground" strokeWidth={1.5} />
                         <span className="truncate text-sm text-foreground">{user.email}</span>
                       </div>
-                      <Button asChild variant="outline" className="w-full" onClick={() => setMobileOpen(false)}>
+                      <Button asChild variant="outline" className="w-full font-semibold" onClick={() => setMobileOpen(false)}>
                         <Link to="/host/create">Publicar mi salón</Link>
                       </Button>
                       <Button
@@ -154,10 +172,10 @@ export function Header() {
                     </>
                   ) : (
                     <>
-                      <Button asChild variant="outline" className="w-full" onClick={() => setMobileOpen(false)}>
+                      <Button asChild variant="outline" className="w-full font-semibold" onClick={() => setMobileOpen(false)}>
                         <Link to="/login">Iniciar sesión</Link>
                       </Button>
-                      <Button asChild className="w-full" onClick={() => setMobileOpen(false)}>
+                      <Button asChild className="w-full font-semibold" onClick={() => setMobileOpen(false)}>
                         <Link to="/login">Publicar mi salón</Link>
                       </Button>
                     </>

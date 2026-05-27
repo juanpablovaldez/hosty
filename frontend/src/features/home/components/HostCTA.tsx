@@ -1,34 +1,84 @@
 import { Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, Building2 } from 'lucide-react'
+import { HostyIso } from '@/components/ui/hosty-badge'
+import { ArrowRight } from 'lucide-react'
 
 export function HostCTA() {
   return (
-    <section className="bg-primary py-16">
-      <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 px-6 text-center md:flex-row md:justify-between md:text-left">
-        <div className="flex items-start gap-4">
-          <div className="hidden rounded-2xl bg-primary-foreground/15 p-3 md:flex">
-            <Building2 className="h-8 w-8 text-primary-foreground" strokeWidth={1.5} />
-          </div>
+    <section className="relative overflow-hidden bg-amber">
+      {/* Textura diagonal — stripes sutiles en tinta */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage:
+            'repeating-linear-gradient(-52deg, rgba(28,43,58,0.034) 0, rgba(28,43,58,0.034) 1px, transparent 1px, transparent 14px)',
+        }}
+      />
+
+      {/* Logo Hosty grande — se asoma por la derecha como watermark de marca */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-16 top-1/2 -translate-y-1/2 select-none"
+        style={{ opacity: 0.07 }}
+      >
+        <HostyIso size={320} color="#1C2B3A" />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-7xl px-5 lg:px-8 py-[84px]">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-10 md:gap-16">
+
+          {/* Izquierda — headline + bajada */}
           <div>
-            <h2 className="text-2xl font-bold text-primary-foreground md:text-3xl">
-              ¿Tenés un salón?
+            <h2
+              className="font-extrabold text-ink leading-none tracking-tight mb-4"
+              style={{ fontSize: 'clamp(42px, 4vw, 64px)', letterSpacing: '-0.052em' }}
+            >
+              ¿Tenés<br />
+              un{' '}
+              <em
+                className="not-italic"
+                style={{
+                  fontFamily: 'var(--font-serif-accent)',
+                  fontStyle: 'italic',
+                  letterSpacing: '-0.02em',
+                }}
+              >
+                salón?
+              </em>
             </h2>
-            <p className="mt-2 text-primary-foreground/80">
-              Publicalo gratis y llegá a cientos de organizadores en Tucumán.
+
+            <p className="text-[15.5px] text-ink/60 leading-[1.72] max-w-[420px]">
+              Publicá tu espacio en Hosty y empezá a recibir reservas desde el primer día.
+              Sin comisiones ni trámites.
             </p>
           </div>
+
+          {/* Derecha — botones */}
+          <div className="flex flex-col items-start md:items-end gap-2.5 shrink-0">
+            <Button
+              asChild
+              variant="dark"
+              size="lg"
+              className="gap-2 font-bold"
+              style={{ boxShadow: 'var(--shadow-sm)' }}
+            >
+              <Link to="/">
+                Publicar mi salón
+                <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
+              </Link>
+            </Button>
+
+            <a
+              href="/#como-funciona"
+              className="text-[14px] font-semibold text-ink/56 hover:text-ink border border-ink/18 hover:border-ink/40 rounded-md px-6 py-2.5 transition-colors duration-[180ms]"
+            >
+              Saber más →
+            </a>
+
+            <p className="text-[11.5px] text-ink/40 mt-0.5">Sin tarjeta de crédito requerida</p>
+          </div>
         </div>
-        <Button
-          asChild
-          size="lg"
-          className="shrink-0 gap-2 bg-primary-foreground text-primary hover:bg-primary-foreground/90"
-        >
-          <Link to="/">
-            Publicar mi salón
-            <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
-          </Link>
-        </Button>
       </div>
     </section>
   )

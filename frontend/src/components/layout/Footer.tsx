@@ -1,4 +1,5 @@
 import { Link } from '@tanstack/react-router'
+import { HostyLogo } from './HostyLogo'
 
 const LINKS = {
   Plataforma: [
@@ -18,7 +19,7 @@ export function Footer() {
         <div className="grid gap-8 sm:grid-cols-3">
           {/* Brand */}
           <div className="flex flex-col gap-3">
-            <span className="text-xl font-extrabold tracking-tight text-primary">hosty</span>
+            <HostyLogo size="sm" />
             <p className="text-sm leading-relaxed text-muted-foreground">
               El marketplace de salones para eventos en Tucumán. Reservá con confianza.
             </p>
