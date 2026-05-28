@@ -1,13 +1,14 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useSearch, useNavigate } from '@tanstack/react-router'
-import { MapPin, Calendar, Users, Search, SlidersHorizontal, X, ChevronLeft, ChevronRight, Star, Map } from 'lucide-react'
+import { MapPin, Users, Search, SlidersHorizontal, X, ChevronLeft, ChevronRight, Star, Map } from 'lucide-react'
+import { ZONAS_TUCUMAN } from '@/features/salones/constants'
 import { useSearchSalones } from '../api/salones.queries'
 import { CardSalon } from './CardSalon'
 import type { SalonSearchParams } from '../types'
 
 /* ─── Constantes ─────────────────────────────────────────── */
 const CHIPS_TIPO = ['Todos los tipos', 'Cumpleaños', 'Casamientos', 'Corporativo', 'Egresos', 'Infantiles']
-const ZONAS = ['Centro', 'Yerba Buena', 'Tafí Viejo', 'Banda del Río Salí']
+const ZONAS = [...ZONAS_TUCUMAN]
 const SERVICIOS = ['Catering', 'Estacionamiento', 'Climatización', 'Sonido', 'Wi-Fi', 'Iluminación']
 const ITEMS_PER_PAGE = 4
 
@@ -92,6 +93,19 @@ export function SalonesPage() {
   const vistaLista = true
   const paginaActual = search.page ?? 1
 
+  // Estado local de la barra de búsqueda sticky (se aplica al hacer clic en Buscar)
+  const [barZona, setBarZona] = useState(zonasActivas[0] ?? '')
+  const [barCapacidad, setBarCapacidad] = useState(capacidadMin > 0 ? String(capacidadMin) : '')
+
+  function handleBarSearch(e: React.FormEvent) {
+    e.preventDefault()
+    setFilter({
+      zonas: barZona ? [barZona] : undefined,
+      capacidadMin: barCapacidad ? Number(barCapacidad) : undefined,
+      page: undefined,
+    })
+  }
+
   function setFilter(patch: Record<string, unknown>) {
     navigate({ search: (prev) => ({ ...prev, ...patch }), replace: true })
   }
@@ -167,36 +181,46 @@ export function SalonesPage() {
     <>
       {/* ── Barra de búsqueda sticky ─── */}
       <div className="bg-card border-b border-border sticky top-16 z-30">
-        <div className="max-w-7xl mx-auto px-5 lg:px-8 py-4 flex items-center gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <form
+          onSubmit={handleBarSearch}
+          className="max-w-7xl mx-auto px-5 lg:px-8 py-3 flex items-center gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+        >
+          {/* Zona */}
+          <div className="flex items-center gap-2 bg-muted rounded-full px-4 py-2 min-w-fit">
+            <MapPin className="w-4 h-4 text-primary flex-shrink-0" strokeWidth={1.5} />
+            <select
+              value={barZona}
+              onChange={(e) => setBarZona(e.target.value)}
+              className="text-[14px] font-medium bg-transparent border-0 focus:outline-none appearance-none cursor-pointer text-foreground pr-1"
+            >
+              <option value="">Todas las zonas</option>
+              {ZONAS.map((z) => (
+                <option key={z} value={z}>{z}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Invitados */}
+          <div className="flex items-center gap-2 bg-muted rounded-full px-4 py-2 min-w-[160px]">
+            <Users className="w-4 h-4 text-muted-foreground flex-shrink-0" strokeWidth={1.5} />
+            <input
+              type="number"
+              min={1}
+              placeholder="¿Cuántos invitados?"
+              value={barCapacidad}
+              onChange={(e) => setBarCapacidad(e.target.value)}
+              className="text-[14px] font-medium bg-transparent border-0 focus:outline-none w-full placeholder:text-muted-foreground text-foreground"
+            />
+          </div>
+
           <button
-            type="button"
-            className="flex items-center gap-2 bg-muted rounded-full px-4 py-2.5 min-w-fit hover:bg-muted/80 transition"
+            type="submit"
+            className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-full px-4 py-2 min-w-fit text-[14px] transition"
           >
-            <MapPin className="w-5 h-5 text-primary flex-shrink-0" strokeWidth={1.5} />
-            <span className="text-[14px] font-medium whitespace-nowrap">San Miguel de Tucumán</span>
-          </button>
-          <button
-            type="button"
-            className="flex items-center gap-2 bg-muted rounded-full px-4 py-2.5 min-w-fit hover:bg-muted/80 transition"
-          >
-            <Calendar className="w-5 h-5 text-muted-foreground flex-shrink-0" strokeWidth={1.5} />
-            <span className="text-[14px] font-medium whitespace-nowrap">Elegí una fecha</span>
-          </button>
-          <button
-            type="button"
-            className="flex items-center gap-2 bg-muted rounded-full px-4 py-2.5 min-w-fit hover:bg-muted/80 transition"
-          >
-            <Users className="w-5 h-5 text-muted-foreground flex-shrink-0" strokeWidth={1.5} />
-            <span className="text-[14px] font-medium whitespace-nowrap">¿Cuántos invitados?</span>
-          </button>
-          <button
-            type="button"
-            className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-full px-4 py-2.5 min-w-fit text-[14px] transition"
-          >
-            <Search className="w-5 h-5" strokeWidth={1.5} />
+            <Search className="w-4 h-4" strokeWidth={1.5} />
             Buscar
           </button>
-        </div>
+        </form>
       </div>
 
       {/* ── Chips de tipo de evento ─── */}
@@ -217,7 +241,14 @@ export function SalonesPage() {
           </button>
         ))}
         <span className="ml-auto text-[13px] text-muted-foreground hidden md:inline">
-          Mostrando <strong className="text-foreground">{isLoading ? '…' : salonesFiltrados.length}</strong> salones
+          {isLoading ? '…' : (
+            <>
+              <strong className="text-foreground">{salonesFiltrados.length}</strong> salones
+              {totalPaginas > 1 && (
+                <> · pág. <strong className="text-foreground">{paginaActual}</strong> de <strong className="text-foreground">{totalPaginas}</strong></>
+              )}
+            </>
+          )}
         </span>
       </div>
 
