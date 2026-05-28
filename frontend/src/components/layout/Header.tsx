@@ -5,7 +5,7 @@ import { useAuthStore } from '@/features/auth/store/auth.store'
 import { signOut } from '@/features/auth/lib/auth'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
-import { Moon, Sun, Menu, LogOut, User } from 'lucide-react'
+import { Moon, Sun, Menu, LogOut, User, Heart, LayoutDashboard } from 'lucide-react'
 import { cn } from '@/shared/lib/utils'
 import { HostyLogo } from './HostyLogo'
 
@@ -90,9 +90,12 @@ export function Header() {
 
           {user ? (
             <>
-              <span className="hidden max-w-[140px] truncate text-sm text-muted-foreground md:block">
-                {user.email}
-              </span>
+              <Button asChild variant="ghost" size="sm" className="hidden gap-1.5 md:flex text-[14px] font-semibold">
+                <Link to="/host/dashboard">
+                  <LayoutDashboard className="h-4 w-4" strokeWidth={1.5} />
+                  Mi panel
+                </Link>
+              </Button>
               <Button
                 variant="ghost"
                 size="sm"
@@ -158,6 +161,30 @@ export function Header() {
                         <User className="h-4 w-4 flex-shrink-0 text-muted-foreground" strokeWidth={1.5} />
                         <span className="truncate text-sm text-foreground">{user.email}</span>
                       </div>
+                      <Link
+                        to="/mi-perfil"
+                        onClick={() => setMobileOpen(false)}
+                        className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
+                      >
+                        <User className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
+                        Mi Perfil
+                      </Link>
+                      <Link
+                        to="/mis-favoritos"
+                        onClick={() => setMobileOpen(false)}
+                        className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
+                      >
+                        <Heart className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
+                        Mis Favoritos
+                      </Link>
+                      <Link
+                        to="/host/dashboard"
+                        onClick={() => setMobileOpen(false)}
+                        className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
+                      >
+                        <LayoutDashboard className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
+                        Mi Panel de Host
+                      </Link>
                       <Button asChild variant="outline" className="w-full font-semibold" onClick={() => setMobileOpen(false)}>
                         <Link to="/host/create">Publicar mi salón</Link>
                       </Button>
