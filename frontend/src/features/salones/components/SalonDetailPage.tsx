@@ -440,8 +440,6 @@ export function SalonDetailPage() {
           </section>
         )}
 
-        <Separator />
-
         {/* Reseñas */}
         {salon.rating && salon.rating.count > 0 && (
           <>

@@ -36,7 +36,7 @@ function Pagination({ paginaActual, totalPaginas, onPageChange }: { paginaActual
   }
 
   return (
-    <div className="mt-10 flex items-center gap-1">
+    <div className="mt-10 flex items-center justify-center gap-1">
       <button type="button" disabled={paginaActual === 1} onClick={() => onPageChange(paginaActual - 1)}
         className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground disabled:opacity-40 hover:bg-muted transition" aria-label="Página anterior">
         <ChevronLeft className="w-5 h-5" strokeWidth={1.5} />
@@ -234,7 +234,7 @@ export function SalonesPage() {
             className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full border text-[14px] font-medium transition cursor-pointer ${
               chipActivo === chip
                 ? 'bg-foreground text-background border-foreground'
-                : 'bg-card text-foreground border-border hover:border-primary hover:text-primary'
+                : 'bg-card text-foreground border-border hover:border-primary hover:text-primary hover:bg-primary/5'
             }`}
           >
             {chip}
