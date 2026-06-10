@@ -10,9 +10,10 @@ import { cn } from '@/shared/lib/utils'
 import { HostyLogo } from './HostyLogo'
 
 const ROUTER_LINKS = [
-  { to: '/' as const, label: 'Inicio' },
   { to: '/salones' as const, label: 'Salones' },
   { to: '/mis-reservas' as const, label: 'Mis Reservas' },
+  { to: '/mis-favoritos' as const, label: 'Mis favoritos' },
+  { to: '/mi-perfil' as const, label: 'Mi perfil' },
 ]
 
 const navLinkBase = [

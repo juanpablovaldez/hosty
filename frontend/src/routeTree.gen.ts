@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SalonesRouteImport } from './routes/salones'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as MisReservasRouteImport } from './routes/mis-reservas'
+import { Route as MisFavoritosRouteImport } from './routes/mis-favoritos'
+import { Route as MiPerfilRouteImport } from './routes/mi-perfil'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SalonesIndexRouteImport } from './routes/salones/index'
@@ -35,6 +37,16 @@ const RegisterRoute = RegisterRouteImport.update({
 const MisReservasRoute = MisReservasRouteImport.update({
   id: '/mis-reservas',
   path: '/mis-reservas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MisFavoritosRoute = MisFavoritosRouteImport.update({
+  id: '/mis-favoritos',
+  path: '/mis-favoritos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MiPerfilRoute = MiPerfilRouteImport.update({
+  id: '/mi-perfil',
+  path: '/mi-perfil',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -86,6 +98,8 @@ const HostIdEditRoute = HostIdEditRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/mi-perfil': typeof MiPerfilRoute
+  '/mis-favoritos': typeof MisFavoritosRoute
   '/mis-reservas': typeof MisReservasRoute
   '/register': typeof RegisterRoute
   '/salones': typeof SalonesRouteWithChildren
@@ -100,6 +114,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/mi-perfil': typeof MiPerfilRoute
+  '/mis-favoritos': typeof MisFavoritosRoute
   '/mis-reservas': typeof MisReservasRoute
   '/register': typeof RegisterRoute
   '/host/$bookingId': typeof HostBookingIdRoute
@@ -114,6 +130,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/mi-perfil': typeof MiPerfilRoute
+  '/mis-favoritos': typeof MisFavoritosRoute
   '/mis-reservas': typeof MisReservasRoute
   '/register': typeof RegisterRoute
   '/salones': typeof SalonesRouteWithChildren
@@ -130,6 +148,8 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login'
+    | '/mi-perfil'
+    | '/mis-favoritos'
     | '/mis-reservas'
     | '/register'
     | '/salones'
@@ -144,6 +164,8 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/login'
+    | '/mi-perfil'
+    | '/mis-favoritos'
     | '/mis-reservas'
     | '/register'
     | '/host/$bookingId'
@@ -157,6 +179,8 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/login'
+    | '/mi-perfil'
+    | '/mis-favoritos'
     | '/mis-reservas'
     | '/register'
     | '/salones'
@@ -172,6 +196,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
+  MiPerfilRoute: typeof MiPerfilRoute
+  MisFavoritosRoute: typeof MisFavoritosRoute
   MisReservasRoute: typeof MisReservasRoute
   RegisterRoute: typeof RegisterRoute
   SalonesRoute: typeof SalonesRouteWithChildren
@@ -202,6 +228,20 @@ declare module '@tanstack/react-router' {
       path: '/mis-reservas'
       fullPath: '/mis-reservas'
       preLoaderRoute: typeof MisReservasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mis-favoritos': {
+      id: '/mis-favoritos'
+      path: '/mis-favoritos'
+      fullPath: '/mis-favoritos'
+      preLoaderRoute: typeof MisFavoritosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mi-perfil': {
+      id: '/mi-perfil'
+      path: '/mi-perfil'
+      fullPath: '/mi-perfil'
+      preLoaderRoute: typeof MiPerfilRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -288,6 +328,8 @@ const SalonesRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
+  MiPerfilRoute: MiPerfilRoute,
+  MisFavoritosRoute: MisFavoritosRoute,
   MisReservasRoute: MisReservasRoute,
   RegisterRoute: RegisterRoute,
   SalonesRoute: SalonesRouteWithChildren,

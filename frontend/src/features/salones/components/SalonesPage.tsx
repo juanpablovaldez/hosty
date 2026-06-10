@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useSearch, useNavigate } from '@tanstack/react-router'
 import { MapPin, Calendar, Users, Search, SlidersHorizontal, X, ChevronLeft, ChevronRight, Star, Map } from 'lucide-react'
 import { useSearchSalones } from '../api/salones.queries'
@@ -91,6 +91,9 @@ export function SalonesPage() {
   const sortBy = (search.sortBy ?? 'rating') as SortValue
   const vistaLista = true
   const paginaActual = search.page ?? 1
+
+  // Estado draft: el input actualiza esto; solo se aplica al hacer click en "Buscar"
+  const [busquedaDraft, setBusquedaDraft] = useState(busqueda)
 
   function setFilter(patch: Record<string, unknown>) {
     navigate({ search: (prev) => ({ ...prev, ...patch }), replace: true })
@@ -191,6 +194,7 @@ export function SalonesPage() {
           </button>
           <button
             type="button"
+            onClick={() => setFilter({ busqueda: busquedaDraft.trim() || undefined, page: undefined })}
             className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-full px-4 py-2.5 min-w-fit text-[14px] transition"
           >
             <Search className="w-5 h-5" strokeWidth={1.5} />
@@ -228,15 +232,18 @@ export function SalonesPage() {
           <input
             type="text"
             placeholder="Buscar por nombre de salón..."
-            value={busqueda}
-            onChange={(e) => setFilter({ busqueda: e.target.value || undefined, page: undefined })}
+            value={busquedaDraft}
+            onChange={(e) => setBusquedaDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') setFilter({ busqueda: busquedaDraft.trim() || undefined, page: undefined })
+            }}
             className="w-full pl-12 pr-4 py-3 rounded-xl border border-border bg-card text-foreground text-[15px] placeholder:text-muted-foreground focus:outline-none focus:border-primary transition"
           />
-          {busqueda && (
+          {busquedaDraft && (
             <button
               type="button"
               aria-label="Limpiar búsqueda"
-              onClick={() => setFilter({ busqueda: undefined, page: undefined })}
+              onClick={() => { setBusquedaDraft(''); setFilter({ busqueda: undefined, page: undefined }) }}
               className="absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-full hover:bg-muted transition"
             >
               <X className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
