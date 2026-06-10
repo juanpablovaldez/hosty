@@ -217,7 +217,7 @@ export function SalonesPage() {
 
           <button
             type="submit"
-            className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-full px-4 py-2 min-w-fit text-[14px] transition"
+            className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-full px-4 py-2 min-w-fit text-[14px] transition cursor-pointer"
           >
             <Search className="w-4 h-4" strokeWidth={1.5} />
             Buscar

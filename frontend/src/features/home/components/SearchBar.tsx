@@ -70,7 +70,7 @@ export function SearchBar() {
         />
       </div>
 
-      <Button type="submit" size="lg" className="w-full shrink-0 gap-2 rounded-xl font-semibold sm:w-auto">
+      <Button type="submit" size="lg" className="w-full shrink-0 gap-2 rounded-xl font-semibold sm:w-auto cursor-pointer">
         <Search className="h-4 w-4" strokeWidth={1.5} />
         Buscar
       </Button>

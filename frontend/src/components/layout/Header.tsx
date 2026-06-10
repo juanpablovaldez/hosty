@@ -71,19 +71,6 @@ export function Header() {
               {label}
             </Link>
           ))}
-          {user && (
-            <Link
-              to="/host/dashboard"
-              className={cn(
-                navLinkBase,
-                pathname.startsWith('/host')
-                  ? 'text-foreground after:scale-x-100'
-                  : 'text-muted-foreground after:scale-x-0 hover:text-foreground hover:after:scale-x-100',
-              )}
-            >
-              Panel
-            </Link>
-          )}
           <a
             href="/#como-funciona"
             className={cn(
