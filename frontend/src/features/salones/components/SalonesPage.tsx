@@ -93,6 +93,8 @@ export function SalonesPage() {
   const vistaLista = true
   const paginaActual = search.page ?? 1
 
+  const [busquedaDraft, setBusquedaDraft] = useState(busqueda)
+
   // Estado local de la barra de búsqueda sticky (se aplica al hacer clic en Buscar)
   const [barZona, setBarZona] = useState(zonasActivas[0] ?? '')
   const [barCapacidad, setBarCapacidad] = useState(capacidadMin > 0 ? String(capacidadMin) : '')
@@ -259,15 +261,18 @@ export function SalonesPage() {
           <input
             type="text"
             placeholder="Buscar por nombre de salón..."
-            value={busqueda}
-            onChange={(e) => setFilter({ busqueda: e.target.value || undefined, page: undefined })}
+            value={busquedaDraft}
+            onChange={(e) => setBusquedaDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') setFilter({ busqueda: busquedaDraft.trim() || undefined, page: undefined })
+            }}
             className="w-full pl-12 pr-4 py-3 rounded-xl border border-border bg-card text-foreground text-[15px] placeholder:text-muted-foreground focus:outline-none focus:border-primary transition"
           />
-          {busqueda && (
+          {busquedaDraft && (
             <button
               type="button"
               aria-label="Limpiar búsqueda"
-              onClick={() => setFilter({ busqueda: undefined, page: undefined })}
+              onClick={() => { setBusquedaDraft(''); setFilter({ busqueda: undefined, page: undefined }) }}
               className="absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-full hover:bg-muted transition"
             >
               <X className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
