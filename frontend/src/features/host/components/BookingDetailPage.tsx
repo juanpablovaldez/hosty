@@ -4,6 +4,7 @@ import { toast } from 'sonner'
 import { useAuthStore } from '@/features/auth/store/auth.store'
 import { useHostBooking } from '../api/host.queries'
 import { useUpdateBookingStatus } from '../api/host.mutations'
+import { formatBookingPrice } from '../lib/booking-status'
 import type { Booking } from '../types'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -145,7 +146,7 @@ export function BookingDetailPage({ bookingId }: BookingDetailPageProps) {
           <div>
             <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Total</p>
             <p className="text-[22px] font-extrabold text-foreground">
-              {booking.totalPrice.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 })}
+              {formatBookingPrice(booking)}
             </p>
           </div>
         </div>

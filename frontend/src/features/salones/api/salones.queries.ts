@@ -1,17 +1,28 @@
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/shared/lib/supabase'
 import type { Salon, SalonSearchParams } from '../types'
+import type { PriceType } from '../lib/pricing'
 import type { Database } from '@/shared/lib/database.types'
 
 type SalonRow = Database['public']['Tables']['salones']['Row']
+type SalonServiceRow = Database['public']['Tables']['salon_services']['Row']
+type SalonRowWithServices = SalonRow & {
+  salon_services?: Pick<SalonServiceRow, 'id' | 'name' | 'price'>[] | null
+}
 
-function rowToSalon(row: SalonRow): Salon {
+const SALON_SELECT = '*, salon_services(id, name, price)'
+
+export function rowToSalon(row: SalonRowWithServices): Salon {
   return {
     id: row.id,
     name: row.name,
     description: row.description,
     images: row.images,
+    priceType: row.price_type as PriceType,
     pricePerHour: row.price_per_hour,
+    priceMin: row.price_min,
+    priceMax: row.price_max,
+    services: (row.salon_services ?? []).map((s) => ({ id: s.id, name: s.name, price: s.price })),
     rating:
       row.rating_value != null && row.rating_count != null
         ? { value: row.rating_value, count: row.rating_count }
@@ -34,7 +45,7 @@ export function useFeaturedSalones() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('salones')
-        .select('*')
+        .select(SALON_SELECT)
         .eq('availability_status', 'disponible')
         .eq('is_verified', true)
         .order('rating_value', { ascending: false })
@@ -54,7 +65,7 @@ export function useSearchSalones(params: SalonSearchParams) {
   return useQuery({
     queryKey: ['salones', 'search', params],
     queryFn: async () => {
-      let query = supabase.from('salones').select('*', { count: 'exact' })
+      let query = supabase.from('salones').select(SALON_SELECT, { count: 'exact' })
 
       // Filtros server-side
       if (params.name) {
@@ -119,13 +130,28 @@ export function useSearchSalones(params: SalonSearchParams) {
 }
 
 
+export function useSalonBlockedDates(id: string) {
+  return useQuery({
+    queryKey: ['salon', id, 'blocks'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('salon_availability_blocks')
+        .select('date')
+        .eq('salon_id', id)
+      if (error) throw error
+      return (data ?? []).map((b) => b.date)
+    },
+    enabled: !!id,
+  })
+}
+
 export function useSalon(id: string) {
   return useQuery({
     queryKey: ['salones', id],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('salones')
-        .select('*')
+        .select(SALON_SELECT)
         .eq('id', id)
         .single()
       if (error) throw error

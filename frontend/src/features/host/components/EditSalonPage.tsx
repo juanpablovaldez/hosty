@@ -57,11 +57,15 @@ export function EditSalonPage({ salonId }: EditSalonPageProps) {
     },
     step2: {
       capacity: salon.capacity,
+      priceType: salon.priceType,
       pricePerHour: salon.pricePerHour,
+      priceMin: salon.priceMin,
+      priceMax: salon.priceMax,
       rentTimeHours: salon.rentTimeHours,
       eventTypes: salon.eventTypes,
       amenities: salon.amenities,
     },
+    services: salon.services,
     images: [],
     imageUrls: [],
     existingUrls: salon.images,
@@ -75,6 +79,7 @@ export function EditSalonPage({ salonId }: EditSalonPageProps) {
         userId: user.id,
         step1: form.step1,
         step2: form.step2,
+        services: form.services,
         newFiles: form.images,
         keptUrls: form.existingUrls,
       })

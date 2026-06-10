@@ -36,6 +36,7 @@ const TABS: { value: FilterTab; label: string }[] = [
   { value: 'all', label: 'Todas' },
   { value: 'pending', label: 'Pendientes' },
   { value: 'confirmed', label: 'Confirmadas' },
+  { value: 'declined', label: 'Rechazadas' },
   { value: 'cancelled', label: 'Canceladas' },
 ]
 
@@ -49,6 +50,11 @@ const STATUS_CONFIG: Record<BookingStatus, { label: string; className: string; i
     label: 'Confirmada',
     className: 'border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-400',
     icon: PartyPopper,
+  },
+  declined: {
+    label: 'Rechazada',
+    className: 'border-red-200 bg-red-50 text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-400',
+    icon: AlertTriangle,
   },
   cancelled: {
     label: 'Cancelada',
@@ -128,7 +134,9 @@ function BookingCard({ booking, onCancel }: { booking: Booking; onCancel: (b: Bo
             <div>
               <p className="text-xs text-muted-foreground">Total</p>
               <p className="font-medium">
-                {booking.totalPrice.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 })}
+                {booking.totalPrice != null
+                  ? booking.totalPrice.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 })
+                  : 'A consultar'}
               </p>
             </div>
           </div>
@@ -174,6 +182,11 @@ function EmptyState({ tab }: { tab: FilterTab }) {
       icon: PartyPopper,
       title: 'Sin reservas confirmadas',
       description: 'Cuando un salón confirme tu solicitud, la verás acá.',
+    },
+    declined: {
+      icon: AlertTriangle,
+      title: 'Sin reservas rechazadas',
+      description: 'Las solicitudes que un salón rechace aparecerán acá.',
     },
     cancelled: {
       icon: CalendarX2,
@@ -242,11 +255,12 @@ export function MyBookingsPage() {
   }, [bookings, activeTab])
 
   const counts = useMemo(() => {
-    if (!bookings) return { all: 0, pending: 0, confirmed: 0, cancelled: 0 }
+    if (!bookings) return { all: 0, pending: 0, confirmed: 0, declined: 0, cancelled: 0 }
     return {
       all: bookings.length,
       pending: bookings.filter((b) => b.status === 'pending').length,
       confirmed: bookings.filter((b) => b.status === 'confirmed').length,
+      declined: bookings.filter((b) => b.status === 'declined').length,
       cancelled: bookings.filter((b) => b.status === 'cancelled').length,
     }
   }, [bookings])

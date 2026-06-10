@@ -9,7 +9,7 @@ import { Separator } from '@/components/ui/separator'
 import {
   ChevronLeft, ChevronRight, Check, Info,
   Settings, ImagePlus, Eye, X, Upload,
-  MapPin, Users, Clock, DollarSign,
+  MapPin, Users, Clock, DollarSign, Plus, Trash2,
 } from 'lucide-react'
 import { cn } from '@/shared/lib/utils'
 import {
@@ -17,7 +17,15 @@ import {
   step1Schema, step2Schema,
 } from '../lib/salon-wizard'
 import type { FormState, Step1, Step2 } from '../lib/salon-wizard'
+import type { PriceType, SalonService } from '@/features/salones/lib/pricing'
+import { salonPriceDisplay, formatARS } from '@/features/salones/lib/pricing'
 export type { FormState, Step1, Step2 } from '../lib/salon-wizard'
+
+const PRICE_MODES: { id: PriceType; label: string; hint: string }[] = [
+  { id: 'fixed', label: 'Precio fijo', hint: 'Monto por hora' },
+  { id: 'estimated', label: 'Estimado', hint: 'Un rango de referencia' },
+  { id: 'on_request', label: 'A consultar', hint: 'El cliente solicita y vos cotizás' },
+]
 
 const STEPS = [
   { label: 'Info básica', icon: Info },
@@ -120,8 +128,29 @@ function Step1Form({ data, onNext }: { data: Step1; onNext: (v: Step1) => void }
 }
 
 /* ─── Step 2 ─────────────────────────────────────────────── */
-function Step2Form({ data, onBack, onNext }: { data: Step2; onBack: () => void; onNext: (v: Step2) => void }) {
+function PriceInput({ value, onChange }: { value: number | null; onChange: (n: number | null) => void }) {
+  return (
+    <div className="relative">
+      <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
+      <Input
+        type="number" min={0} className="pl-9"
+        value={value ?? ''}
+        onChange={(e) => onChange(e.target.value === '' ? null : Number(e.target.value))}
+      />
+    </div>
+  )
+}
+
+function Step2Form({
+  data, services: initialServices, onBack, onNext,
+}: {
+  data: Step2
+  services: SalonService[]
+  onBack: () => void
+  onNext: (v: Step2, services: SalonService[]) => void
+}) {
   const [form, setForm] = useState(data)
+  const [services, setServices] = useState<SalonService[]>(initialServices)
   const [errors, setErrors] = useState<Partial<Record<keyof Step2, string>>>({})
 
   function toggleItem(key: 'eventTypes' | 'amenities', value: string) {
@@ -133,6 +162,10 @@ function Step2Form({ data, onBack, onNext }: { data: Step2; onBack: () => void; 
     }))
   }
 
+  function updateService(idx: number, patch: Partial<SalonService>) {
+    setServices((prev) => prev.map((s, i) => (i === idx ? { ...s, ...patch } : s)))
+  }
+
   function submit(e: React.FormEvent) {
     e.preventDefault()
     const result = step2Schema.safeParse(form)
@@ -142,14 +175,17 @@ function Step2Form({ data, onBack, onNext }: { data: Step2; onBack: () => void; 
       setErrors(errs)
       return
     }
-    onNext(result.data)
+    const cleaned = services
+      .map((s) => ({ ...s, name: s.name.trim() }))
+      .filter((s) => s.name.length > 0)
+    onNext(result.data, cleaned)
   }
 
   return (
     <form onSubmit={submit} className="flex flex-col gap-5">
       <h2 className="text-lg font-semibold text-foreground">Detalles del salón</h2>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         <Field label="Capacidad (personas)" error={errors.capacity}>
           <div className="relative">
             <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
@@ -157,16 +193,6 @@ function Step2Form({ data, onBack, onNext }: { data: Step2; onBack: () => void; 
               type="number" min={1} className="pl-9"
               value={form.capacity}
               onChange={(e) => setForm({ ...form, capacity: Number(e.target.value) })}
-            />
-          </div>
-        </Field>
-        <Field label="Precio por hora ($)" error={errors.pricePerHour}>
-          <div className="relative">
-            <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
-            <Input
-              type="number" min={0} className="pl-9"
-              value={form.pricePerHour || ''}
-              onChange={(e) => setForm({ ...form, pricePerHour: Number(e.target.value) })}
             />
           </div>
         </Field>
@@ -181,6 +207,45 @@ function Step2Form({ data, onBack, onNext }: { data: Step2; onBack: () => void; 
           </div>
         </Field>
       </div>
+
+      <Field label="Modo de precio">
+        <div className="grid grid-cols-3 gap-2">
+          {PRICE_MODES.map((m) => (
+            <button
+              key={m.id} type="button"
+              onClick={() => setForm({ ...form, priceType: m.id })}
+              className={cn(
+                'rounded-xl border p-3 text-left transition-colors',
+                form.priceType === m.id ? 'border-primary bg-primary/5' : 'border-border hover:border-primary',
+              )}
+            >
+              <span className="block text-sm font-semibold text-foreground">{m.label}</span>
+              <span className="block text-xs text-muted-foreground mt-0.5">{m.hint}</span>
+            </button>
+          ))}
+        </div>
+      </Field>
+
+      {form.priceType === 'fixed' && (
+        <Field label="Precio por hora ($)" error={errors.pricePerHour}>
+          <PriceInput value={form.pricePerHour} onChange={(n) => setForm({ ...form, pricePerHour: n })} />
+        </Field>
+      )}
+      {form.priceType === 'estimated' && (
+        <div className="grid grid-cols-2 gap-4">
+          <Field label="Mínimo estimado ($)" error={errors.priceMin}>
+            <PriceInput value={form.priceMin} onChange={(n) => setForm({ ...form, priceMin: n })} />
+          </Field>
+          <Field label="Máximo estimado ($)" error={errors.priceMax}>
+            <PriceInput value={form.priceMax} onChange={(n) => setForm({ ...form, priceMax: n })} />
+          </Field>
+        </div>
+      )}
+      {form.priceType === 'on_request' && (
+        <p className="-mt-1 text-sm text-muted-foreground">
+          El salón se mostrará como “A consultar”. Recibirás solicitudes y vas a poder cotizar cada una desde el panel.
+        </p>
+      )}
 
       <Field label="Tipos de evento" error={errors.eventTypes}>
         <div className="flex flex-wrap gap-2">
@@ -217,6 +282,41 @@ function Step2Form({ data, onBack, onNext }: { data: Step2; onBack: () => void; 
               {amenity}
             </button>
           ))}
+        </div>
+      </Field>
+
+      <Field label="Servicios extra (opcionales)">
+        <p className="-mt-1 mb-1 text-xs text-muted-foreground">
+          Catering, DJ, sillas, etc. El cliente los podrá elegir al reservar. Dejá el precio vacío para “a consultar”.
+        </p>
+        <div className="flex flex-col gap-2">
+          {services.map((s, idx) => (
+            <div key={idx} className="flex items-center gap-2">
+              <Input
+                placeholder="Nombre (ej: Catering)"
+                value={s.name}
+                onChange={(e) => updateService(idx, { name: e.target.value })}
+                className="flex-1"
+              />
+              <div className="w-36">
+                <PriceInput value={s.price} onChange={(n) => updateService(idx, { price: n })} />
+              </div>
+              <Button
+                type="button" variant="ghost" size="icon"
+                onClick={() => setServices((prev) => prev.filter((_, i) => i !== idx))}
+                aria-label="Quitar servicio"
+              >
+                <Trash2 className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
+              </Button>
+            </div>
+          ))}
+          <Button
+            type="button" variant="outline" size="sm"
+            onClick={() => setServices((prev) => [...prev, { name: '', price: 0 }])}
+            className="gap-1.5 self-start"
+          >
+            <Plus className="w-4 h-4" strokeWidth={1.5} /> Agregar servicio
+          </Button>
         </div>
       </Field>
 
@@ -346,8 +446,9 @@ function Step4Preview({
   onPublish: () => void
   submitting: boolean
 }) {
-  const { step1, step2, imageUrls, existingUrls } = state
+  const { step1, step2, services, imageUrls, existingUrls } = state
   const coverSrc = existingUrls[0] ?? imageUrls[0] ?? null
+  const price = salonPriceDisplay(step2)
 
   return (
     <div className="flex flex-col gap-6">
@@ -369,7 +470,7 @@ function Step4Preview({
       <div className="grid grid-cols-3 gap-4 text-center">
         {[
           { label: 'Capacidad', value: `${step2.capacity} personas` },
-          { label: 'Precio', value: `${step2.pricePerHour.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 })}/h` },
+          { label: 'Precio', value: `${price.main}${price.suffix ? ` ${price.suffix}` : ''}` },
           { label: 'Mínimo', value: `${step2.rentTimeHours}h` },
         ].map(({ label, value }) => (
           <div key={label} className="rounded-xl bg-muted/50 p-3">
@@ -383,6 +484,20 @@ function Step4Preview({
         {step2.eventTypes.map((t) => <Badge key={t} variant="secondary">{t}</Badge>)}
         {step2.amenities.map((a) => <Badge key={a} variant="outline">{a}</Badge>)}
       </div>
+
+      {services.length > 0 && (
+        <div>
+          <p className="text-sm font-semibold text-foreground mb-2">Servicios extra</p>
+          <div className="flex flex-col gap-1.5">
+            {services.map((s, i) => (
+              <div key={i} className="flex justify-between text-sm">
+                <span className="text-muted-foreground">{s.name}</span>
+                <span className="font-medium text-foreground">{s.price != null ? formatARS(s.price) : 'A consultar'}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="flex justify-between pt-2">
         <Button type="button" variant="outline" onClick={onBack} className="gap-2" disabled={submitting}>
@@ -466,8 +581,9 @@ export function SalonWizard({ mode, title, initialState, submitting, onSubmit }:
         {step === 1 && (
           <Step2Form
             data={form.step2}
+            services={form.services}
             onBack={() => setStep(0)}
-            onNext={(v) => { setForm((p) => ({ ...p, step2: v })); setStep(2) }}
+            onNext={(v, services) => { setForm((p) => ({ ...p, step2: v, services })); setStep(2) }}
           />
         )}
         {step === 2 && (

@@ -18,6 +18,7 @@ export function CreateSalonPage() {
         userId: user.id,
         step1: form.step1,
         step2: form.step2,
+        services: form.services,
         images: form.images,
       })
       toast.success('¡Salón publicado exitosamente!')
