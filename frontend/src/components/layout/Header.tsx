@@ -71,6 +71,19 @@ export function Header() {
               {label}
             </Link>
           ))}
+          {user && (
+            <Link
+              to="/host/dashboard"
+              className={cn(
+                navLinkBase,
+                pathname.startsWith('/host')
+                  ? 'text-foreground after:scale-x-100'
+                  : 'text-muted-foreground after:scale-x-0 hover:text-foreground hover:after:scale-x-100',
+              )}
+            >
+              Panel
+            </Link>
+          )}
           <a
             href="/#como-funciona"
             className={cn(
@@ -180,6 +193,18 @@ export function Header() {
                     {label}
                   </Link>
                 ))}
+                {user && (
+                  <Link
+                    to="/host/dashboard"
+                    onClick={() => setMobileOpen(false)}
+                    className={cn(
+                      'rounded-lg px-3 py-2.5 text-sm font-semibold transition-colors hover:bg-muted',
+                      pathname.startsWith('/host') ? 'bg-primary/10 text-primary' : 'text-foreground',
+                    )}
+                  >
+                    Panel
+                  </Link>
+                )}
                 <a
                   href="/#como-funciona"
                   onClick={() => setMobileOpen(false)}

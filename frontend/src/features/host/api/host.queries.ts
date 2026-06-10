@@ -1,34 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/shared/lib/supabase'
+import { rowToSalon } from '@/features/salones/api/salones.queries'
 import type { Salon } from '@/features/salones/types'
+import type { SalonService } from '@/features/salones/lib/pricing'
 import type { Booking } from '../types'
 import type { Database } from '@/shared/lib/database.types'
 
-type SalonRow = Database['public']['Tables']['salones']['Row']
 type BookingRow = Database['public']['Tables']['bookings']['Row']
 
-function rowToSalon(row: SalonRow): Salon {
-  return {
-    id: row.id,
-    name: row.name,
-    description: row.description,
-    images: row.images,
-    pricePerHour: row.price_per_hour,
-    rating:
-      row.rating_value != null && row.rating_count != null
-        ? { value: row.rating_value, count: row.rating_count }
-        : null,
-    capacity: row.capacity,
-    location: row.location,
-    address: row.address,
-    isVerified: row.is_verified,
-    rentTimeHours: row.rent_time_hours,
-    isFavorite: false,
-    amenities: row.amenities,
-    availabilityStatus: row.availability_status as Salon['availabilityStatus'],
-    eventTypes: row.event_types,
-  }
-}
+const SALON_SELECT = '*, salon_services(id, name, price)'
 
 function rowToBooking(row: BookingRow): Booking {
   return {
@@ -42,7 +22,12 @@ function rowToBooking(row: BookingRow): Booking {
     eventType: row.event_type,
     notes: row.notes,
     totalPrice: row.total_price,
+    quotedPrice: row.quoted_price,
+    selectedServices: (row.selected_services as unknown as SalonService[]) ?? [],
     status: row.status as Booking['status'],
+    rejectionReason: row.rejection_reason,
+    contactName: row.contact_name,
+    contactPhone: row.contact_phone,
     createdAt: row.created_at,
   }
 }
@@ -53,7 +38,7 @@ export function useHostSalones(userId: string | null) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('salones')
-        .select('*')
+        .select(SALON_SELECT)
         .eq('host_id', userId!)
         .order('created_at', { ascending: false })
       if (error) throw error
@@ -69,7 +54,7 @@ export function useHostSalon(id: string | null) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('salones')
-        .select('*')
+        .select(SALON_SELECT)
         .eq('id', id!)
         .single()
       if (error) throw error
@@ -92,6 +77,27 @@ export function useHostBookings(salonIds: string[]) {
         .order('event_date', { ascending: true })
       if (error) throw error
       return (data ?? []).map(rowToBooking)
+    },
+    enabled: salonIds.length > 0,
+  })
+}
+
+export interface AvailabilityBlock {
+  id: string
+  salonId: string
+  date: string
+}
+
+export function useSalonBlocks(salonIds: string[]) {
+  return useQuery({
+    queryKey: ['host', 'blocks', salonIds],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('salon_availability_blocks')
+        .select('id, salon_id, date')
+        .in('salon_id', salonIds)
+      if (error) throw error
+      return (data ?? []).map((b) => ({ id: b.id, salonId: b.salon_id, date: b.date }))
     },
     enabled: salonIds.length > 0,
   })

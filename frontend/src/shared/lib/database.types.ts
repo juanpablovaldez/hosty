@@ -7,59 +7,158 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
-  __InternalSupabase: {
-    PostgrestVersion: "14.5"
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
   }
   public: {
     Tables: {
       bookings: {
         Row: {
           attendees: number
+          contact_name: string | null
+          contact_phone: string | null
           created_at: string
           end_time: string
           event_date: string
           event_type: string
           id: string
           notes: string | null
+          quoted_price: number | null
+          rejection_reason: string | null
           salon_id: string
+          selected_services: Json
           start_time: string
           status: string
-          total_price: number
+          total_price: number | null
           user_id: string
         }
         Insert: {
           attendees: number
+          contact_name?: string | null
+          contact_phone?: string | null
           created_at?: string
           end_time: string
           event_date: string
           event_type: string
           id?: string
           notes?: string | null
+          quoted_price?: number | null
+          rejection_reason?: string | null
           salon_id: string
+          selected_services?: Json
           start_time: string
           status?: string
-          total_price: number
+          total_price?: number | null
           user_id: string
         }
         Update: {
           attendees?: number
+          contact_name?: string | null
+          contact_phone?: string | null
           created_at?: string
           end_time?: string
           event_date?: string
           event_type?: string
           id?: string
           notes?: string | null
+          quoted_price?: number | null
+          rejection_reason?: string | null
           salon_id?: string
+          selected_services?: Json
           start_time?: string
           status?: string
-          total_price?: number
+          total_price?: number | null
           user_id?: string
         }
         Relationships: [
           {
             foreignKeyName: "bookings_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salones"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      salon_availability_blocks: {
+        Row: {
+          created_at: string
+          date: string
+          id: string
+          reason: string | null
+          salon_id: string
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          id?: string
+          reason?: string | null
+          salon_id: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          id?: string
+          reason?: string | null
+          salon_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "salon_availability_blocks_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salones"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      salon_services: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          price: number | null
+          salon_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          price?: number | null
+          salon_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          price?: number | null
+          salon_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "salon_services_salon_id_fkey"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salones"
@@ -82,7 +181,10 @@ export type Database = {
           is_verified: boolean
           location: string
           name: string
-          price_per_hour: number
+          price_max: number | null
+          price_min: number | null
+          price_per_hour: number | null
+          price_type: string
           rating_count: number | null
           rating_value: number | null
           rent_time_hours: number
@@ -101,7 +203,10 @@ export type Database = {
           is_verified?: boolean
           location: string
           name: string
-          price_per_hour: number
+          price_max?: number | null
+          price_min?: number | null
+          price_per_hour?: number | null
+          price_type?: string
           rating_count?: number | null
           rating_value?: number | null
           rent_time_hours?: number
@@ -120,7 +225,10 @@ export type Database = {
           is_verified?: boolean
           location?: string
           name?: string
-          price_per_hour?: number
+          price_max?: number | null
+          price_min?: number | null
+          price_per_hour?: number | null
+          price_type?: string
           rating_count?: number | null
           rating_value?: number | null
           rent_time_hours?: number
@@ -132,7 +240,8 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      show_limit: { Args: never; Returns: number }
+      show_trgm: { Args: { "": string }; Returns: string[] }
     }
     Enums: {
       [_ in never]: never
@@ -261,7 +370,11 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {},
   },
 } as const
+

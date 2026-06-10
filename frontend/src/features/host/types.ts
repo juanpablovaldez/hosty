@@ -1,3 +1,5 @@
+import type { SalonService } from '@/features/salones/lib/pricing'
+
 export interface Booking {
   id: string
   salonId: string
@@ -8,7 +10,12 @@ export interface Booking {
   attendees: number
   eventType: string
   notes: string | null
-  totalPrice: number
+  totalPrice: number | null
+  quotedPrice: number | null
+  selectedServices: SalonService[]
   status: 'pending' | 'confirmed' | 'declined' | 'cancelled'
+  rejectionReason: string | null
+  contactName: string | null
+  contactPhone: string | null
   createdAt: string
 }
