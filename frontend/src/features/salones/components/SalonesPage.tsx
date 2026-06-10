@@ -35,7 +35,7 @@ function Pagination({ paginaActual, totalPaginas, onPageChange }: { paginaActual
   }
 
   return (
-    <div className="mt-10 flex items-center gap-1">
+    <div className="mt-10 flex items-center justify-center gap-1">
       <button type="button" disabled={paginaActual === 1} onClick={() => onPageChange(paginaActual - 1)}
         className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground disabled:opacity-40 hover:bg-muted transition" aria-label="Página anterior">
         <ChevronLeft className="w-5 h-5" strokeWidth={1.5} />
