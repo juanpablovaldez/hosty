@@ -1,6 +1,7 @@
 import { createRootRouteWithContext } from '@tanstack/react-router'
 import type { QueryClient } from '@tanstack/react-query'
 import { RootLayout } from '../components/layout/RootLayout'
+import { NotFoundPage } from '../features/errors/NotFoundPage'
 
 interface RouterContext {
   queryClient: QueryClient
@@ -8,4 +9,5 @@ interface RouterContext {
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootLayout,
+  notFoundComponent: NotFoundPage,
 })

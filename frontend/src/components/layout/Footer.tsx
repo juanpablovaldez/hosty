@@ -4,7 +4,7 @@ import { HostyLogo } from './HostyLogo'
 const LINKS = {
   Plataforma: [
     { label: 'Buscar salones', to: '/salones' },
-    { label: 'Publicar mi salón', to: '/' },
+    { label: 'Publicar mi salón', to: '/login' },
   ],
   Compañía: [
     { label: 'Sobre Hosty', to: '/' },

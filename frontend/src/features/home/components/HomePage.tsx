@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from '@tanstack/react-router'
 import { SearchBar } from './SearchBar'
 import { FeaturedSalones } from './FeaturedSalones'
 import { ValueProps } from './ValueProps'
@@ -86,6 +87,15 @@ function HeroCard() {
 
 export function HomePage() {
   const [chipActivo, setChipActivo] = useState('Todos')
+  const navigate = useNavigate()
+
+  function handleChip(chip: string) {
+    setChipActivo(chip)
+    navigate({
+      to: '/salones',
+      search: chip === 'Todos' ? {} : { tipoEvento: chip },
+    })
+  }
 
   return (
     <>
@@ -134,13 +144,13 @@ export function HomePage() {
                 <button
                   key={chip}
                   type="button"
-                  onClick={() => setChipActivo(chip)}
+                  onClick={() => handleChip(chip)}
                   aria-pressed={chipActivo === chip}
                   className={[
                     'inline-flex items-center px-[18px] py-2 rounded-full text-[13px] font-semibold border-[1.5px] transition-all duration-[180ms] cursor-pointer',
                     chipActivo === chip
                       ? 'bg-primary text-primary-foreground border-primary shadow-[0_2px_10px_rgba(232,69,42,0.24)]'
-                      : 'bg-transparent text-muted-foreground border-border hover:border-primary hover:text-primary',
+                      : 'bg-transparent text-muted-foreground border-border hover:border-primary hover:text-primary hover:bg-primary/5',
                   ].join(' ')}
                 >
                   {chip}
