@@ -26,7 +26,7 @@ export function HostDashboardPage() {
   const [tab, setTab] = useState<Tab>('resumen')
   const [selected, setSelected] = useState<Booking | null>(null)
 
-  const { data: salones = [], isLoading: loadingSalones } = useHostSalones(user?.id ?? null)
+  const { data: salones = [], isLoading: loadingSalones, error: salonesError } = useHostSalones(user?.id ?? null)
   const salonIds = salones.map((s) => s.id)
   const { data: bookings = [], isLoading: loadingBookings } = useHostBookings(salonIds)
   const { data: blocks = [] } = useSalonBlocks(salonIds)
@@ -90,6 +90,10 @@ export function HostDashboardPage() {
           {Array.from({ length: 2 }).map((_, i) => (
             <Skeleton key={i} className="h-32 w-full rounded-[20px]" />
           ))}
+        </div>
+      ) : salonesError ? (
+        <div className="rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
+          Error al cargar salones: {salonesError.message}
         </div>
       ) : salones.length === 0 ? (
         <div className="flex flex-col items-center gap-4 py-20 text-center">

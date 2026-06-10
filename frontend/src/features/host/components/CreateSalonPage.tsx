@@ -23,8 +23,12 @@ export function CreateSalonPage() {
       })
       toast.success('¡Salón publicado exitosamente!')
       navigate({ to: '/host/dashboard' })
-    } catch {
-      toast.error('Ocurrió un error al publicar. Intentá de nuevo.')
+    } catch (err) {
+      const msg =
+        err instanceof Error
+          ? err.message
+          : (err as { message?: string })?.message ?? JSON.stringify(err)
+      toast.error(`Error: ${msg}`)
     }
   }
 
