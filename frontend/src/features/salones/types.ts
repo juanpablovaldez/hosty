@@ -15,6 +15,7 @@ export interface Salon {
   location: string
   address: string
   isVerified: boolean
+  isFeatured: boolean
   rentTimeHours: number
   isFavorite: boolean
   amenities: string[]
