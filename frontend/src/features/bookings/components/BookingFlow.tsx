@@ -13,6 +13,7 @@ import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { ChevronLeft, ChevronRight, Check, Calendar, Users, FileText, CheckCircle2, ClipboardList, Home } from 'lucide-react'
 import { cn, formError } from '@/shared/lib/utils'
 import { formatARS } from '@/features/salones/lib/pricing'
@@ -27,8 +28,32 @@ const TIME_SLOTS = Array.from({ length: 24 * 4 }, (_, i) => {
   return `${h}:${m}`
 })
 
-const TIME_SELECT_CLASS =
-  'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm'
+function TimeSelect({
+  id,
+  value,
+  onChange,
+  onBlur,
+}: {
+  id: string
+  value: string
+  onChange: (v: string) => void
+  onBlur: () => void
+}) {
+  return (
+    <Select value={value || undefined} onValueChange={onChange}>
+      <SelectTrigger id={id} onBlur={onBlur}>
+        <SelectValue placeholder="Elegí un horario" />
+      </SelectTrigger>
+      <SelectContent className="max-h-60">
+        {TIME_SLOTS.map((t) => (
+          <SelectItem key={t} value={t}>
+            {t}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  )
+}
 
 const step1Schema = z.object({
   eventDate: z.string().min(1, 'Seleccioná una fecha'),
@@ -60,7 +85,9 @@ function calcHours(start: string, end: string) {
   if (!start || !end) return 0
   const [sh, sm] = start.split(':').map(Number)
   const [eh, em] = end.split(':').map(Number)
-  return Math.max(0, (eh * 60 + em - (sh * 60 + sm)) / 60)
+  let diff = eh * 60 + em - (sh * 60 + sm)
+  if (diff < 0) diff += 24 * 60 // la reserva cruza la medianoche (ej. 22:00 → 03:00)
+  return diff / 60
 }
 
 export function BookingFlow() {
@@ -298,22 +325,12 @@ export function BookingFlow() {
                 {(field) => (
                   <div className="flex flex-col gap-1.5">
                     <Label htmlFor="startTime">Hora de inicio</Label>
-                    <select
+                    <TimeSelect
                       id="startTime"
-                      className={TIME_SELECT_CLASS}
                       value={field.state.value}
-                      onChange={(e) => field.handleChange(e.target.value)}
+                      onChange={field.handleChange}
                       onBlur={field.handleBlur}
-                    >
-                      <option value="" disabled>
-                        Elegí un horario
-                      </option>
-                      {TIME_SLOTS.map((t) => (
-                        <option key={t} value={t}>
-                          {t}
-                        </option>
-                      ))}
-                    </select>
+                    />
                     {formError(field.state.meta.errors[0]) && (
                       <p className="text-xs text-destructive">{formError(field.state.meta.errors[0])}</p>
                     )}
@@ -325,22 +342,12 @@ export function BookingFlow() {
                 {(field) => (
                   <div className="flex flex-col gap-1.5">
                     <Label htmlFor="endTime">Hora de fin</Label>
-                    <select
+                    <TimeSelect
                       id="endTime"
-                      className={TIME_SELECT_CLASS}
                       value={field.state.value}
-                      onChange={(e) => field.handleChange(e.target.value)}
+                      onChange={field.handleChange}
                       onBlur={field.handleBlur}
-                    >
-                      <option value="" disabled>
-                        Elegí un horario
-                      </option>
-                      {TIME_SLOTS.map((t) => (
-                        <option key={t} value={t}>
-                          {t}
-                        </option>
-                      ))}
-                    </select>
+                    />
                     {formError(field.state.meta.errors[0]) && (
                       <p className="text-xs text-destructive">{formError(field.state.meta.errors[0])}</p>
                     )}
