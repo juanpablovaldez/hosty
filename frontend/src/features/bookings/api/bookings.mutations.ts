@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '@/shared/lib/supabase'
 import type { BookingPayload } from '../types'
+import type { Json } from '@/shared/lib/database.types'
 
 export function useCreateBooking() {
   const queryClient = useQueryClient()
@@ -18,6 +19,9 @@ export function useCreateBooking() {
           attendees: payload.attendees,
           event_type: payload.eventType,
           notes: payload.notes || null,
+          contact_name: payload.contactName || null,
+          contact_phone: payload.contactPhone || null,
+          selected_services: payload.selectedServices as unknown as Json,
           total_price: payload.totalPrice,
           status: 'pending',
         })

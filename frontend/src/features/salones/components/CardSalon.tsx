@@ -1,10 +1,12 @@
 import { useState } from 'react'
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import type { Salon } from '../types'
+import { salonPriceDisplay } from '../lib/pricing'
 import { Heart, Users, Star, MapPin } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { HostyBadge } from '@/components/ui/hosty-badge'
 import { cn } from '@/shared/lib/utils'
+import { useAuthStore } from '@/features/auth/store/auth.store'
 
 interface CardSalonProps {
   salon: Salon
@@ -20,10 +22,17 @@ const AVAILABILITY_STYLES = {
 export function CardSalon({ salon, onFavoriteToggle }: CardSalonProps) {
   const [fav, setFav] = useState(salon.isFavorite)
   const coverImage = salon.images[0] ?? '/placeholder-salon.jpg'
+  const price = salonPriceDisplay(salon)
+  const { user } = useAuthStore()
+  const navigate = useNavigate()
 
   function handleFavorite(e: React.MouseEvent) {
     e.preventDefault()
     e.stopPropagation()
+    if (!user) {
+      navigate({ to: '/login' })
+      return
+    }
     setFav(!fav)
     onFavoriteToggle?.(salon.id)
   }
@@ -134,14 +143,14 @@ export function CardSalon({ salon, onFavoriteToggle }: CardSalonProps) {
 
           {/* Precio */}
           <div className="mt-4 pt-4 border-t border-border">
-            <span className="text-[11px] text-muted-foreground uppercase tracking-wider">desde</span>
+            {price.label && (
+              <span className="text-[11px] text-muted-foreground uppercase tracking-wider">{price.label}</span>
+            )}
             <div className="font-bold text-[20px] leading-tight text-foreground">
-              {salon.pricePerHour.toLocaleString('es-AR', {
-                style: 'currency',
-                currency: 'ARS',
-                maximumFractionDigits: 0,
-              })}{' '}
-              <span className="text-[12px] font-medium text-muted-foreground">/ hora</span>
+              {price.main}
+              {price.suffix && (
+                <span className="text-[12px] font-medium text-muted-foreground"> {price.suffix}</span>
+              )}
             </div>
           </div>
         </div>

@@ -3,7 +3,7 @@ import { useParams, Link } from '@tanstack/react-router'
 import { useForm } from '@tanstack/react-form'
 import { z } from 'zod'
 import { toast } from 'sonner'
-import { useSalon } from '@/features/salones/api/salones.queries'
+import { useSalon, useSalonBlockedDates } from '@/features/salones/api/salones.queries'
 import { useCreateBooking } from '../api/bookings.mutations'
 import { useAuthStore } from '@/features/auth/store/auth.store'
 import { Button } from '@/components/ui/button'
@@ -12,8 +12,10 @@ import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
+import { Checkbox } from '@/components/ui/checkbox'
 import { ChevronLeft, ChevronRight, Check, Calendar, Users, FileText, CheckCircle2, ClipboardList, Home } from 'lucide-react'
 import { cn, formError } from '@/shared/lib/utils'
+import { formatARS } from '@/features/salones/lib/pricing'
 
 const EVENT_TYPES = ['Cumpleaños', 'Casamiento', 'Corporativo', 'Baby shower', 'Quince años', 'Graduación']
 
@@ -26,6 +28,8 @@ const step1Schema = z.object({
 const step2Schema = z.object({
   eventType: z.string().min(1, 'Seleccioná el tipo de evento'),
   attendees: z.coerce.number().min(1, 'Al menos 1 asistente'),
+  contactName: z.string().min(2, 'Ingresá tu nombre'),
+  contactPhone: z.string().min(6, 'Ingresá un teléfono de contacto'),
   notes: z.string(),
 })
 
@@ -45,22 +49,45 @@ function calcHours(start: string, end: string) {
 export function BookingFlow() {
   const { id } = useParams({ from: '/salones/$id_/reservar' })
   const { data: salon, isLoading } = useSalon(id)
+  const { data: blockedList = [] } = useSalonBlockedDates(id)
   const createBooking = useCreateBooking()
   const user = useAuthStore((s) => s.user)
 
+  const blockedDates = new Set(blockedList)
+
   const [step, setStep] = useState(0)
+  const [step1Error, setStep1Error] = useState<string | null>(null)
   const [bookingConfirmed, setBookingConfirmed] = useState(false)
 
   const [step1Snapshot, setStep1Snapshot] = useState({ eventDate: '', startTime: '', endTime: '' })
-  const [step2Snapshot, setStep2Snapshot] = useState({ eventType: '', attendees: 1, notes: '' })
+  const [step2Snapshot, setStep2Snapshot] = useState({ eventType: '', attendees: 1, contactName: '', contactPhone: '', notes: '' })
+  const [selectedServiceNames, setSelectedServiceNames] = useState<string[]>([])
 
   const hours = calcHours(step1Snapshot.startTime, step1Snapshot.endTime)
-  const totalPrice = salon ? salon.pricePerHour * hours : 0
+  const chosenServices = salon ? salon.services.filter((s) => selectedServiceNames.includes(s.name)) : []
+  const base = salon && salon.priceType === 'fixed' && salon.pricePerHour != null ? salon.pricePerHour * hours : null
+  const extrasPriced = chosenServices.every((s) => s.price != null)
+  const extrasSum = chosenServices.reduce((acc, s) => acc + (s.price ?? 0), 0)
+  const totalPrice: number | null = base != null && extrasPriced ? base + extrasSum : null
 
   const form1 = useForm({
     defaultValues: step1Snapshot,
     validators: { onSubmit: step1Schema },
     onSubmit: ({ value }) => {
+      const h = calcHours(value.startTime, value.endTime)
+      if (h <= 0) {
+        setStep1Error('La hora de fin debe ser posterior a la de inicio.')
+        return
+      }
+      if (salon && h < salon.rentTimeHours) {
+        setStep1Error(`Este salón se alquila por un mínimo de ${salon.rentTimeHours} h. Ajustá el horario.`)
+        return
+      }
+      if (blockedDates.has(value.eventDate)) {
+        setStep1Error('El salón no está disponible en la fecha elegida. Probá con otra fecha.')
+        return
+      }
+      setStep1Error(null)
       setStep1Snapshot(value)
       setStep(1)
     },
@@ -86,7 +113,10 @@ export function BookingFlow() {
         endTime: step1Snapshot.endTime,
         attendees: step2Snapshot.attendees,
         eventType: step2Snapshot.eventType,
+        contactName: step2Snapshot.contactName,
+        contactPhone: step2Snapshot.contactPhone,
         notes: step2Snapshot.notes,
+        selectedServices: chosenServices.map((s) => ({ name: s.name, price: s.price })),
         totalPrice,
       })
       setBookingConfirmed(true)
@@ -146,9 +176,7 @@ export function BookingFlow() {
               <Separator className="my-2" />
               <div className="flex justify-between text-base font-semibold text-foreground">
                 <span>Total</span>
-                <span>
-                  {totalPrice.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 })}
-                </span>
+                <span>{totalPrice != null ? formatARS(totalPrice) : 'A consultar'}</span>
               </div>
             </div>
           </div>
@@ -286,6 +314,12 @@ export function BookingFlow() {
               </form1.Field>
             </div>
 
+            {step1Error && (
+              <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2.5 text-sm text-destructive">
+                {step1Error}
+              </div>
+            )}
+
             <div className="flex justify-end">
               <Button type="submit" className="gap-2">
                 Siguiente
@@ -352,6 +386,74 @@ export function BookingFlow() {
               )}
             </form2.Field>
 
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <form2.Field name="contactName">
+                {(field) => (
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="contactName">Tu nombre</Label>
+                    <Input
+                      id="contactName"
+                      placeholder="Nombre y apellido"
+                      value={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      onBlur={field.handleBlur}
+                    />
+                    {formError(field.state.meta.errors[0]) && (
+                      <p className="text-xs text-destructive">{formError(field.state.meta.errors[0])}</p>
+                    )}
+                  </div>
+                )}
+              </form2.Field>
+
+              <form2.Field name="contactPhone">
+                {(field) => (
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="contactPhone">Teléfono de contacto</Label>
+                    <Input
+                      id="contactPhone"
+                      placeholder="381 555-0000"
+                      value={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      onBlur={field.handleBlur}
+                    />
+                    {formError(field.state.meta.errors[0]) && (
+                      <p className="text-xs text-destructive">{formError(field.state.meta.errors[0])}</p>
+                    )}
+                  </div>
+                )}
+              </form2.Field>
+            </div>
+
+            {salon && salon.services.length > 0 && (
+              <div className="flex flex-col gap-2">
+                <Label>Servicios extra (opcional)</Label>
+                <div className="flex flex-col gap-2">
+                  {salon.services.map((s) => {
+                    const checked = selectedServiceNames.includes(s.name)
+                    return (
+                      <label
+                        key={s.id ?? s.name}
+                        className="flex items-center gap-3 rounded-lg border border-border px-3 py-2.5 cursor-pointer hover:border-primary transition"
+                      >
+                        <Checkbox
+                          checked={checked}
+                          onCheckedChange={(v) =>
+                            setSelectedServiceNames((prev) =>
+                              v === true ? [...prev, s.name] : prev.filter((n) => n !== s.name),
+                            )
+                          }
+                        />
+                        <span className="flex-1 text-sm text-foreground">{s.name}</span>
+                        <span className="text-sm text-muted-foreground">
+                          {s.price != null ? formatARS(s.price) : 'A consultar'}
+                        </span>
+                      </label>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+
             <form2.Field name="notes">
               {(field) => (
                 <div className="flex flex-col gap-1.5">
@@ -396,26 +498,47 @@ export function BookingFlow() {
                   ['Duración', `${hours}h`],
                   ['Tipo de evento', step2Snapshot.eventType],
                   ['Asistentes', String(step2Snapshot.attendees)],
+                  ['Contacto', `${step2Snapshot.contactName} · ${step2Snapshot.contactPhone}`],
                   ...(step2Snapshot.notes ? [['Notas', step2Snapshot.notes]] : []),
                 ] as [string, string][]).map(([label, value]) => (
-                  <div key={label} className="flex justify-between">
+                  <div key={label} className="flex justify-between gap-3">
                     <span className="text-muted-foreground">{label}</span>
                     <span className="max-w-xs text-right font-medium">{value}</span>
                   </div>
                 ))}
               </div>
 
+              {chosenServices.length > 0 && (
+                <>
+                  <Separator className="my-4" />
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Servicios extra</p>
+                  <div className="flex flex-col gap-2 text-sm">
+                    {chosenServices.map((s) => (
+                      <div key={s.id ?? s.name} className="flex justify-between">
+                        <span className="text-muted-foreground">{s.name}</span>
+                        <span className="font-medium">{s.price != null ? formatARS(s.price) : 'A consultar'}</span>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+
               <Separator className="my-4" />
 
               <div className="flex justify-between text-base font-semibold text-foreground">
-                <span>Total estimado</span>
-                <span>
-                  {totalPrice.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 })}
-                </span>
+                <span>{totalPrice != null ? 'Total estimado' : 'Total'}</span>
+                <span>{totalPrice != null ? formatARS(totalPrice) : 'A consultar'}</span>
               </div>
-              <p className="mt-1 text-xs text-muted-foreground">
-                {salon?.pricePerHour.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 })}/h × {hours}h
-              </p>
+              {totalPrice != null && base != null ? (
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {salon && salon.pricePerHour != null && `${formatARS(salon.pricePerHour)}/h × ${hours}h`}
+                  {chosenServices.length > 0 && ` + ${chosenServices.length} servicio${chosenServices.length > 1 ? 's' : ''}`}
+                </p>
+              ) : (
+                <p className="mt-1 text-xs text-muted-foreground">
+                  El salón revisará tu solicitud y te enviará una cotización.
+                </p>
+              )}
             </div>
 
             <div className="flex justify-between">

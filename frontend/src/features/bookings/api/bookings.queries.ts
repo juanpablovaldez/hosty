@@ -12,7 +12,7 @@ interface BookingRow {
   attendees: number
   event_type: string
   notes: string | null
-  total_price: number
+  total_price: number | null
   status: string
   created_at: string
   salones: {

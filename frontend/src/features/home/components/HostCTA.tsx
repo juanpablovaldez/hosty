@@ -63,18 +63,11 @@ export function HostCTA() {
               className="gap-2 font-bold"
               style={{ boxShadow: 'var(--shadow-sm)' }}
             >
-              <Link to="/">
+              <Link to="/login">
                 Publicar mi salón
                 <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
               </Link>
             </Button>
-
-            <a
-              href="/#como-funciona"
-              className="text-[14px] font-semibold text-ink/56 hover:text-ink border border-ink/18 hover:border-ink/40 rounded-md px-6 py-2.5 transition-colors duration-[180ms]"
-            >
-              Saber más →
-            </a>
 
             <p className="text-[11.5px] text-ink/40 mt-0.5">Sin tarjeta de crédito requerida</p>
           </div>

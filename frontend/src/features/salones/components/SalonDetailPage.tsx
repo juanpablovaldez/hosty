@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/shared/lib/utils'
 import type { Salon } from '../types'
+import { salonPriceDisplay, formatARS } from '../lib/pricing'
 
 /* ─── Amenity icons map ──────────────────────────────────── */
 const AMENITY_ICONS: Record<string, React.ElementType> = {
@@ -213,14 +214,15 @@ function AmenityBadge({ amenity }: { amenity: string }) {
 
 /* ─── Panel de reserva ───────────────────────────────────── */
 function BookingPanel({ salon }: { salon: Salon }) {
+  const price = salonPriceDisplay(salon)
   return (
     <div className="flex flex-col gap-5 rounded-[24px] border border-border bg-card p-6" style={{ boxShadow: 'var(--shadow-lg)' }}>
       <div>
-        <p className="text-[12px] text-muted-foreground uppercase tracking-wider mb-1">desde</p>
-        <p className="text-[32px] font-extrabold text-foreground leading-tight">
-          {salon.pricePerHour.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 })}
-        </p>
-        <p className="text-[13px] text-muted-foreground">por hora</p>
+        {price.label && (
+          <p className="text-[12px] text-muted-foreground uppercase tracking-wider mb-1">{price.label}</p>
+        )}
+        <p className="text-[32px] font-extrabold text-foreground leading-tight">{price.main}</p>
+        {price.suffix && <p className="text-[13px] text-muted-foreground">{price.suffix}</p>}
       </div>
 
       <Separator />
@@ -288,6 +290,34 @@ function DetailSkeleton() {
   )
 }
 
+/* ─── Reseñas de muestra ─────────────────────────────────── */
+const SAMPLE_REVIEWS = [
+  {
+    initial: 'M',
+    name: 'María G.',
+    stars: 5,
+    text: 'Excelente salón, muy amplio y bien iluminado. El personal fue muy atento y todo salió perfectamente en el cumpleaños de mi hija.',
+  },
+  {
+    initial: 'R',
+    name: 'Roberto S.',
+    stars: 5,
+    text: 'Usamos el salón para un evento corporativo. Muy profesional, con buen sonido y temperatura. Lo recomiendo ampliamente.',
+  },
+  {
+    initial: 'V',
+    name: 'Valentina L.',
+    stars: 4,
+    text: 'El espacio es hermoso y la ubicación ideal. Solo le faltó un poco más de estacionamiento para los invitados.',
+  },
+  {
+    initial: 'C',
+    name: 'Carlos M.',
+    stars: 5,
+    text: 'Cerramos el salón para el casamiento de mi hermana y fue un éxito total. Decoración impecable y muy buena atención.',
+  },
+]
+
 /* ─── Página principal ───────────────────────────────────── */
 export function SalonDetailPage() {
   const { id } = useParams({ from: '/salones/$id' })
@@ -299,7 +329,11 @@ export function SalonDetailPage() {
     if (!salon) return
 
     const title = `${salon.name} — Hosty`
-    const description = `${salon.description ?? `Salón de eventos en ${salon.location}`}. Capacidad hasta ${salon.capacity} personas. Desde ${salon.pricePerHour.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 })}/hora.`
+    const priceInfo = salonPriceDisplay(salon)
+    const priceText = priceInfo.main === 'A consultar'
+      ? 'Precio a consultar.'
+      : `${priceInfo.label === 'desde' ? 'Desde ' : ''}${priceInfo.main}${priceInfo.suffix ? ` ${priceInfo.suffix}` : ''}.`
+    const description = `${salon.description ?? `Salón de eventos en ${salon.location}`}. Capacidad hasta ${salon.capacity} personas. ${priceText}`
     const url = `${window.location.origin}/salones/${salon.id}`
 
     document.title = title
@@ -349,6 +383,7 @@ export function SalonDetailPage() {
   }
 
   const mapQuery = encodeURIComponent(`${salon.address}, Tucumán, Argentina`)
+  const price = salonPriceDisplay(salon)
 
   return (
     <>
@@ -442,6 +477,27 @@ export function SalonDetailPage() {
 
         <Separator />
 
+        {/* Servicios extra */}
+        {salon.services.length > 0 && (
+          <>
+            <section>
+              <h2 className="text-[20px] font-bold text-foreground mb-4">Servicios extra</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {salon.services.map((s) => (
+                  <div
+                    key={s.id ?? s.name}
+                    className="flex items-center justify-between rounded-xl border border-border bg-card px-4 py-3 text-[14px] shadow-[0_1px_3px_rgba(28,43,58,0.06)]"
+                  >
+                    <span className="font-medium text-foreground">{s.name}</span>
+                    <span className="text-muted-foreground">{s.price != null ? formatARS(s.price) : 'A consultar'}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+            <Separator />
+          </>
+        )}
+
         {/* Reseñas */}
         {salon.rating && salon.rating.count > 0 && (
           <>
@@ -460,25 +516,25 @@ export function SalonDetailPage() {
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-4">
-                {Array.from({ length: Math.min(salon.rating.count, 4) }).map((_, i) => (
+                {SAMPLE_REVIEWS.slice(0, Math.min(salon.rating.count, 4)).map((review, i) => (
                   <div
                     key={i}
                     className="rounded-[11px] p-4"
                     style={{ background: 'var(--surface-warm)' }}
                   >
                     <div className="flex items-center gap-2 mb-2">
-                      <div className="w-8 h-8 rounded-full bg-border flex items-center justify-center text-[13px] font-bold text-muted-foreground">
-                        {String.fromCharCode(65 + i)}
+                      <div className="w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center text-[13px] font-bold text-primary">
+                        {review.initial}
                       </div>
                       <div>
-                        <p className="text-[13px] font-semibold text-foreground">Cliente verificado</p>
+                        <p className="text-[13px] font-semibold text-foreground">{review.name}</p>
                         <div className="flex gap-0.5">
                           {Array.from({ length: 5 }).map((_, s) => (
                             <Star
                               key={s}
                               className={cn(
                                 'w-3 h-3',
-                                s < Math.round(salon.rating!.value)
+                                s < review.stars
                                   ? 'fill-amber-400 text-amber-400'
                                   : 'text-border',
                               )}
@@ -489,7 +545,7 @@ export function SalonDetailPage() {
                       </div>
                     </div>
                     <p className="text-[13px] text-muted-foreground leading-relaxed">
-                      Excelente espacio, muy bien mantenido y con todas las comodidades. Lo recomiendo para cualquier tipo de evento.
+                      {review.text}
                     </p>
                   </div>
                 ))}
@@ -537,10 +593,12 @@ export function SalonDetailPage() {
     {/* Sticky bottom bar — mobile only */}
     <div className="fixed bottom-0 left-0 right-0 z-30 flex items-center justify-between gap-4 border-t border-border bg-card/95 px-5 py-4 backdrop-blur-sm lg:hidden">
       <div>
-        <p className="text-[11px] uppercase tracking-wider text-muted-foreground">desde</p>
+        {price.label && (
+          <p className="text-[11px] uppercase tracking-wider text-muted-foreground">{price.label}</p>
+        )}
         <p className="text-[18px] font-extrabold leading-tight text-foreground">
-          {salon.pricePerHour.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 })}
-          <span className="text-[12px] font-medium text-muted-foreground"> / hora</span>
+          {price.main}
+          {price.suffix && <span className="text-[12px] font-medium text-muted-foreground"> {price.suffix}</span>}
         </p>
       </div>
       <Button

@@ -1,13 +1,21 @@
+import type { PriceType, SalonService } from './lib/pricing'
+
 export interface Salon {
   id: string
   name: string
   description: string | null
   images: string[]
-  pricePerHour: number
+  priceType: PriceType
+  pricePerHour: number | null
+  priceMin: number | null
+  priceMax: number | null
+  services: SalonService[]
   rating: { value: number; count: number } | null
   capacity: number
   location: string
   address: string
+  latitude: number | null
+  longitude: number | null
   isVerified: boolean
   rentTimeHours: number
   isFavorite: boolean
