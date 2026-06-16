@@ -19,10 +19,27 @@ import { formatARS } from '@/features/salones/lib/pricing'
 
 const EVENT_TYPES = ['Cumpleaños', 'Casamiento', 'Corporativo', 'Baby shower', 'Quince años', 'Graduación']
 
+const isQuarterHour = (v: string) => /^\d{2}:(00|15|30|45)$/.test(v)
+
+const TIME_SLOTS = Array.from({ length: 24 * 4 }, (_, i) => {
+  const h = String(Math.floor(i / 4)).padStart(2, '0')
+  const m = String((i % 4) * 15).padStart(2, '0')
+  return `${h}:${m}`
+})
+
+const TIME_SELECT_CLASS =
+  'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm'
+
 const step1Schema = z.object({
   eventDate: z.string().min(1, 'Seleccioná una fecha'),
-  startTime: z.string().min(1, 'Seleccioná hora de inicio'),
-  endTime: z.string().min(1, 'Seleccioná hora de fin'),
+  startTime: z
+    .string()
+    .min(1, 'Seleccioná hora de inicio')
+    .refine(isQuarterHour, 'Elegí un horario en intervalos de 15 minutos'),
+  endTime: z
+    .string()
+    .min(1, 'Seleccioná hora de fin')
+    .refine(isQuarterHour, 'Elegí un horario en intervalos de 15 minutos'),
 })
 
 const step2Schema = z.object({
@@ -281,13 +298,22 @@ export function BookingFlow() {
                 {(field) => (
                   <div className="flex flex-col gap-1.5">
                     <Label htmlFor="startTime">Hora de inicio</Label>
-                    <Input
+                    <select
                       id="startTime"
-                      type="time"
+                      className={TIME_SELECT_CLASS}
                       value={field.state.value}
                       onChange={(e) => field.handleChange(e.target.value)}
                       onBlur={field.handleBlur}
-                    />
+                    >
+                      <option value="" disabled>
+                        Elegí un horario
+                      </option>
+                      {TIME_SLOTS.map((t) => (
+                        <option key={t} value={t}>
+                          {t}
+                        </option>
+                      ))}
+                    </select>
                     {formError(field.state.meta.errors[0]) && (
                       <p className="text-xs text-destructive">{formError(field.state.meta.errors[0])}</p>
                     )}
@@ -299,13 +325,22 @@ export function BookingFlow() {
                 {(field) => (
                   <div className="flex flex-col gap-1.5">
                     <Label htmlFor="endTime">Hora de fin</Label>
-                    <Input
+                    <select
                       id="endTime"
-                      type="time"
+                      className={TIME_SELECT_CLASS}
                       value={field.state.value}
                       onChange={(e) => field.handleChange(e.target.value)}
                       onBlur={field.handleBlur}
-                    />
+                    >
+                      <option value="" disabled>
+                        Elegí un horario
+                      </option>
+                      {TIME_SLOTS.map((t) => (
+                        <option key={t} value={t}>
+                          {t}
+                        </option>
+                      ))}
+                    </select>
                     {formError(field.state.meta.errors[0]) && (
                       <p className="text-xs text-destructive">{formError(field.state.meta.errors[0])}</p>
                     )}
