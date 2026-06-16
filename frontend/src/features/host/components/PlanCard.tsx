@@ -81,9 +81,10 @@ export function PlanCard({ subscription, userId, hasSalones }: PlanCardProps) {
           </span>
         )}
         {!isActive && !isCancelled && (
-          <span className="rounded-full bg-muted text-muted-foreground text-[11px] font-semibold px-2.5 py-1 shrink-0">
-            Gratuito
-          </span>
+          <div className="text-right shrink-0">
+            <span className="text-[20px] font-extrabold text-foreground leading-none">$4.999</span>
+            <span className="text-[12px] text-muted-foreground">/mes</span>
+          </div>
         )}
       </div>
 
@@ -127,7 +128,7 @@ export function PlanCard({ subscription, userId, hasSalones }: PlanCardProps) {
           </div>
           <div className="flex items-center gap-2 text-[13px] text-muted-foreground">
             <Star className="w-4 h-4 shrink-0" strokeWidth={1.5} />
-            $4.999 / mes · cancelá cuando quieras
+            Cancelá cuando quieras
           </div>
         </div>
       )}
