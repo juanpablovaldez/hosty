@@ -2,8 +2,9 @@ import { useMemo, useState } from 'react'
 import { useSearch, useNavigate } from '@tanstack/react-router'
 import { MapPin, Users, Search, SlidersHorizontal, X, ChevronLeft, ChevronRight, Star, Map } from 'lucide-react'
 import { ZONAS_TUCUMAN } from '@/features/salones/constants'
-import { useSearchSalones } from '../api/salones.queries'
+import { useSearchSalones, useSalonesMap } from '../api/salones.queries'
 import { CardSalon } from './CardSalon'
+import { SalonesMap } from './SalonesMap'
 import type { SalonSearchParams } from '../types'
 
 /* ─── Constantes ─────────────────────────────────────────── */
@@ -90,7 +91,8 @@ export function SalonesPage() {
   const capacidadMin = search.capacidadMin ?? 0
   const capacidadMax = search.capacidadMax ?? 500
   const sortBy = (search.sortBy ?? 'rating') as SortValue
-  const vistaLista = true
+  const vista = search.vista ?? 'lista'
+  const vistaLista = vista === 'lista'
   const paginaActual = search.page ?? 1
 
   const [busquedaDraft, setBusquedaDraft] = useState(busqueda)
@@ -121,6 +123,10 @@ export function SalonesPage() {
     navigate({ search: (prev) => ({ ...prev, sortBy: value === 'rating' ? undefined : value, page: undefined }) })
   }
 
+  function setVista(value: 'lista' | 'mapa') {
+    navigate({ search: (prev) => ({ ...prev, vista: value === 'lista' ? undefined : value }) })
+  }
+
   /* ─── Parámetros para Supabase (server-side filters + pagination) ─── */
   const params: SalonSearchParams = useMemo(() => ({
     name: busqueda.trim() || undefined,
@@ -135,6 +141,15 @@ export function SalonesPage() {
   }), [busqueda, zonasActivas, chipActivo, capacidadMin, capacidadMax, serviciosActivos, sortBy, paginaActual])
 
   const { data, isLoading, isError } = useSearchSalones(params)
+
+  const mapParams: SalonSearchParams = useMemo(
+    () => ({ ...params, page: undefined, pageSize: undefined }),
+    [params],
+  )
+  const { data: salonesMapa, isLoading: mapaLoading, isError: mapaError } = useSalonesMap(
+    mapParams,
+    !vistaLista,
+  )
 
   const salonesFiltrados = data?.salones ?? []
   const totalPaginas = data?.totalPages ?? 1
@@ -217,7 +232,7 @@ export function SalonesPage() {
 
           <button
             type="submit"
-            className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-full px-4 py-2 min-w-fit text-[14px] transition"
+            className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-full px-4 py-2 min-w-fit text-[14px] transition cursor-pointer"
           >
             <Search className="w-4 h-4" strokeWidth={1.5} />
             Buscar
@@ -404,6 +419,8 @@ export function SalonesPage() {
               <div className="hidden md:flex bg-card rounded-full border border-border p-1">
                 <button
                   type="button"
+                  onClick={() => setVista('lista')}
+                  aria-pressed={vistaLista}
                   className={`px-3 py-1.5 text-[13px] font-semibold rounded-full transition ${
                     vistaLista ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground'
                   }`}
@@ -412,6 +429,8 @@ export function SalonesPage() {
                 </button>
                 <button
                   type="button"
+                  onClick={() => setVista('mapa')}
+                  aria-pressed={!vistaLista}
                   className={`px-3 py-1.5 text-[13px] font-medium rounded-full flex items-center gap-1 transition ${
                     !vistaLista ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground'
                   }`}
@@ -450,42 +469,63 @@ export function SalonesPage() {
             </div>
           )}
 
-          {/* Estado de error */}
-          {isError && (
-            <div className="py-20 text-center">
-              <p className="text-[18px] font-semibold text-foreground mb-2">No pudimos cargar los salones</p>
-              <p className="text-[14px] text-muted-foreground">Verificá tu conexión e intentá de nuevo.</p>
-            </div>
+          {/* ── Vista Mapa ─── */}
+          {!vistaLista && (
+            <>
+              {mapaError ? (
+                <div className="py-20 text-center">
+                  <p className="text-[18px] font-semibold text-foreground mb-2">No pudimos cargar el mapa</p>
+                  <p className="text-[14px] text-muted-foreground">Verificá tu conexión e intentá de nuevo.</p>
+                </div>
+              ) : mapaLoading ? (
+                <div className="h-[600px] rounded-xl border border-border bg-muted animate-pulse" />
+              ) : (
+                <SalonesMap salones={salonesMapa ?? []} />
+              )}
+            </>
           )}
 
-          {/* Skeletons de carga */}
-          {isLoading && (
-            <div className="grid sm:grid-cols-2 gap-6">
-              {Array.from({ length: 4 }).map((_, i) => <CardSkeleton key={i} />)}
-            </div>
-          )}
+          {/* ── Vista Lista ─── */}
+          {vistaLista && (
+            <>
+              {/* Estado de error */}
+              {isError && (
+                <div className="py-20 text-center">
+                  <p className="text-[18px] font-semibold text-foreground mb-2">No pudimos cargar los salones</p>
+                  <p className="text-[14px] text-muted-foreground">Verificá tu conexión e intentá de nuevo.</p>
+                </div>
+              )}
 
-          {/* Grid de resultados */}
-          {!isLoading && !isError && (
-            salonesPagina.length > 0 ? (
-              <div className="grid sm:grid-cols-2 gap-6">
-                {salonesPagina.map((salon) => (
-                  <CardSalon key={salon.id} salon={salon} />
-                ))}
-              </div>
-            ) : (
-              <div className="py-20 text-center">
-                <p className="text-[18px] font-semibold text-foreground mb-2">Sin resultados</p>
-                <p className="text-[14px] text-muted-foreground">
-                  Probá ajustando los filtros para ver más salones.
-                </p>
-              </div>
-            )
-          )}
+              {/* Skeletons de carga */}
+              {isLoading && (
+                <div className="grid sm:grid-cols-2 gap-6">
+                  {Array.from({ length: 4 }).map((_, i) => <CardSkeleton key={i} />)}
+                </div>
+              )}
 
-          {/* Paginación */}
-          {!isLoading && !isError && salonesFiltrados.length > 0 && (
-            <Pagination paginaActual={paginaSegura} totalPaginas={totalPaginas} onPageChange={setPage} />
+              {/* Grid de resultados */}
+              {!isLoading && !isError && (
+                salonesPagina.length > 0 ? (
+                  <div className="grid sm:grid-cols-2 gap-6">
+                    {salonesPagina.map((salon) => (
+                      <CardSalon key={salon.id} salon={salon} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="py-20 text-center">
+                    <p className="text-[18px] font-semibold text-foreground mb-2">Sin resultados</p>
+                    <p className="text-[14px] text-muted-foreground">
+                      Probá ajustando los filtros para ver más salones.
+                    </p>
+                  </div>
+                )
+              )}
+
+              {/* Paginación */}
+              {!isLoading && !isError && salonesFiltrados.length > 0 && (
+                <Pagination paginaActual={paginaSegura} totalPaginas={totalPaginas} onPageChange={setPage} />
+              )}
+            </>
           )}
         </div>
       </div>

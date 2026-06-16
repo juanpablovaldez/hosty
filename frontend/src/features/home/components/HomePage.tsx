@@ -4,6 +4,7 @@ import { SearchBar } from './SearchBar'
 import { FeaturedSalones } from './FeaturedSalones'
 import { ValueProps } from './ValueProps'
 import { HostCTA } from './HostCTA'
+import { ComoFunciona } from './ComoFunciona'
 import { CheckCircle2, Zap, MapPin, Users, Star } from 'lucide-react'
 import { HostyIso, HostyBadge } from '@/components/ui/hosty-badge'
 
@@ -183,6 +184,7 @@ export function HomePage() {
       ══════════════════════════════════════════════ */}
       <ValueProps />
       <FeaturedSalones />
+      <ComoFunciona />
       <HostCTA />
     </>
   )

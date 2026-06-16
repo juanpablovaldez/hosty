@@ -14,6 +14,8 @@ export interface Salon {
   capacity: number
   location: string
   address: string
+  latitude: number | null
+  longitude: number | null
   isVerified: boolean
   rentTimeHours: number
   isFavorite: boolean

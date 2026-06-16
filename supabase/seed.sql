@@ -15,7 +15,8 @@ INSERT INTO public.salones (
   capacity, price_per_hour, rent_time_hours,
   event_types, amenities, images,
   availability_status, is_verified,
-  rating_value, rating_count
+  rating_value, rating_count,
+  latitude, longitude
 ) VALUES
 (
   'a1b2c3d4-0001-0001-0001-000000000001',
@@ -28,7 +29,8 @@ INSERT INTO public.salones (
   ARRAY['Catering','Estacionamiento','Climatización','Sonido','Iluminación'],
   ARRAY['https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800',
         'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=800'],
-  'disponible', true, 4.7, 23
+  'disponible', true, 4.7, 23,
+  -26.8123, -65.3185
 ),
 (
   'a1b2c3d4-0002-0002-0002-000000000002',
@@ -40,7 +42,8 @@ INSERT INTO public.salones (
   ARRAY['Corporativo','Cumpleaños','Graduación'],
   ARRAY['Estacionamiento','Wi-Fi','Sonido','Climatización'],
   ARRAY['https://images.unsplash.com/photo-1478146059778-26028b07395a?w=800'],
-  'disponible', true, 4.2, 11
+  'disponible', true, 4.2, 11,
+  -26.8276, -65.2038
 ),
 (
   'a1b2c3d4-0003-0003-0003-000000000003',
@@ -52,7 +55,8 @@ INSERT INTO public.salones (
   ARRAY['Corporativo','Cumpleaños','Quince años'],
   ARRAY['Climatización','Wi-Fi','Iluminación'],
   ARRAY['https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=800'],
-  'disponible', false, 3.9, 5
+  'disponible', false, 3.9, 5,
+  -26.8295, -65.2065
 ),
 (
   'a1b2c3d4-0004-0004-0004-000000000004',
@@ -65,7 +69,8 @@ INSERT INTO public.salones (
   ARRAY['Catering','Estacionamiento','Climatización','Sonido','Wi-Fi','Iluminación'],
   ARRAY['https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800',
         'https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf?w=800'],
-  'disponible', true, 4.9, 42
+  'disponible', true, 4.9, 42,
+  -26.7330, -65.2615
 ),
 (
   'a1b2c3d4-0005-0005-0005-000000000005',
@@ -77,7 +82,8 @@ INSERT INTO public.salones (
   ARRAY['Corporativo','Graduación'],
   ARRAY['Catering','Estacionamiento','Climatización','Sonido','Wi-Fi','Iluminación'],
   ARRAY['https://images.unsplash.com/photo-1497366216548-37526070297c?w=800'],
-  'disponible', true, 4.5, 18
+  'disponible', true, 4.5, 18,
+  -26.8385, -65.1730
 )
 ON CONFLICT (id) DO NOTHING;
 
