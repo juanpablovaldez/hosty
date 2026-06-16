@@ -36,6 +36,9 @@ function buildFilteredSalonesQuery(params: SalonSearchParams) {
   }
   if (params.availability) {
     query = query.eq('availability_status', params.availability)
+  } else {
+    // Los salones pausados por el host ('no disponible') no se muestran en el listado/mapa público
+    query = query.neq('availability_status', 'no disponible')
   }
   if (params.eventTypes?.length) {
     query = query.overlaps('event_types', params.eventTypes)

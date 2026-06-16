@@ -416,8 +416,8 @@ export function BookingFlow() {
                     type="number"
                     min={1}
                     max={salon?.capacity}
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(Number(e.target.value))}
+                    value={field.state.value || ''}
+                    onChange={(e) => field.handleChange(e.target.value === '' ? 0 : Number(e.target.value))}
                     onBlur={field.handleBlur}
                   />
                   {salon && <p className="text-xs text-muted-foreground">Máximo: {salon.capacity} personas</p>}
