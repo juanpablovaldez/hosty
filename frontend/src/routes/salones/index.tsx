@@ -19,6 +19,7 @@ const searchSchema = z.object({
   page: z.coerce.number().min(1).optional(),
   sortBy: z.enum(['rating', 'price_asc', 'price_desc', 'capacity']).optional(),
   tipoEvento: z.string().optional(),
+  vista: z.enum(['lista', 'mapa']).optional(),
 })
 
 export const Route = createFileRoute('/salones/')({

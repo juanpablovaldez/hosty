@@ -179,7 +179,9 @@ export type Database = {
           id: string
           images: string[]
           is_verified: boolean
+          latitude: number | null
           location: string
+          longitude: number | null
           name: string
           price_max: number | null
           price_min: number | null
@@ -201,7 +203,9 @@ export type Database = {
           id?: string
           images?: string[]
           is_verified?: boolean
+          latitude?: number | null
           location: string
+          longitude?: number | null
           name: string
           price_max?: number | null
           price_min?: number | null
@@ -223,7 +227,9 @@ export type Database = {
           id?: string
           images?: string[]
           is_verified?: boolean
+          latitude?: number | null
           location?: string
+          longitude?: number | null
           name?: string
           price_max?: number | null
           price_min?: number | null
