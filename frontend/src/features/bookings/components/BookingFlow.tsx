@@ -104,7 +104,7 @@ export function BookingFlow() {
   const [bookingConfirmed, setBookingConfirmed] = useState(false)
 
   const [step1Snapshot, setStep1Snapshot] = useState({ eventDate: '', startTime: '', endTime: '' })
-  const [step2Snapshot, setStep2Snapshot] = useState({ eventType: '', attendees: 1, contactName: '', contactPhone: '', notes: '' })
+  const [step2Snapshot, setStep2Snapshot] = useState({ eventType: '', attendees: 0, contactName: '', contactPhone: '', notes: '' })
   const [selectedServiceNames, setSelectedServiceNames] = useState<string[]>([])
 
   const hours = calcHours(step1Snapshot.startTime, step1Snapshot.endTime)
@@ -416,6 +416,7 @@ export function BookingFlow() {
                     type="number"
                     min={1}
                     max={salon?.capacity}
+                    placeholder="Ej: 80"
                     value={field.state.value || ''}
                     onChange={(e) => field.handleChange(e.target.value === '' ? 0 : Number(e.target.value))}
                     onBlur={field.handleBlur}
