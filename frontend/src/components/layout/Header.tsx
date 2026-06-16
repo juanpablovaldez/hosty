@@ -86,6 +86,13 @@ export function Header() {
           )}
           <a
             href="/#como-funciona"
+            onClick={(e) => {
+              const el = document.getElementById('como-funciona')
+              if (el) {
+                e.preventDefault()
+                el.scrollIntoView({ behavior: 'smooth' })
+              }
+            }}
             className={cn(
               navLinkBase,
               'text-muted-foreground after:scale-x-0 hover:text-foreground hover:after:scale-x-100',
@@ -207,7 +214,14 @@ export function Header() {
                 )}
                 <a
                   href="/#como-funciona"
-                  onClick={() => setMobileOpen(false)}
+                  onClick={(e) => {
+                    setMobileOpen(false)
+                    const el = document.getElementById('como-funciona')
+                    if (el) {
+                      e.preventDefault()
+                      el.scrollIntoView({ behavior: 'smooth' })
+                    }
+                  }}
                   className="rounded-lg px-3 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
                 >
                   Cómo funciona

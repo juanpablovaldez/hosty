@@ -6,6 +6,7 @@ import { ValueProps } from './ValueProps'
 import { HostCTA } from './HostCTA'
 import { CheckCircle2, Zap, MapPin, Users, Star } from 'lucide-react'
 import { HostyIso, HostyBadge } from '@/components/ui/hosty-badge'
+import { ComoFunciona } from './ComoFunciona'
 
 const CHIPS = ['Todos', 'Cumpleaños', 'Casamientos', 'Graduaciones', 'Corporativo', 'Infantiles']
 
@@ -182,6 +183,7 @@ export function HomePage() {
           SECCIONES
       ══════════════════════════════════════════════ */}
       <ValueProps />
+      <ComoFunciona />
       <FeaturedSalones />
       <HostCTA />
     </>
