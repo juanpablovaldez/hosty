@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import type { Salon } from '../types'
 import { salonPriceDisplay } from '../lib/pricing'
@@ -7,10 +6,10 @@ import { Badge } from '@/components/ui/badge'
 import { HostyBadge } from '@/components/ui/hosty-badge'
 import { cn } from '@/shared/lib/utils'
 import { useAuthStore } from '@/features/auth/store/auth.store'
+import { useToggleFavorite } from '@/features/favorites/api/favorites.mutations'
 
 interface CardSalonProps {
   salon: Salon
-  onFavoriteToggle?: (id: string) => void
 }
 
 const AVAILABILITY_STYLES = {
@@ -19,12 +18,12 @@ const AVAILABILITY_STYLES = {
   'no disponible': 'bg-muted text-muted-foreground',
 } as const
 
-export function CardSalon({ salon, onFavoriteToggle }: CardSalonProps) {
-  const [fav, setFav] = useState(salon.isFavorite)
+export function CardSalon({ salon }: CardSalonProps) {
   const coverImage = salon.images[0] ?? '/placeholder-salon.jpg'
   const price = salonPriceDisplay(salon)
   const { user } = useAuthStore()
   const navigate = useNavigate()
+  const toggleFavorite = useToggleFavorite(user?.id ?? null)
 
   function handleFavorite(e: React.MouseEvent) {
     e.preventDefault()
@@ -33,8 +32,7 @@ export function CardSalon({ salon, onFavoriteToggle }: CardSalonProps) {
       navigate({ to: '/login' })
       return
     }
-    setFav(!fav)
-    onFavoriteToggle?.(salon.id)
+    toggleFavorite.mutate({ salonId: salon.id, isFavorite: salon.isFavorite })
   }
 
   return (
@@ -83,14 +81,14 @@ export function CardSalon({ salon, onFavoriteToggle }: CardSalonProps) {
           {/* Botón favorito */}
           <button
             type="button"
-            aria-label={fav ? 'Quitar de favoritos' : 'Guardar en favoritos'}
+            aria-label={salon.isFavorite ? 'Quitar de favoritos' : 'Guardar en favoritos'}
             onClick={handleFavorite}
             className="absolute top-3 right-3 w-9 h-9 rounded-full bg-card/95 hover:bg-card flex items-center justify-center transition shadow-sm backdrop-blur-sm"
           >
             <Heart
               className={cn(
                 'w-5 h-5 transition',
-                fav ? 'fill-red-500 text-red-500' : 'text-foreground/70',
+                salon.isFavorite ? 'fill-red-500 text-red-500' : 'text-foreground/70',
               )}
               strokeWidth={1.5}
             />
