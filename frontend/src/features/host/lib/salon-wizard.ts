@@ -10,6 +10,8 @@ export const step1Schema = z.object({
   description: z.string().min(20, 'Contá un poco más sobre el salón (mínimo 20 caracteres)'),
   location: z.string().min(1, 'Seleccioná una zona'),
   address: z.string().min(5, 'Ingresá la dirección completa'),
+  latitude: z.number().nullable(),
+  longitude: z.number().nullable(),
 })
 
 export const step2Schema = z
@@ -53,7 +55,7 @@ export interface FormState {
 }
 
 export const EMPTY_FORM: FormState = {
-  step1: { name: '', description: '', location: '', address: '' },
+  step1: { name: '', description: '', location: '', address: '', latitude: null, longitude: null },
   step2: {
     capacity: 50,
     priceType: 'fixed',
