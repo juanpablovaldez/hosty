@@ -1,0 +1,5 @@
+{
+  "require": ["tsx/esm"],
+  "spec": "src/test/mocha/**/*.test.ts",
+  "timeout": 5000
+}
