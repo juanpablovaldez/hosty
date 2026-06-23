@@ -34,16 +34,31 @@ WebUI.setText(css('input[type="password"]'), PASSWORD)
 // ─── PASO 4: Hacer click en el botón de login ───────────────────────────────
 WebUI.click(css('button[type="submit"]'))
 
-// ─── PASO 5: Verificar redirección a home (login exitoso) ───────────────────
-WebUI.waitForPageLoad(10)
-WebUI.verifyMatch(WebUI.getUrl(), BASE_URL + '/', false)
+// ─── PASO 5: Esperar a que Supabase autentique y la app redirija ─────────────
+// Hosty es una SPA: el login no recarga la página, cambia la URL via React Router.
+// Hacemos polling manual hasta que la URL deje de ser /login (máx 10 segundos).
+int intentos = 0
+while (WebUI.getUrl().contains('/login') && intentos < 10) {
+    WebUI.delay(1)
+    intentos++
+}
+WebUI.verifyElementNotPresent(css('input#email'), 3)
 
 // ─── PASO 6: Navegar a Mis Favoritos ────────────────────────────────────────
+// Esperamos un segundo extra para que Supabase termine de hidratar la sesión
+// antes de navegar a una ruta protegida por requireAuth.
+WebUI.delay(1)
 WebUI.navigateToUrl("${BASE_URL}/mis-favoritos")
-WebUI.waitForPageLoad(10)
 
 // ─── PASO 7: Verificar que la página de favoritos cargó correctamente ────────
-WebUI.verifyTextPresent('Mis favoritos', false)
+// Buscamos el h1 por su texto parcial usando XPath — evita problemas con
+// el punto (.) que React renderiza en un <span> separado y el case exacto.
+WebUI.verifyElementPresent(
+    new com.kms.katalon.core.testobject.TestObject()
+        .addProperty('xpath', com.kms.katalon.core.testobject.ConditionType.EQUALS,
+            '//h1[contains(text(), "Mis Favoritos")]'),
+    10
+)
 
 // ─── Fin del test ────────────────────────────────────────────────────────────
 WebUI.closeBrowser()

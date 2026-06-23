@@ -217,64 +217,82 @@ Usa un **navegador real** (Chrome). El test no sabe nada del código interno; so
 3. Escribir el email de prueba
 4. Escribir la contraseña
 5. Click en "Iniciar sesión"
-6. Verificar que la URL cambió a / (redirección post-login)
-7. Navegar a /mis-favoritos
-8. Verificar que aparece el texto "Mis favoritos" en la página
-9. Cerrar el browser
+6. Esperar polling hasta que la URL deje de ser /login (máx. 10s)
+7. Verificar que el formulario de login desapareció
+8. Esperar 1 segundo para que la sesión se hidrate, navegar a /mis-favoritos
+9. Verificar por XPath que el h1 "Mis Favoritos" está presente
+10. Cerrar el browser
 ```
 
-#### Por qué estos pasos son los más importantes
-El login es el flujo más crítico de la aplicación. Si falla, ningún usuario puede usar las funcionalidades de favoritos, reservas ni perfil. Verificar también la navegación a `/mis-favoritos` confirma que la sesión quedó guardada y que las rutas protegidas funcionan.
+#### Desafíos reales que surgieron al implementarlo
+
+**Problema 1 — `waitForPageLoad` no funciona en SPAs**
+Hosty es una Single Page Application. Cuando el login es exitoso, Supabase responde, el store de Zustand actualiza el estado de sesión, y React Router cambia la URL — todo sin recargar la página. El `waitForPageLoad` de Katalon detecta la recarga del navegador, que nunca ocurre. Solución: un loop de polling que pregunta `¿la URL sigue siendo /login?` cada segundo hasta que cambie o se agoten 10 intentos.
+
+**Problema 2 — La sesión necesita hidratarse antes de navegar a rutas protegidas**
+`/mis-favoritos` tiene un guard `requireAuth` que lee el store de Zustand. Si navegamos demasiado rápido después del login, el store todavía está en estado `loading` y la ruta redirige de vuelta al login. Solución: `delay(1)` antes de navegar a la ruta protegida.
+
+**Problema 3 — `verifyTextPresent` falló con "Mis Favoritos"**
+El `<h1>` tiene el texto partido: el nodo de texto dice `Mis Favoritos` y un `<span>` separado contiene el punto final. `verifyTextPresent` no encontraba la coincidencia exacta. Solución: XPath con `contains(text(), "Mis Favoritos")` que busca dentro del nodo de texto del h1 sin importar el span hijo.
 
 #### Vocabulario para la oral
 - `WebUI.openBrowser('')` → abre Chrome (o el browser configurado en Katalon)
 - `WebUI.navigateToUrl(...)` → navega a la URL indicada
-- `WebUI.waitForPageLoad(10)` → espera hasta 10 segundos a que cargue la página (evita falsos positivos por carga lenta)
-- `WebUI.verifyElementPresent(...)` → assertion: verifica que el elemento existe en el DOM
-- `WebUI.verifyMatch(url, patron, isRegex)` → assertion: verifica que la URL coincide con el patrón
-- `findTestObject` / `css(selector)` → forma de referenciar elementos del DOM por selector CSS
+- `WebUI.waitForPageLoad(10)` → espera recarga del navegador — no sirve en SPAs
+- Loop de polling → alternativa al wait estándar cuando la navegación es client-side
+- `WebUI.verifyElementNotPresent(...)` → confirma que un elemento desapareció del DOM
+- XPath `contains(text(), ...)` → busca texto parcial dentro de un nodo, ignora elementos hijos
 - `WebUI.closeBrowser()` → cierra el browser al final
 
 ---
 
-### TC-E02 | Búsqueda de salones por nombre
+### TC-E02 | Login + Búsqueda de salones por nombre
 **Archivo**: `e2e/TC-E02_BusquedaSalones.groovy`
 **Herramienta**: Katalon Studio
 
 #### Qué prueba
-El flujo de búsqueda: el usuario escribe en el campo de búsqueda de la página de salones y verifica que los resultados se filtran correctamente.
+El flujo completo de un usuario autenticado que busca salones por nombre: hace login, navega al listado, tipea en el buscador, presiona Enter, y verifica que la URL se actualizó con el filtro y que hay resultados en pantalla.
 
 #### Por qué es E2E
-Prueba la integración real entre:
-- El input de búsqueda en React
-- El routing con parámetros en la URL
-- La query a Supabase con el filtro `ilike`
-- El renderizado de los resultados en pantalla
+Prueba la integración real de toda la cadena:
+- Autenticación con Supabase
+- Navegación con TanStack Router
+- Input controlado por React que actualiza la URL al presionar Enter
+- Query a Supabase con filtro `ilike` generada por los parámetros de la URL
+- Renderizado de los cards resultantes en el DOM
 
-Ningún test unitario ni de integración puede verificar que este flujo completo funciona en el browser real.
+Ningún test unitario ni de integración puede verificar que todo eso funciona junto en el browser real.
 
 #### Los pasos del test
 ```
-1. Abrir Chrome en http://localhost:5173/salones
-2. Verificar que el input "Buscar por nombre de salón..." está presente
-3. Escribir el término de búsqueda ("La")
-4. Esperar 2 segundos a que el filtro aplique (debounce / re-render)
-5. Verificar que aparece al menos un card de salón (article.group)
-6. Obtener el nombre del primer resultado y verificar que contiene el término buscado
-7. Cerrar el browser
+1. Abrir Chrome, hacer login (mismo flujo que TC-E01)
+2. Navegar a http://localhost:5173/salones
+3. Verificar que el input "Buscar por nombre de salón..." está presente
+4. Con Actions de Selenium: click en el input → tipear el término → presionar Enter
+5. Polling hasta que la URL contenga ?busqueda= (máx. 10s)
+6. Verificar que la URL tiene el parámetro de búsqueda activo
+7. Verificar que aparece al menos un card de salón (article.group)
+8. Cerrar el browser
 ```
 
-#### Por qué el `delay(2)`
-El componente tiene un efecto React que actualiza la URL cuando el usuario escribe. Luego TanStack Query hace una nueva llamada a Supabase y re-renderiza los resultados. Este proceso lleva un momento, por eso esperamos antes de hacer las assertions.
+#### Desafíos reales que surgieron al implementarlo
 
-> **Alternativa más robusta**: en lugar de `delay`, usar `WebUI.waitForElementPresent(article, 5)` que espera activamente hasta que aparezca el elemento. Es mejor práctica que un tiempo fijo.
+**Problema 1 — El parámetro de la URL no es `name` sino `busqueda`**
+El route de TanStack Router define el schema de los search params con `busqueda: z.string().optional()`. Al usar `?name=Terraza` el filtro nunca se aplicaba porque la app ignoraba ese parámetro desconocido.
+
+**Problema 2 — El input solo filtra al presionar Enter, no al escribir**
+El input es un controlled component. `onChange` actualiza estado local (`busquedaDraft`) para que el texto aparezca mientras escribís, pero `onKeyDown` con `Enter` es lo que efectivamente llama a `setFilter` y actualiza la URL. Sin presionar Enter, la URL nunca cambia y la búsqueda no se ejecuta.
+
+**Problema 3 — `setText` y `sendKeys` no disparan el `onChange` de React**
+React 19 usa un sistema de eventos sintéticos que no responde a cómo Selenium escribe en el DOM por defecto. La solución fue usar la clase `Actions` de Selenium, que simula eventos de teclado reales al nivel del sistema operativo. El browser los procesa igual que si el usuario tipease físicamente, y React los recibe correctamente.
 
 #### Vocabulario para la oral
-- `WebUI.setText(...)` → escribe texto en un input, reemplaza el contenido actual
-- `WebUI.getText(...)` → obtiene el texto visible de un elemento
-- `WebUI.verifyMatch(text, regex, true)` → verifica que el texto coincide con una expresión regular
-- `article.group` → el selector CSS del card de salón, cuyo componente React tiene `className="group ..."`
-- `article.group:first-of-type h3` → toma el primer card y dentro busca el `<h3>` con el nombre del salón
+- `Actions` de Selenium → clase que encadena interacciones reales: click, tipeo, teclas especiales
+- `Keys.ENTER` → simula la tecla Enter, necesaria para activar el `onKeyDown` del input
+- Controlled input → input cuyo valor está controlado por estado de React, no por el DOM directamente
+- `busqueda=` en la URL → parámetro de búsqueda definido en el schema del route de TanStack Router
+- Loop de polling sobre `WebUI.getUrl()` → espera determinista: el test avanza cuando la condición es real, no después de un tiempo fijo arbitrario
+- `article.group` → selector del card de salón; `group` es una clase de Tailwind CSS que activa estilos en hover sobre los elementos hijos
 
 ---
 
@@ -287,7 +305,7 @@ El componente tiene un efecto React que actualiza la URL cuando el usuario escri
 | TC-I01 | Integración | `useToggleFavorite` — optimistic update y rollback | Vitest + React Query |
 | TC-I02 | Integración | `CardSalon` — auth + toggle favorito en el componente | Vitest + Testing Library |
 | TC-E01 | E2E | Login completo + acceso a ruta protegida | Katalon Studio |
-| TC-E02 | E2E | Búsqueda y filtrado de salones | Katalon Studio |
+| TC-E02 | E2E | Login + búsqueda de salones por nombre (Actions + Enter) | Katalon Studio |
 
 ---
 
@@ -315,10 +333,19 @@ npm --prefix frontend run test
 > Porque Supabase es una dependencia externa (una API de red). Si no la mockeo, el test depende de tener conexión a internet y de que la base de datos tenga datos específicos. Los tests deben ser deterministas: siempre dar el mismo resultado. Mockeo solo la capa de red; el resto del código (hooks, cache, componentes) es real.
 
 **¿Cuál es la diferencia entre tu test de integración y el E2E si ambos prueban el CardSalon?**
-> El test de integración (TC-I02) prueba la lógica del componente con jsdom (un DOM simulado en Node.js). No hay browser real, no hay CSS real, y Supabase es un mock. El test E2E (TC-E01/E2E02) usa Chrome real, con la app corriendo de verdad, y Supabase real. El E2E prueba la experiencia completa del usuario, el de integración prueba solo la lógica interna.
+> El test de integración (TC-I02) prueba la lógica del componente con jsdom (un DOM simulado en Node.js). No hay browser real, no hay CSS real, y Supabase es un mock. Los E2E usan Chrome real, con la app corriendo de verdad y Supabase real. El E2E prueba la experiencia completa del usuario; el de integración prueba solo la lógica interna.
 
 **¿Qué es el optimistic update y por qué lo probás?**
 > Es cuando la app actualiza la UI *antes* de que el servidor confirme la operación, para que se sienta más rápida. Por ejemplo, al dar like a un salón, el corazón se llena al instante aunque Supabase todavía no respondió. Lo pruebo porque si falla el rollback (cuando el servidor da error), el usuario ve un estado incorrecto que nunca se guardó en la base de datos.
 
 **¿Por qué elegiste `salonPriceDisplay` para test unitario?**
 > Porque es una función pura con múltiples ramas lógicas: tiene 5 casos diferentes según el tipo de precio. Es el tipo de función más fácil de testear y con más valor de cobertura: si alguien rompe una de las ramas al hacer un cambio, el test lo detecta inmediatamente.
+
+**¿Por qué en TC-E02 usás `Actions` en lugar de `setText`?**
+> Porque React 19 tiene su propio sistema de eventos sintéticos. `setText` y `sendKeys` de Katalon escriben directamente en el DOM pero React no los detecta como entrada del usuario real. La clase `Actions` de Selenium simula eventos al nivel del sistema operativo — el browser los procesa igual que si el usuario tipease físicamente — y React los recibe correctamente.
+
+**¿Por qué el buscador necesita que presiones Enter para filtrar?**
+> El input está diseñado así a propósito: `onChange` actualiza un estado local para que el texto aparezca mientras escribís, pero el filtro real se aplica al presionar Enter. Esto evita hacer una llamada a Supabase en cada tecla. En el test necesitaba simular esa tecla con `Keys.ENTER`, de lo contrario la URL nunca cambiaba y la búsqueda nunca se ejecutaba.
+
+**¿Por qué esperás a que la URL cambie en lugar de usar `delay`?**
+> Un `delay` fijo es frágil: si la app tarda más de lo esperado, el test falla aunque todo funcione bien. Si tarda menos, perdés tiempo innecesario. El loop de polling verifica la condición real (`¿la URL ya tiene busqueda=?`) y avanza en cuanto se cumple. Así el test es determinista y tan rápido como la app lo permita.
