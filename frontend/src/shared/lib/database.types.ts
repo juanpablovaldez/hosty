@@ -178,6 +178,7 @@ export type Database = {
           host_id: string | null
           id: string
           images: string[]
+          is_featured: boolean
           is_verified: boolean
           latitude: number | null
           location: string
@@ -202,6 +203,7 @@ export type Database = {
           host_id?: string | null
           id?: string
           images?: string[]
+          is_featured?: boolean
           is_verified?: boolean
           latitude?: number | null
           location: string
@@ -226,6 +228,7 @@ export type Database = {
           host_id?: string | null
           id?: string
           images?: string[]
+          is_featured?: boolean
           is_verified?: boolean
           latitude?: number | null
           location?: string
@@ -238,6 +241,45 @@ export type Database = {
           rating_count?: number | null
           rating_value?: number | null
           rent_time_hours?: number
+        }
+        Relationships: []
+      }
+      salon_subscriptions: {
+        Row: {
+          amount_monthly: number
+          cancelled_at: string | null
+          created_at: string
+          current_period_end: string | null
+          host_id: string
+          id: string
+          mercadopago_subscription_id: string | null
+          plan_id: string
+          started_at: string | null
+          status: string
+        }
+        Insert: {
+          amount_monthly?: number
+          cancelled_at?: string | null
+          created_at?: string
+          current_period_end?: string | null
+          host_id: string
+          id?: string
+          mercadopago_subscription_id?: string | null
+          plan_id?: string
+          started_at?: string | null
+          status: string
+        }
+        Update: {
+          amount_monthly?: number
+          cancelled_at?: string | null
+          created_at?: string
+          current_period_end?: string | null
+          host_id?: string
+          id?: string
+          mercadopago_subscription_id?: string | null
+          plan_id?: string
+          started_at?: string | null
+          status?: string
         }
         Relationships: []
       }

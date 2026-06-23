@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import type { Salon } from '../types'
 import { salonPriceDisplay } from '../lib/pricing'
-import { Heart, Users, Star, MapPin } from 'lucide-react'
+import { Heart, Users, Star, MapPin, Sparkles } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { HostyBadge } from '@/components/ui/hosty-badge'
 import { cn } from '@/shared/lib/utils'
@@ -61,8 +61,18 @@ export function CardSalon({ salon, onFavoriteToggle }: CardSalonProps) {
           />
           </div>
 
+          {/* Badge destacado */}
+          {salon.isFeatured && (
+            <div className="absolute top-3 left-3">
+              <span className="flex items-center gap-1 rounded-full bg-primary px-2.5 py-1 text-[11px] font-semibold text-primary-foreground">
+                <Sparkles className="w-3 h-3" strokeWidth={1.5} />
+                Destacado
+              </span>
+            </div>
+          )}
+
           {/* Badge verificado */}
-          {salon.isVerified && (
+          {salon.isVerified && !salon.isFeatured && (
             <div className="absolute top-3 left-3">
               <HostyBadge variant="verificado" size="sm" />
             </div>

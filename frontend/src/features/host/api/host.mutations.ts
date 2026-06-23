@@ -161,6 +161,29 @@ export function useUpdateSalonAvailability() {
   })
 }
 
+export function useCancelSubscription() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async ({ subscriptionId, userId }: { subscriptionId: string; userId: string }) => {
+      const { error } = await supabase
+        .from('salon_subscriptions')
+        .update({ status: 'cancelled', cancelled_at: new Date().toISOString() })
+        .eq('id', subscriptionId)
+        .eq('host_id', userId)
+      if (error) throw error
+      await supabase
+        .from('salones')
+        .update({ is_featured: false })
+        .eq('host_id', userId)
+    },
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['host', 'subscription', variables.userId] })
+      queryClient.invalidateQueries({ queryKey: ['host', 'salones', variables.userId] })
+    },
+  })
+}
+
 export function useUpdateBookingStatus() {
   const queryClient = useQueryClient()
 

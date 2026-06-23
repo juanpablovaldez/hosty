@@ -68,6 +68,7 @@ export function rowToSalon(row: SalonRowWithServices): Salon {
     latitude: row.latitude,
     longitude: row.longitude,
     isVerified: row.is_verified,
+    isFeatured: row.is_featured,
     rentTimeHours: row.rent_time_hours,
     isFavorite: false,
     amenities: row.amenities,
@@ -112,8 +113,10 @@ export function useSearchSalones(params: SalonSearchParams) {
       } else if (params.sortBy === 'capacity') {
         query = query.order('capacity', { ascending: false })
       } else {
-        // Default: relevancia (rating desc)
-        query = query.order('rating_value', { ascending: false, nullsFirst: false })
+        // Default: featured first, then by rating
+        query = query
+          .order('is_featured', { ascending: false })
+          .order('rating_value', { ascending: false, nullsFirst: false })
       }
 
       // Paginación server-side
