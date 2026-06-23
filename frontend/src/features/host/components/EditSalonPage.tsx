@@ -54,6 +54,8 @@ export function EditSalonPage({ salonId }: EditSalonPageProps) {
       description: salon.description ?? '',
       location: salon.location,
       address: salon.address,
+      latitude: salon.latitude,
+      longitude: salon.longitude,
     },
     step2: {
       capacity: salon.capacity,

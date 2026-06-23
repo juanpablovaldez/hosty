@@ -51,6 +51,8 @@ export function useCreateSalon() {
           description: step1.description,
           location: step1.location,
           address: step1.address,
+          latitude: step1.latitude,
+          longitude: step1.longitude,
           capacity: step2.capacity,
           ...pricingColumns(step2),
           rent_time_hours: step2.rentTimeHours,
@@ -104,6 +106,8 @@ export function useUpdateSalon() {
         description: step1.description,
         location: step1.location,
         address: step1.address,
+        latitude: step1.latitude,
+        longitude: step1.longitude,
         capacity: step2.capacity,
         ...pricingColumns(step2),
         rent_time_hours: step2.rentTimeHours,
@@ -134,8 +138,11 @@ export function useDeleteSalon() {
 
   return useMutation({
     mutationFn: async ({ id }: { id: string; userId: string }) => {
-      const { error } = await supabase.from('salones').delete().eq('id', id)
+      const { data, error } = await supabase.from('salones').delete().eq('id', id).select('id')
       if (error) throw error
+      if (!data || data.length === 0) {
+        throw new Error('No se eliminó ningún salón. Es posible que no tengas permisos para borrarlo.')
+      }
     },
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['host', 'salones', variables.userId] })
@@ -157,6 +164,29 @@ export function useUpdateSalonAvailability() {
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['host', 'salones', variables.userId] })
       queryClient.invalidateQueries({ queryKey: ['salon', variables.id] })
+    },
+  })
+}
+
+export function useCancelSubscription() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async ({ subscriptionId, userId }: { subscriptionId: string; userId: string }) => {
+      const { error } = await supabase
+        .from('salon_subscriptions')
+        .update({ status: 'cancelled', cancelled_at: new Date().toISOString() })
+        .eq('id', subscriptionId)
+        .eq('host_id', userId)
+      if (error) throw error
+      await supabase
+        .from('salones')
+        .update({ is_featured: false })
+        .eq('host_id', userId)
+    },
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['host', 'subscription', variables.userId] })
+      queryClient.invalidateQueries({ queryKey: ['host', 'salones', variables.userId] })
     },
   })
 }

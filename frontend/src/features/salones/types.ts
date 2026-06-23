@@ -17,6 +17,7 @@ export interface Salon {
   latitude: number | null
   longitude: number | null
   isVerified: boolean
+  isFeatured: boolean
   rentTimeHours: number
   isFavorite: boolean
   amenities: string[]

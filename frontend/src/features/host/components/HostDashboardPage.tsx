@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { useAuthStore } from '@/features/auth/store/auth.store'
-import { useHostSalones, useHostBookings, useSalonBlocks } from '../api/host.queries'
+import { useHostSalones, useHostBookings, useSalonBlocks, useHostSubscription } from '../api/host.queries'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Building2, Plus } from 'lucide-react'
@@ -12,6 +12,7 @@ import { ReservasView } from './ReservasView'
 import { SalonRow } from './SalonRow'
 import { CalendarioView } from './CalendarioView'
 import { BookingDrawer } from './BookingDrawer'
+import { PlanCard } from './PlanCard'
 
 type Tab = 'resumen' | 'reservas' | 'salones' | 'calendario'
 
@@ -30,6 +31,7 @@ export function HostDashboardPage() {
   const salonIds = salones.map((s) => s.id)
   const { data: bookings = [], isLoading: loadingBookings } = useHostBookings(salonIds)
   const { data: blocks = [] } = useSalonBlocks(salonIds)
+  const { data: subscription = null } = useHostSubscription(user?.id ?? null)
 
   const isLoading = loadingSalones || (salonIds.length > 0 && loadingBookings)
   const pendingCount = bookings.filter((b) => b.status === 'pending').length
@@ -149,6 +151,19 @@ export function HostDashboardPage() {
         blocks={blocks}
         onClose={() => setSelected(null)}
       />
+
+      {!isLoading && user && (
+        <div className="mt-10">
+          <h2 className="text-[20px] font-bold text-foreground mb-4">
+            Visibilidad<span className="text-primary">.</span>
+          </h2>
+          <PlanCard
+            subscription={subscription}
+            userId={user.id}
+            hasSalones={salones.length > 0}
+          />
+        </div>
+      )}
     </div>
   )
 }
