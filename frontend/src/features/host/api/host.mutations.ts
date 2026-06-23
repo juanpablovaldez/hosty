@@ -134,8 +134,11 @@ export function useDeleteSalon() {
 
   return useMutation({
     mutationFn: async ({ id }: { id: string; userId: string }) => {
-      const { error } = await supabase.from('salones').delete().eq('id', id)
+      const { data, error } = await supabase.from('salones').delete().eq('id', id).select('id')
       if (error) throw error
+      if (!data || data.length === 0) {
+        throw new Error('No se eliminó ningún salón. Es posible que no tengas permisos para borrarlo.')
+      }
     },
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['host', 'salones', variables.userId] })
