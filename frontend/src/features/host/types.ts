@@ -19,3 +19,16 @@ export interface Booking {
   contactPhone: string | null
   createdAt: string
 }
+
+export interface Subscription {
+  id: string
+  hostId: string
+  status: 'pending' | 'active' | 'cancelled' | 'expired'
+  planId: string
+  amountMonthly: number
+  mercadopagoSubscriptionId: string | null
+  startedAt: string | null
+  currentPeriodEnd: string | null
+  cancelledAt: string | null
+  createdAt: string
+}

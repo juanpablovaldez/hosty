@@ -102,6 +102,35 @@ export type Database = {
           },
         ]
       }
+      user_favorites: {
+        Row: {
+          created_at: string
+          id: string
+          salon_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          salon_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          salon_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_favorites_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salones"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       salon_availability_blocks: {
         Row: {
           created_at: string
@@ -178,6 +207,7 @@ export type Database = {
           host_id: string | null
           id: string
           images: string[]
+          is_featured: boolean
           is_verified: boolean
           latitude: number | null
           location: string
@@ -202,6 +232,7 @@ export type Database = {
           host_id?: string | null
           id?: string
           images?: string[]
+          is_featured?: boolean
           is_verified?: boolean
           latitude?: number | null
           location: string
@@ -226,6 +257,7 @@ export type Database = {
           host_id?: string | null
           id?: string
           images?: string[]
+          is_featured?: boolean
           is_verified?: boolean
           latitude?: number | null
           location?: string
@@ -238,6 +270,45 @@ export type Database = {
           rating_count?: number | null
           rating_value?: number | null
           rent_time_hours?: number
+        }
+        Relationships: []
+      }
+      salon_subscriptions: {
+        Row: {
+          amount_monthly: number
+          cancelled_at: string | null
+          created_at: string
+          current_period_end: string | null
+          host_id: string
+          id: string
+          mercadopago_subscription_id: string | null
+          plan_id: string
+          started_at: string | null
+          status: string
+        }
+        Insert: {
+          amount_monthly?: number
+          cancelled_at?: string | null
+          created_at?: string
+          current_period_end?: string | null
+          host_id: string
+          id?: string
+          mercadopago_subscription_id?: string | null
+          plan_id?: string
+          started_at?: string | null
+          status: string
+        }
+        Update: {
+          amount_monthly?: number
+          cancelled_at?: string | null
+          created_at?: string
+          current_period_end?: string | null
+          host_id?: string
+          id?: string
+          mercadopago_subscription_id?: string | null
+          plan_id?: string
+          started_at?: string | null
+          status?: string
         }
         Relationships: []
       }

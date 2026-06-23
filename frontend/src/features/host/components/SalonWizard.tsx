@@ -17,6 +17,7 @@ import {
   step1Schema, step2Schema,
 } from '../lib/salon-wizard'
 import type { FormState, Step1, Step2 } from '../lib/salon-wizard'
+import { LocationPicker } from './LocationPicker'
 import type { PriceType, SalonService } from '@/features/salones/lib/pricing'
 import { salonPriceDisplay, formatARS } from '@/features/salones/lib/pricing'
 export type { FormState, Step1, Step2 } from '../lib/salon-wizard'
@@ -59,6 +60,10 @@ function Step1Form({ data, onNext }: { data: Step1; onNext: (v: Step1) => void }
       const errs: typeof errors = {}
       result.error.issues.forEach((i) => { errs[i.path[0] as keyof Step1] = i.message })
       setErrors(errs)
+      return
+    }
+    if (form.latitude == null || form.longitude == null) {
+      setErrors((prev) => ({ ...prev, latitude: 'Confirmá la ubicación en el mapa para que el salón aparezca en las búsquedas' }))
       return
     }
     onNext(result.data)
@@ -116,6 +121,15 @@ function Step1Form({ data, onNext }: { data: Step1; onNext: (v: Step1) => void }
             onChange={(e) => setForm({ ...form, address: e.target.value })}
           />
         </div>
+      </Field>
+
+      <Field label="Ubicación en el mapa" error={errors.latitude}>
+        <LocationPicker
+          address={form.address}
+          zona={form.location}
+          value={{ latitude: form.latitude, longitude: form.longitude }}
+          onChange={({ latitude, longitude }) => setForm({ ...form, latitude, longitude })}
+        />
       </Field>
 
       <div className="flex justify-end">
