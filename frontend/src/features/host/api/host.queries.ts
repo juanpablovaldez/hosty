@@ -3,7 +3,7 @@ import { supabase } from '@/shared/lib/supabase'
 import { rowToSalon } from '@/features/salones/api/salones.queries'
 import type { Salon } from '@/features/salones/types'
 import type { SalonService } from '@/features/salones/lib/pricing'
-import type { Booking } from '../types'
+import type { Booking, Subscription } from '../types'
 import type { Database } from '@/shared/lib/database.types'
 
 type BookingRow = Database['public']['Tables']['bookings']['Row']
@@ -110,6 +110,37 @@ export interface HostSalon extends Salon {
 export interface BookingDetail extends Booking {
   salonName: string
   salonHostId: string
+}
+
+export function useHostSubscription(userId: string | null) {
+  return useQuery({
+    queryKey: ['host', 'subscription', userId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('salon_subscriptions')
+        .select('*')
+        .eq('host_id', userId!)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle()
+      if (error) throw error
+      if (!data) return null
+      const sub: Subscription = {
+        id: data.id,
+        hostId: data.host_id,
+        status: data.status as Subscription['status'],
+        planId: data.plan_id,
+        amountMonthly: data.amount_monthly,
+        mercadopagoSubscriptionId: data.mercadopago_subscription_id,
+        startedAt: data.started_at,
+        currentPeriodEnd: data.current_period_end,
+        cancelledAt: data.cancelled_at,
+        createdAt: data.created_at,
+      }
+      return sub
+    },
+    enabled: !!userId,
+  })
 }
 
 export function useHostBooking(id: string | null) {

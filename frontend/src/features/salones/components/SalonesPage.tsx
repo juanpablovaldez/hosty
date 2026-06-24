@@ -5,7 +5,9 @@ import { ZONAS_TUCUMAN } from '@/features/salones/constants'
 import { useSearchSalones, useSalonesMap } from '../api/salones.queries'
 import { CardSalon } from './CardSalon'
 import { SalonesMap } from './SalonesMap'
-import type { SalonSearchParams } from '../types'
+import type { Salon, SalonSearchParams } from '../types'
+import { useAuthStore } from '@/features/auth/store/auth.store'
+import { useUserFavoriteIds } from '@/features/favorites/api/favorites.queries'
 
 /* ─── Constantes ─────────────────────────────────────────── */
 const CHIPS_TIPO = ['Todos los tipos', 'Cumpleaños', 'Casamientos', 'Corporativo', 'Egresos', 'Infantiles']
@@ -140,6 +142,9 @@ export function SalonesPage() {
     pageSize: ITEMS_PER_PAGE,
   }), [busqueda, zonasActivas, chipActivo, capacidadMin, capacidadMax, serviciosActivos, sortBy, paginaActual])
 
+  const { user } = useAuthStore()
+  const { data: favoriteIds } = useUserFavoriteIds(user?.id ?? null)
+
   const { data, isLoading, isError } = useSearchSalones(params)
 
   const mapParams: SalonSearchParams = useMemo(
@@ -151,7 +156,10 @@ export function SalonesPage() {
     !vistaLista,
   )
 
-  const salonesFiltrados = data?.salones ?? []
+  const salonesFiltrados: Salon[] = (data?.salones ?? []).map((s) => ({
+    ...s,
+    isFavorite: favoriteIds?.has(s.id) ?? false,
+  }))
   const totalPaginas = data?.totalPages ?? 1
   const paginaSegura = Math.min(paginaActual, totalPaginas)
   const salonesPagina = salonesFiltrados

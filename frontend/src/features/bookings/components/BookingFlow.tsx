@@ -13,16 +13,58 @@ import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { ChevronLeft, ChevronRight, Check, Calendar, Users, FileText, CheckCircle2, ClipboardList, Home } from 'lucide-react'
 import { cn, formError } from '@/shared/lib/utils'
 import { formatARS } from '@/features/salones/lib/pricing'
 
 const EVENT_TYPES = ['Cumpleaños', 'Casamiento', 'Corporativo', 'Baby shower', 'Quince años', 'Graduación']
 
+const isQuarterHour = (v: string) => /^\d{2}:(00|15|30|45)$/.test(v)
+
+const TIME_SLOTS = Array.from({ length: 24 * 4 }, (_, i) => {
+  const h = String(Math.floor(i / 4)).padStart(2, '0')
+  const m = String((i % 4) * 15).padStart(2, '0')
+  return `${h}:${m}`
+})
+
+function TimeSelect({
+  id,
+  value,
+  onChange,
+  onBlur,
+}: {
+  id: string
+  value: string
+  onChange: (v: string) => void
+  onBlur: () => void
+}) {
+  return (
+    <Select value={value || undefined} onValueChange={onChange}>
+      <SelectTrigger id={id} onBlur={onBlur}>
+        <SelectValue placeholder="Elegí un horario" />
+      </SelectTrigger>
+      <SelectContent className="max-h-60">
+        {TIME_SLOTS.map((t) => (
+          <SelectItem key={t} value={t}>
+            {t}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  )
+}
+
 const step1Schema = z.object({
   eventDate: z.string().min(1, 'Seleccioná una fecha'),
-  startTime: z.string().min(1, 'Seleccioná hora de inicio'),
-  endTime: z.string().min(1, 'Seleccioná hora de fin'),
+  startTime: z
+    .string()
+    .min(1, 'Seleccioná hora de inicio')
+    .refine(isQuarterHour, 'Elegí un horario en intervalos de 15 minutos'),
+  endTime: z
+    .string()
+    .min(1, 'Seleccioná hora de fin')
+    .refine(isQuarterHour, 'Elegí un horario en intervalos de 15 minutos'),
 })
 
 const step2Schema = z.object({
@@ -43,7 +85,9 @@ function calcHours(start: string, end: string) {
   if (!start || !end) return 0
   const [sh, sm] = start.split(':').map(Number)
   const [eh, em] = end.split(':').map(Number)
-  return Math.max(0, (eh * 60 + em - (sh * 60 + sm)) / 60)
+  let diff = eh * 60 + em - (sh * 60 + sm)
+  if (diff < 0) diff += 24 * 60 // la reserva cruza la medianoche (ej. 22:00 → 03:00)
+  return diff / 60
 }
 
 export function BookingFlow() {
@@ -60,7 +104,7 @@ export function BookingFlow() {
   const [bookingConfirmed, setBookingConfirmed] = useState(false)
 
   const [step1Snapshot, setStep1Snapshot] = useState({ eventDate: '', startTime: '', endTime: '' })
-  const [step2Snapshot, setStep2Snapshot] = useState({ eventType: '', attendees: 1, contactName: '', contactPhone: '', notes: '' })
+  const [step2Snapshot, setStep2Snapshot] = useState({ eventType: '', attendees: 0, contactName: '', contactPhone: '', notes: '' })
   const [selectedServiceNames, setSelectedServiceNames] = useState<string[]>([])
 
   const hours = calcHours(step1Snapshot.startTime, step1Snapshot.endTime)
@@ -281,11 +325,10 @@ export function BookingFlow() {
                 {(field) => (
                   <div className="flex flex-col gap-1.5">
                     <Label htmlFor="startTime">Hora de inicio</Label>
-                    <Input
+                    <TimeSelect
                       id="startTime"
-                      type="time"
                       value={field.state.value}
-                      onChange={(e) => field.handleChange(e.target.value)}
+                      onChange={field.handleChange}
                       onBlur={field.handleBlur}
                     />
                     {formError(field.state.meta.errors[0]) && (
@@ -299,11 +342,10 @@ export function BookingFlow() {
                 {(field) => (
                   <div className="flex flex-col gap-1.5">
                     <Label htmlFor="endTime">Hora de fin</Label>
-                    <Input
+                    <TimeSelect
                       id="endTime"
-                      type="time"
                       value={field.state.value}
-                      onChange={(e) => field.handleChange(e.target.value)}
+                      onChange={field.handleChange}
                       onBlur={field.handleBlur}
                     />
                     {formError(field.state.meta.errors[0]) && (
@@ -374,8 +416,9 @@ export function BookingFlow() {
                     type="number"
                     min={1}
                     max={salon?.capacity}
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(Number(e.target.value))}
+                    placeholder="Ej: 80"
+                    value={field.state.value || ''}
+                    onChange={(e) => field.handleChange(e.target.value === '' ? 0 : Number(e.target.value))}
                     onBlur={field.handleBlur}
                   />
                   {salon && <p className="text-xs text-muted-foreground">Máximo: {salon.capacity} personas</p>}
