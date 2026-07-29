@@ -32,4 +32,24 @@ describe('RegisterPage (integración)', () => {
     expect(await screen.findByText('Las contraseñas no coinciden')).toBeInTheDocument()
     expect(signUp).not.toHaveBeenCalled()
   })
+
+  it('muestra la pantalla de confirmación de email cuando session es null tras el registro', async () => {
+    vi.mocked(signUp).mockResolvedValue({
+      data: { user: { id: 'u1' }, session: null },
+      error: null,
+    } as unknown as Awaited<ReturnType<typeof signUp>>)
+
+    const user = userEvent.setup()
+    render(<RegisterPage />)
+
+    await user.type(screen.getByLabelText('Email'), 'nuevo@ejemplo.com')
+    await user.type(screen.getByLabelText('Contraseña'), 'secreta123')
+    await user.type(screen.getByLabelText('Confirmá la contraseña'), 'secreta123')
+    await user.click(screen.getByRole('button', { name: /crear cuenta/i }))
+
+    expect(await screen.findByText('Revisá tu email')).toBeInTheDocument()
+    expect(
+      screen.getByText(/te enviamos un link de confirmación/i),
+    ).toBeInTheDocument()
+  })
 })

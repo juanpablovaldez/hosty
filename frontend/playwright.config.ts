@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test'
 
-const baseURL = process.env.E2E_BASE_URL ?? 'https://d1ako6y2uvskg7.cloudfront.net'
+const baseURL = process.env.E2E_BASE_URL ?? 'http://localhost:5173'
 
 export default defineConfig({
   testDir: './src/e2e',
@@ -9,6 +9,12 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
+  webServer: {
+    command: 'npm run dev',
+    url: 'http://localhost:5173',
+    reuseExistingServer: !process.env.CI,
+    timeout: 120_000,
+  },
   use: {
     baseURL,
     trace: 'on-first-retry',
