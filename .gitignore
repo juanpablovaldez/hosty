@@ -22,6 +22,9 @@
 .idea
 .DS_Store
 
+# Obsidian local vault state (per-machine, not shared content)
+.obsidian/
+
 # Test coverage
 **/coverage
 
