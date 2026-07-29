@@ -14,20 +14,20 @@ function isValidCapacityRange(min: number, max: number): boolean {
 
 describe('isPastDate', () => {
   it('detecta correctamente una fecha pasada', () => {
-    expect(isPastDate('2002-02-02')).to.be.true
+    expect(isPastDate('2002-02-02')).to.equal(true)
   })
 
   it('no detecta como pasada una fecha futura', () => {
-    expect(isPastDate('2099-12-31')).to.be.false
+    expect(isPastDate('2099-12-31')).to.equal(false)
   })
 })
 
 describe('isValidCapacityRange', () => {
   it('retorna false cuando el mínimo es mayor al máximo', () => {
-    expect(isValidCapacityRange(120, 100)).to.be.false
+    expect(isValidCapacityRange(120, 100)).to.equal(false)
   })
 
   it('retorna true cuando el rango es válido', () => {
-    expect(isValidCapacityRange(50, 200)).to.be.true
+    expect(isValidCapacityRange(50, 200)).to.equal(true)
   })
 })
