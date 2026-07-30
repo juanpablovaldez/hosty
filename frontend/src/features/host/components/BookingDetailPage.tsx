@@ -15,7 +15,7 @@ import {
 import { cn } from '@/shared/lib/utils'
 
 const STATUS_STYLES: Record<Booking['status'], string> = {
-  pending: 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
+  pending: 'bg-amber-light text-amber-dark dark:bg-amber/15 dark:text-amber',
   confirmed: 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300',
   declined: 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300',
   cancelled: 'bg-muted text-muted-foreground',
