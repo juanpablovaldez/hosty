@@ -374,6 +374,7 @@ export function BookingFlow() {
         {/* Step 2: Event info */}
         {step === 1 && (
           <form
+            noValidate
             onSubmit={(e) => { e.preventDefault(); e.stopPropagation(); void form2.handleSubmit() }}
             className="flex flex-col gap-5"
           >
@@ -407,7 +408,17 @@ export function BookingFlow() {
               )}
             </form2.Field>
 
-            <form2.Field name="attendees">
+            <form2.Field
+              name="attendees"
+              validators={{
+                onChange: ({ value }) => {
+                  if (salon && value > salon.capacity) {
+                    return `El salón tiene capacidad para ${salon.capacity} personas. Reducí la cantidad de asistentes.`
+                  }
+                  return undefined
+                },
+              }}
+            >
               {(field) => (
                 <div className="flex flex-col gap-1.5">
                   <Label htmlFor="attendees">Cantidad de asistentes</Label>
@@ -415,15 +426,26 @@ export function BookingFlow() {
                     id="attendees"
                     type="number"
                     min={1}
-                    max={salon?.capacity}
                     placeholder="Ej: 80"
                     value={field.state.value || ''}
                     onChange={(e) => field.handleChange(e.target.value === '' ? 0 : Number(e.target.value))}
                     onBlur={field.handleBlur}
+                    aria-describedby={field.state.meta.errors.length > 0 ? 'attendees-error' : 'attendees-hint'}
+                    aria-invalid={field.state.meta.errors.length > 0}
                   />
-                  {salon && <p className="text-xs text-muted-foreground">Máximo: {salon.capacity} personas</p>}
+                  {salon && (
+                    <p id="attendees-hint" className="text-xs text-muted-foreground">
+                      Máximo: {salon.capacity} personas
+                    </p>
+                  )}
                   {formError(field.state.meta.errors[0]) && (
-                    <p className="text-xs text-destructive">{formError(field.state.meta.errors[0])}</p>
+                    <p
+                      id="attendees-error"
+                      role="alert"
+                      className="flex items-center gap-1.5 rounded-md border border-destructive/30 bg-destructive/8 px-2.5 py-1.5 text-xs font-medium text-destructive"
+                    >
+                      {formError(field.state.meta.errors[0])}
+                    </p>
                   )}
                 </div>
               )}
