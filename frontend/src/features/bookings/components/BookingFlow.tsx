@@ -439,11 +439,7 @@ export function BookingFlow() {
                     </p>
                   )}
                   {formError(field.state.meta.errors[0]) && (
-                    <p
-                      id="attendees-error"
-                      role="alert"
-                      className="flex items-center gap-1.5 rounded-md border border-destructive/30 bg-destructive/8 px-2.5 py-1.5 text-xs font-medium text-destructive dark:border-red-800/50 dark:bg-red-950/40 dark:text-red-400"
-                    >
+                    <p id="attendees-error" role="alert" className="text-sm text-destructive">
                       {formError(field.state.meta.errors[0])}
                     </p>
                   )}
