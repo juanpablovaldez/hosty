@@ -20,11 +20,11 @@ import { formatARS } from '@/features/salones/lib/pricing'
 
 const EVENT_TYPES = ['Cumpleaños', 'Casamiento', 'Corporativo', 'Baby shower', 'Quince años', 'Graduación']
 
-const isQuarterHour = (v: string) => /^\d{2}:(00|15|30|45)$/.test(v)
+const isHalfHour = (v: string) => /^\d{2}:(00|30)$/.test(v)
 
-const TIME_SLOTS = Array.from({ length: 24 * 4 }, (_, i) => {
-  const h = String(Math.floor(i / 4)).padStart(2, '0')
-  const m = String((i % 4) * 15).padStart(2, '0')
+const TIME_SLOTS = Array.from({ length: 24 * 2 }, (_, i) => {
+  const h = String(Math.floor(i / 2)).padStart(2, '0')
+  const m = i % 2 === 0 ? '00' : '30'
   return `${h}:${m}`
 })
 
@@ -60,11 +60,11 @@ const step1Schema = z.object({
   startTime: z
     .string()
     .min(1, 'Seleccioná hora de inicio')
-    .refine(isQuarterHour, 'Elegí un horario en intervalos de 15 minutos'),
+    .refine(isHalfHour, 'Elegí un horario en intervalos de 30 minutos'),
   endTime: z
     .string()
     .min(1, 'Seleccioná hora de fin')
-    .refine(isQuarterHour, 'Elegí un horario en intervalos de 15 minutos'),
+    .refine(isHalfHour, 'Elegí un horario en intervalos de 30 minutos'),
 })
 
 const step2Schema = z.object({
