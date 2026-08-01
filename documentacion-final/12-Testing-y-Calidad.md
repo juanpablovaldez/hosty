@@ -31,7 +31,7 @@ flowchart TD
 
 *Figura 19 — Pirámide de pruebas: unitarias (Vitest) / componentes (RTL+jsdom) / E2E (Playwright).*
 
-> [!info] Fuente — M12/M13 (`_meta/Datos-Verificables.md`): 66 pruebas Vitest en 13 archivos
+> [!info] Fuente — M12/M13 (`_meta/Datos-Verificables.md`): 73 pruebas Vitest en 14 archivos
 > unitarios/de componentes, más 5 *specs* Playwright E2E.
 
 ```mermaid
@@ -59,14 +59,14 @@ flowchart LR
 
 *Tabla 31 — Tipos de prueba, herramienta y alcance real.*
 
-> [!info] Fuente — M12/M13, verificado ejecutando `npx vitest run` sobre el repositorio: 13
-> archivos, 66 casos, todos en verde. Nota honesta: sólo la suite de Vitest está integrada al
+> [!info] Fuente — M12/M13, verificado ejecutando `npx vitest run` sobre el repositorio: 14
+> archivos, 73 casos, todos en verde. Nota honesta: sólo la suite de Vitest está integrada al
 > pipeline de CI (`frontend-tests.yml` ejecuta `pnpm test run`); Playwright, la corrida
 > independiente de Mocha (`pnpm test:mocha`) y el *spec* de Cypress se ejecutan de forma local o
 > manual y no forman parte de ningún *workflow* de `.github/workflows/`. El archivo de Mocha,
 > además, también es recolectado por Vitest porque su ruta no está excluida en `vite.config.ts`
 > (`exclude: [...configDefaults.exclude, 'src/e2e/**']`); por eso sus 4 casos ya están incluidos en
-> el total de 66.
+> el total de 73.
 
 ## Cobertura
 
@@ -78,10 +78,10 @@ verificables:
 
 | Métrica | Valor |
 |---|---|
-| Pruebas automatizadas (Vitest) | 66 |
-| Archivos de prueba (Vitest/RTL + Playwright) | 18 (13 + 5) |
-| Líneas de código de prueba (unitarias + componentes + E2E) | 1.462 |
-| Líneas de código de producción (`src/`, sin pruebas) | 11.148 |
+| Pruebas automatizadas (Vitest) | 73 |
+| Archivos de prueba (Vitest/RTL + Playwright) | 19 (14 + 5) |
+| Líneas de código de prueba (unitarias + componentes + E2E) | 1.505 |
+| Líneas de código de producción (`src/`, sin pruebas) | 11.208 |
 | Relación líneas de prueba / líneas de producción | ≈ 0,13 (13 %) |
 
 *Tabla 32 — Cobertura de pruebas por módulo.*
@@ -91,10 +91,10 @@ verificables:
 > y su complemento sobre `*.ts`/`*.tsx`, respectivamente (2026-07-28). La cifra de producción
 > incluye `src/routeTree.gen.ts` (343 líneas autogeneradas por TanStack Router).
 
-> [!todo] PLACEHOLDER P-46 — Adopción de una herramienta de cobertura de líneas
-> Evaluar e instalar `@vitest/coverage-v8` (u otra) para obtener un porcentaje de cobertura real
-> antes de la próxima entrega; ver también la línea de evolución futura en
-> [[15-Conclusiones]]. Responsable: equipo. Destino: script `test` de `frontend/package.json`.
+El proyecto no tiene todavía una herramienta de cobertura de líneas configurada, por lo que la
+Tabla 32 expresa volumen de código de prueba y no un porcentaje de cobertura. La adopción de
+`@vitest/coverage-v8` está registrada como línea de evolución de corto plazo en
+[[15-Conclusiones]].
 
 ## Matriz de casos de prueba manuales
 
@@ -167,6 +167,27 @@ Un defecto real, no simulado, ilustra este ciclo de punta a punta:
 > análisis de deuda técnica en [[15-Conclusiones]] (Tabla 40). La severidad de cada incidencia
 > —Bloqueante, Alta, Media o Baja— se clasifica en la Tabla 34 de la siguiente sección, con
 > ejemplos reales tomados de las 13 *issues* `bug` del repositorio.
+
+## Revisión de usabilidad previa a la entrega final
+
+Antes de la entrega se realizó una revisión de usabilidad centrada en la coherencia idiomática y en
+la calidad de los mensajes de validación, dos aspectos que las pruebas automatizadas no cubren
+porque no verifican el texto que efectivamente lee un usuario. La revisión detectó tres defectos,
+todos corregidos y verificados.
+
+| # | Defecto | Dónde se manifestaba | Severidad | Corrección aplicada |
+|---|---|---|---|---|
+| R-01 | Los mensajes de error devueltos por Supabase se mostraban en inglés, tal como llegan del servidor (por ejemplo, `User already registered` al intentar registrarse con un email existente) | Registro de usuario, publicación de salón y panel del anfitrión | Media | Se incorporó una capa de traducción de errores (`src/shared/lib/errors.ts`) que mapea los errores de Supabase Auth y de PostgREST a mensajes en español, con un mensaje genérico de respaldo que garantiza que nunca se filtre texto crudo del servidor a la interfaz |
+| R-02 | El límite de asistentes se delegaba al atributo `max` del campo numérico, por lo que el navegador mostraba su propia advertencia nativa, en el idioma del navegador y con un estilo ajeno al del formulario | Paso 2 del flujo de reserva | Media | Se reemplazó por una validación propia del formulario, con mensaje en español que indica la capacidad real del salón, atributos `aria-invalid`/`aria-describedby` y `role="alert"` para que los lectores de pantalla la anuncien |
+| R-03 | Las etiquetas de estado "pendiente" usaban valores de color ajenos al sistema de diseño, con contraste insuficiente en modo oscuro | Panel del anfitrión: resumen, calendario, detalle de reserva y tarjeta de plan | Baja | Se unificaron sobre los tokens de marca (`--color-amber`, `--color-amber-light`, `--color-amber-dark`) definidos en `src/index.css` |
+
+*Tabla 34b — Defectos detectados en la revisión de usabilidad previa a la entrega y su corrección.*
+
+> [!info] Fuente — R-01 se verifica con las 7 pruebas unitarias de `src/shared/lib/errors.test.ts`,
+> incluida una que comprueba explícitamente que un error sin traducción conocida no propague el
+> texto original en inglés. R-02 y R-03 se incorporaron mediante la rama
+> `fix/detalles-ui-formulario`. La suite completa quedó en 73 casos, todos en verde, con
+> verificación de tipos (`tsc -b --noEmit`) y análisis estático (ESLint) sin errores.
 
 ## Criterios de salida
 

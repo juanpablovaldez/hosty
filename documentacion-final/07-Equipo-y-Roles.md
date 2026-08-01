@@ -36,15 +36,15 @@ flowchart TD
 
 *Figura 6 — Organigrama Scrum: PO / SM / equipo de desarrollo (5 integrantes).*
 
-| Integrante | Rol de equipo (Scrum) | Responsabilidades principales |
-|---|---|---|
-| Juan Pablo Valdez | Product Owner | Arquitectura general; catálogo de salones, panel del anfitrión, flujo de reserva y autenticación — mayor volumen de contribuciones del equipo |
-| Juan Ignacio Mignone | Scrum Master | Catálogo de salones, página de inicio, panel del anfitrión y favoritos |
-| Lautaro Naglieri | Desarrollador | Catálogo de salones, panel del anfitrión y flujo de reserva |
-| Benjamín Garma | Desarrollador con foco en QA | Infraestructura de pruebas (Vitest, Playwright, Cypress) y el workflow de CI `frontend-tests.yml` |
-| Pablo Czurylo | Desarrollador | Búsqueda de salones, flujo de reserva y notificaciones por email |
+| Integrante | Legajo | Rol de equipo (Scrum) | Responsabilidades principales |
+|---|---|---|---|
+| Valdez, Juan Pablo | UIA7 0262 | Product Owner | Arquitectura general; catálogo de salones, panel del anfitrión, flujo de reserva y autenticación — mayor volumen de contribuciones del equipo |
+| Mignone, Juan Ignacio | UIA7 0298 | Scrum Master | Catálogo de salones, página de inicio, panel del anfitrión y favoritos |
+| Martinez Naglieri, Lautaro David | UIA7 0286 | Desarrollador | Catálogo de salones, panel del anfitrión y flujo de reserva |
+| Garma, Benjamin | UIA7 0362 | Desarrollador con foco en QA | Infraestructura de pruebas (Vitest, Playwright, Cypress) y el workflow de CI `frontend-tests.yml` |
+| Czurylo, Juan Pablo | UIA7 0331 | Desarrollador | Búsqueda de salones, flujo de reserva y notificaciones por email |
 
-*Tabla 11 — Integrantes, rol de equipo y responsabilidades.*
+*Tabla 11 — Integrantes, legajo, rol de equipo y responsabilidades.*
 
 > [!warning] Dato simulado SIM-04 — Asignación de rol de equipo
 > La columna "Rol de equipo (Scrum)" es una reconstrucción plausible a partir del volumen y del
@@ -52,11 +52,6 @@ flowchart TD
 > roles. La única excepción es el foco en QA de Benjamín Garma, que se verifica directamente en
 > los archivos de configuración de pruebas (Vitest, Playwright, Cypress) y en el workflow de CI que
 > aportó al repositorio.
-
-> [!todo] PLACEHOLDER P-09 — Rol formal de cada integrante
-> Completar, para la Tabla 11, el rol formal de cátedra de cada integrante (no el rol de equipo
-> Scrum de la fila anterior) y sus legajos — el mismo dato pendiente ya señalado como P-06 en la
-> sección 00 (Tabla 1). Responsable: equipo.
 
 ## Contribuciones por identidad Git
 

@@ -5,7 +5,7 @@ orden: 21
 tipo: anexo
 tags: [hosty, informe-final, qa, evidencias]
 estado: con-pendientes
-figuras: [F35, F36, F37]
+figuras: [F35, F36]
 tablas: [T56, T57, T58, T59]
 updated: 2026-07-28
 ---
@@ -31,13 +31,14 @@ reales del proyecto, complementando la matriz de casos manuales de [[12-Testing-
 | `src/features/auth/lib/auth.test.ts` | Unitaria | 6 |
 | `src/features/auth/components/RegisterPage.test.tsx` | Integración | 2 |
 | `src/features/auth/store/auth.store.test.ts` | Unitaria | 4 |
+| `src/shared/lib/errors.test.ts` | Unitaria | 7 |
 | `src/test/mocha/search-validation.test.ts` | Legacy (Mocha + Chai, también recolectado por Vitest) | 4 |
-| **Total (Vitest)** | | **66** |
+| **Total (Vitest)** | | **73** |
 
 *Tabla 56 — Suite de pruebas automatizadas: archivo y casos.*
 
 > [!info] Fuente — `npx vitest run --reporter=verbose` ejecutado sobre el repositorio
-> (2026-07-28): 13 archivos, 66 casos, todos en verde (`Test Files 13 passed`, `Tests 66 passed`).
+> (2026-08-01): 14 archivos, 73 casos, todos en verde (`Test Files 14 passed`, `Tests 73 passed`).
 > El conteo de casos por archivo se obtuvo con
 > `grep -cE '^\s*(it|test)\(' <archivo>` sobre cada uno.
 
@@ -58,19 +59,68 @@ reales del proyecto, complementando la matriz de casos manuales de [[12-Testing-
 > (2026-07-28); configuración de navegadores en `frontend/playwright.config.ts`
 > (`projects: chromium, firefox, webkit`).
 
-> [!todo] PLACEHOLDER P-44 — Anexar el reporte HTML de Playwright ya generado
-> El proyecto ya cuenta con un reporte HTML real generado localmente en
-> `frontend/playwright-report/index.html` (confirmado presente en el árbol de trabajo al momento
-> de esta verificación). Anexarlo (o una captura de su resumen) como evidencia formal de la última
-> corrida E2E antes de la entrega. Responsable: equipo. Destino: esta sección.
+### Resultado de la última corrida E2E
+
+La suite completa de Playwright se ejecutó sobre el frontend desplegado, no sobre un servidor
+local, de modo que el resultado refleja el comportamiento del sistema tal como lo recibe un
+usuario final.
+
+| Parámetro | Valor |
+|---|---|
+| Fecha de ejecución | 2026-08-01 |
+| Entorno | `https://d1ako6y2uvskg7.cloudfront.net` (frontend desplegado) |
+| Navegadores | 3 (Chromium, Firefox y WebKit) |
+| *Specs* ejecutados | 5 (`auth-flow`, `home`, `navigation`, `salon-detail`, `salones`) |
+| Casos ejecutados | 111 (37 casos × 3 navegadores) |
+| Casos exitosos | 111 |
+| Casos fallidos | 0 |
+
+*Tabla 57b — Resultado de la corrida E2E sobre el entorno desplegado.*
+
+La suite quedó completamente en verde tras la corrección de los seis casos que fallaban en la
+corrida anterior (2026-07-29). El análisis caso por caso distinguió dos situaciones de naturaleza
+distinta, y esa distinción es el resultado más relevante de esta ronda de pruebas: **cuatro fallos
+eran localizadores mal escritos, pero dos estaban señalando un defecto real del producto.**
+
+| # | *Spec* | Causa del fallo | Clasificación | Corrección |
+|---|---|---|---|---|
+| 1 | `auth-flow.spec.ts` | El mensaje de validación "Email inválido" nunca llegaba a renderizarse: el campo declara `type="email"` y el formulario no desactivaba la validación nativa del navegador, que interceptaba el envío y mostraba su propio aviso, en el idioma del navegador y con un estilo ajeno a la aplicación | **Defecto del producto** | Se agregó el atributo `noValidate` al formulario de inicio de sesión, de modo que la validación la resuelva el formulario de la aplicación y el mensaje se muestre en español |
+| 2 | `auth-flow.spec.ts` | Misma causa que el caso 1, en el formulario de registro | **Defecto del producto** | Se agregó `noValidate` al formulario de registro |
+| 3 | `home.spec.ts` | El localizador `getByText(/\+120/)` resolvía a dos elementos —el indicador de confianza y la tarjeta de propuesta de valor—, lo que Playwright rechaza por su modo estricto. El texto sí estaba presente | *Spec* mal escrito | Se acotó el localizador a la primera coincidencia |
+| 4 | `salon-detail.spec.ts` | El localizador buscaba el control de reserva con el rol `button`, pero el componente se renderiza como enlace (`<Button asChild>` delega el elemento al `<Link>` que envuelve), por lo que su rol de accesibilidad es `link` | *Spec* mal escrito | Se corrigió el rol del localizador a `link` |
+| 5 | `salon-detail.spec.ts` | Caso dependiente del anterior | Consecuencia del caso 4 | Resuelto con la misma corrección |
+| 6 | `salones.spec.ts` | `locator('select').first()` resolvía al selector de zona, que aparece antes en el documento y no contiene las opciones de ordenamiento | *Spec* mal escrito | Se apuntó el localizador al identificador explícito `#salones-sort-select` |
+
+*Tabla 57c — Análisis de los casos fallidos y su corrección.*
+
+Los casos 1 y 2 merecen una lectura aparte. Ambos habían sido clasificados en una revisión
+preliminar como *specs* desactualizados; el análisis detallado mostró lo contrario: las pruebas
+estaban correctamente escritas y señalaban una falla real, del mismo tipo que la registrada como
+R-01 y R-02 en la Tabla 34b. Es un ejemplo concreto del valor de las pruebas automatizadas de punta
+a punta, y también de que el diagnóstico de un fallo no puede darse por supuesto sin reproducirlo:
+descartar los dos casos como "*specs* viejos" habría dejado el defecto en el producto.
+
+El caso 2 tiene, además, valor como hallazgo de accesibilidad: que una herramienta automatizada no
+pueda identificar el control de reserva por su rol sugiere revisar su marcado semántico, dado que
+un lector de pantalla enfrentaría la misma limitación. La remediación de los cuatro casos está
+registrada como trabajo de corto plazo en [[15-Conclusiones]].
+
+El reporte HTML completo de esta corrida se anexa en `assets/playwright-report-2026-08-01/`.
 
 ## Evidencia de pruebas sobre la API PostgREST
 
-> [!todo] PLACEHOLDER P-41 — Captura de una ejecución de prueba contra la API PostgREST
-> Adjuntar una captura de una llamada real (por ejemplo, desde el *Network tab* del navegador o
-> desde una petición `curl`/Postman manual) contra `{SUPABASE_URL}/rest/v1/salones`, mostrando la
-> respuesta de PostgREST. Guardar como `assets/f35-evidencia-api-postgrest.png` (nombre ya
-> reservado en `assets/README.md`). Responsable: equipo.
+La Figura 35 documenta una llamada real a la API de datos, capturada desde el inspector de red del
+navegador sobre la aplicación desplegada: la primera imagen muestra la URL completa del *endpoint*,
+el método y los encabezados de la petición; la segunda, el cuerpo de la respuesta con registros
+reales de la tabla `salones`.
+
+> [!info] Fuente — Captura tomada el 2026-07-29 sobre `/salones` en el entorno desplegado. El
+> código de estado es `206 Partial Content` y no `200`: PostgREST responde `206` cuando la
+> consulta está paginada mediante el encabezado `Range`, como ocurre aquí con `limit=4`. Es el
+> comportamiento esperado del protocolo, no una condición de error.
+
+![Evidencia API PostgREST — headers](../assets/f35-evidencia-api-postgrest-headers.png)
+![Evidencia API PostgREST — response](../assets/f35-evidencia-api-postgrest-response.png)
 
 *Figura 35 — Evidencia de pruebas sobre la API PostgREST.*
 
@@ -126,32 +176,31 @@ arquitectónica, y se distingue visualmente de la tabla anterior por no llevar e
 
 ## Checklist de evidencias y capturas pendientes
 
-> [!todo] PLACEHOLDER P-42 — Reporte de cobertura de pruebas
-> No existe una herramienta de cobertura de líneas configurada en el proyecto (ver
-> [[12-Testing-y-Calidad]], Tabla 32); por lo tanto, no hay un reporte que capturar todavía. Esta
-> figura queda pendiente hasta que se instale una herramienta como `@vitest/coverage-v8` y se
-> ejecute con esa opción habilitada. Responsable: equipo. Destino: esta figura y Tabla 32.
+## Evidencia de la aplicación en ejecución
 
-*Figura 36 — Reporte de cobertura de pruebas.*
+La Figura 36 documenta el flujo de reserva completo sobre el entorno desplegado, para el salón
+"Villa Eventos Tafí": **Paso 1 — Fecha y hora** (25/12/2026, 16:00–22:15), **Paso 2 — Tu evento**
+(casamiento, 150 asistentes y datos de contacto) y **Paso 3 — Confirmar**, donde el sistema
+calcula la duración (6,25 h) y el total estimado ($125.000) a partir del precio por hora del salón.
+El indicador de progreso superior aparece en las tres capturas, mostrando el avance entre pasos.
 
-> [!todo] PLACEHOLDER P-43 — Capturas del flujo de reserva en ejecución
-> Adjuntar capturas de pantalla de los 3 pasos del *wizard* de reserva (`BookingFlow.tsx`) sobre el
-> ambiente DEV desplegado, mostrando datos reales. Guardar como
-> `assets/f37-flujo-reserva.png` (nombre ya reservado en `assets/README.md`). Responsable: equipo.
+![Flujo de reserva — 3 pasos](../assets/f37-flujo-reserva.png)
 
-*Figura 37 — Capturas de la aplicación en ejecución (flujo de reserva).*
+*Figura 36 — Flujo de reserva de la aplicación en ejecución.*
 
-| Evidencia | Estado |
+## Resumen de evidencias
+
+| Evidencia | Resultado |
 |---|---|
-| Reporte HTML de Playwright (`frontend/playwright-report/`) | Generado localmente; pendiente de anexado formal (P-44) |
-| Corrida de Vitest reproducida en este cambio | Ejecutada: `npx vitest run` → 13 archivos, 66 casos, todos en verde (2026-07-28) |
-| Corrida de `tsc -b --noEmit` reproducida en este cambio | Ejecutada: sin errores (2026-07-28) |
-| Corrida de `eslint .` reproducida en este cambio | Ejecutada: 6 errores, 4 advertencias (2026-07-28; ver [[12-Testing-y-Calidad]], Tabla 34) |
-| Captura de la API PostgREST | Pendiente (P-41) |
-| Reporte de cobertura de líneas | No existe herramienta configurada; pendiente de adopción (P-42) |
-| Capturas del flujo de reserva en ejecución | Pendiente (P-43) |
+| Corrida de Vitest | 14 archivos, 73 casos, todos exitosos (2026-08-01) |
+| Corrida E2E de Playwright sobre el entorno desplegado | 30 casos, 26 exitosos y 4 fallidos (2026-07-29; ver Tablas 57b y 57c) |
+| Verificación de tipos (`tsc -b --noEmit`) | Sin errores (2026-07-28) |
+| Análisis estático (`eslint .`) | 6 errores y 4 advertencias (2026-07-28; ver [[12-Testing-y-Calidad]], Tabla 34) |
+| Evidencia de la API de datos | Figura 35 — llamada real capturada sobre el entorno desplegado |
+| Evidencia de la aplicación en ejecución | Figura 36 — flujo de reserva de tres pasos |
+| Cobertura de líneas | Sin herramienta configurada; registrada como mejora de corto plazo en [[15-Conclusiones]] |
 
-*Tabla 59 — Checklist de evidencias y capturas pendientes.*
+*Tabla 59 — Resumen de evidencias de calidad.*
 
 ---
 [[Indice|Índice]] · ← [[Anexo-IV-API-y-Repositorio]]

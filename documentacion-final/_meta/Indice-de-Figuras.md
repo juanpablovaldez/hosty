@@ -52,12 +52,15 @@ presentes, numeradas de forma contigua y sin duplicados.
 | F32 | [[Anexo-II-Diagramas-de-Flujo]] | Flujo de publicación de salón (wizard de 4 pasos): datos básicos → capacidad/precio/servicios → imágenes → vista previa | Hecho |
 | F33 | [[Anexo-II-Diagramas-de-Flujo]] | Máquina de estados de una reserva: `pending` → `confirmed` \| `declined` \| `cancelled` | Hecho |
 | F34 | [[Anexo-II-Diagramas-de-Flujo]] | Gestión de favoritos y plan destacado | Hecho |
-| F35 | [[Anexo-V-Evidencias-QA]] | Evidencia de pruebas sobre la API PostgREST — *slot de captura* (P-41) | Hecho |
-| F36 | [[Anexo-V-Evidencias-QA]] | Reporte de cobertura de pruebas — *slot de captura* (P-42) | Hecho |
-| F37 | [[Anexo-V-Evidencias-QA]] | Capturas de la aplicación en ejecución (flujo de reserva) — *slot de captura* (P-43) | Hecho |
+| F35 | [[Anexo-V-Evidencias-QA]] | Evidencia de pruebas sobre la API PostgREST — captura | Hecho |
+| F36 | [[Anexo-V-Evidencias-QA]] | Flujo de reserva de la aplicación en ejecución — captura | Hecho |
 
-**Total: 37 figuras** (33 diagramas Mermaid + 4 *slots* de captura: F12, F35, F36, F37) — secuencia
-contigua F1–F37 verificada, sin huecos ni duplicados (Lote E, 2026-07-28).
+**Total: 36 figuras** (33 diagramas Mermaid + 3 capturas: F12, F35, F36) — secuencia contigua
+F1–F36 verificada, sin huecos ni duplicados (2026-07-29).
+
+La figura que en versiones preliminares ocupaba el lugar F36 (reporte de cobertura de líneas) se
+retiró del informe por no existir todavía una herramienta de cobertura configurada en el proyecto;
+la numeración se compactó en consecuencia.
 
 ---
 [[Indice|Índice]]

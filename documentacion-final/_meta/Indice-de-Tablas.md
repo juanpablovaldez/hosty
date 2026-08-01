@@ -9,11 +9,9 @@ updated: 2026-07-28
 
 # Índice de Tablas
 
-Registro global de las 59 tablas del informe, con la nota que las contiene y el epígrafe verbatim
-tal como aparece en el cuerpo de cada nota, verificado contra el texto pinneado en la fase de
-diseño de este cambio (todas las 59 coinciden exactamente con el título fijado en el diseño, sin
-deriva). Esta tabla fue cerrada por el Lote E (cierre transversal): las 59 tablas están presentes,
-numeradas de forma contigua y sin duplicados.
+Registro global de las tablas del informe, con la nota que las contiene y el epígrafe verbatim tal
+como aparece en el cuerpo de cada nota. La secuencia principal T1–T59 es contigua y no tiene
+duplicados; las tablas con sufijo alfabético complementan a la tabla cuyo número comparten.
 
 | Tabla | Nota de origen | Epígrafe | Estado |
 |---|---|---|---|
@@ -51,6 +49,7 @@ numeradas de forma contigua y sin duplicados.
 | T32 | [[12-Testing-y-Calidad]] | Cobertura de pruebas por módulo | Hecho |
 | T33 | [[12-Testing-y-Calidad]] | Matriz de casos de prueba manuales | Hecho |
 | T34 | [[12-Testing-y-Calidad]] | Severidad de incidencias y criterios de salida | Hecho |
+| T34b | [[12-Testing-y-Calidad]] | Defectos detectados en la revisión de usabilidad previa a la entrega y su corrección | Hecho |
 | T35 | [[13-Ejecucion-por-Sprint]] | Sprints: foco, entregables, decisiones y fecha de cierre | Hecho |
 | T36 | [[13-Ejecucion-por-Sprint]] | Cambios de alcance y de diseño con justificación | Hecho |
 | T37 | [[14-Metricas]] | Métricas de repositorio y de gestión | Hecho |
@@ -69,16 +68,21 @@ numeradas de forma contigua y sin duplicados.
 | T50 | [[Anexo-II-Diagramas-de-Flujo]] | Índice de flujos: actor, precondición y resultado | Hecho |
 | T51 | [[Anexo-III-Backlog-User-Stories]] | Backlog completo de user stories con estado (entregada/diferida) | Hecho |
 | T52 | [[Anexo-III-Backlog-User-Stories]] | Trazabilidad historia ↔ issue ↔ PR ↔ archivo | Hecho |
+| T52b | [[Anexo-IV-API-y-Repositorio]] | Documento OpenAPI de la API de datos | Hecho |
 | T53 | [[Anexo-IV-API-y-Repositorio]] | Operaciones PostgREST por módulo | Hecho |
 | T54 | [[Anexo-IV-API-y-Repositorio]] | Estructura del repositorio y convenciones de commits y ramas | Hecho |
 | T55 | [[Anexo-IV-API-y-Repositorio]] | Workflows de CI/CD: disparador, jobs y resultado | Hecho |
 | T56 | [[Anexo-V-Evidencias-QA]] | Suite de pruebas automatizadas: archivo y casos | Hecho |
 | T57 | [[Anexo-V-Evidencias-QA]] | Escenarios de prueba E2E (Playwright) | Hecho |
+| T57b | [[Anexo-V-Evidencias-QA]] | Resultado de la corrida E2E sobre el entorno desplegado | Hecho |
+| T57c | [[Anexo-V-Evidencias-QA]] | Análisis de los casos fallidos | Hecho |
 | T58 | [[Anexo-V-Evidencias-QA]] | Registro de defectos y retesting | Hecho |
-| T59 | [[Anexo-V-Evidencias-QA]] | Checklist de evidencias y capturas pendientes | Hecho |
+| T59 | [[Anexo-V-Evidencias-QA]] | Resumen de evidencias de calidad | Hecho |
 
-**Total: 59 tablas** — secuencia contigua T1–T59 verificada, sin huecos ni duplicados
-(Lote E, 2026-07-28).
+**Total: 63 tablas** — 59 en la secuencia principal T1–T59, contigua y sin huecos, más 4 tablas
+complementarias (T34b, T52b, T57b, T57c). Estas últimas se incorporaron una vez fijada la
+numeración principal y conservan el número de la tabla a la que complementan, con sufijo
+alfabético, para no alterar las referencias cruzadas ya establecidas en el resto del informe.
 
 ---
 [[Indice|Índice]]

@@ -33,7 +33,7 @@ confirmar, contra el estado real del repositorio, si la capacidad fue efectivame
 | OE2 | Proveer autenticación de usuarios y control de acceso a los datos basado en propiedad | Sesiones de Supabase Auth + guardas `requireAuth` sobre 8 de las 14 rutas del frontend (M09) |
 | OE3 | Habilitar un flujo de reserva guiado con validación de disponibilidad y de horarios | Wizard de reserva de 3 pasos (M20), con verificación de bloqueos de disponibilidad |
 | OE4 | Ofrecer al propietario un panel de gestión de sus salones y de las reservas recibidas | Panel del anfitrión con calendario y cotización de precio por reserva |
-| OE5 | Asegurar la calidad mediante pruebas automatizadas e integración continua | 66 pruebas automatizadas (M12) y 3 workflows de CI/CD (M14) |
+| OE5 | Asegurar la calidad mediante pruebas automatizadas e integración continua | 73 pruebas automatizadas (M12) y 3 workflows de CI/CD (M14) |
 | OE6 | Documentar la arquitectura, el proceso y las métricas del proyecto de forma trazable | Este mismo vault: 28 notas con toda métrica citada a su fuente en la nota Datos-Verificables |
 
 *Tabla 6 — Objetivos específicos y criterio de verificación.*
@@ -42,7 +42,7 @@ confirmar, contra el estado real del repositorio, si la capacidad fue efectivame
 
 El objetivo de calidad definido para el proyecto consiste en sostener una suite de pruebas
 automatizadas que cubra los flujos críticos del frontend. A la fecha de verificación de este
-informe existen 66 pruebas automatizadas distribuidas en 18 archivos de prueba — 13 pruebas
+informe existen 73 pruebas automatizadas distribuidas en 19 archivos de prueba — 14 pruebas
 unitarias y de componente con Vitest y Testing Library, más 5 especificaciones end-to-end con
 Playwright — (M12, M13). El proyecto no tiene configurada una herramienta de cobertura de código
 (por ejemplo, un reporte de `@vitest/coverage-v8`), por lo que este informe no reporta ni infiere
@@ -76,7 +76,7 @@ dicha funcionalidad efectivamente existe en el producto.
 | OE2 | E2 — Autenticación y cuenta | Sesiones de Supabase Auth, guarda `requireAuth`, RLS por `auth.uid()` | M09 |
 | OE3 | E3 — Reserva de salones | Wizard de reserva de 3 pasos; estados `pending`/`confirmed`/`declined`/`cancelled` | M17, M20 |
 | OE4 | E4 — Panel del anfitrión; E5 — Favoritos y plan destacado | Panel de calendario y cotización; favoritos; plan Destacado (cobro con Mercado Pago diferido, issue #45 abierto) | M10 |
-| OE5 | E6 — Calidad e integración continua | 66 pruebas automatizadas y 3 workflows de CI/CD | M12, M13, M14 |
+| OE5 | E6 — Calidad e integración continua | 73 pruebas automatizadas y 3 workflows de CI/CD | M12, M13, M14 |
 | OE6 | E7 — Infraestructura y despliegue (transversal) | Documentación trazable del proyecto (este vault) y despliegue automatizado vía GitHub Actions | M14 |
 
 *Tabla 7 — Trazabilidad objetivo → épica → funcionalidad → evidencia.*

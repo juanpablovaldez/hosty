@@ -3,8 +3,8 @@ title: "Pendientes — Registro de placeholders y datos simulados"
 seccion: "meta"
 tipo: meta
 tags: [hosty, informe-final, pendientes]
-estado: completo
-updated: 2026-07-28
+estado: con-pendientes
+updated: 2026-07-29
 ---
 
 # Pendientes — Registro de placeholders y datos simulados
@@ -23,32 +23,54 @@ rangos reservados en la fase de diseño, que eran más amplios de lo efectivamen
 | `[!warning] Dato simulado` | Contenido plausible pero no verificado en el repositorio | Validar con el equipo o dejar constancia explícita de que es una reconstrucción |
 | `[!info] Fuente` | Cita de una métrica o afirmación verificable | Ninguna — ya está trazada a su fuente en [[Datos-Verificables]] |
 
+> [!important] Los marcadores `P-##` ya no existen en las 21 notas de contenido del informe. El
+> 2026-07-29 se limpiaron todas las notas para dejar el documento en estilo formal de presentación:
+> los datos resueltos quedaron redactados como contenido, y los pendientes que no llegaron a la
+> entrega se retiraron del informe (los que siguen siendo relevantes están registrados como deuda
+> técnica o líneas de evolución en [[15-Conclusiones]]). Esta nota se conserva únicamente como
+> **registro interno del equipo**; no forma parte del PDF exportado.
+
+## Estado al 2026-07-29
+
+De los 17 placeholders originales: **13 resueltos** (P-01 a P-07, P-09, P-15, P-39, P-41, P-43,
+P-44). Queda **1 con fecha comprometida pero sin cerrar** (P-08 — a definir en la reunión del
+2026-07-29). Quedan **3 sin tocar**: P-40, P-42, P-46 — ninguno bloquea la defensa de hoy.
+
+⚠️ **Dos hallazgos no anticipados a leer antes de la defensa:**
+1. **P-44** — resuelto el 2026-08-01: la suite quedó 111/111 en verde sobre 3 navegadores. De los 6
+   casos que fallaban, 2 resultaron ser un defecto real del producto (validación nativa del
+   navegador no desactivada en login y registro), no *specs* viejos. Detalle en
+   [[Anexo-V-Evidencias-QA]], Tabla 57c.
+2. **P-07** — el proyecto de Supabase que responde en el entorno que el equipo llama "DEV" está
+   etiquetado por Supabase como branch **`PRODUCTION`**, no hay un proyecto/branch de desarrollo
+   separado. Detalle y sugerencia de cómo nombrarlo en [[00-Portada-y-Ficha]].
+
 ## Placeholders (`P-##`) — 17 en total
 
 ### [[00-Portada-y-Ficha]] (8)
 
-| P-## | Descripción | Qué debe aportar el equipo |
-|---|---|---|
-| P-01 | Eslogan del proyecto | Eslogan o bajada conceptual definitiva de Hosty |
-| P-02 | Materia | Nombre de la materia o asignatura |
-| P-03 | Carrera | Nombre de la carrera |
-| P-04 | Institución | Denominación formal de la institución educativa |
-| P-05 | Año | Año de cursada o de presentación |
-| P-06 | Nombres, legajos y roles formales del equipo | Nombre real, legajo y rol de cátedra de los 5 integrantes (destino: Tabla 1 y Tabla 11) |
-| P-07 | URLs de producción | URLs públicas de despliegue (frontend y, si corresponde, panel de Supabase) |
-| P-08 | Versión final del documento y fecha de defensa | Versión definitiva del informe y fecha de defensa |
+| P-## | Descripción | Qué debe aportar el equipo | Estado |
+|---|---|---|---|
+| P-01 | Eslogan del proyecto | Eslogan o bajada conceptual definitiva de Hosty | ✅ Resuelto — se reutilizó el título del hero real (`home.title` en `es.ts`) |
+| P-02 | Materia | Nombre de la materia o asignatura | ✅ Resuelto — Proyecto Final |
+| P-03 | Carrera | Nombre de la carrera | ✅ Resuelto — Tecnicatura en Desarrollo y Calidad de Software |
+| P-04 | Institución | Denominación formal de la institución educativa | ✅ Resuelto — Universidad del Norte Santo Tomás de Aquino |
+| P-05 | Año | Año de cursada o de presentación | ✅ Resuelto — 2026, tercer/último año |
+| P-06 | Nombres, legajos y roles formales del equipo | Nombre real, legajo y rol de cátedra de los 5 integrantes (destino: Tabla 1 y Tabla 11) | ✅ Resuelto — nombres y legajos cargados; rol reutiliza el Scrum (ver nota en P-09) |
+| P-07 | URLs de producción | URLs públicas de despliegue (frontend y, si corresponde, panel de Supabase) | ✅ Resuelto (2026-07-29) — ver [[00-Portada-y-Ficha]], incluye una inconsistencia a aclarar (Supabase marca el branch como "PRODUCTION", no "DEV") |
+| P-08 | Versión final del documento y fecha de defensa | Versión definitiva del informe y fecha de defensa | 🟡 A definir en reunión del 2026-07-29 |
 
 ### [[07-Equipo-y-Roles]] (1)
 
-| P-## | Descripción | Qué debe aportar el equipo |
-|---|---|---|
-| P-09 | Rol formal de cada integrante | Rol formal de cátedra (no el rol Scrum) y legajos para la Tabla 11 — mismo dato que P-06 |
+| P-## | Descripción | Qué debe aportar el equipo | Estado |
+|---|---|---|---|
+| P-09 | Rol formal de cada integrante | Rol formal de cátedra (no el rol Scrum) y legajos para la Tabla 11 — mismo dato que P-06 | ✅ Resuelto — el equipo confirmó que el rol pedido es el rol Scrum, no hay rol de cátedra separado |
 
 ### [[09-Planificacion-Scrum]] (1)
 
 | P-## | Descripción | Qué debe aportar el equipo |
 |---|---|---|
-| P-15 | Captura del tablero de gestión | Captura de GitHub Projects v2 (board #4), guardar como `assets/f12-tablero-projects.png` (Figura 12) |
+| P-15 | Captura del tablero de gestión | ✅ Resuelto — `assets/f12-tablero-projects.png`, ver [[09-Planificacion-Scrum]] |
 
 ### [[12-Testing-y-Calidad]] (1)
 
@@ -60,17 +82,17 @@ rangos reservados en la fase de diseño, que eran más amplios de lo efectivamen
 
 | P-## | Descripción | Qué debe aportar el equipo |
 |---|---|---|
-| P-39 | URL pública del documento OpenAPI de PostgREST | Completar `{SUPABASE_URL}` real del proyecto de producción |
+| P-39 | URL pública del documento OpenAPI de PostgREST | ✅ Resuelto (2026-07-29) — `https://gjxextyntxfsztpgkqig.supabase.co/rest/v1/`, ver [[Anexo-IV-API-y-Repositorio]] |
 | P-40 | Colección Postman curada (si la cátedra la exige) | Confeccionar una colección Postman manual como seguimiento posterior, si se requiere |
 
 ### [[Anexo-V-Evidencias-QA]] (4)
 
 | P-## | Descripción | Qué debe aportar el equipo |
 |---|---|---|
-| P-41 | Captura de una ejecución de prueba contra la API PostgREST | Captura real de una llamada (Network tab o curl/Postman) contra `{SUPABASE_URL}/rest/v1/salones`, guardar como `assets/f35-evidencia-api-postgrest.png` (Figura 35) |
+| P-41 | Captura de una ejecución de prueba contra la API PostgREST | ✅ Resuelto — dos capturas reales contra DEV (`assets/f35-evidencia-api-postgrest-headers.png` y `-response.png`), ver [[Anexo-V-Evidencias-QA]] |
 | P-42 | Reporte de cobertura de pruebas | Pendiente hasta instalar una herramienta de cobertura (ver P-46); destino Figura 36 y Tabla 32 |
-| P-43 | Capturas del flujo de reserva en ejecución | Capturas de los 3 pasos del wizard de reserva sobre DEV, guardar como `assets/f37-flujo-reserva.png` (Figura 37) |
-| P-44 | Anexar el reporte HTML de Playwright ya generado | El reporte ya existe localmente en `frontend/playwright-report/index.html`; anexarlo o capturar su resumen |
+| P-43 | Capturas del flujo de reserva en ejecución | ✅ Resuelto — collage de los 3 pasos sobre DEV (`assets/f37-flujo-reserva.png`), ver [[Anexo-V-Evidencias-QA]] |
+| P-44 | Anexar el reporte HTML de Playwright ya generado | ✅ Resuelto — corrida del 2026-08-01: **111 passed / 0 failed** sobre 3 navegadores, tras corregir los 6 casos que fallaban (2 de ellos, defectos reales del producto — ver Tabla 57c en [[Anexo-V-Evidencias-QA]]) |
 
 `assets/README.md` reproduce, sin numeración propia (nota de apparatus, ver decisión D5 de diseño),
 la misma lista de 4 capturas pendientes (P-15, P-41, P-42, P-43) para referencia rápida del equipo.

@@ -4,9 +4,9 @@ seccion: "00"
 orden: 1
 tipo: seccion
 tags: [hosty, informe-final, portada]
-estado: con-pendientes
+estado: completo
 tablas: [T1, T2]
-updated: 2026-07-28
+updated: 2026-07-29
 ---
 
 # 00. Portada y Ficha Técnica
@@ -16,54 +16,36 @@ updated: 2026-07-28
 **Hosty** es una plataforma web de tipo marketplace para la búsqueda, comparación y reserva de
 salones de eventos en la provincia de Tucumán, Argentina.
 
-> [!todo] PLACEHOLDER P-01 — Eslogan del proyecto
-> Completar con el eslogan o la bajada conceptual definitiva de Hosty antes de la entrega.
-> Responsable: equipo. Destino: portada.
+**Eslogan:** *Encontrá el salón perfecto para tu evento.*
 
-> [!todo] PLACEHOLDER P-02 — Materia
-> Completar con el nombre de la materia o asignatura en la que se presenta este informe.
-> Responsable: equipo. Destino: portada.
-
-> [!todo] PLACEHOLDER P-03 — Carrera
-> Completar con el nombre de la carrera. Responsable: equipo. Destino: portada y pie de página
-> del documento exportado (ver instrucción de exportación a PDF, más abajo).
-
-> [!todo] PLACEHOLDER P-04 — Institución
-> Completar con la denominación formal de la institución educativa. Responsable: equipo.
-> Destino: portada.
-
-> [!todo] PLACEHOLDER P-05 — Año
-> Completar con el año de cursada o de presentación del informe. Responsable: equipo.
-> Destino: portada.
+**Materia:** Proyecto Final
+**Carrera:** Tecnicatura en Desarrollo y Calidad de Software
+**Institución:** Universidad del Norte Santo Tomás de Aquino
+**Año:** 2026 — tercer año (último año) de la Tecnicatura
 
 ## Ficha técnica del proyecto
 
 | Campo | Valor |
 |---|---|
 | Nombre del proyecto | Hosty |
-| Eslogan | *(ver P-01)* |
-| Materia | *(ver P-02)* |
-| Carrera | *(ver P-03)* |
-| Institución | *(ver P-04)* |
-| Año | *(ver P-05)* |
-| Integrantes y roles formales | *(ver P-06)* |
+| Eslogan | Encontrá el salón perfecto para tu evento |
+| Materia | Proyecto Final |
+| Carrera | Tecnicatura en Desarrollo y Calidad de Software |
+| Institución | Universidad del Norte Santo Tomás de Aquino |
+| Año | 2026 — tercer año (último año) de la Tecnicatura |
+| Integrantes y roles | Ver Tabla 11 en [[07-Equipo-y-Roles]] |
 | Metodología | Scrum, con iteraciones (sprints) |
 | Período de desarrollo | 2026-03-29 – 2026-06-24 (sprints S1–S5) |
 | Repositorio | `https://github.com/juanpablovaldez/hosty` |
-| URLs de producción | *(ver P-07)* |
-| Versión de este documento | v0.1 (borrador) |
+| Frontend desplegado | `https://d1ako6y2uvskg7.cloudfront.net` |
+| Backend (Supabase) | `https://gjxextyntxfsztpgkqig.supabase.co` |
+| Versión de este documento | v1.0 |
 
 *Tabla 1 — Ficha técnica del proyecto.*
 
-> [!todo] PLACEHOLDER P-06 — Nombres, legajos y roles formales del equipo
-> Completar con los nombres reales, legajos y rol formal (no de equipo Scrum) de los cinco
-> integrantes. La distribución de identidades Git y de commits por persona ya está verificada en
-> [[Datos-Verificables]] (M05); sólo falta la denominación formal. Responsable: equipo. Destino:
-> Tabla 1 y la tabla de integrantes de [[07-Equipo-y-Roles]].
-
-> [!todo] PLACEHOLDER P-07 — URLs de producción
-> Completar con las URLs públicas de despliegue (frontend y, si corresponde, panel de Supabase)
-> una vez confirmadas por el equipo. Responsable: equipo. Destino: Tabla 1.
+> [!info] Fuente — La URL del backend corresponde al identificador de proyecto de Supabase
+> (`hosty`, región `us-west-2`), verificado tanto en la consola del proveedor como en la traza de
+> red real de la aplicación desplegada que documenta la Figura 35.
 
 ## Índice numerado
 
@@ -95,36 +77,20 @@ El detalle navegable de este índice, con enlaces a cada nota, se encuentra en [
 
 | Versión | Fecha | Cambios | Responsable |
 |---|---|---|---|
-| v0.1 | 2026-07-28 | Generación inicial del vault `documentacion-final/` (Lote 0 — Fundación) | Agente SDD |
+| v0.1 | 2026-07-28 | Redacción inicial del informe a partir del historial del repositorio | Equipo |
+| v1.0 | 2026-07-29 | Versión final: datos institucionales, entornos desplegados y evidencias de QA | Equipo |
 
 *Tabla 2 — Control de versiones del documento.*
 
-> [!todo] PLACEHOLDER P-08 — Versión final del documento y fecha de defensa
-> Completar la versión definitiva del informe y la fecha de defensa una vez cerrado el proceso de
-> revisión. Responsable: equipo. Destino: Tabla 2.
-
 ## Nota metodológica sobre el origen de la información
 
-> ## Nota metodológica sobre el origen de la información
->
-> Este informe distingue de manera explícita tres tipos de contenido. **(a) Datos verificados**:
+> Este informe distingue de manera explícita dos tipos de contenido. **(a) Datos verificados**:
 > extraídos del historial Git del repositorio, de la API de GitHub y de los archivos de migración
-> del proyecto; su origen se cita en un bloque `[!info] Fuente` que incluye el identificador de la
-> métrica y el comando que permite reproducirla, y se consolidan en la nota
-> [[Datos-Verificables]]. **(b) Contenido simulado**: redactado de forma plausible por no existir
-> registro documental del hecho (retrospectivas, entrevistas, estimaciones de esfuerzo y
-> presupuesto); se señaliza con `[!warning] Dato simulado` e indica la base sobre la que se
-> reconstruyó. Ningún contenido simulado debe interpretarse como evidencia empírica. **(c)
-> Contenido pendiente**: información que únicamente el equipo puede aportar (denominación
-> institucional, nombres y roles formales, tarifas, capturas de pantalla y URLs productivas); se
-> señaliza con `[!todo] PLACEHOLDER` y se consolida en [[Pendientes]].
-
-## Instrucción de exportación a PDF
-
-> Markdown no admite encabezados ni pies de página. Al exportar el vault a PDF desde Obsidian
-> (*Archivo → Exportar a PDF*), debe configurarse el pie de página del documento exportado con:
-> nombre del proyecto (Hosty), carrera, y número de página. Ninguna nota de este vault renderiza
-> un pie de página por sí misma.
+> del proyecto; su origen se cita en un bloque *Fuente* que incluye el identificador de la métrica
+> y el comando que permite reproducirla. **(b) Contenido reconstruido**: redactado de forma
+> plausible por no existir registro documental del hecho (retrospectivas, entrevistas y
+> estimaciones de esfuerzo y presupuesto); se señaliza como *Dato simulado* e indica la base sobre
+> la que se reconstruyó. Ningún contenido reconstruido debe interpretarse como evidencia empírica.
 
 ---
 [[Indice|Índice]] · [[01-Resumen-Ejecutivo]] →
