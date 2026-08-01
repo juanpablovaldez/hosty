@@ -32,8 +32,8 @@ test.describe('Home page', () => {
   })
 
   test('trust indicators con "+120 salones verificados" visibles', async ({ page }) => {
-    await expect(page.getByText(/\+120/)).toBeVisible()
-    await expect(page.getByText(/salones verificados/)).toBeVisible()
+    await expect(page.getByText(/\+120/).first()).toBeVisible()
+    await expect(page.getByText(/salones verificados/i).first()).toBeVisible()
   })
 
   test('el link "Publicar tu salón" del host CTA navega a /login o /host/create', async ({ page }) => {
