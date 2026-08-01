@@ -76,7 +76,7 @@ export function PlanCard({ subscription, userId, hasSalones }: PlanCardProps) {
           </span>
         )}
         {isCancelled && (
-          <span className="rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 text-[11px] font-semibold px-2.5 py-1 shrink-0">
+          <span className="rounded-full bg-amber-light text-amber-dark dark:bg-amber/15 dark:text-amber text-[11px] font-semibold px-2.5 py-1 shrink-0">
             Cancelado
           </span>
         )}
