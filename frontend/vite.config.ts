@@ -42,5 +42,22 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./src/test/setup.ts'],
     exclude: [...configDefaults.exclude, 'src/e2e/**'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'html', 'lcov'],
+      reportsDirectory: './coverage',
+      include: ['src/**/*.{ts,tsx}'],
+      exclude: [
+        'src/**/*.test.{ts,tsx}',
+        'src/e2e/**',
+        'src/test/**',
+        'src/routeTree.gen.ts',
+        'src/routes/**',
+        'src/i18n/locales/**',
+        'src/shared/lib/database.types.ts',
+        'src/main.tsx',
+        'src/**/*.d.ts',
+      ],
+    },
   },
 })

@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
- "scripts": {
+  "scripts": {
     "dev": "vite",
     "build": "tsc -b tsconfig.app.json && vite build",
     "lint": "eslint . --fix",
@@ -12,6 +12,7 @@
     "typecheck": "tsc -b --noEmit",
     "preview": "vite preview",
     "test": "vitest",
+    "test:coverage": "vitest run --coverage",
     "test:studio": "vitest --ui",
     "test:mocha": "mocha",
     "test:e2e": "playwright test",
@@ -75,6 +76,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
+    "@vitest/coverage-v8": "^4.1.10",
     "babel-plugin-react-compiler": "^1.0.0",
     "chai": "^6.2.2",
     "cypress": "^15.17.0",
