@@ -5,6 +5,7 @@ import { useCreateSalon } from '../api/host.mutations'
 import { SalonWizard } from './SalonWizard'
 import { EMPTY_FORM } from '../lib/salon-wizard'
 import type { FormState } from '../lib/salon-wizard'
+import { mensajeDeError } from '@/shared/lib/errors'
 
 export function CreateSalonPage() {
   const navigate = useNavigate()
@@ -24,11 +25,7 @@ export function CreateSalonPage() {
       toast.success('¡Salón publicado exitosamente!')
       navigate({ to: '/host/dashboard' })
     } catch (err) {
-      const msg =
-        err instanceof Error
-          ? err.message
-          : (err as { message?: string })?.message ?? JSON.stringify(err)
-      toast.error(`Error: ${msg}`)
+      toast.error(mensajeDeError(err, 'No pudimos publicar el salón. Intentá de nuevo.'))
     }
   }
 

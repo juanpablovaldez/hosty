@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Building2, Plus } from 'lucide-react'
 import { cn } from '@/shared/lib/utils'
+import { mensajeDeError } from '@/shared/lib/errors'
 import type { Booking } from '../types'
 import { ResumenView } from './ResumenView'
 import { ReservasView } from './ReservasView'
@@ -95,7 +96,7 @@ export function HostDashboardPage() {
         </div>
       ) : salonesError ? (
         <div className="rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
-          Error al cargar salones: {salonesError.message}
+          {mensajeDeError(salonesError, 'No pudimos cargar tus salones. Intentá de nuevo en unos minutos.')}
         </div>
       ) : salones.length === 0 ? (
         <div className="flex flex-col items-center gap-4 py-20 text-center">

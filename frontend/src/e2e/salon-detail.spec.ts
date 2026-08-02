@@ -33,7 +33,7 @@ test.describe('Detalle de salón', () => {
 
     await firstCard.locator('a[href*="/salones/"]').first().click()
 
-    await expect(page.getByRole('button', { name: /reservar/i }).first()).toBeVisible({
+    await expect(page.getByRole('link', { name: /reservar/i }).first()).toBeVisible({
       timeout: 10_000,
     })
   })
@@ -46,7 +46,7 @@ test.describe('Detalle de salón', () => {
 
     await firstCard.locator('a[href*="/salones/"]').first().click()
 
-    const reservarBtn = page.getByRole('button', { name: /reservar ahora/i }).first()
+    const reservarBtn = page.getByRole('link', { name: /reservar ahora/i }).first()
     await expect(reservarBtn).toBeVisible({ timeout: 10_000 })
     await reservarBtn.click()
 

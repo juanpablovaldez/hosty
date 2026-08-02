@@ -198,9 +198,8 @@ diccionario de datos por tabla y las políticas RLS se documentan en
 
 No existe una especificación Swagger propia porque no hay un backend a medida: PostgREST expone
 un documento OpenAPI auto-generado en `{SUPABASE_URL}/rest/v1/` a partir del esquema `public`
-(detalle de la URL real en [[Anexo-IV-API-y-Repositorio]], y en [[00-Portada-y-Ficha]] como
-placeholder P-07 de URLs de producción). Cada hook de `api/*.queries.ts` / `*.mutations.ts` es una
-operación PostgREST; se tabulan por módulo:
+(la URL completa se detalla en [[Anexo-IV-API-y-Repositorio]]). Cada hook de `api/*.queries.ts` /
+`*.mutations.ts` es una operación PostgREST; se tabulan por módulo:
 
 | Módulo | Consultas | Mutaciones | Total | Tabla(s) principal(es) |
 |---|---|---|---|---|

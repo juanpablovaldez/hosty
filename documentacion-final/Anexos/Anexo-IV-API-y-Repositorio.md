@@ -42,16 +42,24 @@ frontend, módulo por módulo:
 > opera contra Supabase Auth (GoTrue), una API separada de PostgREST, y los otros tres no
 > consultan tablas propias.
 
-> [!todo] PLACEHOLDER P-39 — URL pública del documento OpenAPI de PostgREST
-> PostgREST publica su propio documento OpenAPI en `{SUPABASE_URL}/rest/v1/` (encabezado
-> `Accept: application/openapi+json`). Completar `{SUPABASE_URL}` con el valor real del proyecto de
-> Supabase de producción antes de la entrega — no se expone aquí por no ser un dato público de este
-> repositorio. Responsable: equipo. Destino: esta sección.
+## Documento OpenAPI
 
-> [!todo] PLACEHOLDER P-40 — Colección Postman curada (si la cátedra la exige)
-> Este informe documenta el contrato autogenerado de PostgREST como equivalente funcional de
-> Swagger/Postman. Si la evaluación requiere una colección Postman curada manualmente, confeccionarla
-> como seguimiento posterior a esta entrega. Responsable: equipo.
+PostgREST publica un documento OpenAPI autogenerado a partir del esquema `public`, que cumple la
+función de especificación formal de la API sin requerir un Swagger escrito a mano:
+
+| Campo | Valor |
+|---|---|
+| URL del documento OpenAPI | `https://gjxextyntxfsztpgkqig.supabase.co/rest/v1/` |
+| Encabezado requerido | `Accept: application/openapi+json` |
+| Esquema expuesto | `public` (6 tablas, 31 funciones) |
+
+*Tabla 52b — Documento OpenAPI de la API de datos.*
+
+> [!info] Fuente — URL verificada en la consola de Supabase (proyecto `hosty`, región
+> `us-west-2`) y en la traza de red de la aplicación desplegada (Figura 35). La URL del proyecto y
+> la clave anónima son datos públicos por diseño en la arquitectura de Supabase: el control de
+> acceso efectivo lo ejercen las políticas RLS descriptas en [[11-Arquitectura]], no el
+> desconocimiento de la URL.
 
 ## Repositorio
 

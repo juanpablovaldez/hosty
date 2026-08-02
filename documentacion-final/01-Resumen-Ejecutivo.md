@@ -57,7 +57,7 @@ flowchart LR
 | Épicas / milestones | 7 | M08 |
 | Rutas totales / protegidas | 14 / 8 | M09 |
 | Tablas del modelo de datos | 6 | M10 |
-| Pruebas automatizadas / archivos de prueba | 66 / 18 | M12, M13 |
+| Pruebas automatizadas / archivos de prueba | 73 / 19 | M12, M13 |
 
 *Tabla 3 — Cifras clave del proyecto.*
 

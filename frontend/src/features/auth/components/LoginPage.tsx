@@ -51,6 +51,7 @@ export function LoginPage() {
         </CardHeader>
         <CardContent>
           <form
+            noValidate
             onSubmit={(e) => { e.preventDefault(); e.stopPropagation(); void form.handleSubmit() }}
             className="flex flex-col gap-4"
           >

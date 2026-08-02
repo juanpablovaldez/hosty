@@ -72,7 +72,7 @@ export function ResumenView({
           value={String(pending.length)}
           accent="text-amber-600 dark:text-amber-400"
           sub={
-            <span className="rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 px-2.5 py-1 text-[11px] font-semibold">
+            <span className="rounded-full bg-amber-light text-amber-dark dark:bg-amber/15 dark:text-amber px-2.5 py-1 text-[11px] font-semibold">
               Requieren acción
             </span>
           }
@@ -102,7 +102,7 @@ export function ResumenView({
           <h2 className="text-[19px] font-bold tracking-tight text-foreground flex items-center gap-2.5">
             Solicitudes pendientes
             {pending.length > 0 && (
-              <span className="rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 px-2.5 py-1 text-[11px] font-semibold">
+              <span className="rounded-full bg-amber-light text-amber-dark dark:bg-amber/15 dark:text-amber px-2.5 py-1 text-[11px] font-semibold">
                 {pending.length}
               </span>
             )}

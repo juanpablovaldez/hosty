@@ -48,9 +48,14 @@ esta numeración: se listan aparte, al final.
 |---|---|
 | [[Datos-Verificables]] | Fuente única de toda métrica citada en el vault (`M01`–`M22`) |
 | [[Pendientes]] | Agregación de todos los placeholders (`P-##`) y datos simulados (`SIM-##`) |
-| [[Indice-de-Figuras]] | Registro de las 37 figuras del informe (`F1`–`F37`) |
+| [[Indice-de-Figuras]] | Registro de las 36 figuras del informe (`F1`–`F36`) |
 | [[Indice-de-Tablas]] | Registro de las 59 tablas del informe (`T1`–`T59`) |
 | `assets/README.md` | Lista de capturas de pantalla pendientes de incorporar |
+| [[Resumen-Para-Presentar]] | Versión de 2 minutos del resumen ejecutivo, para leer u ofrecer al profesor |
+| [[Guia-de-Presentacion]] | Logística de la defensa, reglas de la demo en vivo, preguntas esperables y checklist técnico |
+| [[Presentacion-Estructura-Slides]] | Contenido slide por slide de la presentación final (21 slides) |
+| [[Presentacion-Reparto-y-Fichas]] | Reparto de bloques entre los 5 integrantes y ficha de apoyo individual para cada uno |
+| [[Entrega-Pendrive]] | Qué código se copia al pendrive, cómo prepararlo y qué revisar antes de entregarlo |
 
 ---
 Este archivo es la entrada de navegación del vault; no lleva pie de navegación propio.

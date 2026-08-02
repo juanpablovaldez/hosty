@@ -87,9 +87,10 @@ stateDiagram-v2
 > juanpablovaldez --format json`, 2026-07-28). Los estados "In Progress" y "Blocked" existen en el
 > esquema del tablero pero no tienen issues asignadas actualmente.
 
-> [!todo] PLACEHOLDER P-15 — Captura del tablero de gestión
-> Guardar la imagen como `assets/f12-tablero-projects.png` y reemplazar este bloque por
-> `![[f12-tablero-projects.png]]`. Responsable: equipo. Destino: Figura 12.
+> [!info] Fuente — Captura del tablero #4, vista "Team items" (2026-07-29). La distribución
+> visible (Ready: 4, In review: 1, Done: 45) coincide con la verificación de M19 citada arriba.
+
+![Tablero de gestión — GitHub Projects v2](assets/f12-tablero-projects.png)
 
 *Figura 12 — Tablero de gestión del proyecto en GitHub Projects v2 (board #4).*
 

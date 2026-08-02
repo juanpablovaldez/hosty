@@ -61,7 +61,7 @@ pie title Commits por contribuidor (todas las refs, total 236 = M02)
 | Rutas / protegidas | 14 / 8 | M09 |
 | Features del frontend | 8 módulos | M15 |
 | Operaciones PostgREST (invocaciones `select`/`insert`/`update`/`delete` en `api/*.ts`) | 35, repartidas en 4 módulos activos (ver Anexo IV, API y Repositorio, Tabla 53) | Conteo propio, `grep` sobre `frontend/src/features/*/api/*.ts` |
-| Pruebas automatizadas por tipo | 66 Vitest (13 archivos) + 5 *specs* Playwright E2E (× 3 navegadores) + 1 Mocha + 1 Cypress locales | M12, M13 |
+| Pruebas automatizadas por tipo | 73 Vitest (14 archivos) + 5 *specs* Playwright E2E (× 3 navegadores) + 1 Mocha + 1 Cypress locales | M12, M13 |
 | Workflows de CI/CD | 3 | M14 |
 
 *Tabla 38 — Métricas de producto y de calidad.*

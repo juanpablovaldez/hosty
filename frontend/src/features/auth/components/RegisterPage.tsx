@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { UserPlus, MailCheck, Eye, EyeOff } from 'lucide-react'
 import { formError } from '@/shared/lib/utils'
+import { mensajeDeError } from '@/shared/lib/errors'
 
 const schema = z.object({
   email: z.string().email('Email inválido'),
@@ -37,7 +38,7 @@ export function RegisterPage() {
       setServerError(null)
       const { data, error } = await signUp(value.email, value.password)
       if (error) {
-        setServerError(error.message)
+        setServerError(mensajeDeError(error, 'No pudimos crear tu cuenta. Intentá de nuevo.'))
         return
       }
       if (data.session) {
@@ -85,6 +86,7 @@ export function RegisterPage() {
         </CardHeader>
         <CardContent>
           <form
+            noValidate
             onSubmit={(e) => { e.preventDefault(); e.stopPropagation(); void form.handleSubmit() }}
             className="flex flex-col gap-4"
           >
