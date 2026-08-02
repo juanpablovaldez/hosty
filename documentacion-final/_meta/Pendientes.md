@@ -4,16 +4,18 @@ seccion: "meta"
 tipo: meta
 tags: [hosty, informe-final, pendientes]
 estado: completo
-updated: 2026-07-28
+updated: 2026-08-02
 ---
 
 # Pendientes — Registro de placeholders y datos simulados
 
 Esta nota agrega todos los callouts `[!todo]` (identificador `P-##`) y `[!warning] Dato simulado`
-(identificador `SIM-##`) efectivamente usados en las 28 notas del vault. Es la versión final,
-cerrada por el Lote E (cierre transversal) a partir de una relectura completa del vault el
-2026-07-28: agrega los identificadores realmente emitidos por los Lotes 0, A, B, C y D (no los
-rangos reservados en la fase de diseño, que eran más amplios de lo efectivamente usado).
+(identificador `SIM-##`) efectivamente usados en las notas del vault.
+
+**Estado al cierre de la versión v1.0 (2026-08-02): los 17 placeholders quedaron resueltos.** No
+queda ningún callout `[!todo]` abierto en el vault. En el mismo cierre se incorporaron 3 datos
+simulados nuevos (SIM-38, SIM-39 y SIM-40), por la misma razón que los anteriores: se declara
+explícitamente aquello que se reconstruyó en lugar de presentarlo como verificado.
 
 ## Leyenda
 
@@ -23,59 +25,37 @@ rangos reservados en la fase de diseño, que eran más amplios de lo efectivamen
 | `[!warning] Dato simulado` | Contenido plausible pero no verificado en el repositorio | Validar con el equipo o dejar constancia explícita de que es una reconstrucción |
 | `[!info] Fuente` | Cita de una métrica o afirmación verificable | Ninguna — ya está trazada a su fuente en [[Datos-Verificables]] |
 
-## Placeholders (`P-##`) — 17 en total
+## Placeholders (`P-##`) — 17 de 17 resueltos
 
-### [[00-Portada-y-Ficha]] (8)
+Los 17 placeholders abiertos en la versión v0.2 quedaron resueltos en la versión v1.0
+(2026-08-02).
 
-| P-## | Descripción | Qué debe aportar el equipo |
+### Resueltos en v1.0 (17)
+
+| P-## | Nota | Cómo se resolvió |
 |---|---|---|
-| P-01 | Eslogan del proyecto | Eslogan o bajada conceptual definitiva de Hosty |
-| P-02 | Materia | Nombre de la materia o asignatura |
-| P-03 | Carrera | Nombre de la carrera |
-| P-04 | Institución | Denominación formal de la institución educativa |
-| P-05 | Año | Año de cursada o de presentación |
-| P-06 | Nombres, legajos y roles formales del equipo | Nombre real, legajo y rol de cátedra de los 5 integrantes (destino: Tabla 1 y Tabla 11) |
-| P-07 | URLs de producción | URLs públicas de despliegue (frontend y, si corresponde, panel de Supabase) |
-| P-08 | Versión final del documento y fecha de defensa | Versión definitiva del informe y fecha de defensa |
-
-### [[07-Equipo-y-Roles]] (1)
-
-| P-## | Descripción | Qué debe aportar el equipo |
-|---|---|---|
-| P-09 | Rol formal de cada integrante | Rol formal de cátedra (no el rol Scrum) y legajos para la Tabla 11 — mismo dato que P-06 |
-
-### [[09-Planificacion-Scrum]] (1)
-
-| P-## | Descripción | Qué debe aportar el equipo |
-|---|---|---|
-| P-15 | Captura del tablero de gestión | Captura de GitHub Projects v2 (board #4), guardar como `assets/f12-tablero-projects.png` (Figura 12) |
-
-### [[12-Testing-y-Calidad]] (1)
-
-| P-## | Descripción | Qué debe aportar el equipo |
-|---|---|---|
-| P-46 | Adopción de una herramienta de cobertura de líneas | Instalar y ejecutar `@vitest/coverage-v8` (u otra) antes de la próxima entrega (destino: script `test`, Tabla 32) |
-
-### [[Anexo-IV-API-y-Repositorio]] (2)
-
-| P-## | Descripción | Qué debe aportar el equipo |
-|---|---|---|
-| P-39 | URL pública del documento OpenAPI de PostgREST | Completar `{SUPABASE_URL}` real del proyecto de producción |
-| P-40 | Colección Postman curada (si la cátedra la exige) | Confeccionar una colección Postman manual como seguimiento posterior, si se requiere |
-
-### [[Anexo-V-Evidencias-QA]] (4)
-
-| P-## | Descripción | Qué debe aportar el equipo |
-|---|---|---|
-| P-41 | Captura de una ejecución de prueba contra la API PostgREST | Captura real de una llamada (Network tab o curl/Postman) contra `{SUPABASE_URL}/rest/v1/salones`, guardar como `assets/f35-evidencia-api-postgrest.png` (Figura 35) |
-| P-42 | Reporte de cobertura de pruebas | Pendiente hasta instalar una herramienta de cobertura (ver P-46); destino Figura 36 y Tabla 32 |
-| P-43 | Capturas del flujo de reserva en ejecución | Capturas de los 3 pasos del wizard de reserva sobre DEV, guardar como `assets/f37-flujo-reserva.png` (Figura 37) |
-| P-44 | Anexar el reporte HTML de Playwright ya generado | El reporte ya existe localmente en `frontend/playwright-report/index.html`; anexarlo o capturar su resumen |
+| P-01 | [[00-Portada-y-Ficha]] | Eslogan definido: *"Encontrá, compará y reservá salones sin vueltas."* |
+| P-02 | [[00-Portada-y-Ficha]] | Materia: Proyecto Final |
+| P-03 | [[00-Portada-y-Ficha]] | Carrera: Tecnicatura en Desarrollo y Calidad de Software |
+| P-04 | [[00-Portada-y-Ficha]] | Institución: Universidad del Norte Santo Tomás de Aquino (UNSTA) |
+| P-05 | [[00-Portada-y-Ficha]] | Año de presentación: 2026 |
+| P-06 | [[00-Portada-y-Ficha]] | Nombres y legajos reales de los 5 integrantes incorporados a la Tabla 11 |
+| P-07 | [[00-Portada-y-Ficha]] | URL del ambiente desplegado y del proyecto de Supabase incorporadas a la Tabla 1, con la aclaración de que el único ambiente publicado es DEV |
+| P-08 | [[00-Portada-y-Ficha]] | Versión v1.0 y fecha de cierre 2026-08-02 en la Tabla 2; la fecha de defensa queda marcada como previsión (SIM-38) |
+| P-09 | [[07-Equipo-y-Roles]] | Columna "Rol formal (cátedra)" y legajos agregados a la Tabla 11; la asignación de rol se marca como reconstrucción (SIM-39) |
+| P-15 | [[09-Planificacion-Scrum]] | Captura real del tablero incorporada como Figura 12 (`f12-tablero-projects.png`) |
+| P-39 | [[Anexo-IV-API-y-Repositorio]] | URL real del documento OpenAPI documentada en la Tabla 53a, con el hallazgo de que exige clave secreta |
+| P-40 | [[Anexo-IV-API-y-Repositorio]] | Colección Postman curada creada (`assets/hosty.postman_collection.json`, 7 carpetas / 20 peticiones), Tablas 53b y 53c |
+| P-41 | [[Anexo-V-Evidencias-QA]] | Llamada real a PostgREST capturada como Figura 35, con análisis en la Tabla 57c |
+| P-42 | [[Anexo-V-Evidencias-QA]] | Reporte de cobertura capturado como Figura 36; métricas en las Tablas 32, 32a y 32b |
+| P-43 | [[Anexo-V-Evidencias-QA]] | Recorrido real del wizard con sesión iniciada, capturado como Figura 37 y descripto en la Tabla 57d; la reserva no se confirmó, para no dejar datos de prueba en `bookings` |
+| P-44 | [[Anexo-V-Evidencias-QA]] | Reporte HTML de Playwright reejecutado y anexado como Figura 38; resultados en las Tablas 57a y 57b |
+| P-46 | [[12-Testing-y-Calidad]] | `@vitest/coverage-v8` instalado, configurado en `vite.config.ts` y expuesto como script `test:coverage` |
 
 `assets/README.md` reproduce, sin numeración propia (nota de apparatus, ver decisión D5 de diseño),
-la misma lista de 4 capturas pendientes (P-15, P-41, P-42, P-43) para referencia rápida del equipo.
+el estado de las capturas para referencia rápida del equipo.
 
-## Datos simulados (`SIM-##`) — 20 en total
+## Datos simulados (`SIM-##`) — 23 en total
 
 ### [[03-Introduccion]] (1)
 
@@ -95,13 +75,20 @@ la misma lista de 4 capturas pendientes (P-15, P-41, P-42, P-43) para referencia
 |---|---|---|
 | SIM-03 | Indicadores de impacto propuestos, no medidos | Propuestas razonables; el proyecto no tiene analítica de producto instrumentada |
 
-### [[07-Equipo-y-Roles]] (1)
+### [[00-Portada-y-Ficha]] (1)
+
+| SIM-## | Descripción | Base de la reconstrucción |
+|---|---|---|
+| SIM-38 | Fecha de defensa | Previsión del equipo; no confirmada por la cátedra al cerrar la versión v1.0 |
+
+### [[07-Equipo-y-Roles]] (2)
 
 | SIM-## | Descripción | Base de la reconstrucción |
 |---|---|---|
 | SIM-04 | Asignación de rol de equipo (Scrum) | Reconstrucción por volumen y área de los commits de cada integrante |
+| SIM-39 | Columna "Rol formal (cátedra)" de la Tabla 11 | Derivada del área y volumen de trabajo observable (commits, PRs e issues resueltos); los legajos de esa misma tabla sí son datos reales |
 
-### [[09-Planificacion-Scrum]] (8)
+### [[09-Planificacion-Scrum]] (9)
 
 | SIM-## | Descripción | Base de la reconstrucción |
 |---|---|---|
@@ -113,6 +100,7 @@ la misma lista de 4 capturas pendientes (P-15, P-41, P-42, P-43) para referencia
 | SIM-14 | Retrospectiva S1–S2 | Reconstruida a partir de fricciones observables (retrabajo de migración NestJS→Supabase) |
 | SIM-15 | Retrospectiva S3–S4 | Reconstruida a partir del hallazgo del `CHECK` de `bookings` corregido en curso |
 | SIM-16 | Retrospectiva S5 | Reconstruida a partir de la consolidación de PRs cercana al cierre |
+| SIM-40 | Criterios de aceptación de las 15 historias destacadas (Tabla 19a) | Los issues describen la funcionalidad en prosa, sin Given/When/Then; reconstruidos desde el texto del issue y el comportamiento observable del código |
 
 ### [[10-Presupuesto]] (3)
 
@@ -144,14 +132,14 @@ la misma lista de 4 capturas pendientes (P-15, P-41, P-42, P-43) para referencia
 
 ## Resumen por lote
 
-| Lote | P-## usados | SIM-## usados |
-|---|---|---|
-| 0 — Fundación | P-01–P-08 (8) | — |
-| A — Marco del proyecto | P-09 (1) | SIM-01–SIM-04 (4) |
-| B — Gestión y proceso | P-15 (1) | SIM-09–SIM-19 (11) |
-| C — Arquitectura y datos | — | — |
-| D — Calidad, métricas y cierre | P-39, P-40, P-41, P-42, P-43, P-44, P-46 (7) | SIM-33–SIM-37 (5) |
-| **Total** | **17** | **20** |
+| Lote | P-## usados | P-## aún pendientes | SIM-## usados |
+|---|---|---|---|
+| 0 — Fundación | P-01–P-08 (8) | — | SIM-38 (1) |
+| A — Marco del proyecto | P-09 (1) | — | SIM-01–SIM-04, SIM-39 (5) |
+| B — Gestión y proceso | P-15 (1) | — | SIM-09–SIM-19, SIM-40 (12) |
+| C — Arquitectura y datos | — | — | — |
+| D — Calidad, métricas y cierre | P-39, P-40, P-41, P-42, P-43, P-44, P-46 (7) | — | SIM-33–SIM-37 (5) |
+| **Total** | **17** | **0** | **23** |
 
 Verificación de unicidad (Lote E, 2026-07-28): `grep -rohE 'PLACEHOLDER P-[0-9]+|Dato simulado
 SIM-[0-9]+'` sobre las 28 notas confirma que cada identificador `P-##` y `SIM-##` está **declarado

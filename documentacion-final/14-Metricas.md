@@ -40,9 +40,9 @@ del vault, y no se repiten sin su identificador `M##`.
 pie title Commits por contribuidor (todas las refs, total 236 = M02)
     "Juan Pablo Valdez" : 140
     "Juan Ignacio Mignone" : 45
-    "Lautaro Naglieri" : 33
+    "Lautaro Martínez Naglieri" : 33
     "Benjamin Garma" : 10
-    "Pablo Czurylo" : 8
+    "Juan Pablo Czurylo" : 8
 ```
 
 *Figura 25 — Distribución de commits por contribuidor (5 contribuidores).*

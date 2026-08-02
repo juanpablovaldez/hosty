@@ -4,10 +4,10 @@ seccion: "09"
 orden: 10
 tipo: seccion
 tags: [hosty, informe-final, scrum]
-estado: con-pendientes
+estado: completo
 figuras: [F10, F11, F12]
-tablas: [T17, T18, T19, T20, T21, T22]
-updated: 2026-07-28
+tablas: [T17, T18, T19, T19a, T20, T21, T22]
+updated: 2026-08-02
 ---
 
 # 09. Planificación Scrum
@@ -87,11 +87,15 @@ stateDiagram-v2
 > juanpablovaldez --format json`, 2026-07-28). Los estados "In Progress" y "Blocked" existen en el
 > esquema del tablero pero no tienen issues asignadas actualmente.
 
-> [!todo] PLACEHOLDER P-15 — Captura del tablero de gestión
-> Guardar la imagen como `assets/f12-tablero-projects.png` y reemplazar este bloque por
-> `![[f12-tablero-projects.png]]`. Responsable: equipo. Destino: Figura 12.
+![[f12-tablero-projects.png]]
 
 *Figura 12 — Tablero de gestión del proyecto en GitHub Projects v2 (board #4).*
+
+> [!info] Fuente — Captura tomada del tablero real el 2026-08-02 sobre
+> `https://github.com/users/juanpablovaldez/projects/4`. La distribución visible en la captura
+> —Backlog 0, Ready 4 (estimación 29), In progress 0, In review 1 (estimación 3), Done 45
+> (estimación 152)— coincide exactamente con el conteo de M19 obtenido por CLI el 2026-07-28, lo
+> que confirma que el tablero no registró movimientos entre ambas verificaciones.
 
 ## User stories destacadas
 
@@ -141,6 +145,41 @@ Fibonacci (1, 2, 3, 5, 8, 13, 21).
   confirmada.
 - **Then** el sistema crea la reserva con estado `pending` y la expone en el panel del
   organizador y en el panel del anfitrión para su revisión.
+
+### Criterios de aceptación de las historias destacadas
+
+La tabla siguiente extiende el ejemplo anterior a las 15 historias de la Tabla 19. Cada criterio se
+redactó a partir del comportamiento observable en el código entregado y de la conversación
+registrada en el issue correspondiente, de modo que sea **verificable**: la columna "Verificación"
+indica dónde se comprueba hoy cada criterio.
+
+| Historia | Given | When | Then | Verificación |
+|---|---|---|---|---|
+| #13 | Un visitante sin sesión activa | Se registra con email y contraseña válidos, o inicia sesión con credenciales correctas | La sesión queda persistida y el encabezado muestra el estado autenticado; con credenciales inválidas se muestra el error del servidor sin salir de `/login` | `LoginPage.test.tsx`, `RegisterPage.test.tsx`, `auth.store.test.ts` |
+| #18 | Un usuario autenticado con al menos un salón propio | Abre el panel del anfitrión | Ve únicamente sus salones, cada uno con su estado y su cantidad de reservas | RLS por `host_id`; manual sobre DEV |
+| #19 | Un anfitrión autenticado | Completa los 4 pasos del asistente de publicación | El salón se crea con datos básicos, capacidad, precio, servicios e imágenes, y aparece publicado en el catálogo; si un paso tiene datos inválidos, el asistente no permite avanzar | `SalonWizard.tsx`; manual sobre DEV |
+| #11 | El catálogo con salones publicados | Se aplican filtros de capacidad, zona y tipo de evento, o se busca por nombre | El listado se reduce a los salones que cumplen **todos** los filtros y el estado queda reflejado en la URL | `salones.queries.test.ts`; `salones.spec.ts` (E2E) |
+| #15 | Un salón publicado | Se abre su página de detalle | Se muestran galería, capacidad, servicios, ubicación y precio, y la acción de reservar | `salon-detail.spec.ts` (E2E) |
+| #30 | Un catálogo con más salones que los que entran en una página | Se avanza en el listado | Se cargan los siguientes resultados sin recargar la página y sin duplicar elementos ya mostrados | `Prefer: count=exact` + `Content-Range` (ver Figura 35) |
+| #16 | Un salón con bloqueos de disponibilidad y reservas previas | Se elige una fecha y una franja horaria | Se acepta sólo si no hay superposición con un bloqueo ni con una reserva `pending` o `confirmed`; en caso contrario el paso 1 no avanza y se informa el conflicto | `bookings.test.ts`; caso manual CP-01 |
+| #17 | Una reserva recién creada | El organizador abre "Mis Reservas" | La reserva figura con su estado actual y los datos del salón asociado | `bookings.queries.ts`; manual sobre DEV |
+| #31 | Un organizador autenticado y un salón disponible | Recorre los 3 pasos del asistente y confirma | Se persiste una fila en `bookings` con estado `pending` y el organizador recibe la confirmación en pantalla | `bookings.test.ts`; pendiente de captura (P-43) |
+| #65 | Un anfitrión con una reserva `pending` sobre un salón propio | Confirma o rechaza la reserva | El estado pasa a `confirmed` o `declined` y el cambio es visible para el organizador; ningún otro valor es aceptado por la base | Restricción `bookings_status_check`; caso negativo en la colección Postman |
+| #66 | Un anfitrión editando su salón | Define tipo de precio (`fixed`, `estimated` u `on_request`) y agrega servicios adicionales | El catálogo muestra el precio según el tipo elegido y los servicios quedan asociados al salón | `pricing.test.ts`; `salon_services` |
+| #67 | Un anfitrión en el calendario de su salón | Bloquea una fecha | Esa fecha deja de ser reservable y el asistente de reserva la rechaza en el paso 1 | `salon_availability_blocks`; caso manual CP-01 |
+| #47 | Un anfitrión con un salón publicado | Se suscribe al plan destacado | El salón se marca como destacado y aparece priorizado en el orden del catálogo | `salon_subscriptions`; `is_featured` en el orden por defecto |
+| #21 | La aplicación desplegada en el ambiente de desarrollo | Se ejecuta la suite E2E | Los escenarios del camino crítico se ejecutan de forma automatizada y su resultado queda registrado en un reporte | `npx playwright test` → Figura 38 (31/37 aprobados) |
+| #22 | El *build* de producción generado | Se ejecuta el workflow de despliegue | El sitio queda publicado detrás de CloudFront con HTTPS y la caché invalidada | `web-dev.yml`; M36 (`https://d1ako6y2uvskg7.cloudfront.net/`) |
+
+*Tabla 19a — Criterios de aceptación de las historias destacadas (formato Given/When/Then).*
+
+> [!warning] Dato simulado SIM-40 — Criterios de aceptación de la Tabla 19a
+> Los issues del repositorio **no registran criterios de aceptación en formato Given/When/Then**;
+> describen la funcionalidad en prosa. La redacción de la Tabla 19a es una reconstrucción hecha a
+> partir de dos fuentes reales —el texto de cada issue y el comportamiento observable del código
+> entregado— y su valor está en la columna "Verificación", que sí remite a artefactos existentes
+> (pruebas, restricciones de base de datos y evidencias de este informe). No debe interpretarse
+> como el texto que el equipo escribió durante el refinamiento.
 
 ## Definition of Ready y Definition of Done
 

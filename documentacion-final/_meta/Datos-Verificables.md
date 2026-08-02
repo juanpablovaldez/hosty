@@ -4,7 +4,7 @@ seccion: "meta"
 tipo: meta
 tags: [hosty, informe-final, metricas]
 estado: completo
-updated: 2026-07-28
+updated: 2026-08-02
 ---
 
 # Datos verificables — fuente única de métricas
@@ -81,14 +81,15 @@ en un commit, respecto del momento en que se diseñó este cambio.
 |---|---|---|---|
 | Juan Pablo Valdez | `Orbitado <juanpaavaldezz@gmail.com>`; `Juan Pablo Valdez <105684685+juanpablovaldez@users.noreply.github.com>` | 130 + 10 | 140 |
 | Juan Ignacio Mignone | `Juan Ignacio Mignone <mignonejuanignacio@gmail.com>`; `nachomignone <137121859+nachomignone@users.noreply.github.com>` | 37 + 8 | 45 |
-| Lautaro Naglieri | `Lautaro <laaumartinez28@gmail.com>`; `Lautaro Naglieri <laaumartinez28@gmail.com>`; `LautaroNaglieri <laaumartinez28@gmail.com>` | 28 + 4 + 1 | 33 |
+| Lautaro Martínez Naglieri | `Lautaro <laaumartinez28@gmail.com>`; `Lautaro Martínez Naglieri <laaumartinez28@gmail.com>`; `LautaroNaglieri <laaumartinez28@gmail.com>` | 28 + 4 + 1 | 33 |
 | Benjamín Garma | `benjamingarma <benjamingarma3@gmail.com>` | 10 | 10 |
-| Pablo Czurylo | `Pablo Czurylo <pabloczurylo10@gmail.com>` | 8 | 8 |
+| Juan Pablo Czurylo | `Juan Pablo Czurylo <pabloczurylo10@gmail.com>` | 8 | 8 |
 | **Total** | 9 identidades Git | | **236** (= M02) |
 
 > [!info] Fuente — M05: `git shortlog -sne --all` (2026-07-28). La consolidación de identidades se
-> realizó agrupando por dirección de email. Los nombres formales, legajos y roles de equipo
-> quedan como pendiente en [[00-Portada-y-Ficha]] (P-06).
+> realizó agrupando por dirección de email. Los nombres formales, legajos y roles de cátedra fueron
+> aportados por el equipo e incorporados a la Tabla 11 de [[07-Equipo-y-Roles]] al cerrar P-06 y
+> P-09 en la versión v1.0.
 
 ## Modelo de datos — resumen de 6 tablas (M10)
 
@@ -115,9 +116,9 @@ en su ausencia, otros archivos de configuración) presentes en los commits de ca
 |---|---|
 | Juan Pablo Valdez | `features/salones` (14), `features/host` (8), `features/home` (6), `features/bookings` (6), `features/auth` (4) |
 | Juan Ignacio Mignone | `features/salones` (19), `features/home` (17), `features/host` (14), `features/favorites` (4) |
-| Lautaro Naglieri | `features/salones` (22), `features/host` (22), `features/bookings` (10), `features/home` (6) |
+| Lautaro Martínez Naglieri | `features/salones` (22), `features/host` (22), `features/bookings` (10), `features/home` (6) |
 | Benjamín Garma | Infraestructura de pruebas: `cypress/` (8 archivos), `.github/workflows/frontend-tests.yml` (3), `.mocharc.json`, `playwright.config.ts`, `vite.config.ts` |
-| Pablo Czurylo | `features/salones` (búsqueda), `features/bookings` (flujo de reserva), `supabase/functions/send-emails` (notificaciones por email) |
+| Juan Pablo Czurylo | `features/salones` (búsqueda), `features/bookings` (flujo de reserva), `supabase/functions/send-emails` (notificaciones por email) |
 
 > [!info] Fuente — Derivado de `git log --all --author="<email>" --name-only --pretty=format:` por
 > cada email de M05 (2026-07-28). Usado en [[07-Equipo-y-Roles]] (Tabla 11) para fundamentar la
@@ -216,6 +217,32 @@ este cambio. Se agregan al final para no alterar ningún valor ya fijado por los
 > 40, deuda técnica); M31 se usa en [[12-Testing-y-Calidad]] (Tabla 32, cobertura); M32 se usa en
 > [[12-Testing-y-Calidad]] (manejo de incidencias) y en [[Anexo-V-Evidencias-QA]] (Tabla 58,
 > registro de defectos).
+
+## Métricas adicionales M33–M38 (verificadas en la versión v1.0, 2026-08-02)
+
+Estas filas incorporan las cifras obtenidas al cerrar los placeholders de evidencia (P-39 a P-46).
+A diferencia de M01–M32, calculadas por inspección del repositorio, **M34 a M38 provienen de
+ejecuciones en vivo contra el ambiente desplegado y la API real**, no de lecturas de archivos.
+
+| ID | Métrica | Valor | Comando / fuente | Verificado el |
+|---|---|---|---|---|
+| M33 | Cobertura de pruebas (`@vitest/coverage-v8`, proveedor `v8`) | Global: 12,69 % sentencias · 9,18 % ramas · 14,50 % funciones · 16,05 % líneas. Sobre el código ejercitado: 62,50 % · 45,91 % · 69,44 % · 74,84 % | `npm --prefix frontend run test:coverage`; agregación por módulo desde `coverage/coverage-summary.json` | 2026-08-02 |
+| M34 | Resultado de la suite E2E sobre `chromium` | 37 escenarios: 31 aprobados, 6 fallidos, 0 *flaky*, 45,4 s | `npx playwright test --project=chromium` en `frontend/` | 2026-08-02 |
+| M35 | Llamada real a la API PostgREST de producción | `206 Partial Content`, `Content-Range: 0-2/17` (17 salones en total), 280 ms | `GET {SUPABASE_URL}/rest/v1/salones?select=…&limit=3` con `Prefer: count=exact`, desde el origen desplegado | 2026-08-02 |
+| M36 | URL pública del ambiente desplegado | `https://d1ako6y2uvskg7.cloudfront.net/` — responde `200` y renderiza el catálogo con 4 salones disponibles | Navegación directa sobre el ambiente DEV publicado por `web-dev.yml` | 2026-08-02 |
+| M37 | Accesibilidad del documento OpenAPI (Swagger) de PostgREST | `401 {"message":"Secret API key required"}` con clave publicable: el contrato existe pero no es de lectura anónima | `GET {SUPABASE_URL}/rest/v1/` con `Accept: application/openapi+json` | 2026-08-02 |
+| M38 | Recorrido del wizard de reserva sobre el ambiente desplegado | 3 pasos completados con sesión iniciada; total estimado $ 120.000 = $ 20.000/h × 6 h. **La reserva no se confirmó** | Navegación autenticada sobre `/salones/a1b2c3d4-0004-0004-0004-000000000004/reservar` | 2026-08-02 |
+
+> [!info] Fuente — M33 se usa en [[12-Testing-y-Calidad]] (Tablas 32, 32a y 32b) y en
+> [[Anexo-V-Evidencias-QA]] (Figura 36); M34 se usa en [[Anexo-V-Evidencias-QA]] (Figura 38, Tablas
+> 57a y 57b); M35 se usa en [[Anexo-V-Evidencias-QA]] (Figura 35, Tabla 57c); M36 se usa en
+> [[00-Portada-y-Ficha]] (Tabla 1); M37 se usa en [[Anexo-IV-API-y-Repositorio]] (Tabla 53a); M38 se
+> usa en [[Anexo-V-Evidencias-QA]] (Figura 37, Tabla 57d).
+>
+> **Nota metodológica.** M35 y M37 exigen una clave de API. La clave publicable (`anon`) del
+> proyecto se transmitió por encabezado —nunca por *query string*— y aparece enmascarada en la
+> Figura 35. Ninguna clave del proyecto está versionada en este vault ni en la colección Postman
+> adjunta.
 
 ---
 [[Indice|Índice]]

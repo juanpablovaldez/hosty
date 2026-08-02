@@ -4,10 +4,10 @@ seccion: "12"
 orden: 13
 tipo: seccion
 tags: [hosty, informe-final, testing, calidad]
-estado: con-pendientes
+estado: completo
 figuras: [F19, F20, F21]
-tablas: [T31, T32, T33, T34]
-updated: 2026-07-28
+tablas: [T31, T32, T32a, T32b, T33, T34]
+updated: 2026-08-02
 ---
 
 # 12. Testing y Calidad
@@ -70,13 +70,33 @@ flowchart LR
 
 ## Cobertura
 
-No hay una herramienta de cobertura de líneas configurada en el proyecto (no existe `--coverage`
-en el script `test`, ni `@vitest/coverage-v8`/`@vitest/coverage-istanbul` entre las dependencias).
-Por lo tanto, este informe **no reporta un porcentaje de cobertura de líneas**: hacerlo sin una
-herramienta que lo mida sería un dato inventado. En su lugar, se reportan únicamente los conteos
-verificables:
+Se adoptó **`@vitest/coverage-v8`** como herramienta de medición, incorporada al proyecto como
+dependencia de desarrollo y expuesta en el script `test:coverage` de `frontend/package.json`. El
+instrumentado usa el motor de cobertura nativo de V8 y produce un reporte HTML navegable en
+`frontend/coverage/`, además del resumen por consola.
 
-| Métrica | Valor |
+Antes de esta adopción el informe no reportaba porcentaje alguno, por no existir una herramienta
+que lo midiera. Las cifras siguientes provienen de corridas reales, reproducibles con
+`npm --prefix frontend run test:coverage`.
+
+La medición se reporta bajo **dos criterios**, porque informar uno solo distorsiona la lectura:
+
+- **Cobertura global**: se instrumenta todo el código de aplicación bajo `src/`, incluidos los
+  archivos que ninguna prueba llega a cargar. Es la cifra honesta del estado del proyecto.
+- **Cobertura del código ejercitado**: se mide únicamente sobre los archivos que la suite
+  efectivamente importa. Indica qué tan a fondo se prueba aquello que sí está bajo prueba, pero
+  **no debe presentarse como cobertura del proyecto**, porque ignora todo lo no probado.
+
+| Métrica | Cobertura global | Sobre el código ejercitado |
+|---|---|---|
+| Sentencias | **12,69 %** (665 / 5.240) | 62,50 % (665 / 1.064) |
+| Ramas | **9,18 %** (410 / 4.463) | 45,91 % (410 / 893) |
+| Funciones | **14,50 %** (75 / 517) | 69,44 % (75 / 108) |
+| Líneas | **16,05 %** (494 / 3.077) | 74,84 % (494 / 660) |
+
+*Tabla 32 — Cobertura de pruebas medida con `@vitest/coverage-v8`, bajo ambos criterios.*
+
+| Métrica de volumen | Valor |
 |---|---|
 | Pruebas automatizadas (Vitest) | 66 |
 | Archivos de prueba (Vitest/RTL + Playwright) | 18 (13 + 5) |
@@ -84,17 +104,78 @@ verificables:
 | Líneas de código de producción (`src/`, sin pruebas) | 11.148 |
 | Relación líneas de prueba / líneas de producción | ≈ 0,13 (13 %) |
 
-*Tabla 32 — Cobertura de pruebas por módulo.*
+*Tabla 32a — Volumen de la suite de pruebas.*
+
+| Módulo | Sentencias | Ramas | Funciones | Líneas |
+|---|---|---|---|---|
+| `features/auth/store` | 100,00 % | 100,00 % | 100,00 % | 100,00 % |
+| `features/bookings/api` | 97,06 % | 79,31 % | 100,00 % | 100,00 % |
+| `features/auth/lib` | 93,75 % | 100,00 % | 85,71 % | 93,33 % |
+| `features/favorites/api` | 92,54 % | 85,42 % | 100,00 % | 97,83 % |
+| `features/auth/components` | 80,25 % | 62,22 % | 83,33 % | 90,29 % |
+| `features/salones/api` | 54,21 % | 47,92 % | 61,54 % | 61,25 % |
+| `features/salones/lib` | 50,00 % | 75,00 % | 66,67 % | 55,56 % |
+| `shared/lib` | 46,15 % | 42,86 % | 100,00 % | 40,00 % |
+| `components/layout` | 43,08 % | 35,81 % | 35,00 % | 49,22 % |
+| `components/ui` | 19,93 % | 10,79 % | 20,31 % | 24,36 % |
+| `features/salones/components` | 7,69 % | 6,52 % | 2,27 % | 11,30 % |
+| `features/host/api`, `features/host/components`, `features/host/lib` | 0,00 % | 0,00 % | 0,00 % | 0,00 % |
+| `features/bookings/components` | 0,00 % | 0,00 % | 0,00 % | 0,00 % |
+| `features/home/components` | 0,00 % | 0,00 % | 0,00 % | 0,00 % |
+| `features/favorites/components` | 0,00 % | 0,00 % | 0,00 % | 0,00 % |
+| `features/profile/components` | 0,00 % | 0,00 % | 0,00 % | 0,00 % |
+| `features/errors` | 0,00 % | 0,00 % | 0,00 % | 0,00 % |
+| `shared/store` | 0,00 % | 0,00 % | 0,00 % | 0,00 % |
+| **Total (global)** | **12,69 %** | **9,18 %** | **14,50 %** | **16,05 %** |
+
+*Tabla 32b — Cobertura global por módulo.*
+
+> [!info] Fuente — M33: `npm --prefix frontend run test:coverage`
+> (`vitest run --coverage`, proveedor `v8`), ejecutado el 2026-08-02 sobre 13 archivos y 66 casos,
+> todos en verde. La cobertura global surge de la configuración `test.coverage` de
+> `frontend/vite.config.ts` (`include: ['src/**/*.{ts,tsx}']`), que excluye únicamente artefactos
+> sin lógica propia: archivos de prueba, `src/e2e/**`, `src/routes/**` y `src/routeTree.gen.ts`
+> (rutas autogeneradas por TanStack Router), `src/i18n/locales/**` (diccionarios de traducción),
+> `database.types.ts` (tipos generados) y `main.tsx`. La agregación por módulo de la Tabla 32b se
+> obtuvo del reporte `coverage/coverage-summary.json`. El reporte HTML navegable queda en
+> `frontend/coverage/index.html` y su resumen se adjunta como Figura 36 en
+> [[Anexo-V-Evidencias-QA]].
+
+**Lectura de los resultados.** La distancia entre ambos criterios (12,69 % global frente a 62,50 %
+sobre el código ejercitado) es el dato más informativo de la medición: la suite prueba **bien** un
+subconjunto **pequeño** del sistema.
+
+- **Lo que sí está cubierto es el dominio.** Los módulos de lógica de negocio —`bookings/api`
+  (97,06 %), `favorites/api` (92,54 %), `auth/lib` (93,75 %) y `auth/store` (100 %)— concentran las
+  reglas que, si fallaran, corromperían datos del usuario. La priorización fue correcta.
+- **La brecha está en la capa de presentación.** Siete carpetas de componentes quedan en 0 %:
+  `host` (panel del anfitrión, el módulo con más invocaciones a la API según la Tabla 53 del
+  [[Anexo-IV-API-y-Repositorio]]), `bookings/components` (el wizard de reserva), `home`,
+  `favorites`, `profile` y `errors`. Son flujos que hoy sólo cubren las pruebas E2E de Playwright,
+  cuya evidencia es de comportamiento y no de cobertura de líneas.
+- **`components/ui` (19,93 %) no es comparable con el resto.** Son primitivas de shadcn/ui
+  incorporadas por CLI, envoltorios de Radix sin lógica propia; su baja cobertura refleja variantes
+  visuales no ejercitadas.
+- **`features/salones/api` (54,21 %) es la brecha prioritaria.** El constructor de consultas de
+  búsqueda concentra las ramas no cubiertas: combinaciones de filtros de capacidad, zona y tipo de
+  evento que ningún caso ejercita.
+
+La cobertura de ramas es, bajo ambos criterios, la más baja de las cuatro métricas (9,18 % global;
+45,91 % sobre el código ejercitado): la suite recorre los caminos felices y comprueba poco los
+caminos de error. Elevar la cobertura de ramas del módulo de búsqueda y escribir pruebas de
+componente para el panel del anfitrión y el wizard de reserva son, en ese orden, los dos objetivos
+del próximo incremento de calidad.
 
 > [!info] Fuente — M12/M13; líneas de prueba y de producción contadas con
 > `find frontend/src -name '*.test.ts' -o -name '*.test.tsx' -o -path '*/e2e/*.spec.ts' | xargs wc -l`
 > y su complemento sobre `*.ts`/`*.tsx`, respectivamente (2026-07-28). La cifra de producción
 > incluye `src/routeTree.gen.ts` (343 líneas autogeneradas por TanStack Router).
 
-> [!todo] PLACEHOLDER P-46 — Adopción de una herramienta de cobertura de líneas
-> Evaluar e instalar `@vitest/coverage-v8` (u otra) para obtener un porcentaje de cobertura real
-> antes de la próxima entrega; ver también la línea de evolución futura en
-> [[15-Conclusiones]]. Responsable: equipo. Destino: script `test` de `frontend/package.json`.
+> [!info] Fuente — Adopción de la herramienta de cobertura (cierre de la deuda registrada como
+> P-46): `npm --prefix frontend install -D @vitest/coverage-v8` (2026-08-02) y alta del script
+> `"test:coverage": "vitest run --coverage"` en `frontend/package.json`. La configuración del
+> proveedor y los reporters (`text`, `html`, `lcov`) se declara en el bloque `test.coverage` de
+> `frontend/vite.config.ts`.
 
 ## Matriz de casos de prueba manuales
 

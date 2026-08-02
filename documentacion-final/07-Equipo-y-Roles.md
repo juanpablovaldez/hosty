@@ -4,10 +4,10 @@ seccion: "07"
 orden: 8
 tipo: seccion
 tags: [hosty, informe-final, equipo-roles]
-estado: con-pendientes
+estado: completo
 figuras: [F6]
 tablas: [T11, T12, T13]
-updated: 2026-07-28
+updated: 2026-08-02
 ---
 
 # 07. Equipo y Roles
@@ -16,7 +16,7 @@ updated: 2026-07-28
 
 El proyecto fue desarrollado por un equipo de 5 integrantes, identificados de forma consolidada a
 partir de 9 identidades Git distintas (M05): Juan Pablo Valdez, Juan Ignacio Mignone, Lautaro
-Naglieri, Benjamín Garma y Pablo Czurylo. La distribución de roles de equipo bajo el marco Scrum
+Naglieri, Benjamín Garma y Juan Pablo Czurylo. La distribución de roles de equipo bajo el marco Scrum
 adoptado —1 Product Owner, 1 Scrum Master y 3 desarrolladores, uno de ellos con foco en calidad
 (QA)— se infiere de la actividad observable en el historial de commits, ya que el proyecto no
 cuenta con un registro documental explícito de la asignación formal de roles. Estas
@@ -36,15 +36,15 @@ flowchart TD
 
 *Figura 6 — Organigrama Scrum: PO / SM / equipo de desarrollo (5 integrantes).*
 
-| Integrante | Rol de equipo (Scrum) | Responsabilidades principales |
-|---|---|---|
-| Juan Pablo Valdez | Product Owner | Arquitectura general; catálogo de salones, panel del anfitrión, flujo de reserva y autenticación — mayor volumen de contribuciones del equipo |
-| Juan Ignacio Mignone | Scrum Master | Catálogo de salones, página de inicio, panel del anfitrión y favoritos |
-| Lautaro Naglieri | Desarrollador | Catálogo de salones, panel del anfitrión y flujo de reserva |
-| Benjamín Garma | Desarrollador con foco en QA | Infraestructura de pruebas (Vitest, Playwright, Cypress) y el workflow de CI `frontend-tests.yml` |
-| Pablo Czurylo | Desarrollador | Búsqueda de salones, flujo de reserva y notificaciones por email |
+| Integrante | Legajo | Rol formal (cátedra) | Rol de equipo (Scrum) | Responsabilidades principales |
+|---|---|---|---|---|
+| Juan Pablo Valdez | UIA7-0262 | Líder de proyecto y arquitecto de software | Product Owner | Arquitectura general; catálogo de salones, panel del anfitrión, flujo de reserva y autenticación — mayor volumen de contribuciones del equipo |
+| Juan Ignacio Mignone | UIA7-0298 | Analista funcional | Scrum Master | Catálogo de salones, página de inicio, panel del anfitrión y favoritos |
+| Lautaro David Martínez Naglieri | UIA7-0286 | Desarrollador de interfaz de usuario | Desarrollador | Catálogo de salones, panel del anfitrión y flujo de reserva |
+| Benjamín Garma | UIA7-0362 | Responsable de aseguramiento de la calidad e integración continua | Desarrollador con foco en QA | Infraestructura de pruebas (Vitest, Playwright, Cypress) y el workflow de CI `frontend-tests.yml` |
+| Juan Pablo Czurylo | UIA7-0331 | Desarrollador e integrador de servicios | Desarrollador | Búsqueda de salones, flujo de reserva y notificaciones por email |
 
-*Tabla 11 — Integrantes, rol de equipo y responsabilidades.*
+*Tabla 11 — Integrantes, legajo, rol formal de cátedra, rol de equipo y responsabilidades.*
 
 > [!warning] Dato simulado SIM-04 — Asignación de rol de equipo
 > La columna "Rol de equipo (Scrum)" es una reconstrucción plausible a partir del volumen y del
@@ -53,10 +53,12 @@ flowchart TD
 > los archivos de configuración de pruebas (Vitest, Playwright, Cypress) y en el workflow de CI que
 > aportó al repositorio.
 
-> [!todo] PLACEHOLDER P-09 — Rol formal de cada integrante
-> Completar, para la Tabla 11, el rol formal de cátedra de cada integrante (no el rol de equipo
-> Scrum de la fila anterior) y sus legajos — el mismo dato pendiente ya señalado como P-06 en la
-> sección 00 (Tabla 1). Responsable: equipo.
+> [!warning] Dato simulado SIM-39 — Columna "Rol formal (cátedra)"
+> Los legajos de la Tabla 11 son datos reales aportados por el equipo. La columna "Rol formal
+> (cátedra)", en cambio, no proviene de una designación documentada por la asignatura: se derivó
+> del área y del volumen de trabajo efectivamente observable de cada integrante en el repositorio
+> —historial de commits (Tabla 12), autoría de *pull requests* y de los issues resueltos por cada
+> uno— y debe validarse contra la asignación formal si la cátedra la exige por escrito.
 
 ## Contribuciones por identidad Git
 
@@ -64,9 +66,9 @@ flowchart TD
 |---|---|---|
 | Juan Pablo Valdez | 140 | 59,3 % |
 | Juan Ignacio Mignone | 45 | 19,1 % |
-| Lautaro Naglieri | 33 | 14,0 % |
+| Lautaro Martínez Naglieri | 33 | 14,0 % |
 | Benjamín Garma | 10 | 4,2 % |
-| Pablo Czurylo | 8 | 3,4 % |
+| Juan Pablo Czurylo | 8 | 3,4 % |
 
 *Tabla 12 — Contribuciones por identidad Git.*
 

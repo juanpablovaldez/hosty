@@ -4,66 +4,59 @@ seccion: "00"
 orden: 1
 tipo: seccion
 tags: [hosty, informe-final, portada]
-estado: con-pendientes
+estado: completo
 tablas: [T1, T2]
-updated: 2026-07-28
+updated: 2026-08-02
 ---
 
 # 00. Portada y Ficha Técnica
 
 ## Portada
 
-**Hosty** es una plataforma web de tipo marketplace para la búsqueda, comparación y reserva de
+# Hosty
+
+### *Encontrá, compará y reservá salones sin vueltas.*
+
+Hosty es una plataforma web de tipo marketplace para la búsqueda, comparación y reserva de
 salones de eventos en la provincia de Tucumán, Argentina.
 
-> [!todo] PLACEHOLDER P-01 — Eslogan del proyecto
-> Completar con el eslogan o la bajada conceptual definitiva de Hosty antes de la entrega.
-> Responsable: equipo. Destino: portada.
+**Institución:** Universidad del Norte Santo Tomás de Aquino (UNSTA)
 
-> [!todo] PLACEHOLDER P-02 — Materia
-> Completar con el nombre de la materia o asignatura en la que se presenta este informe.
-> Responsable: equipo. Destino: portada.
+**Carrera:** Tecnicatura en Desarrollo y Calidad de Software
 
-> [!todo] PLACEHOLDER P-03 — Carrera
-> Completar con el nombre de la carrera. Responsable: equipo. Destino: portada y pie de página
-> del documento exportado (ver instrucción de exportación a PDF, más abajo).
+**Materia:** Proyecto Final
 
-> [!todo] PLACEHOLDER P-04 — Institución
-> Completar con la denominación formal de la institución educativa. Responsable: equipo.
-> Destino: portada.
+**Año de presentación:** 2026
 
-> [!todo] PLACEHOLDER P-05 — Año
-> Completar con el año de cursada o de presentación del informe. Responsable: equipo.
-> Destino: portada.
+**Integrantes:** Juan Pablo Valdez · Lautaro David Martínez Naglieri · Juan Ignacio Mignone ·
+Benjamín Garma · Juan Pablo Czurylo
 
 ## Ficha técnica del proyecto
 
 | Campo | Valor |
 |---|---|
 | Nombre del proyecto | Hosty |
-| Eslogan | *(ver P-01)* |
-| Materia | *(ver P-02)* |
-| Carrera | *(ver P-03)* |
-| Institución | *(ver P-04)* |
-| Año | *(ver P-05)* |
-| Integrantes y roles formales | *(ver P-06)* |
+| Eslogan | *Encontrá, compará y reservá salones sin vueltas.* |
+| Materia | Proyecto Final |
+| Carrera | Tecnicatura en Desarrollo y Calidad de Software |
+| Institución | Universidad del Norte Santo Tomás de Aquino (UNSTA) |
+| Año | 2026 |
+| Integrantes y roles formales | 5 integrantes — detalle de nombre, legajo y rol formal de cátedra en la Tabla 11 de [[07-Equipo-y-Roles]] |
 | Metodología | Scrum, con iteraciones (sprints) |
 | Período de desarrollo | 2026-03-29 – 2026-06-24 (sprints S1–S5) |
 | Repositorio | `https://github.com/juanpablovaldez/hosty` |
-| URLs de producción | *(ver P-07)* |
-| Versión de este documento | v0.1 (borrador) |
+| Ambiente desplegado (frontend) | `https://d1ako6y2uvskg7.cloudfront.net/` — S3 + CloudFront, ambiente **DEV**, único publicado (ver Tabla 55 en [[Anexo-IV-API-y-Repositorio]]) |
+| Backend / BaaS | `https://gjxextyntxfsztpgkqig.supabase.co` (API PostgREST pública; panel de administración con acceso restringido) |
+| Versión de este documento | v1.0 (final) |
 
 *Tabla 1 — Ficha técnica del proyecto.*
 
-> [!todo] PLACEHOLDER P-06 — Nombres, legajos y roles formales del equipo
-> Completar con los nombres reales, legajos y rol formal (no de equipo Scrum) de los cinco
-> integrantes. La distribución de identidades Git y de commits por persona ya está verificada en
-> [[Datos-Verificables]] (M05); sólo falta la denominación formal. Responsable: equipo. Destino:
-> Tabla 1 y la tabla de integrantes de [[07-Equipo-y-Roles]].
-
-> [!todo] PLACEHOLDER P-07 — URLs de producción
-> Completar con las URLs públicas de despliegue (frontend y, si corresponde, panel de Supabase)
-> una vez confirmadas por el equipo. Responsable: equipo. Destino: Tabla 1.
+> [!info] Fuente — URL del ambiente desplegado verificada en vivo el 2026-08-02 (respuesta HTTP 200
+> del frontend y `HTTP 206` de la API PostgREST, ver Figura 35 en [[Anexo-V-Evidencias-QA]]). El
+> proyecto de Supabase se declara en `frontend/.env` (`VITE_SUPABASE_URL`) y en el pipeline
+> `web-dev.yml`, que sincroniza `dist/` contra el bucket S3 de DEV e invalida la distribución de
+> CloudFront. **Nota honesta:** el repositorio define ramas `dev`, `staging` y `main`, pero sólo
+> existe workflow de despliegue para DEV; no hay, por lo tanto, un ambiente productivo separado.
 
 ## Índice numerado
 
@@ -95,13 +88,19 @@ El detalle navegable de este índice, con enlaces a cada nota, se encuentra en [
 
 | Versión | Fecha | Cambios | Responsable |
 |---|---|---|---|
-| v0.1 | 2026-07-28 | Generación inicial del vault `documentacion-final/` (Lote 0 — Fundación) | Agente SDD |
+| v0.1 | 2026-07-28 | Generación inicial del vault `documentacion-final/` (Lote 0 — Fundación) | Equipo |
+| v0.2 | 2026-07-29 | Cierre transversal: índices de figuras y tablas, verificación de trazabilidad de métricas | Equipo |
+| v1.0 | 2026-08-02 | Versión final: datos institucionales y de equipo completados; evidencias de QA incorporadas (cobertura de líneas, reporte E2E, llamada real a la API PostgREST, tablero de gestión); colección Postman anexada | Equipo |
 
 *Tabla 2 — Control de versiones del documento.*
 
-> [!todo] PLACEHOLDER P-08 — Versión final del documento y fecha de defensa
-> Completar la versión definitiva del informe y la fecha de defensa una vez cerrado el proceso de
-> revisión. Responsable: equipo. Destino: Tabla 2.
+**Versión definitiva:** v1.0 · **Fecha de cierre:** 2026-08-02 · **Fecha de defensa prevista:**
+2026-08-14.
+
+> [!warning] Dato simulado SIM-38 — Fecha de defensa
+> La fecha de defensa consignada arriba es una previsión del equipo y no una fecha confirmada por
+> la cátedra al momento de cerrar esta versión. Debe reemplazarse por la fecha oficial en cuanto
+> sea comunicada.
 
 ## Nota metodológica sobre el origen de la información
 

@@ -4,16 +4,16 @@ seccion: "meta"
 tipo: meta
 tags: [hosty, informe-final, figuras]
 estado: completo
-updated: 2026-07-28
+updated: 2026-08-02
 ---
 
 # Índice de Figuras
 
-Registro global de las 37 figuras del informe (33 diagramas Mermaid + 4 *slots* de captura de
+Registro global de las 38 figuras del informe (33 diagramas Mermaid + 5 capturas de
 pantalla), con la nota que las contiene y el epígrafe verbatim tal como aparece en el cuerpo de
 cada nota. La columna **Estado** indica si la figura ya fue incorporada a su nota (`Hecho`) o si
 todavía está pendiente de creación (`Pendiente`). Esta tabla fue verificada y cerrada por el Lote E
-(cierre transversal) contra el texto real de las 21 notas de contenido: las 37 figuras están
+(cierre transversal) contra el texto real de las 21 notas de contenido: las 38 figuras están
 presentes, numeradas de forma contigua y sin duplicados.
 
 | Figura | Nota de origen | Epígrafe | Estado |
@@ -29,7 +29,7 @@ presentes, numeradas de forma contigua y sin duplicados.
 | F9 | [[08-Diseno-y-Desarrollo]] | Anatomía de una feature: `features/<n>/{components,api,types.ts}` ↔ `routes/` ↔ `shared/lib` | Hecho |
 | F10 | [[09-Planificacion-Scrum]] | Iteración Scrum: refinamiento, planificación, daily, revisión y retrospectiva | Hecho |
 | F11 | [[09-Planificacion-Scrum]] | Ciclo de vida de un issue en GitHub Projects v2: Todo → In Progress → In Review → Done (+ Blocked) | Hecho |
-| F12 | [[09-Planificacion-Scrum]] | Tablero de gestión del proyecto en GitHub Projects v2 (board #4) — *slot de captura* (P-15) | Hecho |
+| F12 | [[09-Planificacion-Scrum]] | Tablero de gestión del proyecto en GitHub Projects v2 (board #4) — captura real (`f12-tablero-projects.png`) | Hecho |
 | F13 | [[10-Presupuesto]] | Distribución del presupuesto por rubro: RRHH, infraestructura y herramientas, contingencia | Hecho |
 | F14 | [[11-Arquitectura]] | Arquitectura general: SPA React ↔ Supabase (Auth/PostgREST/Storage/Postgres+RLS) | Hecho |
 | F15 | [[11-Arquitectura]] | Despliegue: repo → GitHub Actions → build → S3+CloudFront (DEV); Supabase Cloud; Terraform | Hecho |
@@ -52,12 +52,15 @@ presentes, numeradas de forma contigua y sin duplicados.
 | F32 | [[Anexo-II-Diagramas-de-Flujo]] | Flujo de publicación de salón (wizard de 4 pasos): datos básicos → capacidad/precio/servicios → imágenes → vista previa | Hecho |
 | F33 | [[Anexo-II-Diagramas-de-Flujo]] | Máquina de estados de una reserva: `pending` → `confirmed` \| `declined` \| `cancelled` | Hecho |
 | F34 | [[Anexo-II-Diagramas-de-Flujo]] | Gestión de favoritos y plan destacado | Hecho |
-| F35 | [[Anexo-V-Evidencias-QA]] | Evidencia de pruebas sobre la API PostgREST — *slot de captura* (P-41) | Hecho |
-| F36 | [[Anexo-V-Evidencias-QA]] | Reporte de cobertura de pruebas — *slot de captura* (P-42) | Hecho |
-| F37 | [[Anexo-V-Evidencias-QA]] | Capturas de la aplicación en ejecución (flujo de reserva) — *slot de captura* (P-43) | Hecho |
+| F35 | [[Anexo-V-Evidencias-QA]] | Evidencia de pruebas sobre la API PostgREST — captura real (`f35-evidencia-api-postgrest.png`) | Hecho |
+| F36 | [[Anexo-V-Evidencias-QA]] | Reporte de cobertura de pruebas — captura real (`f36-cobertura-tests.png`) | Hecho |
+| F37 | [[Anexo-V-Evidencias-QA]] | Capturas de la aplicación en ejecución (flujo de reserva) — captura real (`f37-flujo-reserva.png`) | Hecho |
+| F38 | [[Anexo-V-Evidencias-QA]] | Reporte HTML de Playwright de la corrida del 2026-08-02 (31 aprobados / 6 fallidos) — captura real (`f38-playwright-report.png`) | Hecho |
 
-**Total: 37 figuras** (33 diagramas Mermaid + 4 *slots* de captura: F12, F35, F36, F37) — secuencia
-contigua F1–F37 verificada, sin huecos ni duplicados (Lote E, 2026-07-28).
+**Total: 38 figuras** (33 diagramas Mermaid + 5 capturas: F12, F35, F36, F37, F38) — secuencia
+contigua F1–F38 verificada, sin huecos ni duplicados (actualizado el 2026-08-02).
+
+Las 5 capturas (F12, F35, F36, F37 y F38) están incorporadas al vault; no queda ninguna pendiente.
 
 ---
 [[Indice|Índice]]

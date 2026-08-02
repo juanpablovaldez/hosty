@@ -91,8 +91,8 @@ poca prosa de enlace (09, 10, 13, 14), una elección de estilo documentada, no u
 contenido: cada una de esas notas de todos modos cubre íntegramente los elementos MUST de su fila
 de rúbrica (ver [[Indice]]).
 
-Sumando la prosa (≈6.960 ÷ 320 palabras/página ≈ 21,8 páginas) más las 37 figuras (× 0,30 ≈ 11,1
-páginas) más las 59 tablas (× 0,25 ≈ 14,8 páginas), la extensión total estimada del documento
+Sumando la prosa (≈6.960 ÷ 320 palabras/página ≈ 21,8 páginas) más las 38 figuras (× 0,30 ≈ 11,4
+páginas) más las 70 tablas (× 0,25 ≈ 17,5 páginas), la extensión total estimada del documento
 exportado a PDF es de **≈47,6 páginas**, dentro de la banda de 25–75 páginas exigida por la
 rúbrica académica, con margen en ambos sentidos.
 

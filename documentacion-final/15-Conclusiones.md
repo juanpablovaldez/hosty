@@ -7,7 +7,7 @@ tags: [hosty, informe-final, conclusiones]
 estado: completo
 figuras: [F27]
 tablas: [T39, T40, T41]
-updated: 2026-07-28
+updated: 2026-08-02
 ---
 
 # 15. Conclusiones
@@ -61,11 +61,12 @@ evidencia primaria de este informe, no una reconstrucción posterior.
 | Documentación previa desactualizada: `README.md` y `docs/tech-stack.md` describen un backend NestJS eliminado del repositorio, y `docs/tech-stack.md` todavía llama al proyecto "SalonSpot" | Media | Un lector nuevo del repositorio recibe información arquitectónica falsa | Reescribir `docs/tech-stack.md` para reflejar la arquitectura Supabase/BaaS actual (fuera del alcance de este cambio, ver Exclusiones de Alcance) |
 | Inconsistencia de gestor de paquetes: `frontend/` y la raíz tienen tanto `package-lock.json` como `pnpm-lock.yaml`; CLAUDE.md indica usar `npm` en `frontend/`, pero `frontend-tests.yml` y `web-dev.yml` instalan con `pnpm` | Media | Riesgo de que las dependencias instaladas localmente (npm) diverjan de las de CI (pnpm) | Fijar un único gestor de paquetes para todo el monorepo y eliminar el lockfile sobrante |
 | `root package.json` aún declara el workspace `backend` y scripts `docker:*`/`lint-staged` sobre `backend/src/**`, pese a que el directorio `backend/` fue eliminado del disco | Baja | Scripts inertes, potencial confusión sobre si el backend NestJS sigue vigente | Quitar `backend` de `workspaces` y los scripts asociados |
-| Sólo la suite de Vitest corre en CI (`frontend-tests.yml`); Playwright, Mocha y Cypress se ejecutan únicamente en local | Baja | Regresiones E2E o de los *specs* legacy pueden llegar a `dev` sin detectarse automáticamente | Agregar un job de Playwright a CI (o a un *workflow* nocturno) |
+| Sólo la suite de Vitest corre en CI (`frontend-tests.yml`); Playwright, Mocha y Cypress se ejecutan únicamente en local | **Media** | Consecuencia ya materializada: 6 de los 37 escenarios E2E fallan por deriva entre los *specs* y la interfaz, y nadie lo detectó porque la suite no bloquea ningún merge (ver [[Anexo-V-Evidencias-QA]], Tablas 57a y 57b) | Agregar un job de Playwright a CI (o a un *workflow* nocturno) y actualizar los 6 *specs* desactualizados |
 | `tsconfig.app.json` excluye `src/test`, `*.test.ts(x)` y `*.spec.ts(x)` del *type-check* de build | Baja | Errores de tipos dentro de los propios tests no bloquean `npm run build` | Crear un `tsconfig.test.json` referenciado que sí tipe los archivos de prueba |
 | `prettier` está scripteado (`format`, `format:check`) pero no figura como dependencia directa de `frontend/package.json`; sólo está presente de forma transitiva en `node_modules` | Baja | El script puede romperse si la dependencia transitiva que lo provee cambia | Declarar `prettier` como `devDependency` explícita |
 | `react-i18next` está inicializado (`src/i18n/`) pero no se usa en ningún componente (`grep -rl useTranslation frontend/src` no devuelve resultados) | Baja | Infraestructura de internacionalización sin efecto — todo el texto sigue *hardcodeado* en español | Adoptar `useTranslation` de forma incremental o quitar la dependencia si no se usará |
-| No hay herramienta de cobertura de líneas configurada (ver [[12-Testing-y-Calidad]]) | Baja | No es posible verificar objetivamente qué proporción del código está probada | Instalar `@vitest/coverage-v8` |
+| **Resuelto (v1.0)** — se instaló `@vitest/coverage-v8` y se expuso como script `test:coverage` | — | La medición ya es posible y reproducible | — |
+| Cobertura global baja: 12,69 % de sentencias y 9,18 % de ramas; 7 carpetas de componentes en 0 %, entre ellas el panel del anfitrión y el wizard de reserva (ver [[12-Testing-y-Calidad]], Tabla 32b) | **Media** | Los módulos con más invocaciones a la API no tienen ninguna prueba de componente; una regresión en ellos sólo la detectaría una prueba E2E, que hoy no corre en CI | Escribir pruebas de componente para `features/host` y `features/bookings/components`, y elevar la cobertura de ramas de `features/salones/api` |
 | `npx eslint .` reporta 6 errores y 4 advertencias sobre el estado actual del repositorio (ver [[12-Testing-y-Calidad]], Tabla 34) | Baja | El criterio de salida "lint limpio" no se cumple de forma estricta hoy | Corregir los parámetros sin usar de `cypress.config.ts`, ajustar la regla `no-unused-expressions` para aserciones de Chai, y resolver las dependencias de `useMemo` en `SalonesPage.tsx` |
 
 *Tabla 40 — Deuda técnica: severidad, impacto y plan de remediación.*
@@ -97,7 +98,8 @@ flowchart LR
     subgraph Corto["Corto plazo"]
         A1["Generar tipos de estado desde la BD / enums Postgres"]
         A2["Unificar gestor de paquetes (npm o pnpm)"]
-        A3["Instalar herramienta de cobertura de lineas"]
+        A3["Cubrir con tests el panel del anfitrion y el wizard de reserva"]
+        A4["Integrar Playwright a CI y actualizar los 6 specs desactualizados"]
     end
     subgraph Medio["Mediano plazo"]
         B1["Integrar Mercado Pago (#45)"]
@@ -115,7 +117,7 @@ flowchart LR
 
 | Horizonte | Línea de evolución | Relación con un hallazgo verificado |
 |---|---|---|
-| Corto plazo | Resolver la deuda técnica de la Tabla 40 | Deriva de `bookings.status`, dependencias duplicadas, cobertura ausente |
+| Corto plazo | Resolver la deuda técnica de la Tabla 40 | Deriva de `bookings.status`, dependencias duplicadas, cobertura global de 12,69 % y 6 *specs* E2E desactualizados |
 | Mediano plazo | Integrar Mercado Pago | Issue diferido #45 |
 | Mediano plazo | Activar `react-i18next` (`useTranslation`) | `src/i18n/` inicializado sin uso (Tabla 40) |
 | Mediano plazo | Ambientes `staging` y `prod` | Sólo `web-dev.yml` despliega hoy (Tabla 37, sección 14) |

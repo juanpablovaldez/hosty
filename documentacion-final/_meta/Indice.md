@@ -48,8 +48,8 @@ esta numeración: se listan aparte, al final.
 |---|---|
 | [[Datos-Verificables]] | Fuente única de toda métrica citada en el vault (`M01`–`M22`) |
 | [[Pendientes]] | Agregación de todos los placeholders (`P-##`) y datos simulados (`SIM-##`) |
-| [[Indice-de-Figuras]] | Registro de las 37 figuras del informe (`F1`–`F37`) |
-| [[Indice-de-Tablas]] | Registro de las 59 tablas del informe (`T1`–`T59`) |
+| [[Indice-de-Figuras]] | Registro de las 38 figuras del informe (`F1`–`F38`) |
+| [[Indice-de-Tablas]] | Registro de las 70 tablas del informe (`T1`–`T59` más 11 con sufijo alfabético) |
 | `assets/README.md` | Lista de capturas de pantalla pendientes de incorporar |
 
 ---
