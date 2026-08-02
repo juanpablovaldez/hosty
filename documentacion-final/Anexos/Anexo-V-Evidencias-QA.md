@@ -7,7 +7,7 @@ tags: [hosty, informe-final, qa, evidencias]
 estado: con-pendientes
 figuras: [F35, F36]
 tablas: [T56, T57, T58, T59]
-updated: 2026-07-28
+updated: 2026-08-02
 ---
 
 # Anexo V. Evidencias de QA
@@ -38,7 +38,7 @@ reales del proyecto, complementando la matriz de casos manuales de [[12-Testing-
 *Tabla 56 — Suite de pruebas automatizadas: archivo y casos.*
 
 > [!info] Fuente — `npx vitest run --reporter=verbose` ejecutado sobre el repositorio
-> (2026-08-01): 14 archivos, 73 casos, todos en verde (`Test Files 14 passed`, `Tests 73 passed`).
+> (2026-08-02): 14 archivos, 73 casos, todos en verde (`Test Files 14 passed`, `Tests 73 passed`).
 > El conteo de casos por archivo se obtuvo con
 > `grep -cE '^\s*(it|test)\(' <archivo>` sobre cada uno.
 
@@ -67,7 +67,7 @@ usuario final.
 
 | Parámetro | Valor |
 |---|---|
-| Fecha de ejecución | 2026-08-01 |
+| Fecha de ejecución | 2026-08-02 |
 | Entorno | `https://d1ako6y2uvskg7.cloudfront.net` (frontend desplegado) |
 | Navegadores | 3 (Chromium, Firefox y WebKit) |
 | *Specs* ejecutados | 5 (`auth-flow`, `home`, `navigation`, `salon-detail`, `salones`) |
@@ -100,12 +100,13 @@ R-01 y R-02 en la Tabla 34b. Es un ejemplo concreto del valor de las pruebas aut
 a punta, y también de que el diagnóstico de un fallo no puede darse por supuesto sin reproducirlo:
 descartar los dos casos como "*specs* viejos" habría dejado el defecto en el producto.
 
-El caso 2 tiene, además, valor como hallazgo de accesibilidad: que una herramienta automatizada no
+El caso 4 tiene, además, valor como hallazgo de accesibilidad: que una herramienta automatizada no
 pueda identificar el control de reserva por su rol sugiere revisar su marcado semántico, dado que
-un lector de pantalla enfrentaría la misma limitación. La remediación de los cuatro casos está
-registrada como trabajo de corto plazo en [[15-Conclusiones]].
+un lector de pantalla enfrentaría la misma limitación. Los seis casos quedaron corregidos y la
+suite completa en verde; lo que permanece abierto es esa revisión del marcado semántico del control
+de reserva, registrada como trabajo de corto plazo en [[15-Conclusiones]].
 
-El reporte HTML completo de esta corrida se anexa en `assets/playwright-report-2026-08-01/`.
+El reporte HTML completo de esta corrida se anexa en `assets/playwright-report-2026-08-02/`.
 
 ## Evidencia de pruebas sobre la API PostgREST
 
@@ -192,7 +193,7 @@ El indicador de progreso superior aparece en las tres capturas, mostrando el ava
 
 | Evidencia | Resultado |
 |---|---|
-| Corrida de Vitest | 14 archivos, 73 casos, todos exitosos (2026-08-01) |
+| Corrida de Vitest | 14 archivos, 73 casos, todos exitosos (2026-08-02) |
 | Corrida E2E de Playwright sobre el entorno desplegado | 30 casos, 26 exitosos y 4 fallidos (2026-07-29; ver Tablas 57b y 57c) |
 | Verificación de tipos (`tsc -b --noEmit`) | Sin errores (2026-07-28) |
 | Análisis estático (`eslint .`) | 6 errores y 4 advertencias (2026-07-28; ver [[12-Testing-y-Calidad]], Tabla 34) |

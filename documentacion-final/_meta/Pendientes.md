@@ -37,7 +37,7 @@ P-44). Queda **1 con fecha comprometida pero sin cerrar** (P-08 — a definir en
 2026-07-29). Quedan **3 sin tocar**: P-40, P-42, P-46 — ninguno bloquea la defensa de hoy.
 
 ⚠️ **Dos hallazgos no anticipados a leer antes de la defensa:**
-1. **P-44** — resuelto el 2026-08-01: la suite quedó 111/111 en verde sobre 3 navegadores. De los 6
+1. **P-44** — resuelto el 2026-08-02: la suite quedó 111/111 en verde sobre 3 navegadores. De los 6
    casos que fallaban, 2 resultaron ser un defecto real del producto (validación nativa del
    navegador no desactivada en login y registro), no *specs* viejos. Detalle en
    [[Anexo-V-Evidencias-QA]], Tabla 57c.
@@ -92,7 +92,7 @@ P-44). Queda **1 con fecha comprometida pero sin cerrar** (P-08 — a definir en
 | P-41 | Captura de una ejecución de prueba contra la API PostgREST | ✅ Resuelto — dos capturas reales contra DEV (`assets/f35-evidencia-api-postgrest-headers.png` y `-response.png`), ver [[Anexo-V-Evidencias-QA]] |
 | P-42 | Reporte de cobertura de pruebas | Pendiente hasta instalar una herramienta de cobertura (ver P-46); destino Figura 36 y Tabla 32 |
 | P-43 | Capturas del flujo de reserva en ejecución | ✅ Resuelto — collage de los 3 pasos sobre DEV (`assets/f37-flujo-reserva.png`), ver [[Anexo-V-Evidencias-QA]] |
-| P-44 | Anexar el reporte HTML de Playwright ya generado | ✅ Resuelto — corrida del 2026-08-01: **111 passed / 0 failed** sobre 3 navegadores, tras corregir los 6 casos que fallaban (2 de ellos, defectos reales del producto — ver Tabla 57c en [[Anexo-V-Evidencias-QA]]) |
+| P-44 | Anexar el reporte HTML de Playwright ya generado | ✅ Resuelto — corrida del 2026-08-02: **111 passed / 0 failed** sobre 3 navegadores, tras corregir los 6 casos que fallaban (2 de ellos, defectos reales del producto — ver Tabla 57c en [[Anexo-V-Evidencias-QA]]) |
 
 `assets/README.md` reproduce, sin numeración propia (nota de apparatus, ver decisión D5 de diseño),
 la misma lista de 4 capturas pendientes (P-15, P-41, P-42, P-43) para referencia rápida del equipo.

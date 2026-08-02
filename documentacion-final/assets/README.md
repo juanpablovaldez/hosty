@@ -20,7 +20,7 @@ La tabla siguiente indica, para cada una, la nota que la contiene y su estado al
 | F36 | [[Anexo-V-Evidencias-QA]] | Reporte de cobertura de pruebas | `f36-reporte-cobertura.png` | ❌ Pendiente (P-42) — bloqueada hasta instalar `@vitest/coverage-v8` (P-46) |
 | F37 | [[Anexo-V-Evidencias-QA]] | Capturas de la aplicación en ejecución (flujo de reserva) | `f37-flujo-reserva.png` | ✅ Incorporada (P-43) — collage de los 3 pasos del wizard |
 
-Además, no numerado como figura: `playwright-report-2026-08-01/` contiene el reporte HTML completo
+Además, no numerado como figura: `playwright-report-2026-08-02/` contiene el reporte HTML completo
 de la corrida E2E de Playwright anexada en [[Anexo-V-Evidencias-QA]] (P-44).
 
 > [!todo] Queda una sola captura pendiente: **F36** (reporte de cobertura), que depende de que se

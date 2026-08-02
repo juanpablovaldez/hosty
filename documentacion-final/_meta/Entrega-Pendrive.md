@@ -4,7 +4,7 @@ seccion: "meta"
 tipo: meta
 tags: [hosty, entrega, pendrive, defensa]
 estado: completo
-updated: 2026-08-01
+updated: 2026-08-02
 ---
 
 # Entrega — contenido del pendrive

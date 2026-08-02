@@ -26,7 +26,7 @@ suite de pruebas, corrección de detalles de interfaz y redacción de este infor
 del alcance planificado de los sprints, por lo que se excluye deliberadamente de esas cifras:
 incorporarlo distorsionaría la lectura de la velocidad del equipo durante el desarrollo. Las
 métricas que describen el **estado actual del producto** (`M09`–`M22`) sí se re-verificaron el
-**2026-08-01** y reflejan el repositorio tal como se entrega.
+**2026-08-02** y reflejan el repositorio tal como se entrega.
 
 ## Repositorio
 
@@ -51,8 +51,8 @@ métricas que describen el **estado actual del producto** (`M09`–`M22`) sí se
 | M09 | Rutas / protegidas | 14 / 8 | `find frontend/src/routes -name '*.tsx' ! -name '__root.tsx'` (14); `grep -rl requireAuth frontend/src/routes` (8) | 2026-07-28 |
 | M10 | Tablas en `public` | 6 (`salones`, `bookings`, `salon_services`, `salon_availability_blocks`, `user_favorites`, `salon_subscriptions`) | `supabase/migrations/*.sql`; `frontend/src/shared/lib/database.types.ts` | 2026-07-28 |
 | M11 | Archivos de migración | 10 | `ls supabase/migrations/*.sql \| wc -l` | 2026-07-28 |
-| M12 | Pruebas automatizadas (Vitest) | 73 | `npm --prefix frontend run test` (`vitest --run`) | 2026-08-01 |
-| M13 | Archivos de prueba | 19 (14 Vitest/RTL + 5 E2E Playwright, excluidos del run de Vitest por `exclude: ['src/e2e/**']`) | `find frontend/src -name '*.test.*' -o -name '*.spec.*'` | 2026-08-01 |
+| M12 | Pruebas automatizadas (Vitest) | 73 | `npm --prefix frontend run test` (`vitest --run`) | 2026-08-02 |
+| M13 | Archivos de prueba | 19 (14 Vitest/RTL + 5 E2E Playwright, excluidos del run de Vitest por `exclude: ['src/e2e/**']`) | `find frontend/src -name '*.test.*' -o -name '*.spec.*'` | 2026-08-02 |
 | M14 | Workflows de CI/CD | 3 (`frontend-tests.yml`, `web-dev.yml`, `infra-ci.yml`) | `ls .github/workflows` | 2026-07-28 |
 | M15 | Features del frontend | 8 (`auth`, `bookings`, `errors`, `favorites`, `home`, `host`, `profile`, `salones`) | `ls frontend/src/features` | 2026-07-28 |
 | M16 | Bucket de Storage | `salon-images` | `supabase/migrations/20260525000001_create_storage_bucket.sql` | 2026-07-28 |
@@ -67,7 +67,7 @@ métricas que describen el **estado actual del producto** (`M09`–`M22`) sí se
 > cita únicamente como aclaración metodológica, para no ocultar los commits que existen en ramas
 > o refs fuera de `dev`.
 
-> [!info] Fuente — M12/M13 se re-verificaron el 2026-08-01 ejecutando la suite completa. El valor
+> [!info] Fuente — M12/M13 se re-verificaron el 2026-08-02 ejecutando la suite completa. El valor
 > de M12 (73 pruebas) y M13 (19 archivos) es el vigente al momento de esta verificación y puede
 > volver a cambiar si se agregan pruebas después de esta fecha.
 
