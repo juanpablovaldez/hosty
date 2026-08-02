@@ -4,7 +4,7 @@ seccion: "meta"
 tipo: meta
 tags: [hosty, presentacion, guia, demo, defensa]
 estado: completo
-updated: 2026-08-01
+updated: 2026-08-02
 ---
 
 # Guía de presentación — logística, demo y preguntas esperadas

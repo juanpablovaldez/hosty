@@ -4,7 +4,7 @@ seccion: "meta"
 tipo: meta
 tags: [hosty, presentacion, reparto, fichas, defensa]
 estado: completo
-updated: 2026-08-01
+updated: 2026-08-02
 ---
 
 # Presentación final — reparto de bloques y fichas de apoyo
