@@ -3,8 +3,8 @@ title: "Pendientes — Registro de placeholders y datos simulados"
 seccion: "meta"
 tipo: meta
 tags: [hosty, informe-final, pendientes]
-estado: con-pendientes
-updated: 2026-07-29
+estado: completo
+updated: 2026-08-02
 ---
 
 # Pendientes — Registro de placeholders y datos simulados
@@ -30,13 +30,21 @@ rangos reservados en la fase de diseño, que eran más amplios de lo efectivamen
 > técnica o líneas de evolución en [[15-Conclusiones]]). Esta nota se conserva únicamente como
 > **registro interno del equipo**; no forma parte del PDF exportado.
 
-## Estado al 2026-07-29
+## Estado al 2026-08-02 — cerrado
 
-De los 17 placeholders originales: **13 resueltos** (P-01 a P-07, P-09, P-15, P-39, P-41, P-43,
-P-44). Queda **1 con fecha comprometida pero sin cerrar** (P-08 — a definir en la reunión del
-2026-07-29). Quedan **3 sin tocar**: P-40, P-42, P-46 — ninguno bloquea la defensa de hoy.
+**Los 17 placeholders están resueltos.** El informe no contiene ningún marcador de contenido
+pendiente, ningún campo por completar y ninguna cifra sin fuente citada.
 
-⚠️ **Dos hallazgos no anticipados a leer antes de la defensa:**
+Los últimos cuatro se cerraron el 2026-08-02:
+
+| P-## | Cómo se cerró |
+|---|---|
+| P-08 | Versión de entrega **v1.2** y fecha de defensa **2026-08-07**, cargadas en la Tabla 1 y en el control de versiones de la Tabla 2 |
+| P-40 | Resuelto por decisión documentada: PostgREST publica un documento OpenAPI sincronizado con el esquema, de modo que una colección de Postman escrita a mano sería una segunda fuente de verdad. La justificación y el modo de importarla, si la cátedra la exige, quedan en [[Anexo-IV-API-y-Repositorio]] |
+| P-42 | Figura 37 — captura del reporte HTML de `@vitest/coverage-v8`, en [[Anexo-V-Evidencias-QA]] |
+| P-46 | `@vitest/coverage-v8` instalado y declarado en `frontend/package.json`, con el script `test:coverage` y el bloque `test.coverage` en `vite.config.ts`. Medición en las Tablas 32 y 32a de [[12-Testing-y-Calidad]] |
+
+**Dos hallazgos no anticipados a leer antes de la defensa:**
 1. **P-44** — resuelto el 2026-08-02: la suite quedó 111/111 en verde sobre 3 navegadores. De los 6
    casos que fallaban, 2 resultaron ser un defecto real del producto (validación nativa del
    navegador no desactivada en login y registro), no *specs* viejos. Detalle en
@@ -58,7 +66,7 @@ P-44). Queda **1 con fecha comprometida pero sin cerrar** (P-08 — a definir en
 | P-05 | Año | Año de cursada o de presentación | ✅ Resuelto — 2026, tercer/último año |
 | P-06 | Nombres, legajos y roles formales del equipo | Nombre real, legajo y rol de cátedra de los 5 integrantes (destino: Tabla 1 y Tabla 11) | ✅ Resuelto — nombres y legajos cargados; rol reutiliza el Scrum (ver nota en P-09) |
 | P-07 | URLs de producción | URLs públicas de despliegue (frontend y, si corresponde, panel de Supabase) | ✅ Resuelto (2026-07-29) — ver [[00-Portada-y-Ficha]], incluye una inconsistencia a aclarar (Supabase marca el branch como "PRODUCTION", no "DEV") |
-| P-08 | Versión final del documento y fecha de defensa | Versión definitiva del informe y fecha de defensa | 🟡 A definir en reunión del 2026-07-29 |
+| P-08 | Versión final del documento y fecha de defensa | Versión definitiva del informe y fecha de defensa | ✅ Resuelto — v1.2, defensa 2026-08-07 (Tablas 1 y 2) |
 
 ### [[07-Equipo-y-Roles]] (1)
 
@@ -76,21 +84,21 @@ P-44). Queda **1 con fecha comprometida pero sin cerrar** (P-08 — a definir en
 
 | P-## | Descripción | Qué debe aportar el equipo |
 |---|---|---|
-| P-46 | Adopción de una herramienta de cobertura de líneas | Instalar y ejecutar `@vitest/coverage-v8` (u otra) antes de la próxima entrega (destino: script `test`, Tabla 32) |
+| P-46 | Adopción de una herramienta de cobertura de líneas | ✅ Resuelto — `@vitest/coverage-v8` instalado; script `test:coverage` y bloque `test.coverage` en `vite.config.ts`; medición en las Tablas 32 y 32a |
 
 ### [[Anexo-IV-API-y-Repositorio]] (2)
 
 | P-## | Descripción | Qué debe aportar el equipo |
 |---|---|---|
 | P-39 | URL pública del documento OpenAPI de PostgREST | ✅ Resuelto (2026-07-29) — `https://gjxextyntxfsztpgkqig.supabase.co/rest/v1/`, ver [[Anexo-IV-API-y-Repositorio]] |
-| P-40 | Colección Postman curada (si la cátedra la exige) | Confeccionar una colección Postman manual como seguimiento posterior, si se requiere |
+| P-40 | Colección Postman curada (si la cátedra la exige) | ✅ Resuelto por decisión documentada — PostgREST publica OpenAPI sincronizado con el esquema; ver justificación en [[Anexo-IV-API-y-Repositorio]] |
 
 ### [[Anexo-V-Evidencias-QA]] (4)
 
 | P-## | Descripción | Qué debe aportar el equipo |
 |---|---|---|
 | P-41 | Captura de una ejecución de prueba contra la API PostgREST | ✅ Resuelto — dos capturas reales contra DEV (`assets/f35-evidencia-api-postgrest-headers.png` y `-response.png`), ver [[Anexo-V-Evidencias-QA]] |
-| P-42 | Reporte de cobertura de pruebas | Pendiente hasta instalar una herramienta de cobertura (ver P-46); destino Figura 36 y Tabla 32 |
+| P-42 | Reporte de cobertura de pruebas | ✅ Resuelto — Figura 37 en [[Anexo-V-Evidencias-QA]], captura del reporte HTML de `@vitest/coverage-v8` |
 | P-43 | Capturas del flujo de reserva en ejecución | ✅ Resuelto — collage de los 3 pasos sobre DEV (`assets/f37-flujo-reserva.png`), ver [[Anexo-V-Evidencias-QA]] |
 | P-44 | Anexar el reporte HTML de Playwright ya generado | ✅ Resuelto — corrida del 2026-08-02: **111 passed / 0 failed** sobre 3 navegadores, tras corregir los 6 casos que fallaban (2 de ellos, defectos reales del producto — ver Tabla 57c en [[Anexo-V-Evidencias-QA]]) |
 

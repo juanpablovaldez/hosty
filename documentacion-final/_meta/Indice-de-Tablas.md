@@ -46,7 +46,9 @@ duplicados; las tablas con sufijo alfabético complementan a la tabla cuyo núme
 | T29 | [[11-Arquitectura]] | Rutas, control de acceso y política RLS asociada | Hecho |
 | T30 | [[11-Arquitectura]] | Operaciones de API por módulo y ambientes de despliegue | Hecho |
 | T31 | [[12-Testing-y-Calidad]] | Tipos de prueba, herramienta y alcance real | Hecho |
-| T32 | [[12-Testing-y-Calidad]] | Cobertura de pruebas por módulo | Hecho |
+| T32 | [[12-Testing-y-Calidad]] | Cobertura de pruebas bajo ambos criterios | Hecho |
+| T32a | [[12-Testing-y-Calidad]] | Cobertura por módulo | Hecho |
+| T32b | [[12-Testing-y-Calidad]] | Volumen de la suite de pruebas | Hecho |
 | T33 | [[12-Testing-y-Calidad]] | Matriz de casos de prueba manuales | Hecho |
 | T34 | [[12-Testing-y-Calidad]] | Severidad de incidencias y criterios de salida | Hecho |
 | T34b | [[12-Testing-y-Calidad]] | Defectos detectados en la revisión de usabilidad previa a la entrega y su corrección | Hecho |
@@ -79,8 +81,8 @@ duplicados; las tablas con sufijo alfabético complementan a la tabla cuyo núme
 | T58 | [[Anexo-V-Evidencias-QA]] | Registro de defectos y retesting | Hecho |
 | T59 | [[Anexo-V-Evidencias-QA]] | Resumen de evidencias de calidad | Hecho |
 
-**Total: 63 tablas** — 59 en la secuencia principal T1–T59, contigua y sin huecos, más 4 tablas
-complementarias (T34b, T52b, T57b, T57c). Estas últimas se incorporaron una vez fijada la
+**Total: 65 tablas** — 59 en la secuencia principal T1–T59, contigua y sin huecos, más 6 tablas
+complementarias (T32a, T32b, T34b, T52b, T57b, T57c). Estas últimas se incorporaron una vez fijada la
 numeración principal y conservan el número de la tabla a la que complementan, con sufijo
 alfabético, para no alterar las referencias cruzadas ya establecidas en el resto del informe.
 

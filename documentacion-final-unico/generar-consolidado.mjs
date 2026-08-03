@@ -130,6 +130,45 @@ function adaptarMermaidParaImpresion(texto, nota) {
 const sinPieDeNavegacion = (texto) =>
   texto.replace(/\r?\n---\r?\n\[\[Indice[^\n]*\r?\n?$/, '\n').trimEnd()
 
+/**
+ * Estilo formal de impresión. En el vault, las notas de fuente y los avisos de dato simulado se
+ * escriben como callouts de Obsidian (`> [!info]`, `> [!warning]`), que al exportar se renderizan
+ * como recuadros de color con un ícono. Eso es útil para editar, pero en un documento impreso y
+ * encuadernado 142 bloques de color compiten con el texto y le dan aspecto de wiki, no de informe.
+ *
+ * Aquí se convierten en citas planas con una entradilla en negrita: se conserva íntegro el
+ * contenido y la distinción entre "fuente verificable" y "dato reconstruido" —que es lo que
+ * sostiene la trazabilidad del informe— pero se pierde el color y el ícono.
+ */
+function formalizarCallouts(texto, nota) {
+  let salida = texto
+    .replace(/^> \[!info\][ \t]*Fuente[ \t]*—[ \t]*/gm, '> **Fuente.** ')
+    .replace(
+      /^> \[!warning\][ \t]*Dato simulado[ \t]+(SIM-\d+)[ \t]*—[ \t]*(.*)$/gm,
+      (_, id, titulo) => `> **Dato simulado (${id}) — ${titulo.trim().replace(/\.\s*$/, '')}.**`,
+    )
+    .replace(/^> \[!warning\][ \t]*Dato simulado[ \t]*—[ \t]*/gm, '> **Dato simulado.** ')
+
+  salida = salida.replace(/^> \[!(\w+)\][ \t]*/gm, (_, tipo) => {
+    calloutsSinRegla.push(`  ${nota}: [!${tipo}] sin regla de formalización -> "Nota."`)
+    return '> **Nota.** '
+  })
+
+  return salida
+}
+
+/** El documento impreso no lleva emoji: se detectan para que no pasen inadvertidos. */
+const RANGO_EMOJI =
+  /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}\u{2705}\u{274C}\u{26A0}]/gu
+
+function detectarEmoji(texto, nota) {
+  const encontrados = texto.match(RANGO_EMOJI)
+  if (encontrados) {
+    emojiDetectados.push(`  ${nota}: ${[...new Set(encontrados)].join(' ')}`)
+  }
+  return texto.replace(RANGO_EMOJI, '').replace(/[ \t]{2,}/g, ' ')
+}
+
 /** [[Nota]] y [[Nota|alias]] -> [texto](#ancla). */
 function resolverWikilinks(texto, nota) {
   return texto.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (crudo, destino, alias) => {
@@ -146,6 +185,8 @@ function resolverWikilinks(texto, nota) {
 
 const avisos = []
 const convertidos = []
+const calloutsSinRegla = []
+const emojiDetectados = []
 
 const cuerpos = NOTAS.map((nota) => {
   let texto = readFileSync(join(vault, nota), 'utf8')
@@ -153,6 +194,8 @@ const cuerpos = NOTAS.map((nota) => {
   texto = sinPieDeNavegacion(texto)
   texto = resolverWikilinks(texto, nota)
   texto = adaptarMermaidParaImpresion(texto, nota)
+  texto = formalizarCallouts(texto, nota)
+  texto = detectarEmoji(texto, nota)
   return texto
 })
 
@@ -203,4 +246,14 @@ if (convertidos.length) {
 if (avisos.length) {
   console.log(`\nEnlaces a notas de apoyo convertidos a texto plano (${avisos.length}):`)
   console.log([...new Set(avisos)].join('\n'))
+}
+if (calloutsSinRegla.length) {
+  console.log(`\nCallouts sin regla de formalización (${calloutsSinRegla.length}) — revisar:`)
+  console.log([...new Set(calloutsSinRegla)].join('\n'))
+}
+if (emojiDetectados.length) {
+  console.log(`\nEmoji eliminados del documento impreso (${emojiDetectados.length}):`)
+  console.log([...new Set(emojiDetectados)].join('\n'))
+} else {
+  console.log('\nSin emoji en el documento impreso.')
 }

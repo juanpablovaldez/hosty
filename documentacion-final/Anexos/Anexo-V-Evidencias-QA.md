@@ -4,8 +4,8 @@ seccion: "A-V"
 orden: 21
 tipo: anexo
 tags: [hosty, informe-final, qa, evidencias]
-estado: con-pendientes
-figuras: [F35, F36]
+estado: completo
+figuras: [F35, F36, F37]
 tablas: [T56, T57, T58, T59]
 updated: 2026-08-02
 ---
@@ -161,8 +161,9 @@ estimación.
 > un criterio de triage formalmente documentado por el equipo.
 
 Un defecto adicional, real y verificado —no simulado— se documenta aparte por su relevancia
-arquitectónica, y se distingue visualmente de la tabla anterior por no llevar el marcador
-`[!warning]`:
+arquitectónica. A diferencia de las incidencias reconstruidas de la tabla anterior, su nota va
+encabezada como *Fuente* y no como *Dato simulado*, porque cada afirmación se verifica leyendo los
+archivos de migración que se citan:
 
 > [!info] Fuente — Defecto real: deriva del estado de `bookings` (M17). El estado `declined` fue
 > utilizado por la aplicación (`frontend/src/features/host/lib/booking-status.ts`) antes de que la
@@ -174,8 +175,6 @@ arquitectónica, y se distingue visualmente de la tabla anterior por no llevar e
 > `bookings_status_check` recreada admite explícitamente `'pending', 'confirmed', 'declined',
 > 'cancelled'`. Análisis de deuda técnica asociado en [[12-Testing-y-Calidad]] y en la sección 15
 > (Conclusiones, Tabla 40).
-
-## Checklist de evidencias y capturas pendientes
 
 ## Evidencia de la aplicación en ejecución
 
@@ -189,17 +188,36 @@ El indicador de progreso superior aparece en las tres capturas, mostrando el ava
 
 *Figura 36 — Flujo de reserva de la aplicación en ejecución.*
 
+## Evidencia de cobertura de pruebas
+
+La Figura 37 reproduce el encabezado del reporte HTML generado por `@vitest/coverage-v8` sobre la
+corrida del 2026-08-02, con las cuatro métricas globales y el desglose por carpeta. Es la fuente
+directa de las Tablas 32 y 32a de [[12-Testing-y-Calidad]]: el contraste entre las carpetas de
+dominio en verde (`features/auth/store` al 100 %, `features/bookings/api` al 97,05 %) y las de
+presentación en rojo (`features/bookings/components` y `features/home/components` en 0 %) es
+visible de un vistazo y corresponde a la priorización declarada en la sección 12.
+
+![Reporte de cobertura de @vitest/coverage-v8](../assets/f37-reporte-cobertura.jpg)
+
+*Figura 37 — Reporte de cobertura de pruebas (`@vitest/coverage-v8`, 2026-08-02).*
+
+> [!info] Fuente — `npm --prefix frontend run test:coverage`; captura del reporte HTML generado en
+> `frontend/coverage/index.html`. Los porcentajes de la captura (12,44 % de sentencias, 8,97 % de
+> ramas, 13,87 % de funciones y 15,68 % de líneas) coinciden con los de la Tabla 32, que los
+> reproduce con dos decimales desde `coverage/coverage-summary.json`.
+
 ## Resumen de evidencias
 
 | Evidencia | Resultado |
 |---|---|
 | Corrida de Vitest | 14 archivos, 73 casos, todos exitosos (2026-08-02) |
-| Corrida E2E de Playwright sobre el entorno desplegado | 30 casos, 26 exitosos y 4 fallidos (2026-07-29; ver Tablas 57b y 57c) |
+| Corrida E2E de Playwright sobre el entorno desplegado | 111 casos sobre 3 navegadores, todos exitosos (2026-08-02; ver Tablas 57b y 57c) |
+| Cobertura de pruebas (`@vitest/coverage-v8`) | 12,44 % global de sentencias; 63,01 % sobre el código ejercitado (2026-08-02; ver Tablas 32 y 32a) |
 | Verificación de tipos (`tsc -b --noEmit`) | Sin errores (2026-07-28) |
 | Análisis estático (`eslint .`) | 6 errores y 4 advertencias (2026-07-28; ver [[12-Testing-y-Calidad]], Tabla 34) |
 | Evidencia de la API de datos | Figura 35 — llamada real capturada sobre el entorno desplegado |
 | Evidencia de la aplicación en ejecución | Figura 36 — flujo de reserva de tres pasos |
-| Cobertura de líneas | Sin herramienta configurada; registrada como mejora de corto plazo en [[15-Conclusiones]] |
+| Evidencia de cobertura | Figura 37 — reporte HTML de `@vitest/coverage-v8` |
 
 *Tabla 59 — Resumen de evidencias de calidad.*
 

@@ -39,7 +39,8 @@ salones de eventos en la provincia de Tucumán, Argentina.
 | Repositorio | `https://github.com/juanpablovaldez/hosty` |
 | Frontend desplegado | `https://d1ako6y2uvskg7.cloudfront.net` |
 | Backend (Supabase) | `https://gjxextyntxfsztpgkqig.supabase.co` |
-| Versión de este documento | v1.0 |
+| Fecha de defensa | 2026-08-07 |
+| Versión de este documento | v1.2 (versión de entrega) |
 
 *Tabla 1 — Ficha técnica del proyecto.*
 
@@ -78,7 +79,9 @@ El detalle navegable de este índice, con enlaces a cada nota, se encuentra en [
 | Versión | Fecha | Cambios | Responsable |
 |---|---|---|---|
 | v0.1 | 2026-07-28 | Redacción inicial del informe a partir del historial del repositorio | Equipo |
-| v1.0 | 2026-07-29 | Versión final: datos institucionales, entornos desplegados y evidencias de QA | Equipo |
+| v1.0 | 2026-07-29 | Datos institucionales, entornos desplegados y primeras evidencias de QA | Equipo |
+| v1.1 | 2026-08-02 | Revisión de usabilidad previa a la entrega (Tabla 34b); corrección de los seis casos E2E que fallaban y reejecución de la suite completa sobre el entorno desplegado (Tablas 57b y 57c) | Equipo |
+| v1.2 | 2026-08-02 | Versión de entrega: adopción de `@vitest/coverage-v8` y medición de cobertura bajo ambos criterios (Tablas 32 y 32a, Figura 37); cierre de los 17 marcadores de contenido pendiente | Equipo |
 
 *Tabla 2 — Control de versiones del documento.*
 

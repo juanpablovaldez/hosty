@@ -70,13 +70,65 @@ flowchart LR
 
 ## Cobertura
 
-No hay una herramienta de cobertura de líneas configurada en el proyecto (no existe `--coverage`
-en el script `test`, ni `@vitest/coverage-v8`/`@vitest/coverage-istanbul` entre las dependencias).
-Por lo tanto, este informe **no reporta un porcentaje de cobertura de líneas**: hacerlo sin una
-herramienta que lo mida sería un dato inventado. En su lugar, se reportan únicamente los conteos
-verificables:
+La cobertura se mide con `@vitest/coverage-v8`, que instrumenta el código mediante el proveedor V8
+nativo, y se ejecuta con `npm --prefix frontend run test:coverage`. El resultado se reporta bajo
+**dos criterios**, porque informar uno solo distorsiona la lectura en sentidos opuestos:
 
-| Métrica | Valor |
+- **Cobertura global.** Se instrumenta todo el código de aplicación bajo `src/` —95 archivos—,
+  incluidos los 72 que ninguna prueba llega a importar. Es la cifra honesta del estado del
+  proyecto y la que corresponde citar si se pide "la cobertura" sin más.
+- **Cobertura del código ejercitado.** Se mide únicamente sobre los 23 archivos que la suite
+  efectivamente importa. Indica qué tan a fondo se prueba aquello que sí está bajo prueba, pero no
+  debe presentarse como cobertura del proyecto, porque ignora todo lo que quedó sin probar.
+
+| Métrica | Cobertura global | Sobre el código ejercitado |
+|---|---|---|
+| Sentencias | 12,44 % (683 / 5.490) | 63,01 % (683 / 1.084) |
+| Ramas | 8,98 % (425 / 4.735) | 46,60 % (425 / 912) |
+| Funciones | 13,88 % (78 / 562) | 70,27 % (78 / 111) |
+| Líneas | 15,69 % (508 / 3.238) | 75,26 % (508 / 675) |
+
+*Tabla 32 — Cobertura de pruebas bajo ambos criterios.*
+
+> [!info] Fuente — M33: `npm --prefix frontend run test:coverage` (`vitest run --coverage`,
+> proveedor V8), ejecutado el 2026-08-02 sobre 14 archivos y 73 casos. Los totales se obtuvieron de
+> `frontend/coverage/coverage-summary.json`. La configuración de proveedor, *reporters* y
+> exclusiones está declarada en el bloque `test.coverage` de `frontend/vite.config.ts`: se excluyen
+> del cómputo los propios archivos de prueba, `src/e2e/`, `src/test/`, `main.tsx` y los dos
+> artefactos autogenerados (`routeTree.gen.ts` y `database.types.ts`), porque medir cobertura sobre
+> código que nadie escribió a mano no aporta información.
+
+La distribución por módulo muestra un patrón deliberado: la lógica de dominio y de acceso a datos
+está cubierta, y la capa de presentación no.
+
+| Módulo | Sentencias | Ramas | Funciones | Líneas |
+|---|---|---|---|---|
+| `features/auth/store` | 100,00 % | 100,00 % | 100,00 % | 100,00 % |
+| `features/bookings/api` | 97,06 % | 79,31 % | 100,00 % | 100,00 % |
+| `features/auth/lib` | 93,75 % | 100,00 % | 85,71 % | 93,33 % |
+| `features/favorites/api` | 92,54 % | 85,42 % | 100,00 % | 97,83 % |
+| `features/auth/components` | 80,25 % | 62,22 % | 83,33 % | 90,29 % |
+| `shared/lib` | 72,73 % | 63,64 % | 100,00 % | 72,00 % |
+| `features/salones/api` | 54,21 % | 47,92 % | 61,54 % | 61,25 % |
+| `features/salones/lib` | 50,00 % | 75,00 % | 66,67 % | 55,56 % |
+| `components/layout` | 43,08 % | 35,81 % | 35,00 % | 49,22 % |
+| `components/ui` | 19,93 % | 10,79 % | 20,31 % | 24,36 % |
+| `features/salones/components` | 7,69 % | 6,52 % | 2,27 % | 11,30 % |
+| 17 carpetas restantes | 0,00 % | 0,00 % | 0,00 % | 0,00 % |
+
+*Tabla 32a — Cobertura por módulo, ordenada por cobertura de sentencias.*
+
+Las 17 carpetas sin cobertura son, en su mayoría, componentes de pantalla y definiciones de ruta
+(`routes/`, `features/host/components`, `features/bookings/components`, `features/home/components`,
+entre otras): código que la suite E2E de Playwright sí ejercita sobre el navegador, pero que no
+aparece en esta medición porque Playwright corre fuera del proceso de Vitest y no comparte su
+instrumentación. La cobertura de la Tabla 32 es, por lo tanto, un piso y no un techo del código
+realmente probado.
+
+Junto al porcentaje conviene leer el volumen absoluto de la suite, que no depende del criterio de
+medición elegido:
+
+| Métrica de volumen | Valor |
 |---|---|
 | Pruebas automatizadas (Vitest) | 73 |
 | Archivos de prueba (Vitest/RTL + Playwright) | 19 (14 + 5) |
@@ -84,17 +136,17 @@ verificables:
 | Líneas de código de producción (`src/`, sin pruebas) | 11.208 |
 | Relación líneas de prueba / líneas de producción | ≈ 0,13 (13 %) |
 
-*Tabla 32 — Cobertura de pruebas por módulo.*
+*Tabla 32b — Volumen de la suite de pruebas.*
 
 > [!info] Fuente — M12/M13; líneas de prueba y de producción contadas con
 > `find frontend/src -name '*.test.ts' -o -name '*.test.tsx' -o -path '*/e2e/*.spec.ts' | xargs wc -l`
-> y su complemento sobre `*.ts`/`*.tsx`, respectivamente (2026-07-28). La cifra de producción
-> incluye `src/routeTree.gen.ts` (343 líneas autogeneradas por TanStack Router).
+> y su complemento sobre `*.ts`/`*.tsx`, respectivamente (2026-08-02). La cifra de producción
+> incluye `src/routeTree.gen.ts` (343 líneas autogeneradas por TanStack Router), que sí se excluye
+> del cómputo de cobertura de la Tabla 32.
 
-El proyecto no tiene todavía una herramienta de cobertura de líneas configurada, por lo que la
-Tabla 32 expresa volumen de código de prueba y no un porcentaje de cobertura. La adopción de
-`@vitest/coverage-v8` está registrada como línea de evolución de corto plazo en
-[[15-Conclusiones]].
+El reporte HTML navegable queda en `frontend/coverage/index.html` y se anexa en
+[[Anexo-V-Evidencias-QA]]. Elevar la cobertura de la capa de presentación está registrado como
+línea de evolución de corto plazo en [[15-Conclusiones]].
 
 ## Matriz de casos de prueba manuales
 

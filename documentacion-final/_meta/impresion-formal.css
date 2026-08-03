@@ -1,0 +1,281 @@
+/*
+ * Hosty — Informe Final · estilo de impresión formal
+ * ---------------------------------------------------
+ * Pensado para exportar `Hosty-Informe-Final.md` a PDF (A4) y encuadernarlo.
+ *
+ * Para activarlo: Obsidian -> Configuración -> Apariencia -> Fragmentos CSS -> recargar y
+ * encender "impresion-formal".
+ *
+ * Todo lo que sigue está dentro de @media print: no altera cómo se ve el vault mientras se
+ * edita, sólo cómo se imprime.
+ */
+
+@media print {
+  /* --- Página ------------------------------------------------------------ */
+
+  @page {
+    size: A4;
+    margin: 22mm 20mm 20mm 20mm;
+  }
+
+  /* La portada respira más y no lleva numeración corrida. */
+  @page :first {
+    margin-top: 34mm;
+  }
+
+  /* --- Cuerpo del texto -------------------------------------------------- */
+
+  .markdown-preview-view,
+  .markdown-rendered {
+    font-family: 'Source Serif Pro', 'Georgia', 'Cambria', serif;
+    font-size: 10.5pt;
+    line-height: 1.5;
+    color: #000;
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+
+  .markdown-rendered p {
+    margin: 0 0 0.62em;
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* --- Jerarquía de títulos ---------------------------------------------- */
+
+  .markdown-rendered h1,
+  .markdown-rendered h2,
+  .markdown-rendered h3,
+  .markdown-rendered h4 {
+    font-family: 'Inter', 'Calibri', 'Helvetica Neue', sans-serif;
+    color: #000;
+    text-align: left;
+    hyphens: none;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  /* Cada sección numerada arranca en página nueva. */
+  .markdown-rendered h1 {
+    font-size: 19pt;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 0.9em;
+    padding-bottom: 0.28em;
+    border-bottom: 1.6pt solid #000;
+    page-break-before: always;
+    break-before: page;
+  }
+
+  /* …salvo el título del documento, que ya está en la primera hoja. */
+  .markdown-rendered h1:first-of-type {
+    page-break-before: avoid;
+    break-before: avoid;
+  }
+
+  .markdown-rendered h2 {
+    font-size: 13.5pt;
+    font-weight: 700;
+    margin: 1.5em 0 0.5em;
+    padding-bottom: 0.16em;
+    border-bottom: 0.5pt solid #999;
+  }
+
+  .markdown-rendered h3 {
+    font-size: 11.5pt;
+    font-weight: 700;
+    margin: 1.2em 0 0.4em;
+  }
+
+  .markdown-rendered h4 {
+    font-size: 10.5pt;
+    font-weight: 700;
+    font-style: italic;
+    margin: 1em 0 0.3em;
+  }
+
+  /* --- Tablas ------------------------------------------------------------ */
+
+  .markdown-rendered table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Inter', 'Calibri', 'Helvetica Neue', sans-serif;
+    font-size: 8.5pt;
+    line-height: 1.32;
+    margin: 0.9em 0;
+    page-break-inside: auto;
+    text-align: left;
+    hyphens: none;
+  }
+
+  /* El encabezado se repite en cada hoja que la tabla ocupe. */
+  .markdown-rendered thead {
+    display: table-header-group;
+    break-inside: avoid;
+  }
+
+  .markdown-rendered th {
+    background: #ececec !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    font-weight: 700;
+    border: 0.5pt solid #666;
+    padding: 4pt 5pt;
+    vertical-align: bottom;
+  }
+
+  .markdown-rendered td {
+    border: 0.5pt solid #999;
+    padding: 3.5pt 5pt;
+    vertical-align: top;
+    text-align: left;
+  }
+
+  .markdown-rendered tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* --- Epígrafes de tabla y figura --------------------------------------- */
+
+  /* En el informe, cada tabla y cada figura va seguida de una línea en cursiva
+     (*Tabla 32 — …*). Se compone como epígrafe: centrada, chica y en gris. */
+  .markdown-rendered p > em:only-child {
+    display: block;
+    font-family: 'Inter', 'Calibri', 'Helvetica Neue', sans-serif;
+    font-size: 8pt;
+    font-style: normal;
+    color: #444;
+    text-align: center;
+    margin: -0.35em 0 1.3em;
+  }
+
+  /* --- Notas de fuente y de dato simulado -------------------------------- */
+
+  /* El generador convierte los callouts de Obsidian en citas planas con
+     entradilla en negrita. Acá se componen como nota al pie: sin color de
+     fondo, con un filete gris y cuerpo menor. */
+  .markdown-rendered blockquote {
+    font-family: 'Inter', 'Calibri', 'Helvetica Neue', sans-serif;
+    font-size: 8.5pt;
+    line-height: 1.4;
+    color: #333;
+    background: none !important;
+    border: none;
+    border-left: 1.5pt solid #bbb;
+    margin: 0.7em 0 1em;
+    padding: 0.1em 0 0.1em 9pt;
+    text-align: left;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .markdown-rendered blockquote p {
+    margin: 0 0 0.35em;
+  }
+
+  .markdown-rendered blockquote strong {
+    color: #000;
+  }
+
+  /* --- Código ------------------------------------------------------------ */
+
+  .markdown-rendered code {
+    font-family: 'JetBrains Mono', 'Consolas', 'Courier New', monospace;
+    font-size: 0.86em;
+    background: #f2f2f2 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    border: 0.4pt solid #ddd;
+    border-radius: 2pt;
+    padding: 0.5pt 2.5pt;
+    color: #000;
+  }
+
+  .markdown-rendered pre {
+    background: #f7f7f7 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    border: 0.5pt solid #ccc;
+    border-radius: 2pt;
+    padding: 6pt 8pt;
+    font-size: 8pt;
+    line-height: 1.35;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .markdown-rendered pre code {
+    background: none !important;
+    border: none;
+    padding: 0;
+    font-size: inherit;
+  }
+
+  /* --- Figuras y diagramas ----------------------------------------------- */
+
+  .markdown-rendered img,
+  .markdown-rendered .mermaid,
+  .markdown-rendered svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 1em auto 0.5em;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .markdown-rendered img {
+    border: 0.5pt solid #ccc;
+  }
+
+  /* --- Listas ------------------------------------------------------------ */
+
+  .markdown-rendered ul,
+  .markdown-rendered ol {
+    margin: 0.4em 0 0.8em;
+    padding-left: 1.5em;
+  }
+
+  .markdown-rendered li {
+    margin-bottom: 0.22em;
+  }
+
+  /* --- Enlaces ------------------------------------------------------------ */
+
+  /* En papel un enlace azul y subrayado es ruido: se compone como texto normal.
+     Los enlaces internos del índice siguen funcionando en el PDF digital. */
+  .markdown-rendered a,
+  .markdown-rendered a.internal-link,
+  .markdown-rendered a.external-link {
+    color: #000 !important;
+    text-decoration: none !important;
+    background: none !important;
+  }
+
+  .markdown-rendered a.external-link::after {
+    content: none !important;
+  }
+
+  /* --- Separadores -------------------------------------------------------- */
+
+  /* Los `---` entre secciones son redundantes: cada sección ya empieza en hoja
+     nueva por el salto de página del h1. */
+  .markdown-rendered hr {
+    display: none;
+  }
+
+  /* --- Cromo de la interfaz ----------------------------------------------- */
+
+  .markdown-embed-title,
+  .frontmatter,
+  .frontmatter-container,
+  .metadata-container,
+  .collapse-indicator,
+  .heading-collapse-indicator {
+    display: none !important;
+  }
+}
