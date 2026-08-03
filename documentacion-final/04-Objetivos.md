@@ -44,10 +44,11 @@ El objetivo de calidad definido para el proyecto consiste en sostener una suite 
 automatizadas que cubra los flujos críticos del frontend. A la fecha de verificación de este
 informe existen 73 pruebas automatizadas distribuidas en 19 archivos de prueba — 14 pruebas
 unitarias y de componente con Vitest y Testing Library, más 5 especificaciones end-to-end con
-Playwright — (M12, M13). El proyecto no tiene configurada una herramienta de cobertura de código
-(por ejemplo, un reporte de `@vitest/coverage-v8`), por lo que este informe no reporta ni infiere
-un porcentaje de cobertura: hacerlo sin una fuente verificable contradiría el principio de
-trazabilidad de métricas que rige todo este documento (ver sección 12, Testing y Calidad).
+Playwright — (M12, M13). La cobertura se mide con `@vitest/coverage-v8` y se reporta bajo dos
+criterios —global y sobre el código efectivamente ejercitado— en la Tabla 32 de la sección 12,
+Testing y Calidad, con la medición citada a su comando reproducible. El objetivo no se formuló como
+un umbral porcentual: se priorizó cubrir la lógica de dominio y de acceso a datos antes que la capa
+de presentación, y la Tabla 32a documenta el resultado de esa priorización.
 
 ## Trazabilidad objetivo → épica → funcionalidad
 

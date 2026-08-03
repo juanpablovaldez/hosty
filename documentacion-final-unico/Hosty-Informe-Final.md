@@ -1,6 +1,6 @@
 # Hosty — Informe Final (versión consolidada)
 
-**Documento consolidado — generado a partir del vault `documentacion-final/`, fecha: 2026-08-02.**
+**Documento consolidado — generado a partir del vault `documentacion-final/`, fecha: 2026-08-03.**
 
 Este archivo reúne, en un único documento portable, las 21 notas de contenido del informe final
 de Hosty (16 secciones numeradas + 5 anexos), en su orden de lectura canónico. Es una
@@ -71,11 +71,12 @@ salones de eventos en la provincia de Tucumán, Argentina.
 | Repositorio | `https://github.com/juanpablovaldez/hosty` |
 | Frontend desplegado | `https://d1ako6y2uvskg7.cloudfront.net` |
 | Backend (Supabase) | `https://gjxextyntxfsztpgkqig.supabase.co` |
-| Versión de este documento | v1.0 |
+| Fecha de defensa | 2026-08-07 |
+| Versión de este documento | v1.2 (versión de entrega) |
 
 *Tabla 1 — Ficha técnica del proyecto.*
 
-> [!info] Fuente — La URL del backend corresponde al identificador de proyecto de Supabase
+> **Fuente.** La URL del backend corresponde al identificador de proyecto de Supabase
 > (`hosty`, región `us-west-2`), verificado tanto en la consola del proveedor como en la traza de
 > red real de la aplicación desplegada que documenta la Figura 35.
 
@@ -110,7 +111,9 @@ El detalle navegable de este índice, con enlaces a cada nota, se encuentra en `
 | Versión | Fecha | Cambios | Responsable |
 |---|---|---|---|
 | v0.1 | 2026-07-28 | Redacción inicial del informe a partir del historial del repositorio | Equipo |
-| v1.0 | 2026-07-29 | Versión final: datos institucionales, entornos desplegados y evidencias de QA | Equipo |
+| v1.0 | 2026-07-29 | Datos institucionales, entornos desplegados y primeras evidencias de QA | Equipo |
+| v1.1 | 2026-08-02 | Revisión de usabilidad previa a la entrega (Tabla 34b); corrección de los seis casos E2E que fallaban y reejecución de la suite completa sobre el entorno desplegado (Tablas 57b y 57c) | Equipo |
+| v1.2 | 2026-08-02 | Versión de entrega: adopción de `@vitest/coverage-v8` y medición de cobertura bajo ambos criterios (Tablas 32 y 32a, Figura 37); cierre de los 17 marcadores de contenido pendiente | Equipo |
 
 *Tabla 2 — Control de versiones del documento.*
 
@@ -158,8 +161,8 @@ los datos basado en la propiedad de cada registro y no en un esquema de roles.
 
 ```mermaid
 flowchart TD
-    A["Problema: búsqueda y reserva de salones fragmentada e informal"] --> B["Solución: marketplace Hosty — catálogo, reserva guiada y panel del anfitrión"]
-    B --> C["Resultado: producto en funcionamiento, con métricas verificables del repositorio"]
+ A["Problema: búsqueda y reserva de salones fragmentada e informal"] --> B["Solución: marketplace Hosty — catálogo, reserva guiada y panel del anfitrión"]
+ B --> C["Resultado: producto en funcionamiento, con métricas verificables del repositorio"]
 ```
 
 *Figura 1 — Síntesis: problema → solución (marketplace de salones) → resultados verificables.*
@@ -178,7 +181,7 @@ flowchart TD
 
 *Tabla 3 — Cifras clave del proyecto.*
 
-> [!info] Fuente — Todos los valores de esta tabla se citan textualmente desde la nota
+> **Fuente.** Todos los valores de esta tabla se citan textualmente desde la nota
 > `Datos-Verificables` (M01, M03, M04, M05, M06, M07, M08, M09, M10, M12, M13); no se recalculan ni
 > se aproximan en esta nota.
 
@@ -253,7 +256,7 @@ referencia del producto a construir. Este documento fue el que fijó, en última
 funcionalidades formaban parte del MVP (catálogo, reserva, panel del anfitrión) y cuáles quedaban
 fuera de su alcance inicial, como el cobro en línea o las reseñas de usuarios (ver sección 01).
 
-> [!warning] Dato simulado SIM-01 — Metodología previa de relevamiento
+> **Dato simulado (SIM-01) — Metodología previa de relevamiento.**
 > Este cambio de documentación no tuvo acceso a actas de entrevistas, encuestas u otro registro
 > documental adicional que respalde el proceso concreto de relevamiento previo a la redacción del
 > documento de alcance del MVP. Cualquier afirmación sobre el método específico utilizado
@@ -281,10 +284,10 @@ cuáles quedan fuera del alcance de este documento.
 
 ```mermaid
 flowchart TD
-    A["00-07 Marco del proyecto"] --> B["08, 11, Anexo I-II Arquitectura y datos"]
-    A --> C["09, 10, 13, Anexo III Gestión y proceso"]
-    B --> D["12, 14, 15, Anexo IV-V Calidad, métricas y cierre"]
-    C --> D
+ A["00-07 Marco del proyecto"] --> B["08, 11, Anexo I-II Arquitectura y datos"]
+ A --> C["09, 10, 13, Anexo III Gestión y proceso"]
+ B --> D["12, 14, 15, Anexo IV-V Calidad, métricas y cierre"]
+ C --> D
 ```
 
 *Figura 2 — Estructura del informe: 16 secciones + 5 anexos y sus dependencias de lectura.*
@@ -329,24 +332,25 @@ El objetivo de calidad definido para el proyecto consiste en sostener una suite 
 automatizadas que cubra los flujos críticos del frontend. A la fecha de verificación de este
 informe existen 73 pruebas automatizadas distribuidas en 19 archivos de prueba — 14 pruebas
 unitarias y de componente con Vitest y Testing Library, más 5 especificaciones end-to-end con
-Playwright — (M12, M13). El proyecto no tiene configurada una herramienta de cobertura de código
-(por ejemplo, un reporte de `@vitest/coverage-v8`), por lo que este informe no reporta ni infiere
-un porcentaje de cobertura: hacerlo sin una fuente verificable contradiría el principio de
-trazabilidad de métricas que rige todo este documento (ver sección 12, Testing y Calidad).
+Playwright — (M12, M13). La cobertura se mide con `@vitest/coverage-v8` y se reporta bajo dos
+criterios —global y sobre el código efectivamente ejercitado— en la Tabla 32 de la sección 12,
+Testing y Calidad, con la medición citada a su comando reproducible. El objetivo no se formuló como
+un umbral porcentual: se priorizó cubrir la lógica de dominio y de acceso a datos antes que la capa
+de presentación, y la Tabla 32a documenta el resultado de esa priorización.
 
 ## Trazabilidad objetivo → épica → funcionalidad
 
 ```mermaid
 flowchart TD
-    OG["OG: centralizar búsqueda, comparación y reserva de salones"]
-    OG --> OE1["OE1: catálogo, búsqueda y mapa"] --> E1["Épica E1: Catálogo y búsqueda"]
-    OG --> OE2["OE2: autenticación y control de acceso"] --> E2["Épica E2: Autenticación y cuenta"]
-    OG --> OE3["OE3: flujo de reserva guiado"] --> E3["Épica E3: Reserva de salones"]
-    OG --> OE4["OE4: panel de gestión del anfitrión"] --> E4["Épica E4: Panel del anfitrión"]
-    E4 --> E5["Épica E5: Favoritos y plan destacado"]
-    OG --> OE5["OE5: calidad e integración continua"] --> E6["Épica E6: Calidad e integración continua"]
-    OG --> OE6["OE6: documentación trazable"]
-    OG --> E7["Épica E7: Infraestructura y despliegue (transversal)"]
+ OG["OG: centralizar búsqueda, comparación y reserva de salones"]
+ OG --> OE1["OE1: catálogo, búsqueda y mapa"] --> E1["Épica E1: Catálogo y búsqueda"]
+ OG --> OE2["OE2: autenticación y control de acceso"] --> E2["Épica E2: Autenticación y cuenta"]
+ OG --> OE3["OE3: flujo de reserva guiado"] --> E3["Épica E3: Reserva de salones"]
+ OG --> OE4["OE4: panel de gestión del anfitrión"] --> E4["Épica E4: Panel del anfitrión"]
+ E4 --> E5["Épica E5: Favoritos y plan destacado"]
+ OG --> OE5["OE5: calidad e integración continua"] --> E6["Épica E6: Calidad e integración continua"]
+ OG --> OE6["OE6: documentación trazable"]
+ OG --> E7["Épica E7: Infraestructura y despliegue (transversal)"]
 ```
 
 *Figura 3 — Árbol de objetivos: OG → OE1..OE6, con la épica asociada a cada OE.*
@@ -366,7 +370,7 @@ dicha funcionalidad efectivamente existe en el producto.
 
 *Tabla 7 — Trazabilidad objetivo → épica → funcionalidad → evidencia.*
 
-> [!info] Fuente — Las "épicas" (E1–E7) son una agrupación temática utilizada en este informe para
+> **Fuente.** Las "épicas" (E1–E7) son una agrupación temática utilizada en este informe para
 > organizar el contenido; no son un artefacto nativo de GitHub. Los 7 milestones reales del
 > repositorio (M08) se organizan de forma cronológica por fase de entrega ("Phase 1.A: Auth &
 > Onboarding", "Phase 1.B: Search & Filtering", "Phase 2: Booking & Payments", "Phase 2.B:
@@ -423,12 +427,12 @@ solicitud que no llegó a confirmarse.
 
 ```mermaid
 flowchart TD
-    C1["No existe catálogo centralizado de salones"] --> P["Problema central: la búsqueda y reserva de un salón depende de contactos informales y dispersos"]
-    C2["Las reservas se coordinan por WhatsApp o redes sociales, sin disponibilidad visible"] --> P
-    C3["No hay forma de comparar precio ni condiciones entre salones"] --> P
-    P --> E1["Efecto: pérdida de tiempo del organizador"]
-    P --> E2["Efecto: baja visibilidad comercial del anfitrión"]
-    P --> E3["Efecto: gestión manual y propensa a error de las reservas"]
+ C1["No existe catálogo centralizado de salones"] --> P["Problema central: la búsqueda y reserva de un salón depende de contactos informales y dispersos"]
+ C2["Las reservas se coordinan por WhatsApp o redes sociales, sin disponibilidad visible"] --> P
+ C3["No hay forma de comparar precio ni condiciones entre salones"] --> P
+ P --> E1["Efecto: pérdida de tiempo del organizador"]
+ P --> E2["Efecto: baja visibilidad comercial del anfitrión"]
+ P --> E3["Efecto: gestión manual y propensa a error de las reservas"]
 ```
 
 *Figura 4 — Árbol de problemas: causas → problema central → efectos.*
@@ -456,7 +460,7 @@ flowchart TD
 
 *Tabla 9 — Puntos de dolor por actor y alternativas actuales.*
 
-> [!warning] Dato simulado SIM-02 — Puntos de dolor sin medición directa
+> **Dato simulado (SIM-02) — Puntos de dolor sin medición directa.**
 > Los puntos de dolor de la Tabla 9 se formulan de manera plausible a partir del propio dominio del
 > problema y de las funcionalidades que el producto efectivamente prioriza (ver [Objetivos](#04-objetivos)),
 > y no a partir de una encuesta o entrevista documentada con organizadores o propietarios reales.
@@ -503,13 +507,13 @@ la coordinación.
 
 ```mermaid
 flowchart TD
-    subgraph AsIs["Situación anterior (as-is)"]
-        A1["Organizador busca por WhatsApp, Instagram o boca a boca"] --> A2["Contacta cada salón por separado"] --> A3["Coordina fecha y precio manualmente"]
-    end
-    subgraph ToBe["Situación con Hosty (to-be)"]
-        B1["Organizador busca y filtra en el catálogo público"] --> B2["Compara salones y disponibilidad"] --> B3["Reserva mediante el flujo guiado de 3 pasos"]
-    end
-    AsIs -.-> ToBe
+ subgraph AsIs["Situación anterior (as-is)"]
+ A1["Organizador busca por WhatsApp, Instagram o boca a boca"] --> A2["Contacta cada salón por separado"] --> A3["Coordina fecha y precio manualmente"]
+ end
+ subgraph ToBe["Situación con Hosty (to-be)"]
+ B1["Organizador busca y filtra en el catálogo público"] --> B2["Compara salones y disponibilidad"] --> B3["Reserva mediante el flujo guiado de 3 pasos"]
+ end
+ AsIs -.-> ToBe
 ```
 
 *Figura 5 — Proceso as-is (WhatsApp/Instagram/boca a boca) vs. to-be con Hosty.*
@@ -523,7 +527,7 @@ flowchart TD
 
 *Tabla 10 — Impacto por dimensión y tipo de usuario, con indicador y método de medición.*
 
-> [!warning] Dato simulado SIM-03 — Indicadores de impacto propuestos, no medidos
+> **Dato simulado (SIM-03) — Indicadores de impacto propuestos, no medidos.**
 > Los indicadores y métodos de medición de la Tabla 10 son propuestas razonables para evaluar el
 > impacto de la solución, pero el proyecto no cuenta, a la fecha de este informe, con
 > instrumentación de analítica de producto que permita reportarlos como datos reales. Dos de las
@@ -554,11 +558,11 @@ personas trabajando sobre un mismo repositorio implica solapamientos razonables 
 
 ```mermaid
 flowchart TD
-    PO["Product Owner"] --> DEV["Equipo de desarrollo (5 integrantes)"]
-    SM["Scrum Master"] --> DEV
-    DEV --> D1["Desarrollador"]
-    DEV --> D2["Desarrollador"]
-    DEV --> D3["Desarrollador con foco en QA"]
+ PO["Product Owner"] --> DEV["Equipo de desarrollo (5 integrantes)"]
+ SM["Scrum Master"] --> DEV
+ DEV --> D1["Desarrollador"]
+ DEV --> D2["Desarrollador"]
+ DEV --> D3["Desarrollador con foco en QA"]
 ```
 
 *Figura 6 — Organigrama Scrum: PO / SM / equipo de desarrollo (5 integrantes).*
@@ -573,7 +577,7 @@ flowchart TD
 
 *Tabla 11 — Integrantes, legajo, rol de equipo y responsabilidades.*
 
-> [!warning] Dato simulado SIM-04 — Asignación de rol de equipo
+> **Dato simulado (SIM-04) — Asignación de rol de equipo.**
 > La columna "Rol de equipo (Scrum)" es una reconstrucción plausible a partir del volumen y del
 > área de los commits de cada integrante, no un registro documentado de la asignación real de
 > roles. La única excepción es el foco en QA de Benjamín Garma, que se verifica directamente en
@@ -592,7 +596,7 @@ flowchart TD
 
 *Tabla 12 — Contribuciones por identidad Git.*
 
-> [!info] Fuente — M05 / M02: `git shortlog -sne --all`. El detalle de cada identidad Git por
+> **Fuente.** M05 / M02: `git shortlog -sne --all`. El detalle de cada identidad Git por
 > integrante se documenta en `Datos-Verificables`; esta tabla sólo consolida el porcentaje sobre
 > el total de 236 commits (M02).
 
@@ -622,7 +626,7 @@ jerarquía de administración: cualquier limitación operativa (por ejemplo, mod
 inapropiado) requiere hoy una intervención manual directa sobre la base de datos, dado que no
 existe un perfil de administrador funcional en la aplicación.
 
-> [!info] Fuente — El issue #46 ("feat(admin): panel de aprobación y moderación de salones")
+> **Fuente.** El issue #46 ("feat(admin): panel de aprobación y moderación de salones")
 > figura cerrado en el repositorio, pero no existe en el código ninguna ruta, componente o columna
 > de aprobación/moderación asociada (`grep` sobre `frontend/src/` y `supabase/migrations/*.sql`
 > sin resultados): el panel de administrador no fue implementado pese al cierre del issue. La
@@ -657,11 +661,11 @@ destacado).
 
 ```mermaid
 flowchart TD
-  A[Relevamiento] --> B[Wireframes]
-  B --> C["Design system (tokens)"]
-  C --> D[Implementación]
-  D --> E[Revisión funcional]
-  E -.iteración.-> C
+ A[Relevamiento] --> B[Wireframes]
+ B --> C["Design system (tokens)"]
+ C --> D[Implementación]
+ D --> E[Revisión funcional]
+ E -.iteración.-> C
 ```
 
 *Figura 7 — Proceso de diseño: relevamiento → wireframes → design system → implementación → revisión.*
@@ -710,35 +714,35 @@ TanStack Router que agrupa `/salones/`, `/salones/$id` y `/salones/$id/reservar`
 segmento de URL. Se incluye en el inventario porque el comando de conteo de M09 la contabiliza
 como archivo de ruta, aun cuando no tiene contenido visual propio.
 
-> [!info] Fuente — M09: 14 rutas, 6 públicas / 8 protegidas con `requireAuth`
+> **Fuente.** M09: 14 rutas, 6 públicas / 8 protegidas con `requireAuth`
 > (`frontend/src/routes/`).
 
 ## 8.3 Mapa de navegación
 
 ```mermaid
 flowchart TD
-  subgraph Publicas["Rutas públicas (6)"]
-    R1["/"]
-    R2["/salones"]
-    R3["/salones/"]
-    R4["/salones/$id"]
-    R5["/login"]
-    R6["/register"]
-  end
-  subgraph Protegidas["Rutas protegidas — requireAuth (8)"]
-    P1["/salones/$id/reservar"]
-    P2["/mis-reservas"]
-    P3["/mis-favoritos"]
-    P4["/mi-perfil"]
-    P5["/host/dashboard"]
-    P6["/host/create"]
-    P7["/host/$id/edit"]
-    P8["/host/$bookingId"]
-  end
-  R1 --> R3
-  R3 --> R4
-  R4 -->|reservar| P1
-  R1 --> P5
+ subgraph Publicas["Rutas públicas (6)"]
+ R1["/"]
+ R2["/salones"]
+ R3["/salones/"]
+ R4["/salones/$id"]
+ R5["/login"]
+ R6["/register"]
+ end
+ subgraph Protegidas["Rutas protegidas — requireAuth (8)"]
+ P1["/salones/$id/reservar"]
+ P2["/mis-reservas"]
+ P3["/mis-favoritos"]
+ P4["/mi-perfil"]
+ P5["/host/dashboard"]
+ P6["/host/create"]
+ P7["/host/$id/edit"]
+ P8["/host/$bookingId"]
+ end
+ R1 --> R3
+ R3 --> R4
+ R4 -->|reservar| P1
+ R1 --> P5
 ```
 
 *Figura 8 — Mapa de navegación: 14 rutas — 6 públicas / 8 protegidas (`requireAuth`).*
@@ -754,12 +758,12 @@ correspondiente.
 
 ```mermaid
 flowchart TD
-  Route["routes/*.tsx"] --> Feature["features/&lt;nombre&gt;/"]
-  Feature --> Components["components/"]
-  Feature --> Api["api/ (queries + mutations)"]
-  Feature --> Types["types.ts"]
-  Api --> SharedLib["shared/lib/supabase.ts"]
-  Components --> UI["components/ui (shadcn)"]
+ Route["routes/*.tsx"] --> Feature["features/&lt;nombre&gt;/"]
+ Feature --> Components["components/"]
+ Feature --> Api["api/ (queries + mutations)"]
+ Feature --> Types["types.ts"]
+ Api --> SharedLib["shared/lib/supabase.ts"]
+ Components --> UI["components/ui (shadcn)"]
 ```
 
 *Figura 9 — Anatomía de una feature: `features/<n>/{components,api,types.ts}` ↔ `routes/` ↔ `shared/lib`.*
@@ -781,7 +785,7 @@ representa un pin de ubicación, coherente con un producto de búsqueda geolocal
 
 *Tabla 14 — Tokens de marca y tipografía.*
 
-> [!info] Fuente — `docs/hosty-brandbook.pdf` (págs. 4, 8-9); `frontend/src/index.css` (bloque
+> **Fuente.** `docs/hosty-brandbook.pdf` (págs. 4, 8-9); `frontend/src/index.css` (bloque
 > `@theme`).
 
 | Decisión | Justificación |
@@ -824,16 +828,16 @@ mecanismo de seguimiento utilizado.
 
 ```mermaid
 flowchart LR
-    A[Refinamiento] --> B[Planning]
-    B --> C[Daily]
-    C --> D[Review]
-    D --> E[Retrospectiva]
-    E --> A
+ A[Refinamiento] --> B[Planning]
+ B --> C[Daily]
+ C --> D[Review]
+ D --> E[Retrospectiva]
+ E --> A
 ```
 
 *Figura 10 — Iteración Scrum: refinamiento, planificación, daily, revisión y retrospectiva.*
 
-> [!warning] Dato simulado SIM-09 — Ceremonias Scrum y cadencia
+> **Dato simulado (SIM-09) — Ceremonias Scrum y cadencia.**
 > No existe un acta formal de ceremonias en el repositorio. La Tabla 17 que aparece a continuación
 > (ceremonias Scrum y cadencia) reconstruye de forma plausible la cadencia y los participantes para
 > un equipo estudiantil de cinco integrantes que trabaja con Scrum sobre issues de GitHub.
@@ -868,28 +872,28 @@ categorías.
 
 *Tabla 18 — Épicas: código, objetivo y estado.*
 
-> [!info] Fuente — M06 (issues totales/cerradas), M08 (7 milestones): `gh issue list --state all`,
+> **Fuente.** M06 (issues totales/cerradas), M08 (7 milestones): `gh issue list --state all`,
 > `gh api .../milestones` (verificado 2026-07-28); ver `Datos-Verificables`.
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Ready
-    Ready --> InProgress: se asigna
-    InProgress --> InReview: PR abierta
-    InReview --> Done: PR revisada y mergeada
-    InProgress --> Blocked: dependencia externa
-    Blocked --> InProgress: se resuelve
-    Done --> [*]
+ [*] --> Ready
+ Ready --> InProgress: se asigna
+ InProgress --> InReview: PR abierta
+ InReview --> Done: PR revisada y mergeada
+ InProgress --> Blocked: dependencia externa
+ Blocked --> InProgress: se resuelve
+ Done --> [*]
 ```
 
 *Figura 11 — Ciclo de vida de un issue en GitHub Projects v2: Todo → In Progress → In Review → Done (+ Blocked).*
 
-> [!info] Fuente — M19: distribución real de estados en el tablero #4 al momento de la
+> **Fuente.** M19: distribución real de estados en el tablero #4 al momento de la
 > verificación — Done: 45, Ready: 4, In review: 1 (`gh project item-list 4 --owner
 > juanpablovaldez --format json`, 2026-07-28). Los estados "In Progress" y "Blocked" existen en el
 > esquema del tablero pero no tienen issues asignadas actualmente.
 
-> [!info] Fuente — Captura del tablero #4, vista "Team items" (2026-07-29). La distribución
+> **Fuente.** Captura del tablero #4, vista "Team items" (2026-07-29). La distribución
 > visible (Ready: 4, In review: 1, Done: 45) coincide con la verificación de M19 citada arriba.
 
 ![Tablero de gestión — GitHub Projects v2](../documentacion-final/assets/f12-tablero-projects.png)
@@ -923,13 +927,13 @@ Fibonacci (1, 2, 3, 5, 8, 13, 21).
 
 *Tabla 19 — User stories destacadas: formato Como/quiero/para, story points y épica.*
 
-> [!info] Fuente — M25: story points reales del campo "Size" del tablero #4 —
+> **Fuente.** M25: story points reales del campo "Size" del tablero #4 —
 > `gh project item-list 4 --owner juanpablovaldez --format json` (verificado 2026-07-28); 40 de las
 > 50 issues del backlog tienen el campo cargado. Ver `Datos-Verificables`.
 
 ### Ejemplo de criterio de aceptación
 
-> [!warning] Dato simulado SIM-12 — Ejemplo de criterio de aceptación (formato Given/When/Then)
+> **Dato simulado (SIM-12) — Ejemplo de criterio de aceptación (formato Given/When/Then).**
 > El issue original no registra sus criterios de aceptación en formato Given/When/Then. La
 > redacción siguiente se reconstruye a partir del comportamiento observable en
 > `BookingFlow.tsx` y `useCreateBooking` para ilustrar el método de trabajo del equipo, sin
@@ -940,19 +944,19 @@ Fibonacci (1, 2, 3, 5, 8, 13, 21).
 
 - **Given** un salón publicado con disponibilidad para el rango de fechas solicitado.
 - **When** el organizador completa el asistente de reserva (fecha/horario, datos del evento,
-  confirmación) y no existe superposición con un bloqueo de disponibilidad ni con otra reserva
-  confirmada.
+ confirmación) y no existe superposición con un bloqueo de disponibilidad ni con otra reserva
+ confirmada.
 - **Then** el sistema crea la reserva con estado `pending` y la expone en el panel del
-  organizador y en el panel del anfitrión para su revisión.
+ organizador y en el panel del anfitrión para su revisión.
 
 ## Definition of Ready y Definition of Done
 
-> [!warning] Dato simulado SIM-10 — Definition of Ready (DoR)
+> **Dato simulado (SIM-10) — Definition of Ready (DoR).**
 > No hay un documento de DoR versionado en el repositorio. Las filas "DoR" de la Tabla 20 que
 > aparece a continuación (Definition of Ready y Definition of Done) reconstruyen un criterio
 > plausible para un equipo estudiantil de cinco integrantes.
 
-> [!warning] Dato simulado SIM-11 — Definition of Done (DoD)
+> **Dato simulado (SIM-11) — Definition of Done (DoD).**
 > Ídem SIM-10: las filas "DoD" de la misma Tabla 20 son una reconstrucción plausible, no un acta
 > registrada del equipo.
 
@@ -968,7 +972,7 @@ Fibonacci (1, 2, 3, 5, 8, 13, 21).
 
 ## Plan de sprints
 
-> [!warning] Dato simulado SIM-13 — Límites y foco de los sprints
+> **Dato simulado (SIM-13) — Límites y foco de los sprints.**
 > El equipo no registró formalmente los sprints como "S1"–"S5". En la Tabla 21 que aparece a
 > continuación (plan de sprints), los límites de fecha y el foco de cada sprint se infieren a
 > partir de la densidad real de commits y de los clústeres de fecha de las migraciones de
@@ -985,7 +989,7 @@ Fibonacci (1, 2, 3, 5, 8, 13, 21).
 
 *Tabla 21 — Plan de sprints: cantidad, duración, foco y resultado.*
 
-> [!info] Fuente — M23 (commits por sprint) y M24 (issues cerradas por sprint), calculados para
+> **Fuente.** M23 (commits por sprint) y M24 (issues cerradas por sprint), calculados para
 > este informe: `git log dev --since --until --oneline | wc -l` y `gh issue list --state closed
 > --json number,closedAt` por ventana (verificado 2026-07-28). Ver `Datos-Verificables`. El
 > detalle cronológico se desarrolla en [Ejecución por Sprint](#13-ejecucion-por-sprint).
@@ -997,7 +1001,7 @@ directamente con las issues y pull requests del repositorio.
 
 ## Retrospectivas
 
-> [!warning] Dato simulado SIM-14 — Retrospectiva S1–S2 · SIM-15 — Retrospectiva S3–S4 ·
+> **Dato simulado (SIM-14) — Retrospectiva S1–S2 · SIM-15 — Retrospectiva S3–S4 ·.**
 > SIM-16 — Retrospectiva S5
 > No existe acta de retrospectiva registrada. La Tabla 22 que aparece a continuación
 > (retrospectivas) reconstruye de forma plausible el contenido a partir de fricciones observables
@@ -1025,7 +1029,7 @@ el desarrollo.
 
 ## Esfuerzo por perfil
 
-> [!warning] Dato simulado SIM-17 — Tarifas y dedicación horaria
+> **Dato simulado (SIM-17) — Tarifas y dedicación horaria.**
 > Las tarifas por hora y la dedicación semanal son una estimación de mercado para perfiles
 > junior/estudiantiles en Tucumán durante 2026; no provienen de una factura o cotización real. La
 > Tabla 23 que aparece a continuación (estimación de esfuerzo por perfil) reagrupa a los mismos
@@ -1054,18 +1058,18 @@ el desarrollo.
 
 *Tabla 24 — Costos de infraestructura y capas gratuitas.*
 
-> [!info] Fuente — Costo real de infraestructura durante el desarrollo: USD 0, dado que el
+> **Fuente.** Costo real de infraestructura durante el desarrollo: USD 0, dado que el
 > proyecto operó dentro de las capas gratuitas de Supabase y de AWS (S3 + CloudFront) —
 > `infra/*.tf` (Terraform del proyecto), sin facturación registrada (verificado 2026-07-28).
 
-> [!warning] Dato simulado SIM-19 — Estimación de costo de producción comercial
+> **Dato simulado (SIM-19) — Estimación de costo de producción comercial.**
 > En la Tabla 24 anterior (costos de infraestructura y capas gratuitas), los montos de la columna
 > "Estimación de producción comercial" son valores de lista pública de los proveedores al momento
 > de redactar este informe, no una cotización contratada.
 
 ## Costo total y supuestos
 
-> [!warning] Dato simulado SIM-18 — Costo total del proyecto
+> **Dato simulado (SIM-18) — Costo total del proyecto.**
 > El total de la Tabla 25 que aparece a continuación (costo total, contingencia y supuestos) surge
 > de aplicar los supuestos de la Tabla 23 (simulados) más una contingencia; no refleja un
 > desembolso real, ya que el equipo no facturó honorarios entre sí.
@@ -1087,15 +1091,15 @@ nulo; (e) contingencia del 15% para cubrir retrabajo e imprevistos de alcance no
 
 ```mermaid
 pie showData
-    title Distribución del presupuesto (ARS)
-    "RRHH" : 5877000
-    "Infraestructura y herramientas" : 50000
-    "Contingencia (15%)" : 889050
+ title Distribución del presupuesto (ARS)
+ "RRHH" : 5877000
+ "Infraestructura y herramientas" : 50000
+ "Contingencia (15%)" : 889050
 ```
 
 *Figura 13 — Distribución del presupuesto por rubro: RRHH, infraestructura y herramientas, contingencia.*
 
-> [!warning] Dato simulado — ver SIM-18. La distribución de la Figura 13 anterior (gráfico de
+> **Dato simulado.** ver SIM-18. La distribución de la Figura 13 anterior (gráfico de
 > presupuesto) proviene íntegramente de la Tabla 25, de carácter simulado.
 
 ---
@@ -1123,11 +1127,11 @@ generación de API sin código adicional.
 
 ```mermaid
 flowchart TD
-  Client["SPA React (Vite)"] -->|supabase-js| Auth["Supabase Auth"]
-  Client -->|supabase-js| PostgREST["PostgREST (API auto-generada)"]
-  Client -->|supabase-js| Storage["Supabase Storage (bucket salon-images)"]
-  PostgREST --> DB[("Postgres 17 + RLS")]
-  Client -->|fetch| Nominatim["Nominatim (OpenStreetMap, externo)"]
+ Client["SPA React (Vite)"] -->|supabase-js| Auth["Supabase Auth"]
+ Client -->|supabase-js| PostgREST["PostgREST (API auto-generada)"]
+ Client -->|supabase-js| Storage["Supabase Storage (bucket salon-images)"]
+ PostgREST --> DB[("Postgres 17 + RLS")]
+ Client -->|fetch| Nominatim["Nominatim (OpenStreetMap, externo)"]
 ```
 
 *Figura 14 — Arquitectura general: SPA React ↔ Supabase (Auth/PostgREST/Storage/Postgres+RLS).*
@@ -1136,12 +1140,12 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  Repo["Repositorio (rama dev)"] --> GHA["GitHub Actions"]
-  GHA --> Build["Build (Vite)"]
-  Build --> S3["S3 (bucket frontend, DEV)"]
-  S3 --> CF["CloudFront (DEV)"]
-  Repo -.Terraform infra/.-> TF["Terraform (S3+CloudFront vía plan manual)"]
-  Client2["SPA desplegada"] --> SupaCloud["Supabase Cloud"]
+ Repo["Repositorio (rama dev)"] --> GHA["GitHub Actions"]
+ GHA --> Build["Build (Vite)"]
+ Build --> S3["S3 (bucket frontend, DEV)"]
+ S3 --> CF["CloudFront (DEV)"]
+ Repo -.Terraform infra/.-> TF["Terraform (S3+CloudFront vía plan manual)"]
+ Client2["SPA desplegada"] --> SupaCloud["Supabase Cloud"]
 ```
 
 *Figura 15 — Despliegue: repo → GitHub Actions → build → S3+CloudFront (DEV); Supabase Cloud; Terraform.*
@@ -1154,23 +1158,23 @@ invoca `initAuth()`, que resuelve la sesión existente (`getSession()`), la vuel
 
 ```mermaid
 sequenceDiagram
-  participant M as main.tsx
-  participant A as initAuth()
-  participant Sb as supabase.auth
-  participant St as auth.store
-  participant G as requireAuth (beforeLoad)
-  M->>A: initAuth()
-  A->>Sb: getSession()
-  Sb-->>A: session | null
-  A->>St: setSession(session)
-  A-->>A: resolveReady() → authReady
-  G->>G: await authReady
-  G->>St: status
-  alt autenticado
-    G-->>G: continúa a la ruta
-  else no autenticado
-    G-->>G: redirect a /login
-  end
+ participant M as main.tsx
+ participant A as initAuth()
+ participant Sb as supabase.auth
+ participant St as auth.store
+ participant G as requireAuth (beforeLoad)
+ M->>A: initAuth()
+ A->>Sb: getSession()
+ Sb-->>A: session | null
+ A->>St: setSession(session)
+ A-->>A: resolveReady() → authReady
+ G->>G: await authReady
+ G->>St: status
+ alt autenticado
+ G-->>G: continúa a la ruta
+ else no autenticado
+ G-->>G: redirect a /login
+ end
 ```
 
 *Figura 16 — Bootstrap de autenticación: `main.tsx` → `initAuth()` → `getSession()` → `auth.store` → `authReady` → ruta o redirect.*
@@ -1186,9 +1190,9 @@ estricta en un sentido: una feature nunca importa de otra feature.
 
 ```mermaid
 flowchart TD
-  Routes["routes/"] --> Features["features/*"]
-  Features --> SharedLib["shared/lib (supabase.ts, database.types.ts)"]
-  SharedLib --> Supabase[("Supabase")]
+ Routes["routes/"] --> Features["features/*"]
+ Features --> SharedLib["shared/lib (supabase.ts, database.types.ts)"]
+ SharedLib --> Supabase[("Supabase")]
 ```
 
 *Figura 17 — Capas y dependencias permitidas: `routes → features → shared/lib → Supabase`.*
@@ -1209,7 +1213,7 @@ flowchart TD
 
 *Tabla 26 — Stack tecnológico por capa, versión y justificación.*
 
-> [!info] Fuente — `frontend/package.json`; `supabase/config.toml:36` (Postgres `major_version =
+> **Fuente.** `frontend/package.json`; `supabase/config.toml:36` (Postgres `major_version =
 > 17`).
 
 ## 11.4 "Backend" — capa BaaS
@@ -1219,12 +1223,12 @@ reciba peticiones HTTP de la SPA. La capa que cumple ese rol es Supabase, y se c
 piezas verificables en `supabase/migrations/*.sql`:
 
 - **Postgres + RLS** como capa de reglas de negocio: cada tabla tiene `enable row level security`
-  y políticas por operación (detalle completo en [Anexo I. Modelo de Datos](#anexo-i-modelo-de-datos), Tabla 48); las
-  restricciones de dominio (estados válidos, tipos de precio) son `CHECK` constraints, no código
-  de aplicación.
+ y políticas por operación (detalle completo en [Anexo I. Modelo de Datos](#anexo-i-modelo-de-datos), Tabla 48); las
+ restricciones de dominio (estados válidos, tipos de precio) son `CHECK` constraints, no código
+ de aplicación.
 - **PostgREST** como generador automático de API REST sobre el esquema `public` (§11.7).
 - **Supabase Auth** para registro, login y sesión (JWT), y **Supabase Storage** para las imágenes
-  de salones (bucket `salon-images`, público en lectura).
+ de salones (bucket `salon-images`, público en lectura).
 
 El manejo de errores ocurre en el cliente: cada hook de `api/*.queries.ts` /
 `api/*.mutations.ts` propaga el `error` devuelto por `supabase-js` (que refleja el código de
@@ -1233,19 +1237,19 @@ expone como estado `isError` para que el componente lo muestre.
 
 ```mermaid
 sequenceDiagram
-  participant C as Componente
-  participant Q as TanStack Query
-  participant S as supabase-js
-  participant P as PostgREST
-  participant R as Política RLS
-  participant D as Postgres
-  C->>Q: useQuery(...)
-  Q->>S: queryFn()
-  S->>P: GET /rest/v1/<tabla>
-  P->>R: evalúa USING/WITH CHECK
-  R->>D: SELECT filtrado
-  D-->>Q: filas + caché
-  Q-->>C: data / isError
+ participant C as Componente
+ participant Q as TanStack Query
+ participant S as supabase-js
+ participant P as PostgREST
+ participant R as Política RLS
+ participant D as Postgres
+ C->>Q: useQuery(...)
+ Q->>S: queryFn()
+ S->>P: GET /rest/v1/<tabla>
+ P->>R: evalúa USING/WITH CHECK
+ R->>D: SELECT filtrado
+ D-->>Q: filas + caché
+ Q-->>C: data / isError
 ```
 
 *Figura 18 — Ciclo de lectura de datos: componente → hook TanStack Query → `supabase-js` → PostgREST → RLS → Postgres → caché.*
@@ -1262,15 +1266,15 @@ diccionario de datos por tabla y las políticas RLS se documentan en
 ## 11.6 Seguridad
 
 - **Autenticación**: Supabase Auth administra la sesión y el JWT; el frontend nunca implementa
-  hashing de contraseñas propio. El arranque de la sesión al iniciar la aplicación (*bootstrap*)
-  se detalla en la Figura 16 (§11.2).
+ hashing de contraseñas propio. El arranque de la sesión al iniciar la aplicación (*bootstrap*)
+ se detalla en la Figura 16 (§11.2).
 - **Autorización**: no hay RBAC ni tabla de roles; cada política RLS compara `auth.uid()` contra
-  la columna de propiedad (`host_id`, `user_id`), como se detalla en [Equipo y Roles](#07-equipo-y-roles)
-  (Tabla 13) y en el diccionario RLS de [Anexo I. Modelo de Datos](#anexo-i-modelo-de-datos) (Tabla 48).
+ la columna de propiedad (`host_id`, `user_id`), como se detalla en [Equipo y Roles](#07-equipo-y-roles)
+ (Tabla 13) y en el diccionario RLS de [Anexo I. Modelo de Datos](#anexo-i-modelo-de-datos) (Tabla 48).
 - **Validación**: esquemas Zod en el cliente (formularios, `validateSearch` de rutas) más
-  restricciones `CHECK` en Postgres como última línea de defensa, aun si el cliente falla.
+ restricciones `CHECK` en Postgres como última línea de defensa, aun si el cliente falla.
 - **Sanitización**: todas las consultas usan el *query builder* parametrizado de `supabase-js`
-  sobre PostgREST; no hay concatenación de SQL en ninguna capa del frontend.
+ sobre PostgREST; no hay concatenación de SQL en ninguna capa del frontend.
 
 | Ruta | Control de acceso | Política RLS asociada |
 |---|---|---|
@@ -1303,7 +1307,7 @@ un documento OpenAPI auto-generado en `{SUPABASE_URL}/rest/v1/` a partir del esq
 
 *Tabla 30 — Operaciones de API por módulo y ambientes de despliegue.*
 
-> [!info] Fuente — conteo verificado directamente sobre `frontend/src/features/*/api/*.ts`
+> **Fuente.** conteo verificado directamente sobre `frontend/src/features/*/api/*.ts`
 > (2026-07-28).
 
 En cuanto a ambientes: el repositorio sólo define un ambiente de despliegue automatizado, **DEV**
@@ -1346,7 +1350,7 @@ completa (`/*`) en cada push a `dev` en lugar de una invalidación selectiva por
 
 *Tabla 27 — Decisiones arquitectónicas (ADR resumidas).*
 
-> [!info] Fuente — commit `3a89616` (`git log`); `frontend/package.json`; `docker-compose.yml`;
+> **Fuente.** commit `3a89616` (`git log`); `frontend/package.json`; `docker-compose.yml`;
 > `package.json` (raíz); `infra/backend.tf`, `infra/rds.tf`;
 > `supabase/migrations/20260609233130_host_booking_management.sql`;
 > `supabase/migrations/20260616000001_add_salon_delete_policy.sql` (comentario verbatim del
@@ -1371,26 +1375,26 @@ desarrollo desplegado.
 
 ```mermaid
 flowchart TD
-    A["E2E — Playwright 1.61 (5 specs x 3 navegadores)"] --> B["Componentes — Vitest + Testing Library + jsdom"]
-    B --> C["Unitarias — Vitest (funciones puras: precios, validaciones, auth)"]
+ A["E2E — Playwright 1.61 (5 specs x 3 navegadores)"] --> B["Componentes — Vitest + Testing Library + jsdom"]
+ B --> C["Unitarias — Vitest (funciones puras: precios, validaciones, auth)"]
 ```
 
 *Figura 19 — Pirámide de pruebas: unitarias (Vitest) / componentes (RTL+jsdom) / E2E (Playwright).*
 
-> [!info] Fuente — M12/M13 (`_meta/Datos-Verificables.md`): 73 pruebas Vitest en 14 archivos
+> **Fuente.** M12/M13 (`_meta/Datos-Verificables.md`): 73 pruebas Vitest en 14 archivos
 > unitarios/de componentes, más 5 *specs* Playwright E2E.
 
 ```mermaid
 flowchart TD
-    A[Pull request] --> B["frontend-tests.yml: pnpm test run (Vitest)"]
-    B -->|aprobado y mergeado| C[Rama dev]
-    C --> D["web-dev.yml: build + sync S3 + invalidacion CloudFront"]
-    E["infra-ci.yml (workflow_dispatch manual)"] -.-> F["terraform plan"]
+ A[Pull request] --> B["frontend-tests.yml: pnpm test run (Vitest)"]
+ B -->|aprobado y mergeado| C[Rama dev]
+ C --> D["web-dev.yml: build + sync S3 + invalidacion CloudFront"]
+ E["infra-ci.yml (workflow_dispatch manual)"] -.-> F["terraform plan"]
 ```
 
 *Figura 20 — Pipeline CI/CD: PR → `frontend-tests.yml` (Vitest) → merge a `dev` → `web-dev.yml` (build + sync S3 + invalidación CloudFront); `infra-ci.yml` manual (`terraform plan`).*
 
-> [!info] Fuente — M14 (`_meta/Datos-Verificables.md`): 3 workflows en `.github/workflows/`
+> **Fuente.** M14 (`_meta/Datos-Verificables.md`): 3 workflows en `.github/workflows/`
 > (`frontend-tests.yml`, `web-dev.yml`, `infra-ci.yml`).
 
 ## Tipos de prueba
@@ -1405,7 +1409,7 @@ flowchart TD
 
 *Tabla 31 — Tipos de prueba, herramienta y alcance real.*
 
-> [!info] Fuente — M12/M13, verificado ejecutando `npx vitest run` sobre el repositorio: 14
+> **Fuente.** M12/M13, verificado ejecutando `npx vitest run` sobre el repositorio: 14
 > archivos, 73 casos, todos en verde. Nota honesta: sólo la suite de Vitest está integrada al
 > pipeline de CI (`frontend-tests.yml` ejecuta `pnpm test run`); Playwright, la corrida
 > independiente de Mocha (`pnpm test:mocha`) y el *spec* de Cypress se ejecutan de forma local o
@@ -1416,13 +1420,65 @@ flowchart TD
 
 ## Cobertura
 
-No hay una herramienta de cobertura de líneas configurada en el proyecto (no existe `--coverage`
-en el script `test`, ni `@vitest/coverage-v8`/`@vitest/coverage-istanbul` entre las dependencias).
-Por lo tanto, este informe **no reporta un porcentaje de cobertura de líneas**: hacerlo sin una
-herramienta que lo mida sería un dato inventado. En su lugar, se reportan únicamente los conteos
-verificables:
+La cobertura se mide con `@vitest/coverage-v8`, que instrumenta el código mediante el proveedor V8
+nativo, y se ejecuta con `npm --prefix frontend run test:coverage`. El resultado se reporta bajo
+**dos criterios**, porque informar uno solo distorsiona la lectura en sentidos opuestos:
 
-| Métrica | Valor |
+- **Cobertura global.** Se instrumenta todo el código de aplicación bajo `src/` —95 archivos—,
+ incluidos los 72 que ninguna prueba llega a importar. Es la cifra honesta del estado del
+ proyecto y la que corresponde citar si se pide "la cobertura" sin más.
+- **Cobertura del código ejercitado.** Se mide únicamente sobre los 23 archivos que la suite
+ efectivamente importa. Indica qué tan a fondo se prueba aquello que sí está bajo prueba, pero no
+ debe presentarse como cobertura del proyecto, porque ignora todo lo que quedó sin probar.
+
+| Métrica | Cobertura global | Sobre el código ejercitado |
+|---|---|---|
+| Sentencias | 12,44 % (683 / 5.490) | 63,01 % (683 / 1.084) |
+| Ramas | 8,98 % (425 / 4.735) | 46,60 % (425 / 912) |
+| Funciones | 13,88 % (78 / 562) | 70,27 % (78 / 111) |
+| Líneas | 15,69 % (508 / 3.238) | 75,26 % (508 / 675) |
+
+*Tabla 32 — Cobertura de pruebas bajo ambos criterios.*
+
+> **Fuente.** M33: `npm --prefix frontend run test:coverage` (`vitest run --coverage`,
+> proveedor V8), ejecutado el 2026-08-02 sobre 14 archivos y 73 casos. Los totales se obtuvieron de
+> `frontend/coverage/coverage-summary.json`. La configuración de proveedor, *reporters* y
+> exclusiones está declarada en el bloque `test.coverage` de `frontend/vite.config.ts`: se excluyen
+> del cómputo los propios archivos de prueba, `src/e2e/`, `src/test/`, `main.tsx` y los dos
+> artefactos autogenerados (`routeTree.gen.ts` y `database.types.ts`), porque medir cobertura sobre
+> código que nadie escribió a mano no aporta información.
+
+La distribución por módulo muestra un patrón deliberado: la lógica de dominio y de acceso a datos
+está cubierta, y la capa de presentación no.
+
+| Módulo | Sentencias | Ramas | Funciones | Líneas |
+|---|---|---|---|---|
+| `features/auth/store` | 100,00 % | 100,00 % | 100,00 % | 100,00 % |
+| `features/bookings/api` | 97,06 % | 79,31 % | 100,00 % | 100,00 % |
+| `features/auth/lib` | 93,75 % | 100,00 % | 85,71 % | 93,33 % |
+| `features/favorites/api` | 92,54 % | 85,42 % | 100,00 % | 97,83 % |
+| `features/auth/components` | 80,25 % | 62,22 % | 83,33 % | 90,29 % |
+| `shared/lib` | 72,73 % | 63,64 % | 100,00 % | 72,00 % |
+| `features/salones/api` | 54,21 % | 47,92 % | 61,54 % | 61,25 % |
+| `features/salones/lib` | 50,00 % | 75,00 % | 66,67 % | 55,56 % |
+| `components/layout` | 43,08 % | 35,81 % | 35,00 % | 49,22 % |
+| `components/ui` | 19,93 % | 10,79 % | 20,31 % | 24,36 % |
+| `features/salones/components` | 7,69 % | 6,52 % | 2,27 % | 11,30 % |
+| 17 carpetas restantes | 0,00 % | 0,00 % | 0,00 % | 0,00 % |
+
+*Tabla 32a — Cobertura por módulo, ordenada por cobertura de sentencias.*
+
+Las 17 carpetas sin cobertura son, en su mayoría, componentes de pantalla y definiciones de ruta
+(`routes/`, `features/host/components`, `features/bookings/components`, `features/home/components`,
+entre otras): código que la suite E2E de Playwright sí ejercita sobre el navegador, pero que no
+aparece en esta medición porque Playwright corre fuera del proceso de Vitest y no comparte su
+instrumentación. La cobertura de la Tabla 32 es, por lo tanto, un piso y no un techo del código
+realmente probado.
+
+Junto al porcentaje conviene leer el volumen absoluto de la suite, que no depende del criterio de
+medición elegido:
+
+| Métrica de volumen | Valor |
 |---|---|
 | Pruebas automatizadas (Vitest) | 73 |
 | Archivos de prueba (Vitest/RTL + Playwright) | 19 (14 + 5) |
@@ -1430,17 +1486,17 @@ verificables:
 | Líneas de código de producción (`src/`, sin pruebas) | 11.208 |
 | Relación líneas de prueba / líneas de producción | ≈ 0,13 (13 %) |
 
-*Tabla 32 — Cobertura de pruebas por módulo.*
+*Tabla 32b — Volumen de la suite de pruebas.*
 
-> [!info] Fuente — M12/M13; líneas de prueba y de producción contadas con
+> **Fuente.** M12/M13; líneas de prueba y de producción contadas con
 > `find frontend/src -name '*.test.ts' -o -name '*.test.tsx' -o -path '*/e2e/*.spec.ts' | xargs wc -l`
-> y su complemento sobre `*.ts`/`*.tsx`, respectivamente (2026-07-28). La cifra de producción
-> incluye `src/routeTree.gen.ts` (343 líneas autogeneradas por TanStack Router).
+> y su complemento sobre `*.ts`/`*.tsx`, respectivamente (2026-08-02). La cifra de producción
+> incluye `src/routeTree.gen.ts` (343 líneas autogeneradas por TanStack Router), que sí se excluye
+> del cómputo de cobertura de la Tabla 32.
 
-El proyecto no tiene todavía una herramienta de cobertura de líneas configurada, por lo que la
-Tabla 32 expresa volumen de código de prueba y no un porcentaje de cobertura. La adopción de
-`@vitest/coverage-v8` está registrada como línea de evolución de corto plazo en
-[Conclusiones](#15-conclusiones).
+El reporte HTML navegable queda en `frontend/coverage/index.html` y se anexa en
+[Anexo V. Evidencias de QA](#anexo-v-evidencias-de-qa). Elevar la cobertura de la capa de presentación está registrado como
+línea de evolución de corto plazo en [Conclusiones](#15-conclusiones).
 
 ## Matriz de casos de prueba manuales
 
@@ -1456,18 +1512,18 @@ management* en uso), por lo que se marca como dato simulado.
 
 *Tabla 33 — Matriz de casos de prueba manuales.*
 
-> [!warning] Dato simulado SIM-33 — Resultado obtenido de CP-01
+> **Dato simulado (SIM-33) — Resultado obtenido de CP-01.**
 > No hay un registro de ejecución manual real para este caso. El resultado se infiere de forma
 > plausible a partir de la prueba de integración equivalente (`bookings.test.ts`) y de la lógica de
 > validación de disponibilidad implementada, pero no debe interpretarse como una ejecución
 > verificada.
 
-> [!warning] Dato simulado SIM-34 — Resultado obtenido de CP-02
+> **Dato simulado (SIM-34) — Resultado obtenido de CP-02.**
 > Ídem SIM-33: se infiere del comportamiento de `useToggleFavorite` (`favorites.test.ts`), que
 > aplica la actualización optimista antes de confirmar la respuesta de Supabase, pero no constituye
 > una ejecución manual registrada.
 
-> [!warning] Dato simulado SIM-35 — Resultado obtenido de CP-03
+> **Dato simulado (SIM-35) — Resultado obtenido de CP-03.**
 > Ídem SIM-33/34: se infiere del test de integración `LoginPage.test.tsx` ("muestra el error del
 > servidor cuando las credenciales son incorrectas"), sin una ejecución manual documentada.
 
@@ -1476,7 +1532,7 @@ management* en uso), por lo que se marca como dato simulado.
 Las incidencias se reportan como *GitHub Issues* con la etiqueta `bug`. El repositorio registra 13
 issues reales con esa etiqueta, las 13 cerradas.
 
-> [!info] Fuente — `gh issue list --state all --label bug --json number,state` (2026-07-28): 13
+> **Fuente.** `gh issue list --state all --label bug --json number,state` (2026-07-28): 13
 > issues, 13 en estado `CLOSED`.
 
 El ciclo de vida observado es: **Reportado** (se crea el issue) → **Triage** (se prioriza o se
@@ -1486,25 +1542,25 @@ incidencia puede desviarse a **No reproducible** o **Diferida** en la etapa de *
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Reportado
-    Reportado --> Triage
-    Triage --> EnCurso: priorizado
-    Triage --> NoReproducible
-    Triage --> Diferido
-    EnCurso --> EnRevision: PR abierto
-    EnRevision --> Retesting: PR mergeado
-    Retesting --> Cerrado: verificado
-    Retesting --> EnCurso: falla el retest
-    NoReproducible --> [*]
-    Diferido --> [*]
-    Cerrado --> [*]
+ [*] --> Reportado
+ Reportado --> Triage
+ Triage --> EnCurso: priorizado
+ Triage --> NoReproducible
+ Triage --> Diferido
+ EnCurso --> EnRevision: PR abierto
+ EnRevision --> Retesting: PR mergeado
+ Retesting --> Cerrado: verificado
+ Retesting --> EnCurso: falla el retest
+ NoReproducible --> [*]
+ Diferido --> [*]
+ Cerrado --> [*]
 ```
 
 *Figura 21 — Ciclo de vida de un defecto: Reportado → Triage → En curso → En revisión → Retesting → Cerrado (+ No reproducible / Diferido).*
 
 Un defecto real, no simulado, ilustra este ciclo de punta a punta:
 
-> [!info] Fuente — M17: la restricción `CHECK` original de `bookings.status` sólo admitía
+> **Fuente.** M17: la restricción `CHECK` original de `bookings.status` sólo admitía
 > `pending`/`confirmed`/`cancelled` (`supabase/migrations/20240101000000_init_hosty.sql:57-58`),
 > mientras que la aplicación ya emitía un cuarto estado, `declined`. El defecto se resolvió en la
 > migración `supabase/migrations/20260609233130_host_booking_management.sql:7-11`, cuyo propio
@@ -1529,7 +1585,7 @@ todos corregidos y verificados.
 
 *Tabla 34b — Defectos detectados en la revisión de usabilidad previa a la entrega y su corrección.*
 
-> [!info] Fuente — R-01 se verifica con las 7 pruebas unitarias de `src/shared/lib/errors.test.ts`,
+> **Fuente.** R-01 se verifica con las 7 pruebas unitarias de `src/shared/lib/errors.test.ts`,
 > incluida una que comprueba explícitamente que un error sin traducción conocida no propague el
 > texto original en inglés. R-02 y R-03 se incorporaron mediante la rama
 > `fix/detalles-ui-formulario`. La suite completa quedó en 73 casos, todos en verde, con
@@ -1553,7 +1609,7 @@ por severidad al cierre de cada sprint.
 
 *Tabla 34 — Severidad de incidencias y criterios de salida.*
 
-> [!info] Fuente — `gh issue list --repo juanpablovaldez/hosty --label bug --state all --json
+> **Fuente.** `gh issue list --repo juanpablovaldez/hosty --label bug --state all --json
 > number,title,state,labels` (2026-07-28): 13 *issues* con etiqueta `bug`, las 13 cerradas; de
 > ellas, 5 llevan además una etiqueta de prioridad — 2 `p1-high` (#74, #75), 2 `p2-medium` (#72,
 > #87), 1 `p3-low` (#76) — y las 8 restantes no fueron priorizadas explícitamente con esa
@@ -1576,7 +1632,7 @@ resume cantidades, aquí se detallan los entregables concretos de cada sprint, l
 alcance o diseño ocurridos durante el desarrollo y la capacidad funcional más distintiva del
 sistema, ilustrada con un diagrama de secuencia.
 
-> [!info] Fuente — Los límites de fecha de cada sprint son una reconstrucción inferida a partir de
+> **Fuente.** Los límites de fecha de cada sprint son una reconstrucción inferida a partir de
 > la densidad de commits y de los clústeres de fecha de las migraciones de Supabase; ver SIM-13 en
 > [Planificación Scrum](#09-planificacion-scrum). Los conteos de commits e issues cerradas citados abajo son reales
 > (M23, M24).
@@ -1595,28 +1651,28 @@ sistema, ilustrada con un diagrama de secuencia.
 
 ```mermaid
 xychart-beta
-    title "Commits por mes en la rama dev"
-    x-axis ["2026-03", "2026-04", "2026-05", "2026-06"]
-    y-axis "Commits" 0 --> 70
-    bar [1, 63, 63, 54]
+ title "Commits por mes en la rama dev"
+ x-axis ["2026-03", "2026-04", "2026-05", "2026-06"]
+ y-axis "Commits" 0 --> 70
+ bar [1, 63, 63, 54]
 ```
 
 *Figura 22 — Commits por mes en la rama dev (marzo-junio 2026).*
 
-> [!info] Fuente — M01, M03, M04: `git log dev --date=format:'%Y-%m' --format=%ad | sort | uniq -c`
+> **Fuente.** M01, M03, M04: `git log dev --date=format:'%Y-%m' --format=%ad | sort | uniq -c`
 > (verificado 2026-07-28). Ver `Datos-Verificables`.
 
 ```mermaid
 xychart-beta
-    title "Issues cerradas por sprint"
-    x-axis ["S1", "S2", "S3", "S4", "S5"]
-    y-axis "Issues cerradas" 0 --> 20
-    bar [0, 4, 16, 12, 13]
+ title "Issues cerradas por sprint"
+ x-axis ["S1", "S2", "S3", "S4", "S5"]
+ y-axis "Issues cerradas" 0 --> 20
+ bar [0, 4, 16, 12, 13]
 ```
 
 *Figura 23 — Issues cerradas por sprint (S1-S5).*
 
-> [!info] Fuente — M24 (issues cerradas por sprint, calculado para este informe a partir de
+> **Fuente.** M24 (issues cerradas por sprint, calculado para este informe a partir de
 > `closedAt`): `gh issue list --state closed --json number,closedAt` (verificado 2026-07-28). Los
 > 45 cierres suman el total de M06. Ver `Datos-Verificables`.
 
@@ -1631,7 +1687,7 @@ xychart-beta
 
 *Tabla 36 — Cambios de alcance y de diseño con justificación.*
 
-> [!info] Fuente — M26: de las 48 pull requests totales, 20 se cerraron sin fusionar (41,7 %) —
+> **Fuente.** M26: de las 48 pull requests totales, 20 se cerraron sin fusionar (41,7 %) —
 > `gh pr list --state all --json number,state,mergedAt` (verificado 2026-07-28). Siete de esas 20
 > corresponden directamente al evento de consolidación descrito arriba (#80, #82, #84, #86, #89,
 > #90, #91); el resto responde a un patrón similar de ramas reintegradas por otra vía a lo largo
@@ -1646,25 +1702,25 @@ cotización y confirmación de reservas del anfitrión, que combina un precio aj
 
 ```mermaid
 sequenceDiagram
-    participant O as Organizador
-    participant F as BookingFlow
-    participant DB as Supabase (PostgREST)
-    participant H as BookingDrawer (Anfitrión)
+ participant O as Organizador
+ participant F as BookingFlow
+ participant DB as Supabase (PostgREST)
+ participant H as BookingDrawer (Anfitrión)
 
-    O->>F: Selecciona fecha/horario y confirma el pedido
-    F->>DB: insert bookings (status = pending)
-    DB-->>F: reserva creada
-    H->>DB: consulta reservas pendientes
-    DB-->>H: lista de reservas (status = pending)
-    H->>DB: useUpdateBookingQuote (quotedPrice)
-    DB-->>H: reserva actualizada con precio cotizado
-    H->>DB: useUpdateBookingStatus (confirmed | declined)
-    DB-->>O: estado final visible en el panel del organizador
+ O->>F: Selecciona fecha/horario y confirma el pedido
+ F->>DB: insert bookings (status = pending)
+ DB-->>F: reserva creada
+ H->>DB: consulta reservas pendientes
+ DB-->>H: lista de reservas (status = pending)
+ H->>DB: useUpdateBookingQuote (quotedPrice)
+ DB-->>H: reserva actualizada con precio cotizado
+ H->>DB: useUpdateBookingStatus (confirmed | declined)
+ DB-->>O: estado final visible en el panel del organizador
 ```
 
 *Figura 24 — Capacidad más distintiva, extremo a extremo: huésped reserva → anfitrión cotiza (`quotedPrice`) → confirma/rechaza → estado final del huésped.*
 
-> [!info] Fuente — `frontend/src/features/bookings/components/BookingFlow.tsx`,
+> **Fuente.** `frontend/src/features/bookings/components/BookingFlow.tsx`,
 > `frontend/src/features/host/components/BookingDrawer.tsx`,
 > `frontend/src/features/host/api/host.mutations.ts` (`useUpdateBookingQuote`,
 > `useUpdateBookingStatus`), `supabase/migrations/20260610082550_salon_availability_blocks.sql`
@@ -1695,22 +1751,22 @@ del vault, y no se repiten sin su identificador `M##`.
 
 *Tabla 37 — Métricas de repositorio y de gestión.*
 
-> [!info] Fuente — M01–M08, M14; ambiente único verificado listando `.github/workflows/`
+> **Fuente.** M01–M08, M14; ambiente único verificado listando `.github/workflows/`
 > (`frontend-tests.yml`, `web-dev.yml`, `infra-ci.yml`: ninguno despliega a `staging` ni `prod`),
 > 2026-07-28.
 
 ```mermaid
 pie title Commits por contribuidor (todas las refs, total 236 = M02)
-    "Juan Pablo Valdez" : 140
-    "Juan Ignacio Mignone" : 45
-    "Lautaro Naglieri" : 33
-    "Benjamin Garma" : 10
-    "Pablo Czurylo" : 8
+ "Juan Pablo Valdez" : 140
+ "Juan Ignacio Mignone" : 45
+ "Lautaro Naglieri" : 33
+ "Benjamin Garma" : 10
+ "Pablo Czurylo" : 8
 ```
 
 *Figura 25 — Distribución de commits por contribuidor (5 contribuidores).*
 
-> [!info] Fuente — M05: `git shortlog -sne --all` (2026-07-28), identidades consolidadas por
+> **Fuente.** M05: `git shortlog -sne --all` (2026-07-28), identidades consolidadas por
 > email en `Datos-Verificables`. Un mismo contribuidor puede tener más de una identidad Git
 > (por ejemplo, dos direcciones distintas para Juan Pablo Valdez); la consolidación agrupa por
 > persona, no por email.
@@ -1731,16 +1787,16 @@ pie title Commits por contribuidor (todas las refs, total 236 = M02)
 
 ```mermaid
 xychart-beta
-    title "Pull requests por mes"
-    x-axis ["2026-04", "2026-05", "2026-06"]
-    y-axis "Cantidad de PRs" 0 --> 20
-    bar "Abiertos" [9, 19, 20]
-    bar "Mergeados" [7, 8, 11]
+ title "Pull requests por mes"
+ x-axis ["2026-04", "2026-05", "2026-06"]
+ y-axis "Cantidad de PRs" 0 --> 20
+ bar "Abiertos" [9, 19, 20]
+ bar "Mergeados" [7, 8, 11]
 ```
 
 *Figura 26 — Pull requests abiertos vs. mergeados por mes.*
 
-> [!info] Fuente — M07: `gh pr list --state all --json number,createdAt,mergedAt` (2026-07-28),
+> **Fuente.** M07: `gh pr list --state all --json number,createdAt,mergedAt` (2026-07-28),
 > agrupado por mes de creación y de *merge*. Total: 48 abiertos, 26 mergeados.
 
 **Interpretación**: el volumen de *pull requests* abiertos crece mes a mes (9 → 19 → 20), pero la
@@ -1770,7 +1826,7 @@ justificación explícita registrada en GitHub.
 
 *Tabla 39 — Balance funcional: planificado vs. entregado.*
 
-> [!info] Fuente — `gh issue list --state all --json number,state --limit 300`: 50 totales, 45
+> **Fuente.** `gh issue list --state all --json number,state --limit 300`: 50 totales, 45
 > `CLOSED` (2026-07-28). Detalle de los 5 diferidos: `gh issue list --json
 > number,title,state,labels` filtrado por número.
 
@@ -1808,12 +1864,12 @@ evidencia primaria de este informe, no una reconstrucción posterior.
 | `tsconfig.app.json` excluye `src/test`, `*.test.ts(x)` y `*.spec.ts(x)` del *type-check* de build | Baja | Errores de tipos dentro de los propios tests no bloquean `npm run build` | Crear un `tsconfig.test.json` referenciado que sí tipe los archivos de prueba |
 | `prettier` está scripteado (`format`, `format:check`) pero no figura como dependencia directa de `frontend/package.json`; sólo está presente de forma transitiva en `node_modules` | Baja | El script puede romperse si la dependencia transitiva que lo provee cambia | Declarar `prettier` como `devDependency` explícita |
 | `react-i18next` está inicializado (`src/i18n/`) pero no se usa en ningún componente (`grep -rl useTranslation frontend/src` no devuelve resultados) | Baja | Infraestructura de internacionalización sin efecto — todo el texto sigue *hardcodeado* en español | Adoptar `useTranslation` de forma incremental o quitar la dependencia si no se usará |
-| No hay herramienta de cobertura de líneas configurada (ver [Testing y Calidad](#12-testing-y-calidad)) | Baja | No es posible verificar objetivamente qué proporción del código está probada | Instalar `@vitest/coverage-v8` |
+| La capa de presentación queda fuera de la cobertura medida: 17 carpetas de componentes y rutas en 0 % (ver [Testing y Calidad](#12-testing-y-calidad), Tabla 32a) | Baja | La cobertura global es de 12,44 % en sentencias; las regresiones de interfaz sólo las detecta la suite E2E, que no corre en CI | Agregar pruebas de componente sobre el panel del anfitrión y el flujo de reserva, e incorporar Playwright al *pipeline* |
 | `npx eslint .` reporta 6 errores y 4 advertencias sobre el estado actual del repositorio (ver [Testing y Calidad](#12-testing-y-calidad), Tabla 34) | Baja | El criterio de salida "lint limpio" no se cumple de forma estricta hoy | Corregir los parámetros sin usar de `cypress.config.ts`, ajustar la regla `no-unused-expressions` para aserciones de Chai, y resolver las dependencias de `useMemo` en `SalonesPage.tsx` |
 
 *Tabla 40 — Deuda técnica: severidad, impacto y plan de remediación.*
 
-> [!info] Fuente — M22 (`_meta/Datos-Verificables.md`): 0 resultados para
+> **Fuente.** M22 (`_meta/Datos-Verificables.md`): 0 resultados para
 > `grep -rn "CREATE TYPE\|ENUM" supabase/migrations/*.sql` (2026-07-28). El hallazgo del `CHECK` de
 > `bookings.status` cita `supabase/migrations/20240101000000_init_hosty.sql:57-58` (restricción
 > original de 3 valores) y `supabase/migrations/20260609233130_host_booking_management.sql:7-11`
@@ -1823,7 +1879,7 @@ evidencia primaria de este informe, no una reconstrucción posterior.
 
 ## Aprendizajes y líneas de evolución futura
 
-> [!warning] Dato simulado SIM-36 — Aprendizajes del equipo
+> **Dato simulado (SIM-36) — Aprendizajes del equipo.**
 > No existe un registro documental de retrospectivas individuales que permita citar textualmente
 > qué aprendió cada integrante. De forma plausible, a partir de la naturaleza del proyecto —una
 > plataforma construida sobre un *backend as a service*, gestionada con Scrum real sobre GitHub—,
@@ -1837,21 +1893,21 @@ evidencia primaria de este informe, no una reconstrucción posterior.
 
 ```mermaid
 flowchart TD
-    subgraph Corto["Corto plazo"]
-        A1["Generar tipos de estado desde la BD / enums Postgres"]
-        A2["Unificar gestor de paquetes (npm o pnpm)"]
-        A3["Instalar herramienta de cobertura de lineas"]
-    end
-    subgraph Medio["Mediano plazo"]
-        B1["Integrar Mercado Pago (#45)"]
-        B2["Activar i18n con useTranslation"]
-        B3["Ambientes staging y prod"]
-    end
-    subgraph Largo["Largo plazo"]
-        C1["Sistema de reviews y ratings (#33)"]
-        C2["Expansion a otras provincias"]
-    end
-    Corto --> Medio --> Largo
+ subgraph Corto["Corto plazo"]
+ A1["Generar tipos de estado desde la BD / enums Postgres"]
+ A2["Unificar gestor de paquetes (npm o pnpm)"]
+ A3["Instalar herramienta de cobertura de lineas"]
+ end
+ subgraph Medio["Mediano plazo"]
+ B1["Integrar Mercado Pago (#45)"]
+ B2["Activar i18n con useTranslation"]
+ B3["Ambientes staging y prod"]
+ end
+ subgraph Largo["Largo plazo"]
+ C1["Sistema de reviews y ratings (#33)"]
+ C2["Expansion a otras provincias"]
+ end
+ Corto --> Medio --> Largo
 ```
 
 *Figura 27 — Roadmap de evolución: corto (deuda técnica) / medio (i18n, pagos) / largo (multi-provincia).*
@@ -1884,66 +1940,66 @@ citadas a lo largo del anexo se consolidan, con su comando de reproducción, en
 
 ```mermaid
 erDiagram
-  USERS ||--o{ SALONES : "host_id (nullable)"
-  USERS ||--o{ BOOKINGS : "user_id"
-  USERS ||--o{ USER_FAVORITES : "user_id"
-  USERS ||--o{ SALON_SUBSCRIPTIONS : "host_id"
-  SALONES ||--o{ BOOKINGS : "salon_id"
-  SALONES ||--o{ SALON_SERVICES : "salon_id"
-  SALONES ||--o{ SALON_AVAILABILITY_BLOCKS : "salon_id"
-  SALONES ||--o{ USER_FAVORITES : "salon_id"
+ USERS ||--o{ SALONES : "host_id (nullable)"
+ USERS ||--o{ BOOKINGS : "user_id"
+ USERS ||--o{ USER_FAVORITES : "user_id"
+ USERS ||--o{ SALON_SUBSCRIPTIONS : "host_id"
+ SALONES ||--o{ BOOKINGS : "salon_id"
+ SALONES ||--o{ SALON_SERVICES : "salon_id"
+ SALONES ||--o{ SALON_AVAILABILITY_BLOCKS : "salon_id"
+ SALONES ||--o{ USER_FAVORITES : "salon_id"
 
-  USERS {
-    uuid id PK
-  }
-  SALONES {
-    uuid id PK
-    uuid host_id FK
-    text name
-    text location
-    text price_type
-    boolean is_featured
-  }
-  BOOKINGS {
-    uuid id PK
-    uuid salon_id FK
-    uuid user_id FK
-    text status
-    numeric quoted_price
-  }
-  SALON_SERVICES {
-    uuid id PK
-    uuid salon_id FK
-    text name
-    numeric price
-  }
-  SALON_AVAILABILITY_BLOCKS {
-    uuid id PK
-    uuid salon_id FK
-    date date
-  }
-  USER_FAVORITES {
-    uuid id PK
-    uuid user_id FK
-    uuid salon_id FK
-  }
-  SALON_SUBSCRIPTIONS {
-    uuid id PK
-    uuid host_id FK
-    text status
-    text plan_id
-  }
+ USERS {
+ uuid id PK
+ }
+ SALONES {
+ uuid id PK
+ uuid host_id FK
+ text name
+ text location
+ text price_type
+ boolean is_featured
+ }
+ BOOKINGS {
+ uuid id PK
+ uuid salon_id FK
+ uuid user_id FK
+ text status
+ numeric quoted_price
+ }
+ SALON_SERVICES {
+ uuid id PK
+ uuid salon_id FK
+ text name
+ numeric price
+ }
+ SALON_AVAILABILITY_BLOCKS {
+ uuid id PK
+ uuid salon_id FK
+ date date
+ }
+ USER_FAVORITES {
+ uuid id PK
+ uuid user_id FK
+ uuid salon_id FK
+ }
+ SALON_SUBSCRIPTIONS {
+ uuid id PK
+ uuid host_id FK
+ text status
+ text plan_id
+ }
 ```
 
 *Figura 28 — Modelo de datos completo: `auth.users` + las 6 tablas públicas con cardinalidades y claves foráneas.*
 
 ```mermaid
 flowchart TD
-  Req["Request (supabase-js)"] --> JWT["JWT de sesión"]
-  JWT --> UID["auth.uid()"]
-  UID --> RLS{"Política RLS de la tabla"}
-  RLS -->|cumple| Allow["Allow"]
-  RLS -->|no cumple| Deny["Deny (0 filas / error)"]
+ Req["Request (supabase-js)"] --> JWT["JWT de sesión"]
+ JWT --> UID["auth.uid()"]
+ UID --> RLS{"Política RLS de la tabla"}
+ RLS -->|cumple| Allow["Allow"]
+ RLS -->|no cumple| Deny["Deny (0 filas / error)"]
 ```
 
 *Figura 29 — Cadena de autorización por propiedad: request → JWT → `auth.uid()` → política RLS → allow/deny.*
@@ -2010,7 +2066,7 @@ asistentes, servicios elegidos) como el resultado de la gestión del anfitrión 
 transiciones posteriores las produce el panel del anfitrión mediante actualizaciones parciales
 sobre esa misma fila, nunca filas nuevas.
 
-> [!info] Fuente — M17: hallazgo verificado sobre `status`. La migración inicial
+> **Fuente.** M17: hallazgo verificado sobre `status`. La migración inicial
 > `supabase/migrations/20240101000000_init_hosty.sql:57-58` sólo permitía tres valores
 > (`'pending', 'confirmed', 'cancelled'`). El comentario verbatim de
 > `supabase/migrations/20260609233130_host_booking_management.sql:7-11` documenta el defecto:
@@ -2103,7 +2159,7 @@ para `SELECT`.
 
 *Tabla 48 — Políticas RLS por tabla y operación.*
 
-> [!info] Fuente — hallazgo verificado adicional: la tabla `salones` no tuvo política de `DELETE`
+> **Fuente.** hallazgo verificado adicional: la tabla `salones` no tuvo política de `DELETE`
 > hasta `supabase/migrations/20260616000001_add_salon_delete_policy.sql`. El comentario verbatim
 > del archivo documenta el efecto: con RLS activo y sin política de `DELETE`, el borrado desde el
 > cliente afectaba 0 filas sin devolver error, de modo que el salón nunca se eliminaba. Corregido
@@ -2132,7 +2188,7 @@ disponibilidad, plan destacado, coordenadas geográficas y favoritos.
 
 *Tabla 49 — Historial de migraciones.*
 
-> [!info] Fuente — M11: 10 archivos de migración (`supabase/migrations/*.sql`). La marca de
+> **Fuente.** M11: 10 archivos de migración (`supabase/migrations/*.sql`). La marca de
 > tiempo `20240101000000` del archivo inicial es un valor placeholder anterior a la creación real
 > del repositorio (2026-03-29, M03) y no debe leerse como fecha real de ese cambio.
 
@@ -2155,18 +2211,18 @@ enlazable y compartible. El ordenamiento y la paginación se resuelven del lado 
 
 ```mermaid
 flowchart TD
-  Home["Home (/)"] --> Salones["/salones"]
-  Salones --> Filtros["Filtros: zona, fecha, capacidad, precio, tipo de evento, servicios"]
-  Filtros --> Vista{"Vista"}
-  Vista -->|lista| Lista["Listado paginado (server-side)"]
-  Vista -->|mapa| Mapa["Mapa con marcadores (Leaflet)"]
-  Lista --> Detalle["/salones/:id"]
-  Mapa --> Detalle
+ Home["Home (/)"] --> Salones["/salones"]
+ Salones --> Filtros["Filtros: zona, fecha, capacidad, precio, tipo de evento, servicios"]
+ Filtros --> Vista{"Vista"}
+ Vista -->|lista| Lista["Listado paginado (server-side)"]
+ Vista -->|mapa| Mapa["Mapa con marcadores (Leaflet)"]
+ Lista --> Detalle["/salones/:id"]
+ Mapa --> Detalle
 ```
 
 *Figura 30 — Flujo de búsqueda y filtrado: home → `/salones` → filtros/mapa → `/salones/:id`.*
 
-> [!info] Fuente — la ruta `/salones/` valida 17 parámetros de búsqueda con Zod
+> **Fuente.** la ruta `/salones/` valida 17 parámetros de búsqueda con Zod
 > (`frontend/src/routes/salones/index.tsx`, `searchSchema`; verificado 2026-07-28).
 
 ## Flujo de reserva
@@ -2179,16 +2235,16 @@ monto, y la reserva igual se crea en estado `pending`.
 
 ```mermaid
 flowchart TD
-  S1["Paso 1 — Fecha y horario"] --> V1{"¿Horario válido y ≥ rentTimeHours,\nfecha no bloqueada?"}
-  V1 -->|no| S1
-  V1 -->|sí| S2["Paso 2 — Datos del evento y servicios extra"]
-  S2 --> S3["Paso 3 — Confirmación"]
-  S3 --> Create["INSERT bookings (status = pending)"]
+ S1["Paso 1 — Fecha y horario"] --> V1{"¿Horario válido y ≥ rentTimeHours,\nfecha no bloqueada?"}
+ V1 -->|no| S1
+ V1 -->|sí| S2["Paso 2 — Datos del evento y servicios extra"]
+ S2 --> S3["Paso 3 — Confirmación"]
+ S3 --> Create["INSERT bookings (status = pending)"]
 ```
 
 *Figura 31 — Flujo de reserva (wizard de 3 pasos): fecha y horario → datos del evento → confirmación.*
 
-> [!info] Fuente — M20: 3 pasos (`frontend/src/features/bookings/components/BookingFlow.tsx`).
+> **Fuente.** M20: 3 pasos (`frontend/src/features/bookings/components/BookingFlow.tsx`).
 > Valida horario mínimo (`salon.rentTimeHours`) y fechas de `salon_availability_blocks`.
 
 ## Publicación de un salón (anfitrión)
@@ -2199,15 +2255,15 @@ paso final reemplaza el registro completo de `salones` en lugar de aplicar un pa
 
 ```mermaid
 flowchart TD
-  W1["Paso 1 — Datos básicos (nombre, zona, dirección, mapa)"] --> W2["Paso 2 — Capacidad, precio, tipos de evento, servicios"]
-  W2 --> W3["Paso 3 — Imágenes (Storage)"]
-  W3 --> W4["Paso 4 — Vista previa"]
-  W4 --> Publish["INSERT/UPDATE salones + salon_services"]
+ W1["Paso 1 — Datos básicos (nombre, zona, dirección, mapa)"] --> W2["Paso 2 — Capacidad, precio, tipos de evento, servicios"]
+ W2 --> W3["Paso 3 — Imágenes (Storage)"]
+ W3 --> W4["Paso 4 — Vista previa"]
+ W4 --> Publish["INSERT/UPDATE salones + salon_services"]
 ```
 
 *Figura 32 — Flujo de publicación de salón (wizard de 4 pasos): datos básicos → capacidad/precio/servicios → imágenes → vista previa.*
 
-> [!info] Fuente — M21: 4 pasos (`frontend/src/features/host/components/SalonWizard.tsx`).
+> **Fuente.** M21: 4 pasos (`frontend/src/features/host/components/SalonWizard.tsx`).
 
 ## Máquina de estados de una reserva
 
@@ -2218,19 +2274,19 @@ si nadie la actualiza manualmente.
 
 ```mermaid
 stateDiagram-v2
-  [*] --> pending: huésped crea la reserva
-  pending --> confirmed: anfitrión confirma
-  pending --> declined: anfitrión rechaza (con motivo)
-  pending --> cancelled: huésped cancela
-  confirmed --> cancelled: huésped cancela
-  declined --> [*]
-  cancelled --> [*]
-  confirmed --> [*]
+ [*] --> pending: huésped crea la reserva
+ pending --> confirmed: anfitrión confirma
+ pending --> declined: anfitrión rechaza (con motivo)
+ pending --> cancelled: huésped cancela
+ confirmed --> cancelled: huésped cancela
+ declined --> [*]
+ cancelled --> [*]
+ confirmed --> [*]
 ```
 
 *Figura 33 — Máquina de estados de una reserva: `pending` → `confirmed` | `declined` | `cancelled`.*
 
-> [!info] Fuente — M17. El cuarto estado (`declined`) fue admitido por la restricción `CHECK` de
+> **Fuente.** M17. El cuarto estado (`declined`) fue admitido por la restricción `CHECK` de
 > Postgres recién en la migración `20260609233130`; el hallazgo completo, con cita verbatim de
 > ambas migraciones, se documenta en [Anexo I. Modelo de Datos](#anexo-i-modelo-de-datos) (Tabla 43).
 
@@ -2245,19 +2301,19 @@ cancelarse, ambos cambios (suscripción y bandera) se revierten en la misma oper
 
 ```mermaid
 flowchart TD
-  Click["Click en icono de favorito"] --> Optimistic["Actualización optimista del caché (onMutate)"]
-  Optimistic --> Op{"¿Ya era favorito?"}
-  Op -->|sí| Del["DELETE user_favorites"]
-  Op -->|no| Ins["INSERT user_favorites"]
-  Del --> Settle["onSettled: invalidateQueries"]
-  Ins --> Settle
-  Settle --> Err{"¿Error?"}
-  Err -->|sí| Revert["Revertir caché (onError)"]
-  Err -->|no| Done["Estado confirmado"]
+ Click["Click en icono de favorito"] --> Optimistic["Actualización optimista del caché (onMutate)"]
+ Optimistic --> Op{"¿Ya era favorito?"}
+ Op -->|sí| Del["DELETE user_favorites"]
+ Op -->|no| Ins["INSERT user_favorites"]
+ Del --> Settle["onSettled: invalidateQueries"]
+ Ins --> Settle
+ Settle --> Err{"¿Error?"}
+ Err -->|sí| Revert["Revertir caché (onError)"]
+ Err -->|no| Done["Estado confirmado"]
 
-  Sub["Anfitrión contrata Plan Destacado"] --> Active["salon_subscriptions.status = active"]
-  Active --> Feat["salones.is_featured = true"]
-  Feat --> Prior["Prioridad en useSearchSalones (order by is_featured)"]
+ Sub["Anfitrión contrata Plan Destacado"] --> Active["salon_subscriptions.status = active"]
+ Active --> Feat["salones.is_featured = true"]
+ Feat --> Prior["Prioridad en useSearchSalones (order by is_featured)"]
 ```
 
 *Figura 34 — Gestión de favoritos y plan destacado.*
@@ -2344,7 +2400,7 @@ destacadas y su relación con criterios de aceptación se documenta en
 
 *Tabla 51 — Backlog completo de user stories con estado (entregada/diferida).*
 
-> [!info] Fuente — M06: `gh issue list --repo juanpablovaldez/hosty --state all --limit 200 --json
+> **Fuente.** M06: `gh issue list --repo juanpablovaldez/hosty --state all --limit 200 --json
 > number,title,state,labels,milestone` (verificado 2026-07-28); 45 entregadas, 5 diferidas. Ver
 > `Datos-Verificables`.
 
@@ -2355,14 +2411,14 @@ declarado; las cuatro primeras quedaron simplemente sin cerrar al momento de est
 la quinta es este mismo informe:
 
 - **#45** (Mercado Pago) — integración de pasarela de pago no completada dentro del período
-  relevado.
+ relevado.
 - **#38** (tokens de color del brandbook) — tarea de documentación de diseño pendiente.
 - **#35** (Core Web Vitals) — auditoría de rendimiento pendiente.
 - **#33** (reviews y ratings) — con etiqueta real `post-mvp` en el propio repositorio: se trata de
-  una decisión explícita de excluir esta funcionalidad del alcance del MVP, no de trabajo
-  incompleto.
+ una decisión explícita de excluir esta funcionalidad del alcance del MVP, no de trabajo
+ incompleto.
 - **#23** (este informe final) — es la propia tarea de documentación en curso; se cierra al
-  finalizar este cambio.
+ finalizar este cambio.
 
 ## Trazabilidad: historia → issue → PR → archivo
 
@@ -2386,7 +2442,7 @@ la quinta es este mismo informe:
 
 *Tabla 52 — Trazabilidad historia ↔ issue ↔ PR ↔ archivo.*
 
-> [!info] Fuente — Búsqueda de referencias cruzadas issue↔PR sobre `gh pr list --state all --json
+> **Fuente.** Búsqueda de referencias cruzadas issue↔PR sobre `gh pr list --state all --json
 > number,title,body,mergedAt` (verificado 2026-07-28). Donde no se encontró una referencia textual
 > explícita al número de issue en el título o cuerpo de ninguna PR, la celda se marca
 > honestamente como tal en lugar de asumir una correspondencia; el archivo principal citado en esa
@@ -2397,12 +2453,24 @@ la quinta es este mismo informe:
 
 # Anexo IV. API y Repositorio
 
-Hosty no expone una API propia documentada con Swagger o una colección de Postman: toda la capa
-de datos se sirve a través de **PostgREST**, el componente de Supabase que autogenera una API REST
-directamente a partir del esquema de Postgres (ver [Arquitectura](#11-arquitectura)). El contrato de esa API es
-el propio esquema de la base de datos, versionado como código en `supabase/migrations/*.sql`, y su
-proyección tipada del lado del cliente es `frontend/src/shared/lib/database.types.ts`, generado con
-`supabase gen types typescript`.
+Hosty no expone una API propia documentada con Swagger ni mantiene una colección de Postman escrita
+a mano: toda la capa de datos se sirve a través de **PostgREST**, el componente de Supabase que
+autogenera una API REST directamente a partir del esquema de Postgres (ver [Arquitectura](#11-arquitectura)). El
+contrato de esa API es el propio esquema de la base de datos, versionado como código en
+`supabase/migrations/*.sql`, y su proyección tipada del lado del cliente es
+`frontend/src/shared/lib/database.types.ts`, generado con `supabase gen types typescript`.
+
+Esa ausencia es una consecuencia de la arquitectura, no una omisión: PostgREST publica en la raíz
+del servicio un documento **OpenAPI** generado desde el esquema `public`, que se mantiene
+sincronizado con la base sin intervención manual. Una colección de Postman curada a mano sería una
+segunda fuente de verdad que habría que actualizar en cada migración y que quedaría desfasada a la
+primera que se olvide. Si se requiere una colección para inspección interactiva, la vía correcta es
+importar ese documento —Postman acepta OpenAPI de forma nativa— en lugar de transcribirlo:
+
+```
+GET https://gjxextyntxfsztpgkqig.supabase.co/rest/v1/
+ apikey: <clave anónima del proyecto>
+```
 
 ## Operaciones PostgREST por módulo
 
@@ -2422,7 +2490,7 @@ frontend, módulo por módulo:
 
 *Tabla 53 — Operaciones PostgREST por módulo.*
 
-> [!info] Fuente — conteo propio con
+> **Fuente.** conteo propio con
 > `grep -oE '\.(select|insert|update|delete|upsert|rpc)\(' frontend/src/features/<módulo>/api/*.ts`
 > (2026-07-28). Los módulos `auth`, `home`, `profile` y `errors` no tienen carpeta `api/`: `auth`
 > opera contra Supabase Auth (GoTrue), una API separada de PostgREST, y los otros tres no
@@ -2441,7 +2509,7 @@ función de especificación formal de la API sin requerir un Swagger escrito a m
 
 *Tabla 52b — Documento OpenAPI de la API de datos.*
 
-> [!info] Fuente — URL verificada en la consola de Supabase (proyecto `hosty`, región
+> **Fuente.** URL verificada en la consola de Supabase (proyecto `hosty`, región
 > `us-west-2`) y en la traza de red de la aplicación desplegada (Figura 35). La URL del proyecto y
 > la clave anónima son datos públicos por diseño en la arquitectura de Supabase: el control de
 > acceso efectivo lo ejercen las políticas RLS descriptas en [Arquitectura](#11-arquitectura), no el
@@ -2460,7 +2528,7 @@ función de especificación formal de la API sin requerir un Swagger escrito a m
 
 *Tabla 54 — Estructura del repositorio y convenciones de commits y ramas.*
 
-> [!info] Fuente — `git remote -v`; `git branch -a` (2026-07-28): ramas locales `main`, `dev`,
+> **Fuente.** `git remote -v`; `git branch -a` (2026-07-28): ramas locales `main`, `dev`,
 > `staging`, además de ramas de features/fixes; `commitlint.config.js` y `.husky/commit-msg`.
 
 ## Workflows de CI/CD
@@ -2473,7 +2541,7 @@ función de especificación formal de la API sin requerir un Swagger escrito a m
 
 *Tabla 55 — Workflows de CI/CD: disparador, jobs y resultado.*
 
-> [!info] Fuente — M14: `ls .github/workflows` (2026-07-28); lectura directa de
+> **Fuente.** M14: `ls .github/workflows` (2026-07-28); lectura directa de
 > `frontend-tests.yml`, `web-dev.yml`, `infra-ci.yml`.
 
 ---
@@ -2506,7 +2574,7 @@ reales del proyecto, complementando la matriz de casos manuales de [Testing y Ca
 
 *Tabla 56 — Suite de pruebas automatizadas: archivo y casos.*
 
-> [!info] Fuente — `npx vitest run --reporter=verbose` ejecutado sobre el repositorio
+> **Fuente.** `npx vitest run --reporter=verbose` ejecutado sobre el repositorio
 > (2026-08-02): 14 archivos, 73 casos, todos en verde (`Test Files 14 passed`, `Tests 73 passed`).
 > El conteo de casos por archivo se obtuvo con
 > `grep -cE '^\s*(it|test)\(' <archivo>` sobre cada uno.
@@ -2524,7 +2592,7 @@ reales del proyecto, complementando la matriz de casos manuales de [Testing y Ca
 
 *Tabla 57 — Escenarios de prueba E2E (Playwright).*
 
-> [!info] Fuente — `grep -cE '^\s*test\(' <spec>` sobre cada archivo de `frontend/src/e2e/`
+> **Fuente.** `grep -cE '^\s*test\(' <spec>` sobre cada archivo de `frontend/src/e2e/`
 > (2026-07-28); configuración de navegadores en `frontend/playwright.config.ts`
 > (`projects: chromium, firefox, webkit`).
 
@@ -2584,7 +2652,7 @@ navegador sobre la aplicación desplegada: la primera imagen muestra la URL comp
 el método y los encabezados de la petición; la segunda, el cuerpo de la respuesta con registros
 reales de la tabla `salones`.
 
-> [!info] Fuente — Captura tomada el 2026-07-29 sobre `/salones` en el entorno desplegado. El
+> **Fuente.** Captura tomada el 2026-07-29 sobre `/salones` en el entorno desplegado. El
 > código de estado es `206 Partial Content` y no `200`: PostgREST responde `206` cuando la
 > consulta está paginada mediante el encabezado `Range`, como ocurre aquí con `limit=4`. Es el
 > comportamiento esperado del protocolo, no una condición de error.
@@ -2619,10 +2687,10 @@ estimación.
 
 *Tabla 58 — Registro de defectos y retesting.*
 
-> [!info] Fuente — `gh issue list --state all --label bug --json number,title,state` (2026-07-28):
+> **Fuente.** `gh issue list --state all --label bug --json number,title,state` (2026-07-28):
 > 13 issues, 13 `CLOSED`.
 
-> [!warning] Dato simulado SIM-37 — Columna "Severidad (estimada)"
+> **Dato simulado (SIM-37) — Columna "Severidad (estimada)".**
 > GitHub no registra un campo de severidad estructurado para estos issues. La clasificación
 > Alta/Media/Baja de esta tabla es una estimación plausible del agente, basada en el impacto
 > funcional descrito en el título de cada issue (por ejemplo, que favoritos no persista se estima
@@ -2630,10 +2698,11 @@ estimación.
 > un criterio de triage formalmente documentado por el equipo.
 
 Un defecto adicional, real y verificado —no simulado— se documenta aparte por su relevancia
-arquitectónica, y se distingue visualmente de la tabla anterior por no llevar el marcador
-`[!warning]`:
+arquitectónica. A diferencia de las incidencias reconstruidas de la tabla anterior, su nota va
+encabezada como *Fuente* y no como *Dato simulado*, porque cada afirmación se verifica leyendo los
+archivos de migración que se citan:
 
-> [!info] Fuente — Defecto real: deriva del estado de `bookings` (M17). El estado `declined` fue
+> **Fuente.** Defecto real: deriva del estado de `bookings` (M17). El estado `declined` fue
 > utilizado por la aplicación (`frontend/src/features/host/lib/booking-status.ts`) antes de que la
 > restricción `CHECK` de la base de datos lo permitiera
 > (`supabase/migrations/20240101000000_init_hosty.sql:57-58`, que sólo aceptaba `pending`,
@@ -2643,8 +2712,6 @@ arquitectónica, y se distingue visualmente de la tabla anterior por no llevar e
 > `bookings_status_check` recreada admite explícitamente `'pending', 'confirmed', 'declined',
 > 'cancelled'`. Análisis de deuda técnica asociado en [Testing y Calidad](#12-testing-y-calidad) y en la sección 15
 > (Conclusiones, Tabla 40).
-
-## Checklist de evidencias y capturas pendientes
 
 ## Evidencia de la aplicación en ejecución
 
@@ -2658,16 +2725,35 @@ El indicador de progreso superior aparece en las tres capturas, mostrando el ava
 
 *Figura 36 — Flujo de reserva de la aplicación en ejecución.*
 
+## Evidencia de cobertura de pruebas
+
+La Figura 37 reproduce el encabezado del reporte HTML generado por `@vitest/coverage-v8` sobre la
+corrida del 2026-08-02, con las cuatro métricas globales y el desglose por carpeta. Es la fuente
+directa de las Tablas 32 y 32a de [Testing y Calidad](#12-testing-y-calidad): el contraste entre las carpetas de
+dominio en verde (`features/auth/store` al 100 %, `features/bookings/api` al 97,05 %) y las de
+presentación en rojo (`features/bookings/components` y `features/home/components` en 0 %) es
+visible de un vistazo y corresponde a la priorización declarada en la sección 12.
+
+![Reporte de cobertura de @vitest/coverage-v8](../documentacion-final/assets/f37-reporte-cobertura.jpg)
+
+*Figura 37 — Reporte de cobertura de pruebas (`@vitest/coverage-v8`, 2026-08-02).*
+
+> **Fuente.** `npm --prefix frontend run test:coverage`; captura del reporte HTML generado en
+> `frontend/coverage/index.html`. Los porcentajes de la captura (12,44 % de sentencias, 8,97 % de
+> ramas, 13,87 % de funciones y 15,68 % de líneas) coinciden con los de la Tabla 32, que los
+> reproduce con dos decimales desde `coverage/coverage-summary.json`.
+
 ## Resumen de evidencias
 
 | Evidencia | Resultado |
 |---|---|
 | Corrida de Vitest | 14 archivos, 73 casos, todos exitosos (2026-08-02) |
-| Corrida E2E de Playwright sobre el entorno desplegado | 30 casos, 26 exitosos y 4 fallidos (2026-07-29; ver Tablas 57b y 57c) |
+| Corrida E2E de Playwright sobre el entorno desplegado | 111 casos sobre 3 navegadores, todos exitosos (2026-08-02; ver Tablas 57b y 57c) |
+| Cobertura de pruebas (`@vitest/coverage-v8`) | 12,44 % global de sentencias; 63,01 % sobre el código ejercitado (2026-08-02; ver Tablas 32 y 32a) |
 | Verificación de tipos (`tsc -b --noEmit`) | Sin errores (2026-07-28) |
 | Análisis estático (`eslint .`) | 6 errores y 4 advertencias (2026-07-28; ver [Testing y Calidad](#12-testing-y-calidad), Tabla 34) |
 | Evidencia de la API de datos | Figura 35 — llamada real capturada sobre el entorno desplegado |
 | Evidencia de la aplicación en ejecución | Figura 36 — flujo de reserva de tres pasos |
-| Cobertura de líneas | Sin herramienta configurada; registrada como mejora de corto plazo en [Conclusiones](#15-conclusiones) |
+| Evidencia de cobertura | Figura 37 — reporte HTML de `@vitest/coverage-v8` |
 
 *Tabla 59 — Resumen de evidencias de calidad.*

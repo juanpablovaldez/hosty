@@ -11,12 +11,24 @@ updated: 2026-07-28
 
 # Anexo IV. API y Repositorio
 
-Hosty no expone una API propia documentada con Swagger o una colección de Postman: toda la capa
-de datos se sirve a través de **PostgREST**, el componente de Supabase que autogenera una API REST
-directamente a partir del esquema de Postgres (ver [[11-Arquitectura]]). El contrato de esa API es
-el propio esquema de la base de datos, versionado como código en `supabase/migrations/*.sql`, y su
-proyección tipada del lado del cliente es `frontend/src/shared/lib/database.types.ts`, generado con
-`supabase gen types typescript`.
+Hosty no expone una API propia documentada con Swagger ni mantiene una colección de Postman escrita
+a mano: toda la capa de datos se sirve a través de **PostgREST**, el componente de Supabase que
+autogenera una API REST directamente a partir del esquema de Postgres (ver [[11-Arquitectura]]). El
+contrato de esa API es el propio esquema de la base de datos, versionado como código en
+`supabase/migrations/*.sql`, y su proyección tipada del lado del cliente es
+`frontend/src/shared/lib/database.types.ts`, generado con `supabase gen types typescript`.
+
+Esa ausencia es una consecuencia de la arquitectura, no una omisión: PostgREST publica en la raíz
+del servicio un documento **OpenAPI** generado desde el esquema `public`, que se mantiene
+sincronizado con la base sin intervención manual. Una colección de Postman curada a mano sería una
+segunda fuente de verdad que habría que actualizar en cada migración y que quedaría desfasada a la
+primera que se olvide. Si se requiere una colección para inspección interactiva, la vía correcta es
+importar ese documento —Postman acepta OpenAPI de forma nativa— en lugar de transcribirlo:
+
+```
+GET https://gjxextyntxfsztpgkqig.supabase.co/rest/v1/
+    apikey: <clave anónima del proyecto>
+```
 
 ## Operaciones PostgREST por módulo
 
