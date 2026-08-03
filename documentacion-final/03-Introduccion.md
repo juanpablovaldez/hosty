@@ -10,7 +10,7 @@ tablas: [T5]
 updated: 2026-07-28
 ---
 
-# 03. Introducción
+# 3. Introducción
 
 ## Contexto y dominio
 
@@ -39,7 +39,7 @@ El alcance funcional del producto entregado se definió a partir del documento `
 HOSTY-2026040419562816.pdf`, elaborado por el equipo al inicio del proyecto como especificación de
 referencia del producto a construir. Este documento fue el que fijó, en última instancia, cuáles
 funcionalidades formaban parte del MVP (catálogo, reserva, panel del anfitrión) y cuáles quedaban
-fuera de su alcance inicial, como el cobro en línea o las reseñas de usuarios (ver sección 01).
+fuera de su alcance inicial, como el cobro en línea o las reseñas de usuarios (ver sección 1).
 
 > [!warning] Dato simulado SIM-01 — Metodología previa de relevamiento
 > Este cambio de documentación no tuvo acceso a actas de entrevistas, encuestas u otro registro

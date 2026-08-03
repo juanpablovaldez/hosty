@@ -10,7 +10,7 @@ tablas: [T8, T9]
 updated: 2026-07-28
 ---
 
-# 05. Problema a Resolver
+# 5. Problema a Resolver
 
 ## Problema central
 

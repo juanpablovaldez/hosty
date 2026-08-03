@@ -10,7 +10,7 @@ tablas: [T10]
 updated: 2026-07-28
 ---
 
-# 06. Impacto de la Solución
+# 6. Impacto de la Solución
 
 ## Beneficios por tipo de usuario
 

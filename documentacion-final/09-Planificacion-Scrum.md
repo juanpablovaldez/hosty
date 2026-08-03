@@ -10,7 +10,7 @@ tablas: [T17, T18, T19, T20, T21, T22]
 updated: 2026-07-28
 ---
 
-# 09. Planificación Scrum
+# 9. Planificación Scrum
 
 El proyecto se organizó bajo el marco Scrum, con iteraciones quincenales y un backlog gestionado
 íntegramente como issues de GitHub, agrupadas en épicas y priorizadas mediante un tablero de

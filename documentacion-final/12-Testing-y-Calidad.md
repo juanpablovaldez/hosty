@@ -16,7 +16,7 @@ updated: 2026-07-28
 
 El aseguramiento de calidad no se trata como una etapa posterior al desarrollo sino como una
 actividad que interviene desde la redacción de las historias de usuario: cada user story
-destacada en la sección 09 (Planificación Scrum) incluye un criterio de aceptación explícito, y
+destacada en la sección 9 (Planificación Scrum) incluye un criterio de aceptación explícito, y
 ese criterio es el insumo directo para diseñar los casos de prueba —manuales o automatizados— de
 la funcionalidad correspondiente. La ejecución de pruebas automatizadas ocurre en dos momentos:
 localmente, durante el desarrollo, y en la integración continua, al abrirse un *pull request*. Las

@@ -10,7 +10,7 @@ tablas: [T3]
 updated: 2026-07-28
 ---
 
-# 01. Resumen Ejecutivo
+# 1. Resumen Ejecutivo
 
 En la provincia de Tucumán, la búsqueda, comparación y reserva de un salón de eventos depende
 todavía de canales informales y dispersos: recomendaciones personales, publicaciones en redes
