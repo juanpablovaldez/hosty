@@ -107,6 +107,7 @@ function construirIndices(cuerpo) {
   const tablas = []
   const figuras = []
   let seccionActual = ''
+  let enPreliminar = false
 
   for (const linea of cuerpo.split('\n')) {
     const h1 = linea.match(/^# (.+)$/)
@@ -114,13 +115,17 @@ function construirIndices(cuerpo) {
       const titulo = h1[1].trim()
       // El H1 de la portada es el nombre del proyecto; como etiqueta de sección en los índices
       // de tablas y figuras no dice nada, así que se nombra por lo que es.
-      seccionActual = titulo === 'Hosty' ? 'Material preliminar' : titulo
-      general.push({ nivel: 1, titulo, ancla: ancla(titulo) })
+      enPreliminar = titulo === 'Hosty'
+      seccionActual = enPreliminar ? 'Material preliminar' : titulo
+      if (!enPreliminar) general.push({ nivel: 1, titulo, ancla: ancla(titulo) })
       continue
     }
     const h2 = linea.match(/^## (.+)$/)
     if (h2) {
-      general.push({ nivel: 2, titulo: h2[1].trim(), ancla: ancla(h2[1].trim()) })
+      // El material preliminar —resumen, ficha técnica, control de versiones— va impreso justo
+      // antes del índice: listarlo dentro de él es redundante y deja las entradas sin una
+      // sección padre de la que colgar.
+      if (!enPreliminar) general.push({ nivel: 2, titulo: h2[1].trim(), ancla: ancla(h2[1].trim()) })
       continue
     }
     const t = linea.match(/^\*Tabla (\d+[a-z]?) — (.+?)\.?\*$/)
@@ -129,8 +134,10 @@ function construirIndices(cuerpo) {
     if (f) figuras.push({ n: f[1], titulo: f[2], seccion: seccionActual })
   }
 
+  // Dos espacios de sangría, no cuatro: con cuatro, markdown interpreta la línea como bloque de
+  // código y el índice sale impreso como código fuente en vez de como lista.
   const indiceGeneral = general
-    .map((e) => `${e.nivel === 2 ? '    - ' : '- '}[${e.titulo}](#${e.ancla})`)
+    .map((e) => `${e.nivel === 2 ? '  - ' : '- '}[${e.titulo}](#${e.ancla})`)
     .join('\n')
 
   // Un epígrafe puede contener barras verticales —la Figura 33 enumera los estados de una reserva
@@ -268,17 +275,11 @@ const { indiceGeneral, indiceTablas, indiceFiguras, totales } = construirIndices
   `${preliminar}\n${cuerpoPrincipal}`,
 )
 
-// El título de la portada no es una entrada del índice: es la tapa.
-const indiceSinPortada = indiceGeneral
-  .split('\n')
-  .filter((l) => !/^- \[Hosty\]\(#hosty\)$/.test(l))
-  .join('\n')
-
 const indices = `---
 
 ## Índice general
 
-${indiceSinPortada}
+${indiceGeneral}
 
 ---
 
