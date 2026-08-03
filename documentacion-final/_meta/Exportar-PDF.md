@@ -62,12 +62,18 @@ sólo cómo se imprime.
 
 ## Exportar
 
-1. Abrir `Hosty-Informe-Final.md` en Obsidian.
-2. **Recorrer el documento entero de arriba abajo** antes de exportar. Los diagramas de mermaid se
+1. Abrir Obsidian **con `documentacion-final/` como bóveda** (no la raíz del repositorio: las rutas
+   de las imágenes se resuelven desde ahí).
+2. Abrir `Hosty-Informe-Final.md`, que está en la raíz de esa bóveda.
+3. Ponerlo en **modo lectura** (`Ctrl+E` alterna entre edición y lectura). En modo edición los
+   diagramas no se renderizan y el PDF sale con los bloques de código crudos.
+4. **Recorrer el documento entero de arriba abajo** antes de exportar. Los diagramas de mermaid se
    renderizan de forma perezosa: los que no se hayan mostrado en pantalla salen en blanco en el PDF.
    Son 33 diagramas; conviene bajar despacio y confirmar que todos se dibujaron.
-3. `Ctrl+P` → **Exportar a PDF**.
-4. En el diálogo: tamaño **A4**, y **destildar** "Incluir el nombre del archivo como título" (el
+5. Exportar. **`Ctrl+P` en Obsidian abre la paleta de comandos, no la impresión**: hay que escribir
+   ahí `Exportar a PDF` y elegir el comando. La alternativa es el menú `⋮` (arriba a la derecha de
+   la nota) → **Exportar a PDF**.
+6. En el diálogo: tamaño **A4**, y **destildar** "Incluir el nombre del archivo como título" (el
    documento ya tiene su propia portada).
 
 ## Revisión antes de mandar a imprimir
