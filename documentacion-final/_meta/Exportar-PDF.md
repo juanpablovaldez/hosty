@@ -22,7 +22,23 @@ mano: se corrigen las notas de contenido y se vuelve a generar.
 node documentacion-final-unico/generar-consolidado.mjs
 ```
 
-El generador hace tres cosas que importan para la impresión:
+## Estructura del documento
+
+El consolidado sigue la estructura convencional de un trabajo final:
+
+| Bloque | Contenido | Numeración |
+|---|---|---|
+| Material preliminar | Portada, resumen y palabras clave, ficha técnica, control de versiones, nota metodológica | sin numerar |
+| Índices | Índice general, índice de tablas, índice de figuras | sin numerar |
+| Cuerpo | Secciones 1 a 16, de Resumen Ejecutivo a Bibliografía | 1–16 |
+| Anexos | Anexos I a V | numeración romana |
+
+Los tres índices **se generan solos** a partir del documento. No se editan a mano: una lista de 65
+tablas escrita a mano se desincroniza en la primera corrección y nadie lo nota hasta que está
+impresa. Lo que no llevan es número de página —el markdown no los conoce y Obsidian no los genera
+al exportar—, así que cada entrada indica la sección donde vive.
+
+El generador hace, además, tres cosas que importan para la impresión:
 
 1. **Reorienta los diagramas anchos.** Un `flowchart LR` con muchas etiquetas se desborda del ancho
    útil de una A4 y mermaid lo reescala hasta volverlo ilegible. Los que superan el umbral pasan a

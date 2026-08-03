@@ -1,110 +1,80 @@
-# Hosty — Informe Final (versión consolidada)
+# Hosty
 
-**Documento consolidado — generado a partir del vault `documentacion-final/`, fecha: 2026-08-02.**
+**Encontrá, compará y reservá salones sin vueltas**
 
-Este archivo reúne, en un único documento portable, las 21 notas de contenido del informe final
-de Hosty (16 secciones numeradas + 5 anexos), en su orden de lectura canónico. Es una
-concatenación sin pérdida de esas notas: no reemplaza al vault de Obsidian. Las fuentes
-editables e individuales de cada sección — y las notas de apoyo (`_meta/`) que este documento no
-incluye — siguen viviendo en `documentacion-final/`; cualquier corrección de contenido debe
-hacerse ahí y volver a generar este archivo con
-`node documentacion-final-unico/generar-consolidado.mjs`.
+*Marketplace web para la búsqueda y reserva de salones de eventos en Tucumán*
 
+**Universidad del Norte Santo Tomás de Aquino**
+Tecnicatura en Desarrollo y Calidad de Software
+Proyecto Final — 2026
 
----
+**Autores**
 
-## Tabla de contenidos
+| Integrante | Legajo |
+|---|---|
+| Juan Pablo Valdez | UIA7-0262 |
+| Lautaro David Martínez Naglieri | UIA7-0286 |
+| Juan Ignacio Mignone | UIA7-0298 |
+| Juan Pablo Czurylo | UIA7-0331 |
+| Benjamín Garma | UIA7-0362 |
 
-- [00. Portada y Ficha Técnica](#00-portada-y-ficha-tecnica)
-- [01. Resumen Ejecutivo](#01-resumen-ejecutivo)
-- [02. Acrónimos](#02-acronimos)
-- [03. Introducción](#03-introduccion)
-- [04. Objetivos](#04-objetivos)
-- [05. Problema a Resolver](#05-problema-a-resolver)
-- [06. Impacto de la Solución](#06-impacto-de-la-solucion)
-- [07. Equipo y Roles](#07-equipo-y-roles)
-- [08. Diseño y Desarrollo](#08-diseno-y-desarrollo)
-- [09. Planificación Scrum](#09-planificacion-scrum)
-- [10. Presupuesto](#10-presupuesto)
-- [11. Arquitectura](#11-arquitectura)
-- [12. Testing y Calidad](#12-testing-y-calidad)
-- [13. Ejecución por Sprint](#13-ejecucion-por-sprint)
-- [14. Métricas](#14-metricas)
-- [15. Conclusiones](#15-conclusiones)
-- [Anexo I. Modelo de Datos](#anexo-i-modelo-de-datos)
-- [Anexo II. Diagramas de Flujo Complementarios](#anexo-ii-diagramas-de-flujo-complementarios)
-- [Anexo III. Backlog Completo de User Stories](#anexo-iii-backlog-completo-de-user-stories)
-- [Anexo IV. API y Repositorio](#anexo-iv-api-y-repositorio)
-- [Anexo V. Evidencias de QA](#anexo-v-evidencias-de-qa)
+San Miguel de Tucumán, Argentina — 7 de agosto de 2026
 
+## Resumen
 
----
+La contratación de un salón de eventos en la provincia de Tucumán se resuelve hoy por canales
+dispersos —recomendación personal, grupos de redes sociales y llamadas telefónicas— sin ningún
+espacio donde comparar disponibilidad, precio y condiciones antes de decidir. El organizador no
+llega a conocer el universo real de opciones y no puede saber cuánto cuesta un salón sin contactar
+a cada dueño por separado; el anfitrión, en el otro extremo, depende del boca a boca para conseguir
+clientes y administra cada reserva a mano, con riesgo de comprometer dos veces la misma fecha.
 
+Este trabajo presenta **Hosty**, un *marketplace* web que reúne la búsqueda, la comparación y la
+reserva en un solo lugar, para los dos lados de esa transacción. El producto entrega tres
+capacidades de punta a punta: un catálogo público con filtros y mapa geolocalizado; un asistente de
+reserva en tres pasos que verifica la disponibilidad antes de confirmar; y un panel para el
+anfitrión, con calendario, publicación de salones y gestión de las reservas recibidas.
 
-# 00. Portada y Ficha Técnica
+La solución se construyó como una aplicación de dos capas, sin servidor de aplicación propio: una
+*single-page application* en React sobre Vite y TypeScript, y Supabase como plataforma de datos,
+autenticación y almacenamiento. La autorización no se resuelve con un esquema de roles sino por
+propiedad de la fila, mediante políticas de seguridad a nivel de fila de PostgreSQL. El desarrollo
+siguió Scrum a lo largo de cinco *sprints* entre marzo y junio de 2026, con el tablero, las
+incidencias y las solicitudes de incorporación administrados en GitHub.
 
-## Portada
+El resultado es una aplicación desplegada y funcionando sobre infraestructura real, con 73 pruebas
+automatizadas y 111 ejecuciones de prueba de punta a punta sobre tres navegadores, todas en verde,
+y una canalización de integración y despliegue continuos. Cada cifra de este informe se cita contra
+el comando que permite reproducirla, y el contenido que no pudo verificarse en el repositorio se
+declara explícitamente como reconstruido.
 
-**Hosty** es una plataforma web de tipo marketplace para la búsqueda, comparación y reserva de
-salones de eventos en la provincia de Tucumán, Argentina.
-
-**Eslogan:** *Encontrá el salón perfecto para tu evento.*
-
-**Materia:** Proyecto Final
-**Carrera:** Tecnicatura en Desarrollo y Calidad de Software
-**Institución:** Universidad del Norte Santo Tomás de Aquino
-**Año:** 2026 — tercer año (último año) de la Tecnicatura
+**Palabras clave:** marketplace de servicios · aplicación web · *backend as a service* ·
+seguridad a nivel de fila · Scrum · pruebas automatizadas · integración continua
 
 ## Ficha técnica del proyecto
 
 | Campo | Valor |
 |---|---|
 | Nombre del proyecto | Hosty |
-| Eslogan | Encontrá el salón perfecto para tu evento |
+| Eslogan | Encontrá, compará y reservá salones sin vueltas |
 | Materia | Proyecto Final |
 | Carrera | Tecnicatura en Desarrollo y Calidad de Software |
 | Institución | Universidad del Norte Santo Tomás de Aquino |
 | Año | 2026 — tercer año (último año) de la Tecnicatura |
-| Integrantes y roles | Ver Tabla 11 en [Equipo y Roles](#07-equipo-y-roles) |
-| Metodología | Scrum, con iteraciones (sprints) |
-| Período de desarrollo | 2026-03-29 – 2026-06-24 (sprints S1–S5) |
+| Integrantes y roles | Ver Tabla 11 en [Equipo y Roles](#7-equipo-y-roles) |
+| Metodología | Scrum, con iteraciones (*sprints*) |
+| Período de desarrollo | 2026-03-29 – 2026-06-24 (*sprints* S1–S5) |
 | Repositorio | `https://github.com/juanpablovaldez/hosty` |
 | Frontend desplegado | `https://d1ako6y2uvskg7.cloudfront.net` |
 | Backend (Supabase) | `https://gjxextyntxfsztpgkqig.supabase.co` |
 | Fecha de defensa | 2026-08-07 |
-| Versión de este documento | v1.2 (versión de entrega) |
+| Versión de este documento | v1.3 (versión de entrega) |
 
 *Tabla 1 — Ficha técnica del proyecto.*
 
 > **Fuente.** La URL del backend corresponde al identificador de proyecto de Supabase
 > (`hosty`, región `us-west-2`), verificado tanto en la consola del proveedor como en la traza de
 > red real de la aplicación desplegada que documenta la Figura 35.
-
-## Índice numerado
-
-00. Portada y Ficha Técnica
-01. Resumen Ejecutivo
-02. Acrónimos
-03. Introducción
-04. Objetivos
-05. Problema a Resolver
-06. Impacto de la Solución
-07. Equipo y Roles
-08. Diseño y Desarrollo
-09. Planificación Scrum
-10. Presupuesto
-11. Arquitectura
-12. Testing y Calidad
-13. Ejecución por Sprint
-14. Métricas
-15. Conclusiones
-Anexo I. Modelo de Datos
-Anexo II. Diagramas de Flujo Complementarios
-Anexo III. Backlog de User Stories
-Anexo IV. API y Repositorio
-Anexo V. Evidencias de QA
-
-El detalle navegable de este índice, con enlaces a cada nota, se encuentra en `Indice`.
 
 ## Control de versiones del documento
 
@@ -113,29 +83,263 @@ El detalle navegable de este índice, con enlaces a cada nota, se encuentra en `
 | v0.1 | 2026-07-28 | Redacción inicial del informe a partir del historial del repositorio | Equipo |
 | v1.0 | 2026-07-29 | Datos institucionales, entornos desplegados y primeras evidencias de QA | Equipo |
 | v1.1 | 2026-08-02 | Revisión de usabilidad previa a la entrega (Tabla 34b); corrección de los seis casos E2E que fallaban y reejecución de la suite completa sobre el entorno desplegado (Tablas 57b y 57c) | Equipo |
-| v1.2 | 2026-08-02 | Versión de entrega: adopción de `@vitest/coverage-v8` y medición de cobertura bajo ambos criterios (Tablas 32 y 32a, Figura 37); cierre de los 17 marcadores de contenido pendiente | Equipo |
+| v1.2 | 2026-08-02 | Adopción de `@vitest/coverage-v8` y medición de cobertura bajo ambos criterios (Tablas 32 y 32a, Figura 37); cierre de los 17 marcadores de contenido pendiente | Equipo |
+| v1.3 | 2026-08-03 | Versión de entrega: estructura de trabajo final —portada, resumen, índices de tablas y figuras, bibliografía— y numeración corrida de las secciones | Equipo |
 
 *Tabla 2 — Control de versiones del documento.*
 
 ## Nota metodológica sobre el origen de la información
 
-> Este informe distingue de manera explícita dos tipos de contenido. **(a) Datos verificados**:
-> extraídos del historial Git del repositorio, de la API de GitHub y de los archivos de migración
-> del proyecto; su origen se cita en un bloque *Fuente* que incluye el identificador de la métrica
-> y el comando que permite reproducirla. **(b) Contenido reconstruido**: redactado de forma
-> plausible por no existir registro documental del hecho (retrospectivas, entrevistas y
-> estimaciones de esfuerzo y presupuesto); se señaliza como *Dato simulado* e indica la base sobre
-> la que se reconstruyó. Ningún contenido reconstruido debe interpretarse como evidencia empírica.
+Este informe distingue de manera explícita dos tipos de contenido. **(a) Datos verificados**:
+extraídos del historial Git del repositorio, de la API de GitHub y de los archivos de migración del
+proyecto; su origen se cita en una nota *Fuente* que incluye el identificador de la métrica y el
+comando que permite reproducirla. **(b) Contenido reconstruido**: redactado de forma plausible por
+no existir registro documental del hecho —retrospectivas, entrevistas y estimaciones de esfuerzo y
+presupuesto—; se señaliza como *Dato simulado* e indica la base sobre la que se reconstruyó. Ningún
+contenido reconstruido debe interpretarse como evidencia empírica.
+
+---
+
+## Índice general
+
+    - [Resumen](#resumen)
+    - [Ficha técnica del proyecto](#ficha-tecnica-del-proyecto)
+    - [Control de versiones del documento](#control-de-versiones-del-documento)
+    - [Nota metodológica sobre el origen de la información](#nota-metodologica-sobre-el-origen-de-la-informacion)
+- [1. Resumen Ejecutivo](#1-resumen-ejecutivo)
+- [2. Acrónimos](#2-acronimos)
+- [3. Introducción](#3-introduccion)
+    - [Contexto y dominio](#contexto-y-dominio)
+    - [Relevamiento de requerimientos](#relevamiento-de-requerimientos)
+    - [Alcance de este documento](#alcance-de-este-documento)
+- [4. Objetivos](#4-objetivos)
+    - [Objetivo general](#objetivo-general)
+    - [Objetivos específicos](#objetivos-especificos)
+    - [Objetivo de calidad](#objetivo-de-calidad)
+    - [Trazabilidad objetivo → épica → funcionalidad](#trazabilidad-objetivo-epica-funcionalidad)
+- [5. Problema a Resolver](#5-problema-a-resolver)
+    - [Problema central](#problema-central)
+    - [Consecuencias para el organizador](#consecuencias-para-el-organizador)
+    - [Consecuencias para el anfitrión](#consecuencias-para-el-anfitrion)
+    - [Problema, consecuencia y respuesta del sistema](#problema-consecuencia-y-respuesta-del-sistema)
+    - [Puntos de dolor por actor y alternativas actuales](#puntos-de-dolor-por-actor-y-alternativas-actuales)
+- [6. Impacto de la Solución](#6-impacto-de-la-solucion)
+    - [Beneficios por tipo de usuario](#beneficios-por-tipo-de-usuario)
+    - [Qué cambia respecto de la situación anterior](#que-cambia-respecto-de-la-situacion-anterior)
+- [7. Equipo y Roles](#7-equipo-y-roles)
+    - [Composición del equipo](#composicion-del-equipo)
+    - [Contribuciones por identidad Git](#contribuciones-por-identidad-git)
+    - [Roles de usuario, permisos y mecanismo de autorización](#roles-de-usuario-permisos-y-mecanismo-de-autorizacion)
+- [8. Diseño y Desarrollo](#8-diseno-y-desarrollo)
+    - [8.1 Proceso de diseño](#81-proceso-de-diseno)
+    - [8.2 Módulos y pantallas por tipo de usuario](#82-modulos-y-pantallas-por-tipo-de-usuario)
+    - [8.3 Mapa de navegación](#83-mapa-de-navegacion)
+    - [8.4 Anatomía de una feature](#84-anatomia-de-una-feature)
+    - [8.5 Decisiones de UX/UI](#85-decisiones-de-uxui)
+    - [8.6 Diagramas de flujo principales](#86-diagramas-de-flujo-principales)
+- [9. Planificación Scrum](#9-planificacion-scrum)
+    - [Ceremonias y cadencia](#ceremonias-y-cadencia)
+    - [Épicas](#epicas)
+    - [User stories destacadas](#user-stories-destacadas)
+    - [Definition of Ready y Definition of Done](#definition-of-ready-y-definition-of-done)
+    - [Plan de sprints](#plan-de-sprints)
+    - [Retrospectivas](#retrospectivas)
+- [10. Presupuesto](#10-presupuesto)
+    - [Esfuerzo por perfil](#esfuerzo-por-perfil)
+    - [Infraestructura y capas gratuitas](#infraestructura-y-capas-gratuitas)
+    - [Costo total y supuestos](#costo-total-y-supuestos)
+- [11. Arquitectura](#11-arquitectura)
+    - [11.1 Patrón arquitectónico](#111-patron-arquitectonico)
+    - [11.2 Despliegue (visión general)](#112-despliegue-vision-general)
+    - [11.3 Frontend](#113-frontend)
+    - [11.4 "Backend" — capa BaaS](#114-backend-capa-baas)
+    - [11.5 Base de datos](#115-base-de-datos)
+    - [11.6 Seguridad](#116-seguridad)
+    - [11.7 API](#117-api)
+    - [11.8 Deployment](#118-deployment)
+- [12. Testing y Calidad](#12-testing-y-calidad)
+    - [Estrategia general](#estrategia-general)
+    - [Tipos de prueba](#tipos-de-prueba)
+    - [Cobertura](#cobertura)
+    - [Matriz de casos de prueba manuales](#matriz-de-casos-de-prueba-manuales)
+    - [Manejo de incidencias](#manejo-de-incidencias)
+    - [Revisión de usabilidad previa a la entrega final](#revision-de-usabilidad-previa-a-la-entrega-final)
+    - [Criterios de salida](#criterios-de-salida)
+- [13. Ejecución por Sprint](#13-ejecucion-por-sprint)
+    - [Relato por sprint](#relato-por-sprint)
+    - [Cambios de alcance y de diseño](#cambios-de-alcance-y-de-diseno)
+    - [Capacidad más distintiva: cotización y confirmación de una reserva](#capacidad-mas-distintiva-cotizacion-y-confirmacion-de-una-reserva)
+- [14. Métricas](#14-metricas)
+    - [Métricas de repositorio y de gestión](#metricas-de-repositorio-y-de-gestion)
+    - [Métricas de producto y de calidad](#metricas-de-producto-y-de-calidad)
+- [15. Conclusiones](#15-conclusiones)
+    - [Balance funcional](#balance-funcional)
+    - [Balance técnico y metodológico](#balance-tecnico-y-metodologico)
+    - [Deuda técnica](#deuda-tecnica)
+    - [Aprendizajes y líneas de evolución futura](#aprendizajes-y-lineas-de-evolucion-futura)
+- [16. Bibliografía](#16-bibliografia)
+    - [Metodología y proceso](#metodologia-y-proceso)
+    - [Arquitectura y plataforma de datos](#arquitectura-y-plataforma-de-datos)
+    - [Desarrollo del cliente](#desarrollo-del-cliente)
+    - [Calidad y automatización](#calidad-y-automatizacion)
+    - [Infraestructura](#infraestructura)
+- [Anexo I. Modelo de Datos](#anexo-i-modelo-de-datos)
+    - [Diagrama entidad-relación](#diagrama-entidad-relacion)
+    - [Diccionario de datos](#diccionario-de-datos)
+    - [Políticas RLS por tabla y operación](#politicas-rls-por-tabla-y-operacion)
+    - [Historial de migraciones](#historial-de-migraciones)
+- [Anexo II. Diagramas de Flujo Complementarios](#anexo-ii-diagramas-de-flujo-complementarios)
+    - [Búsqueda y filtrado](#busqueda-y-filtrado)
+    - [Flujo de reserva](#flujo-de-reserva)
+    - [Publicación de un salón (anfitrión)](#publicacion-de-un-salon-anfitrion)
+    - [Máquina de estados de una reserva](#maquina-de-estados-de-una-reserva)
+    - [Favoritos y plan destacado](#favoritos-y-plan-destacado)
+    - [Índice de flujos](#indice-de-flujos)
+- [Anexo III. Backlog Completo de User Stories](#anexo-iii-backlog-completo-de-user-stories)
+    - [Backlog completo](#backlog-completo)
+    - [Trazabilidad: historia → issue → PR → archivo](#trazabilidad-historia-issue-pr-archivo)
+- [Anexo IV. API y Repositorio](#anexo-iv-api-y-repositorio)
+    - [Operaciones PostgREST por módulo](#operaciones-postgrest-por-modulo)
+    - [Documento OpenAPI](#documento-openapi)
+    - [Repositorio](#repositorio)
+    - [Workflows de CI/CD](#workflows-de-cicd)
+- [Anexo V. Evidencias de QA](#anexo-v-evidencias-de-qa)
+    - [Suite de pruebas automatizadas](#suite-de-pruebas-automatizadas)
+    - [Escenarios de prueba E2E (Playwright)](#escenarios-de-prueba-e2e-playwright)
+    - [Evidencia de pruebas sobre la API PostgREST](#evidencia-de-pruebas-sobre-la-api-postgrest)
+    - [Registro de defectos y retesting](#registro-de-defectos-y-retesting)
+    - [Evidencia de la aplicación en ejecución](#evidencia-de-la-aplicacion-en-ejecucion)
+    - [Evidencia de cobertura de pruebas](#evidencia-de-cobertura-de-pruebas)
+    - [Resumen de evidencias](#resumen-de-evidencias)
+
+---
+
+## Índice de tablas
+
+Sin numeración de página: el documento se compone en markdown y la paginación la resuelve el
+exportador. Cada entrada indica la sección donde se encuentra la tabla.
+
+| N.º | Título | Sección |
+|---|---|---|
+| Tabla 1 | Ficha técnica del proyecto | Material preliminar |
+| Tabla 2 | Control de versiones del documento | Material preliminar |
+| Tabla 3 | Cifras clave del proyecto | 1. Resumen Ejecutivo |
+| Tabla 4 | Glosario de acrónimos y términos | 2. Acrónimos |
+| Tabla 5 | Alcance incluido y excluido | 3. Introducción |
+| Tabla 6 | Objetivos específicos y criterio de verificación | 4. Objetivos |
+| Tabla 7 | Trazabilidad objetivo → épica → funcionalidad → evidencia | 4. Objetivos |
+| Tabla 8 | Problema, consecuencia y respuesta del sistema | 5. Problema a Resolver |
+| Tabla 9 | Puntos de dolor por actor y alternativas actuales | 5. Problema a Resolver |
+| Tabla 10 | Impacto por dimensión y tipo de usuario, con indicador y método de medición | 6. Impacto de la Solución |
+| Tabla 11 | Integrantes, legajo, rol de equipo y responsabilidades | 7. Equipo y Roles |
+| Tabla 12 | Contribuciones por identidad Git | 7. Equipo y Roles |
+| Tabla 13 | Roles de usuario, permisos y mecanismo de autorización | 7. Equipo y Roles |
+| Tabla 15 | Inventario de pantallas: ruta, componente y tipo de usuario | 8. Diseño y Desarrollo |
+| Tabla 14 | Tokens de marca y tipografía | 8. Diseño y Desarrollo |
+| Tabla 16 | Decisiones de UX/UI y su justificación | 8. Diseño y Desarrollo |
+| Tabla 17 | Ceremonias Scrum y cadencia | 9. Planificación Scrum |
+| Tabla 18 | Épicas: código, objetivo y estado | 9. Planificación Scrum |
+| Tabla 19 | User stories destacadas: formato Como/quiero/para, story points y épica | 9. Planificación Scrum |
+| Tabla 20 | Definition of Ready y Definition of Done | 9. Planificación Scrum |
+| Tabla 21 | Plan de sprints: cantidad, duración, foco y resultado | 9. Planificación Scrum |
+| Tabla 22 | Retrospectivas: problema, impacto y acción correctiva | 9. Planificación Scrum |
+| Tabla 23 | Estimación de esfuerzo por perfil, horas y tarifa | 10. Presupuesto |
+| Tabla 24 | Costos de infraestructura y capas gratuitas | 10. Presupuesto |
+| Tabla 25 | Costo total, contingencia y supuestos declarados | 10. Presupuesto |
+| Tabla 26 | Stack tecnológico por capa, versión y justificación | 11. Arquitectura |
+| Tabla 29 | Rutas, control de acceso y política RLS asociada | 11. Arquitectura |
+| Tabla 30 | Operaciones de API por módulo y ambientes de despliegue | 11. Arquitectura |
+| Tabla 28 | Estructura de carpetas y responsabilidad | 11. Arquitectura |
+| Tabla 27 | Decisiones arquitectónicas (ADR resumidas) | 11. Arquitectura |
+| Tabla 31 | Tipos de prueba, herramienta y alcance real | 12. Testing y Calidad |
+| Tabla 32 | Cobertura de pruebas bajo ambos criterios | 12. Testing y Calidad |
+| Tabla 32a | Cobertura por módulo, ordenada por cobertura de sentencias | 12. Testing y Calidad |
+| Tabla 32b | Volumen de la suite de pruebas | 12. Testing y Calidad |
+| Tabla 33 | Matriz de casos de prueba manuales | 12. Testing y Calidad |
+| Tabla 34b | Defectos detectados en la revisión de usabilidad previa a la entrega y su corrección | 12. Testing y Calidad |
+| Tabla 34 | Severidad de incidencias y criterios de salida | 12. Testing y Calidad |
+| Tabla 35 | Sprints: foco, entregables, decisiones y fecha de cierre | 13. Ejecución por Sprint |
+| Tabla 36 | Cambios de alcance y de diseño con justificación | 13. Ejecución por Sprint |
+| Tabla 37 | Métricas de repositorio y de gestión | 14. Métricas |
+| Tabla 38 | Métricas de producto y de calidad | 14. Métricas |
+| Tabla 39 | Balance funcional: planificado vs. entregado | 15. Conclusiones |
+| Tabla 40 | Deuda técnica: severidad, impacto y plan de remediación | 15. Conclusiones |
+| Tabla 41 | Aprendizajes y líneas de evolución futura | 15. Conclusiones |
+| Tabla 42 | Diccionario de datos — salones | Anexo I. Modelo de Datos |
+| Tabla 43 | Diccionario de datos — bookings | Anexo I. Modelo de Datos |
+| Tabla 44 | Diccionario de datos — salon_services | Anexo I. Modelo de Datos |
+| Tabla 45 | Diccionario de datos — salon_availability_blocks | Anexo I. Modelo de Datos |
+| Tabla 46 | Diccionario de datos — user_favorites | Anexo I. Modelo de Datos |
+| Tabla 47 | Diccionario de datos — salon_subscriptions | Anexo I. Modelo de Datos |
+| Tabla 48 | Políticas RLS por tabla y operación | Anexo I. Modelo de Datos |
+| Tabla 49 | Historial de migraciones | Anexo I. Modelo de Datos |
+| Tabla 50 | Índice de flujos: actor, precondición y resultado | Anexo II. Diagramas de Flujo Complementarios |
+| Tabla 51 | Backlog completo de user stories con estado (entregada/diferida) | Anexo III. Backlog Completo de User Stories |
+| Tabla 52 | Trazabilidad historia ↔ issue ↔ PR ↔ archivo | Anexo III. Backlog Completo de User Stories |
+| Tabla 53 | Operaciones PostgREST por módulo | Anexo IV. API y Repositorio |
+| Tabla 52b | Documento OpenAPI de la API de datos | Anexo IV. API y Repositorio |
+| Tabla 54 | Estructura del repositorio y convenciones de commits y ramas | Anexo IV. API y Repositorio |
+| Tabla 55 | Workflows de CI/CD: disparador, jobs y resultado | Anexo IV. API y Repositorio |
+| Tabla 56 | Suite de pruebas automatizadas: archivo y casos | Anexo V. Evidencias de QA |
+| Tabla 57 | Escenarios de prueba E2E (Playwright) | Anexo V. Evidencias de QA |
+| Tabla 57b | Resultado de la corrida E2E sobre el entorno desplegado | Anexo V. Evidencias de QA |
+| Tabla 57c | Análisis de los casos fallidos y su corrección | Anexo V. Evidencias de QA |
+| Tabla 58 | Registro de defectos y retesting | Anexo V. Evidencias de QA |
+| Tabla 59 | Resumen de evidencias de calidad | Anexo V. Evidencias de QA |
+
+---
+
+## Índice de figuras
+
+| N.º | Título | Sección |
+|---|---|---|
+| Figura 1 | Síntesis: problema → solución (marketplace de salones) → resultados verificables | 1. Resumen Ejecutivo |
+| Figura 2 | Estructura del informe: 16 secciones + 5 anexos y sus dependencias de lectura | 3. Introducción |
+| Figura 3 | Árbol de objetivos: OG → OE1..OE6, con la épica asociada a cada OE | 4. Objetivos |
+| Figura 4 | Árbol de problemas: causas → problema central → efectos | 5. Problema a Resolver |
+| Figura 5 | Proceso as-is (WhatsApp/Instagram/boca a boca) vs. to-be con Hosty | 6. Impacto de la Solución |
+| Figura 6 | Organigrama Scrum: PO / SM / equipo de desarrollo (5 integrantes) | 7. Equipo y Roles |
+| Figura 7 | Proceso de diseño: relevamiento → wireframes → design system → implementación → revisión | 8. Diseño y Desarrollo |
+| Figura 8 | Mapa de navegación: 14 rutas — 6 públicas / 8 protegidas (`requireAuth`) | 8. Diseño y Desarrollo |
+| Figura 9 | Anatomía de una feature: `features/<n>/{components,api,types.ts}` ↔ `routes/` ↔ `shared/lib` | 8. Diseño y Desarrollo |
+| Figura 10 | Iteración Scrum: refinamiento, planificación, daily, revisión y retrospectiva | 9. Planificación Scrum |
+| Figura 11 | Ciclo de vida de un issue en GitHub Projects v2: Todo → In Progress → In Review → Done (+ Blocked) | 9. Planificación Scrum |
+| Figura 12 | Tablero de gestión del proyecto en GitHub Projects v2 (board #4) | 9. Planificación Scrum |
+| Figura 13 | Distribución del presupuesto por rubro: RRHH, infraestructura y herramientas, contingencia | 10. Presupuesto |
+| Figura 14 | Arquitectura general: SPA React ↔ Supabase (Auth/PostgREST/Storage/Postgres+RLS) | 11. Arquitectura |
+| Figura 15 | Despliegue: repo → GitHub Actions → build → S3+CloudFront (DEV); Supabase Cloud; Terraform | 11. Arquitectura |
+| Figura 16 | Bootstrap de autenticación: `main.tsx` → `initAuth()` → `getSession()` → `auth.store` → `authReady` → ruta o redirect | 11. Arquitectura |
+| Figura 17 | Capas y dependencias permitidas: `routes → features → shared/lib → Supabase` | 11. Arquitectura |
+| Figura 18 | Ciclo de lectura de datos: componente → hook TanStack Query → `supabase-js` → PostgREST → RLS → Postgres → caché | 11. Arquitectura |
+| Figura 19 | Pirámide de pruebas: unitarias (Vitest) / componentes (RTL+jsdom) / E2E (Playwright) | 12. Testing y Calidad |
+| Figura 20 | Pipeline CI/CD: PR → `frontend-tests.yml` (Vitest) → merge a `dev` → `web-dev.yml` (build + sync S3 + invalidación CloudFront); `infra-ci.yml` manual (`terraform plan`) | 12. Testing y Calidad |
+| Figura 21 | Ciclo de vida de un defecto: Reportado → Triage → En curso → En revisión → Retesting → Cerrado (+ No reproducible / Diferido) | 12. Testing y Calidad |
+| Figura 22 | Commits por mes en la rama dev (marzo-junio 2026) | 13. Ejecución por Sprint |
+| Figura 23 | Issues cerradas por sprint (S1-S5) | 13. Ejecución por Sprint |
+| Figura 24 | Capacidad más distintiva, extremo a extremo: huésped reserva → anfitrión cotiza (`quotedPrice`) → confirma/rechaza → estado final del huésped | 13. Ejecución por Sprint |
+| Figura 25 | Distribución de commits por contribuidor (5 contribuidores) | 14. Métricas |
+| Figura 26 | Pull requests abiertos vs. mergeados por mes | 14. Métricas |
+| Figura 27 | Roadmap de evolución: corto (deuda técnica) / medio (i18n, pagos) / largo (multi-provincia) | 15. Conclusiones |
+| Figura 28 | Modelo de datos completo: `auth.users` + las 6 tablas públicas con cardinalidades y claves foráneas | Anexo I. Modelo de Datos |
+| Figura 29 | Cadena de autorización por propiedad: request → JWT → `auth.uid()` → política RLS → allow/deny | Anexo I. Modelo de Datos |
+| Figura 30 | Flujo de búsqueda y filtrado: home → `/salones` → filtros/mapa → `/salones/:id` | Anexo II. Diagramas de Flujo Complementarios |
+| Figura 31 | Flujo de reserva (wizard de 3 pasos): fecha y horario → datos del evento → confirmación | Anexo II. Diagramas de Flujo Complementarios |
+| Figura 32 | Flujo de publicación de salón (wizard de 4 pasos): datos básicos → capacidad/precio/servicios → imágenes → vista previa | Anexo II. Diagramas de Flujo Complementarios |
+| Figura 33 | Máquina de estados de una reserva: `pending` → `confirmed` \| `declined` \| `cancelled` | Anexo II. Diagramas de Flujo Complementarios |
+| Figura 34 | Gestión de favoritos y plan destacado | Anexo II. Diagramas de Flujo Complementarios |
+| Figura 35 | Evidencia de pruebas sobre la API PostgREST | Anexo V. Evidencias de QA |
+| Figura 36 | Flujo de reserva de la aplicación en ejecución | Anexo V. Evidencias de QA |
+| Figura 37 | Reporte de cobertura de pruebas (`@vitest/coverage-v8`, 2026-08-02) | Anexo V. Evidencias de QA |
 
 ---
 
 
-# 01. Resumen Ejecutivo
+# 1. Resumen Ejecutivo
 
 En la provincia de Tucumán, la búsqueda, comparación y reserva de un salón de eventos depende
 todavía de canales informales y dispersos: recomendaciones personales, publicaciones en redes
 sociales o llamados telefónicos, sin un canal único que permita comparar disponibilidad, precio y
-condiciones entre distintas opciones (ver [Introducción](#03-introduccion) para el desarrollo completo de este
+condiciones entre distintas opciones (ver [Introducción](#3-introduccion) para el desarrollo completo de este
 contexto). **Hosty** es una plataforma web de tipo *marketplace* que centraliza la búsqueda, la
 comparación y la reserva de salones de eventos, vinculando directamente a dos tipos de usuario: el
 organizador, que necesita encontrar y reservar un salón acorde a su presupuesto y ubicación, y el
@@ -191,7 +395,7 @@ final entre lo planificado y lo entregado se documenta en [Conclusiones](#15-con
 ---
 
 
-# 02. Acrónimos
+# 2. Acrónimos
 
 Esta sección reúne, en orden alfabético, las siglas y los términos técnicos utilizados a lo largo
 del informe. Para cada uno se indica su significado y, cuando corresponde, una aclaración sobre su
@@ -210,22 +414,22 @@ desarrolla con mayor detalle.
 | DER | Diagrama de Entidad-Relación | Modelo de datos completo, documentado en el Anexo I. |
 | E2E | End to End | Pruebas automatizadas con Playwright sobre flujos completos de usuario. |
 | JWT | JSON Web Token | Supabase Auth emite internamente un JWT por sesión; Hosty no implementa un servicio de JWT propio ni maneja tokens manualmente, sino que delega la autenticación completa en las sesiones de Supabase Auth. |
-| MVP | Producto Mínimo Viable | Alcance funcional entregado en este proyecto (ver sección 01). |
+| MVP | Producto Mínimo Viable | Alcance funcional entregado en este proyecto (ver sección 1). |
 | ORM/ODM | Object-Relational / Object-Document Mapping | Hosty no utiliza un ORM: accede a los datos mediante `supabase-js` sobre la API PostgREST y tipos TypeScript generados por introspección del esquema. |
 | PR | Pull Request | Unidad de integración de código en GitHub. |
 | QA | Quality Assurance | Aseguramiento de calidad, cubierto por pruebas automatizadas y manuales (ver sección 12). |
-| RBAC | Role-Based Access Control | Hosty **no** implementa RBAC: la autorización es por propiedad (*ownership*) vía RLS (ver sección 07). |
+| RBAC | Role-Based Access Control | Hosty **no** implementa RBAC: la autorización es por propiedad (*ownership*) vía RLS (ver sección 7). |
 | RLS | Row Level Security | Mecanismo de Postgres que restringe las filas visibles o editables según `auth.uid()`. |
 | SPA | Single Page Application | Arquitectura del frontend, construido en React 19. |
 | SQL | Structured Query Language | Lenguaje de consulta de la base de datos Postgres. |
-| UX/UI | Experiencia de usuario / Interfaz de usuario | Diseño funcional y visual del producto (ver sección 08). |
+| UX/UI | Experiencia de usuario / Interfaz de usuario | Diseño funcional y visual del producto (ver sección 8). |
 
 *Tabla 4 — Glosario de acrónimos y términos.*
 
 ---
 
 
-# 03. Introducción
+# 3. Introducción
 
 ## Contexto y dominio
 
@@ -254,7 +458,7 @@ El alcance funcional del producto entregado se definió a partir del documento `
 HOSTY-2026040419562816.pdf`, elaborado por el equipo al inicio del proyecto como especificación de
 referencia del producto a construir. Este documento fue el que fijó, en última instancia, cuáles
 funcionalidades formaban parte del MVP (catálogo, reserva, panel del anfitrión) y cuáles quedaban
-fuera de su alcance inicial, como el cobro en línea o las reseñas de usuarios (ver sección 01).
+fuera de su alcance inicial, como el cobro en línea o las reseñas de usuarios (ver sección 1).
 
 > **Dato simulado (SIM-01) — Metodología previa de relevamiento.**
 > Este cambio de documentación no tuvo acceso a actas de entrevistas, encuestas u otro registro
@@ -292,13 +496,13 @@ flowchart TD
 
 *Figura 2 — Estructura del informe: 16 secciones + 5 anexos y sus dependencias de lectura.*
 
-Los objetivos que se desprenden de este contexto se desarrollan en [Objetivos](#04-objetivos), y el problema
-central junto con sus consecuencias se detalla en [Problema a Resolver](#05-problema-a-resolver).
+Los objetivos que se desprenden de este contexto se desarrollan en [Objetivos](#4-objetivos), y el problema
+central junto con sus consecuencias se detalla en [Problema a Resolver](#5-problema-a-resolver).
 
 ---
 
 
-# 04. Objetivos
+# 4. Objetivos
 
 ## Objetivo general
 
@@ -376,20 +580,20 @@ dicha funcionalidad efectivamente existe en el producto.
 > Onboarding", "Phase 1.B: Search & Filtering", "Phase 2: Booking & Payments", "Phase 2.B:
 > Notifications", "Phase 3: Host Features", "Phase 3.B: Admin Panel", "Phase 2+: Polish &
 > Optimization"), no por temática funcional. La correspondencia detallada entre épica, milestone e
-> issues se documenta en la sección 09 (Planificación Scrum, Tabla 18) y en
+> issues se documenta en la sección 9 (Planificación Scrum, Tabla 18) y en
 > [Anexo III. Backlog Completo de User Stories](#anexo-iii-backlog-completo-de-user-stories) (Tabla 51).
 
 Esta trazabilidad explícita —de objetivo a épica, funcionalidad y evidencia— es en sí misma una
 forma de cumplir OE6: cada afirmación de este documento remite a un artefacto verificable, ya sea
 un archivo del repositorio, una métrica de la nota Datos-Verificables o un issue del repositorio de
 GitHub. Los objetivos aquí definidos se contrastan con el problema que les da origen en
-[Problema a Resolver](#05-problema-a-resolver), y el balance entre lo planificado y lo entregado se retoma en
+[Problema a Resolver](#5-problema-a-resolver), y el balance entre lo planificado y lo entregado se retoma en
 [Conclusiones](#15-conclusiones).
 
 ---
 
 
-# 05. Problema a Resolver
+# 5. Problema a Resolver
 
 ## Problema central
 
@@ -462,18 +666,18 @@ flowchart TD
 
 > **Dato simulado (SIM-02) — Puntos de dolor sin medición directa.**
 > Los puntos de dolor de la Tabla 9 se formulan de manera plausible a partir del propio dominio del
-> problema y de las funcionalidades que el producto efectivamente prioriza (ver [Objetivos](#04-objetivos)),
+> problema y de las funcionalidades que el producto efectivamente prioriza (ver [Objetivos](#4-objetivos)),
 > y no a partir de una encuesta o entrevista documentada con organizadores o propietarios reales.
 > No deben interpretarse como resultados de una investigación de usuarios formal.
 
 Las respuestas concretas que Hosty da a cada uno de estos puntos se retoman, en términos de
-beneficio percibido, en [Impacto de la Solución](#06-impacto-de-la-solucion), y se contrastan con los objetivos
-específicos definidos en [Objetivos](#04-objetivos).
+beneficio percibido, en [Impacto de la Solución](#6-impacto-de-la-solucion), y se contrastan con los objetivos
+específicos definidos en [Objetivos](#4-objetivos).
 
 ---
 
 
-# 06. Impacto de la Solución
+# 6. Impacto de la Solución
 
 ## Beneficios por tipo de usuario
 
@@ -535,13 +739,13 @@ flowchart TD
 > explícitamente señaladas como no instrumentadas.
 
 El impacto aquí descripto retoma directamente los puntos de dolor identificados en
-[Problema a Resolver](#05-problema-a-resolver) y se refleja, en términos cuantitativos, en las métricas de
+[Problema a Resolver](#5-problema-a-resolver) y se refleja, en términos cuantitativos, en las métricas de
 [Métricas](#14-metricas).
 
 ---
 
 
-# 07. Equipo y Roles
+# 7. Equipo y Roles
 
 ## Composición del equipo
 
@@ -633,13 +837,13 @@ existe un perfil de administrador funcional en la aplicación.
 > cadena de autorización por propiedad se ilustra gráficamente en el Anexo I (Figura 29).
 
 La composición y las responsabilidades del equipo descriptas aquí se retoman, en clave de proceso
-Scrum, en [Planificación Scrum](#09-planificacion-scrum); el detalle técnico de la arquitectura de autorización se
+Scrum, en [Planificación Scrum](#9-planificacion-scrum); el detalle técnico de la arquitectura de autorización se
 desarrolla en [Arquitectura](#11-arquitectura).
 
 ---
 
 
-# 08. Diseño y Desarrollo
+# 8. Diseño y Desarrollo
 
 Esta sección describe el proceso de diseño seguido, el inventario funcional de pantallas
 organizado por tipo de usuario, la arquitectura de carpetas que materializa esas pantallas en
@@ -673,7 +877,7 @@ flowchart TD
 ## 8.2 Módulos y pantallas por tipo de usuario
 
 El inventario de pantallas se organiza en tres tipos de usuario, coherentes con la aclaración de
-[Equipo y Roles](#07-equipo-y-roles) de que Hosty no tiene una tabla de roles: "anfitrión" es una condición
+[Equipo y Roles](#7-equipo-y-roles) de que Hosty no tiene una tabla de roles: "anfitrión" es una condición
 derivada de poseer al menos un registro propio en `salones`, no un rol almacenado.
 
 **Visitante (sin sesión).** La Home (`/`) presenta salones destacados
@@ -816,7 +1020,7 @@ esta sección únicamente el diseño de la interfaz y no duplicar diagramas de p
 ---
 
 
-# 09. Planificación Scrum
+# 9. Planificación Scrum
 
 El proyecto se organizó bajo el marco Scrum, con iteraciones quincenales y un backlog gestionado
 íntegramente como issues de GitHub, agrupadas en épicas y priorizadas mediante un tablero de
@@ -1033,7 +1237,7 @@ el desarrollo.
 > Las tarifas por hora y la dedicación semanal son una estimación de mercado para perfiles
 > junior/estudiantiles en Tucumán durante 2026; no provienen de una factura o cotización real. La
 > Tabla 23 que aparece a continuación (estimación de esfuerzo por perfil) reagrupa a los mismos
-> cinco integrantes de [Equipo y Roles](#07-equipo-y-roles) (Tabla 11) por perfil de costeo, que no coincide
+> cinco integrantes de [Equipo y Roles](#7-equipo-y-roles) (Tabla 11) por perfil de costeo, que no coincide
 > necesariamente con el rol Scrum de cada persona.
 
 | Perfil | Dedicación semanal | Horas totales (12,6 semanas) | Tarifa (ARS/hora) | Subtotal (ARS) |
@@ -1183,7 +1387,7 @@ sequenceDiagram
 
 El frontend es una SPA React 19 servida por Vite, con enrutamiento *file-based* de TanStack
 Router y estado de servidor manejado por TanStack Query sobre `supabase-js`. La organización de
-carpetas es por *feature* (ver [Diseño y Desarrollo](#08-diseno-y-desarrollo), §8.4): `routes/` sólo declara paths,
+carpetas es por *feature* (ver [Diseño y Desarrollo](#8-diseno-y-desarrollo), §8.4): `routes/` sólo declara paths,
 `validateSearch` y guards; `features/<n>/` concentra componentes, hooks de datos y tipos; y
 `shared/lib/` aloja el cliente de Supabase y utilidades transversales. La regla de dependencia es
 estricta en un sentido: una feature nunca importa de otra feature.
@@ -1269,7 +1473,7 @@ diccionario de datos por tabla y las políticas RLS se documentan en
  hashing de contraseñas propio. El arranque de la sesión al iniciar la aplicación (*bootstrap*)
  se detalla en la Figura 16 (§11.2).
 - **Autorización**: no hay RBAC ni tabla de roles; cada política RLS compara `auth.uid()` contra
- la columna de propiedad (`host_id`, `user_id`), como se detalla en [Equipo y Roles](#07-equipo-y-roles)
+ la columna de propiedad (`host_id`, `user_id`), como se detalla en [Equipo y Roles](#7-equipo-y-roles)
  (Tabla 13) y en el diccionario RLS de [Anexo I. Modelo de Datos](#anexo-i-modelo-de-datos) (Tabla 48).
 - **Validación**: esquemas Zod en el cliente (formularios, `validateSearch` de rutas) más
  restricciones `CHECK` en Postgres como última línea de defensa, aun si el cliente falla.
@@ -1342,7 +1546,7 @@ completa (`/*`) en cada push a `dev` en lugar de una invalidación selectiva por
 |---|---|---|
 | ADR-1 | Migrar de backend NestJS de tres capas a BaaS de dos capas con Supabase | Aplicada en el commit `3a89616` (2026-04-29); justificada por la escala de un MVP |
 | ADR-2 | Sin ORM: tipos generados desde el esquema real (`database.types.ts`) | Vigente; evita drift entre modelo y tipos declarados a mano |
-| ADR-3 | Autorización por propiedad vía RLS (`auth.uid()`), sin tabla de roles/RBAC | Vigente (ver [Equipo y Roles](#07-equipo-y-roles), Tabla 13) |
+| ADR-3 | Autorización por propiedad vía RLS (`auth.uid()`), sin tabla de roles/RBAC | Vigente (ver [Equipo y Roles](#7-equipo-y-roles), Tabla 13) |
 | Hallazgo A | `frontend/package.json` declara `axios` como dependencia de runtime pese a que el proyecto usa exclusivamente `supabase-js` para acceder a datos | Inconsistencia no resuelta: dependencia sin uso activo identificado en el código de features revisado |
 | Hallazgo B | `docker-compose.yml`, el `package.json` raíz (`workspaces: ["backend","frontend"]`) e `infra/backend.tf`/`infra/rds.tf` (EC2 + RDS) siguen describiendo y aprovisionando el backend NestJS eliminado en `3a89616` | Documentación y definición de infraestructura desactualizadas respecto del código real; no aprovisionadas en este cambio |
 | Hallazgo C | La restricción `CHECK` de `bookings.status` no reflejaba los cuatro estados usados por la aplicación hasta la migración `20260609233130` | Corregido; desarrollado en detalle en [Anexo I. Modelo de Datos](#anexo-i-modelo-de-datos) (Tabla 43) y como deuda técnica en [Conclusiones](#15-conclusiones) (Tabla 40) |
@@ -1366,7 +1570,7 @@ completa (`/*`) en cada push a `dev` en lugar de una invalidación selectiva por
 
 El aseguramiento de calidad no se trata como una etapa posterior al desarrollo sino como una
 actividad que interviene desde la redacción de las historias de usuario: cada user story
-destacada en la sección 09 (Planificación Scrum) incluye un criterio de aceptación explícito, y
+destacada en la sección 9 (Planificación Scrum) incluye un criterio de aceptación explícito, y
 ese criterio es el insumo directo para diseñar los casos de prueba —manuales o automatizados— de
 la funcionalidad correspondiente. La ejecución de pruebas automatizadas ocurre en dos momentos:
 localmente, durante el desarrollo, y en la integración continua, al abrirse un *pull request*. Las
@@ -1627,14 +1831,14 @@ por severidad al cierre de cada sprint.
 # 13. Ejecución por Sprint
 
 Esta sección reconstruye la ejecución cronológica del proyecto, sprint por sprint, sobre la base
-del calendario presentado en [Planificación Scrum](#09-planificacion-scrum) (Tabla 21). A diferencia de esa tabla, que
+del calendario presentado en [Planificación Scrum](#9-planificacion-scrum) (Tabla 21). A diferencia de esa tabla, que
 resume cantidades, aquí se detallan los entregables concretos de cada sprint, los cambios de
 alcance o diseño ocurridos durante el desarrollo y la capacidad funcional más distintiva del
 sistema, ilustrada con un diagrama de secuencia.
 
 > **Fuente.** Los límites de fecha de cada sprint son una reconstrucción inferida a partir de
 > la densidad de commits y de los clústeres de fecha de las migraciones de Supabase; ver SIM-13 en
-> [Planificación Scrum](#09-planificacion-scrum). Los conteos de commits e issues cerradas citados abajo son reales
+> [Planificación Scrum](#9-planificacion-scrum). Los conteos de commits e issues cerradas citados abajo son reales
 > (M23, M24).
 
 ## Relato por sprint
@@ -1830,7 +2034,7 @@ justificación explícita registrada en GitHub.
 > `CLOSED` (2026-07-28). Detalle de los 5 diferidos: `gh issue list --json
 > number,title,state,labels` filtrado por número.
 
-Las 7 épicas planificadas (E1–E7, ver [Objetivos](#04-objetivos) y la sección 09, Planificación Scrum) alcanzaron
+Las 7 épicas planificadas (E1–E7, ver [Objetivos](#4-objetivos) y la sección 9, Planificación Scrum) alcanzaron
 estado funcional en el ambiente de DEV: catálogo y búsqueda, autenticación, reserva, panel del
 anfitrión, favoritos y plan destacado, calidad e integración continua, e infraestructura y
 despliegue.
@@ -1919,9 +2123,110 @@ flowchart TD
 | Mediano plazo | Activar `react-i18next` (`useTranslation`) | `src/i18n/` inicializado sin uso (Tabla 40) |
 | Mediano plazo | Ambientes `staging` y `prod` | Sólo `web-dev.yml` despliega hoy (Tabla 37, sección 14) |
 | Largo plazo | Reviews y ratings, panel de administración | Issue diferido #33 (`post-mvp`) |
-| Largo plazo | Expansión multi-provincia | Extensión natural del catálogo geolocalizado (sección 08) |
+| Largo plazo | Expansión multi-provincia | Extensión natural del catálogo geolocalizado (sección 8) |
 
 *Tabla 41 — Aprendizajes y líneas de evolución futura.*
+
+---
+
+
+# 16. Bibliografía
+
+Las fuentes que sostienen las decisiones técnicas de este informe son, en su mayoría, la
+documentación oficial de las herramientas empleadas. Se las cita porque cada una respalda una
+decisión concreta —no como lectura de contexto— y se indica, cuando corresponde, la sección del
+informe que se apoya en ella. Todas las direcciones se consultaron entre marzo y agosto de 2026.
+
+## Metodología y proceso
+
+Schwaber, K. y Sutherland, J. (2020). *The Scrum Guide: The Definitive Guide to Scrum — The Rules
+of the Game*. Scrum.org. `https://scrumguides.org/scrum-guide.html`
+— Marco de referencia para las ceremonias, los roles y la cadencia descritos en
+[Planificación Scrum](#9-planificacion-scrum).
+
+Beck, K. *et al.* (2001). *Manifesto for Agile Software Development*.
+`https://agilemanifesto.org/iso/es/manifesto.html`
+— Principios que orientan la priorización de alcance documentada en [Ejecución por Sprint](#13-ejecucion-por-sprint).
+
+Conventional Commits (2023). *Conventional Commits 1.0.0*.
+`https://www.conventionalcommits.org/es/v1.0.0/`
+— Convención de mensajes de *commit* que el repositorio hace cumplir mediante `commitlint`, según
+se detalla en [Testing y Calidad](#12-testing-y-calidad).
+
+## Arquitectura y plataforma de datos
+
+Supabase (2026). *Supabase Documentation*. `https://supabase.com/docs`
+— Plataforma de base de datos, autenticación y almacenamiento sobre la que se apoya la arquitectura
+de dos capas de [Arquitectura](#11-arquitectura).
+
+PostgREST (2026). *PostgREST Documentation*. `https://postgrest.org/en/stable/`
+— Componente que autogenera la API REST a partir del esquema de PostgreSQL; fundamenta el
+contenido de [Anexo IV. API y Repositorio](#anexo-iv-api-y-repositorio).
+
+The PostgreSQL Global Development Group (2026). *PostgreSQL 17 Documentation — Row Security
+Policies*. `https://www.postgresql.org/docs/17/ddl-rowsecurity.html`
+— Mecanismo de autorización por propiedad de fila que sustituye a un esquema de roles, descrito en
+[Arquitectura](#11-arquitectura) y en [Anexo I. Modelo de Datos](#anexo-i-modelo-de-datos).
+
+Fielding, R. T. (2000). *Architectural Styles and the Design of Network-based Software
+Architectures* (tesis doctoral). University of California, Irvine.
+`https://ics.uci.edu/~fielding/pubs/dissertation/top.htm`
+— Formulación original del estilo arquitectónico REST, del que PostgREST es una implementación.
+
+## Desarrollo del cliente
+
+Meta Open Source (2026). *React Documentation*. `https://react.dev`
+— Biblioteca de interfaz de usuario; versión 19, con el compilador de React habilitado.
+
+Vite (2026). *Vite Guide*. `https://vite.dev/guide/`
+— Herramienta de construcción y servidor de desarrollo del *frontend*.
+
+Microsoft (2026). *TypeScript Handbook*. `https://www.typescriptlang.org/docs/handbook/intro.html`
+— Sistema de tipos empleado en modo estricto en todo el código de aplicación.
+
+TanStack (2026). *TanStack Router Documentation*. `https://tanstack.com/router/latest`
+— Enrutado tipado basado en archivos; sustenta el inventario de rutas de la Tabla 15.
+
+TanStack (2026). *TanStack Query Documentation*. `https://tanstack.com/query/latest`
+— Caché de estado de servidor; define el ciclo de lectura de datos de la Figura 18.
+
+Tailwind Labs (2026). *Tailwind CSS Documentation*. `https://tailwindcss.com/docs`
+— Sistema de utilidades de estilo y variables de marca descritos en [Diseño y Desarrollo](#8-diseno-y-desarrollo).
+
+WAI-ARIA Authoring Practices (2026). *ARIA Authoring Practices Guide*. W3C.
+`https://www.w3.org/WAI/ARIA/apg/`
+— Referencia de roles de accesibilidad; sustenta el hallazgo sobre el marcado semántico del control
+de reserva registrado en [Anexo V. Evidencias de QA](#anexo-v-evidencias-de-qa).
+
+## Calidad y automatización
+
+Vitest (2026). *Vitest Guide*. `https://vitest.dev/guide/`
+— Ejecutor de pruebas unitarias y de componente, y proveedor de la medición de cobertura de la
+Tabla 32.
+
+Testing Library (2026). *React Testing Library Documentation*.
+`https://testing-library.com/docs/react-testing-library/intro/`
+— Enfoque de prueba centrado en el comportamiento observable por la persona usuaria.
+
+Microsoft (2026). *Playwright Documentation*. `https://playwright.dev/docs/intro`
+— Automatización de pruebas de punta a punta sobre Chromium, Firefox y WebKit; incluye el modo
+estricto de localizadores que explica dos de los fallos analizados en la Tabla 57c.
+
+GitHub (2026). *GitHub Actions Documentation*. `https://docs.github.com/actions`
+— Canalización de integración y despliegue continuos descrita en [Testing y Calidad](#12-testing-y-calidad).
+
+## Infraestructura
+
+Amazon Web Services (2026). *Amazon S3 y Amazon CloudFront — Developer Guides*.
+`https://docs.aws.amazon.com/`
+— Alojamiento estático y red de distribución de contenidos del *frontend* desplegado.
+
+HashiCorp (2026). *Terraform Documentation*. `https://developer.hashicorp.com/terraform/docs`
+— Infraestructura como código para los recursos de AWS, según [Arquitectura](#11-arquitectura).
+
+OpenStreetMap Foundation (2026). *Nominatim Documentation*.
+`https://nominatim.org/release-docs/latest/`
+— Servicio de geocodificación empleado para ubicar cada salón en el mapa del catálogo.
 
 ---
 
@@ -2197,7 +2502,7 @@ disponibilidad, plan destacado, coordenadas geográficas y favoritos.
 
 # Anexo II. Diagramas de Flujo Complementarios
 
-Este anexo detalla los flujos de proceso que [Diseño y Desarrollo](#08-diseno-y-desarrollo) referencia sin
+Este anexo detalla los flujos de proceso que [Diseño y Desarrollo](#8-diseno-y-desarrollo) referencia sin
 diagramar, para mantener esa sección centrada en la interfaz. La lectura de estos flujos
 complementa el modelo de datos de [Anexo I. Modelo de Datos](#anexo-i-modelo-de-datos) y la arquitectura de
 [Arquitectura](#11-arquitectura).
@@ -2340,7 +2645,7 @@ Este anexo reproduce el backlog completo del proyecto: las 50 issues del reposit
 su hito de GitHub asociado y su estado real, clasificado como **entregada** (issue cerrada) o
 **diferida** (issue abierta al momento de esta verificación). El detalle de las 15 historias
 destacadas y su relación con criterios de aceptación se documenta en
-[Planificación Scrum](#09-planificacion-scrum) (Tabla 19); la ejecución cronológica, en
+[Planificación Scrum](#9-planificacion-scrum) (Tabla 19); la ejecución cronológica, en
 [Ejecución por Sprint](#13-ejecucion-por-sprint).
 
 ## Backlog completo

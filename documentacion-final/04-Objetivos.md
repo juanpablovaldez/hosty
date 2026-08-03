@@ -10,7 +10,7 @@ tablas: [T6, T7]
 updated: 2026-07-28
 ---
 
-# 04. Objetivos
+# 4. Objetivos
 
 ## Objetivo general
 
@@ -88,7 +88,7 @@ dicha funcionalidad efectivamente existe en el producto.
 > Onboarding", "Phase 1.B: Search & Filtering", "Phase 2: Booking & Payments", "Phase 2.B:
 > Notifications", "Phase 3: Host Features", "Phase 3.B: Admin Panel", "Phase 2+: Polish &
 > Optimization"), no por temática funcional. La correspondencia detallada entre épica, milestone e
-> issues se documenta en la sección 09 (Planificación Scrum, Tabla 18) y en
+> issues se documenta en la sección 9 (Planificación Scrum, Tabla 18) y en
 > [[Anexo-III-Backlog-User-Stories]] (Tabla 51).
 
 Esta trazabilidad explícita —de objetivo a épica, funcionalidad y evidencia— es en sí misma una

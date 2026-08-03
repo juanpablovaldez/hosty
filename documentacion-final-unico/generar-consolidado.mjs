@@ -42,6 +42,7 @@ const NOTAS = [
   '13-Ejecucion-por-Sprint.md',
   '14-Metricas.md',
   '15-Conclusiones.md',
+  '16-Bibliografia.md',
   'Anexos/Anexo-I-Modelo-de-Datos.md',
   'Anexos/Anexo-II-Diagramas-de-Flujo.md',
   'Anexos/Anexo-III-Backlog-User-Stories.md',
@@ -51,22 +52,23 @@ const NOTAS = [
 
 /** nombre de nota -> [texto legible, ancla] para reescribir wikilinks. */
 const DESTINOS = {
-  '00-Portada-y-Ficha': ['Portada y Ficha Técnica', '00-portada-y-ficha-tecnica'],
-  '01-Resumen-Ejecutivo': ['Resumen Ejecutivo', '01-resumen-ejecutivo'],
-  '02-Acronimos': ['Acrónimos', '02-acronimos'],
-  '03-Introduccion': ['Introducción', '03-introduccion'],
-  '04-Objetivos': ['Objetivos', '04-objetivos'],
-  '05-Problema-a-Resolver': ['Problema a Resolver', '05-problema-a-resolver'],
-  '06-Impacto-de-la-Solucion': ['Impacto de la Solución', '06-impacto-de-la-solucion'],
-  '07-Equipo-y-Roles': ['Equipo y Roles', '07-equipo-y-roles'],
-  '08-Diseno-y-Desarrollo': ['Diseño y Desarrollo', '08-diseno-y-desarrollo'],
-  '09-Planificacion-Scrum': ['Planificación Scrum', '09-planificacion-scrum'],
+  '00-Portada-y-Ficha': ['la portada', 'hosty'],
+  '01-Resumen-Ejecutivo': ['Resumen Ejecutivo', '1-resumen-ejecutivo'],
+  '02-Acronimos': ['Acrónimos', '2-acronimos'],
+  '03-Introduccion': ['Introducción', '3-introduccion'],
+  '04-Objetivos': ['Objetivos', '4-objetivos'],
+  '05-Problema-a-Resolver': ['Problema a Resolver', '5-problema-a-resolver'],
+  '06-Impacto-de-la-Solucion': ['Impacto de la Solución', '6-impacto-de-la-solucion'],
+  '07-Equipo-y-Roles': ['Equipo y Roles', '7-equipo-y-roles'],
+  '08-Diseno-y-Desarrollo': ['Diseño y Desarrollo', '8-diseno-y-desarrollo'],
+  '09-Planificacion-Scrum': ['Planificación Scrum', '9-planificacion-scrum'],
   '10-Presupuesto': ['Presupuesto', '10-presupuesto'],
   '11-Arquitectura': ['Arquitectura', '11-arquitectura'],
   '12-Testing-y-Calidad': ['Testing y Calidad', '12-testing-y-calidad'],
   '13-Ejecucion-por-Sprint': ['Ejecución por Sprint', '13-ejecucion-por-sprint'],
   '14-Metricas': ['Métricas', '14-metricas'],
   '15-Conclusiones': ['Conclusiones', '15-conclusiones'],
+  '16-Bibliografia': ['Bibliografía', '16-bibliografia'],
   'Anexo-I-Modelo-de-Datos': ['Anexo I. Modelo de Datos', 'anexo-i-modelo-de-datos'],
   'Anexo-II-Diagramas-de-Flujo': [
     'Anexo II. Diagramas de Flujo Complementarios',
@@ -80,32 +82,76 @@ const DESTINOS = {
   'Anexo-V-Evidencias-QA': ['Anexo V. Evidencias de QA', 'anexo-v-evidencias-de-qa'],
 }
 
-/** Títulos de la tabla de contenidos, en el mismo orden que NOTAS. */
-const TOC = [
-  ['00. Portada y Ficha Técnica', '00-portada-y-ficha-tecnica'],
-  ['01. Resumen Ejecutivo', '01-resumen-ejecutivo'],
-  ['02. Acrónimos', '02-acronimos'],
-  ['03. Introducción', '03-introduccion'],
-  ['04. Objetivos', '04-objetivos'],
-  ['05. Problema a Resolver', '05-problema-a-resolver'],
-  ['06. Impacto de la Solución', '06-impacto-de-la-solucion'],
-  ['07. Equipo y Roles', '07-equipo-y-roles'],
-  ['08. Diseño y Desarrollo', '08-diseno-y-desarrollo'],
-  ['09. Planificación Scrum', '09-planificacion-scrum'],
-  ['10. Presupuesto', '10-presupuesto'],
-  ['11. Arquitectura', '11-arquitectura'],
-  ['12. Testing y Calidad', '12-testing-y-calidad'],
-  ['13. Ejecución por Sprint', '13-ejecucion-por-sprint'],
-  ['14. Métricas', '14-metricas'],
-  ['15. Conclusiones', '15-conclusiones'],
-  ['Anexo I. Modelo de Datos', 'anexo-i-modelo-de-datos'],
-  ['Anexo II. Diagramas de Flujo Complementarios', 'anexo-ii-diagramas-de-flujo-complementarios'],
-  ['Anexo III. Backlog Completo de User Stories', 'anexo-iii-backlog-completo-de-user-stories'],
-  ['Anexo IV. API y Repositorio', 'anexo-iv-api-y-repositorio'],
-  ['Anexo V. Evidencias de QA', 'anexo-v-evidencias-de-qa'],
-]
-
 const sinFrontmatter = (texto) => texto.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '')
+
+/** Ancla al estilo de Obsidian: minúsculas, sin diacríticos ni puntuación, espacios a guiones. */
+const ancla = (titulo) =>
+  titulo
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+
+/**
+ * Índices de contenido, tablas y figuras, construidos leyendo el documento ya armado. Se generan
+ * en vez de mantenerse a mano porque una lista de 65 tablas escrita a mano se desincroniza en la
+ * primera edición y nadie lo nota hasta que está impresa.
+ *
+ * No llevan número de página: el markdown no los conoce y Obsidian no los genera al exportar.
+ * Cada entrada indica en cambio la sección donde vive, que es lo que permite encontrarla.
+ */
+function construirIndices(cuerpo) {
+  const general = []
+  const tablas = []
+  const figuras = []
+  let seccionActual = ''
+
+  for (const linea of cuerpo.split('\n')) {
+    const h1 = linea.match(/^# (.+)$/)
+    if (h1) {
+      const titulo = h1[1].trim()
+      // El H1 de la portada es el nombre del proyecto; como etiqueta de sección en los índices
+      // de tablas y figuras no dice nada, así que se nombra por lo que es.
+      seccionActual = titulo === 'Hosty' ? 'Material preliminar' : titulo
+      general.push({ nivel: 1, titulo, ancla: ancla(titulo) })
+      continue
+    }
+    const h2 = linea.match(/^## (.+)$/)
+    if (h2) {
+      general.push({ nivel: 2, titulo: h2[1].trim(), ancla: ancla(h2[1].trim()) })
+      continue
+    }
+    const t = linea.match(/^\*Tabla (\d+[a-z]?) — (.+?)\.?\*$/)
+    if (t) tablas.push({ n: t[1], titulo: t[2], seccion: seccionActual })
+    const f = linea.match(/^\*Figura (\d+[a-z]?) — (.+?)\.?\*$/)
+    if (f) figuras.push({ n: f[1], titulo: f[2], seccion: seccionActual })
+  }
+
+  const indiceGeneral = general
+    .map((e) => `${e.nivel === 2 ? '    - ' : '- '}[${e.titulo}](#${e.ancla})`)
+    .join('\n')
+
+  // Un epígrafe puede contener barras verticales —la Figura 33 enumera los estados de una reserva
+  // como `pending` | `confirmed` | `declined`—, y sin escaparlas parten la fila del índice en
+  // celdas de más.
+  const celda = (s) => s.replace(/\|/g, '\\|')
+
+  const listado = (items, etiqueta) =>
+    items.length
+      ? items
+          .map((i) => `| ${etiqueta} ${i.n} | ${celda(i.titulo)} | ${celda(i.seccion)} |`)
+          .join('\n')
+      : `| — | (sin ${etiqueta.toLowerCase()}s) | — |`
+
+  return {
+    indiceGeneral,
+    indiceTablas: listado(tablas, 'Tabla'),
+    indiceFiguras: listado(figuras, 'Figura'),
+    totales: { tablas: tablas.length, figuras: figuras.length },
+  }
+}
 
 /**
  * Adaptación para impresión: un `flowchart LR` ancho se desborda del ancho útil de una hoja A4 y
@@ -190,6 +236,10 @@ const emojiDetectados = []
 
 const cuerpos = NOTAS.map((nota) => {
   let texto = readFileSync(join(vault, nota), 'utf8')
+  // Las notas del vault tienen finales de línea mixtos según quién las editó. Sin normalizar,
+  // un `\r` residual queda dentro del título y produce anclas rotas, y hace que los epígrafes
+  // de tabla y figura no se reconozcan al construir los índices.
+  texto = texto.replace(/\r\n/g, '\n')
   texto = sinFrontmatter(texto)
   texto = sinPieDeNavegacion(texto)
   texto = resolverWikilinks(texto, nota)
@@ -208,31 +258,49 @@ const hoy = [
   String(ahora.getDate()).padStart(2, '0'),
 ].join('-')
 
-const encabezado = `# Hosty — Informe Final (versión consolidada)
+// La primera nota es el material preliminar (portada, resumen, ficha técnica); el resto, el cuerpo
+// numerado y los anexos. Los índices se intercalan entre ambos, que es donde van en un trabajo
+// final: después del resumen y antes de la primera sección.
+const preliminar = cuerpos[0].trim()
+const cuerpoPrincipal = cuerpos.slice(1).join('\n\n---\n\n')
 
-**Documento consolidado — generado a partir del vault \`documentacion-final/\`, fecha: ${hoy}.**
+const { indiceGeneral, indiceTablas, indiceFiguras, totales } = construirIndices(
+  `${preliminar}\n${cuerpoPrincipal}`,
+)
 
-Este archivo reúne, en un único documento portable, las 21 notas de contenido del informe final
-de Hosty (16 secciones numeradas + 5 anexos), en su orden de lectura canónico. Es una
-concatenación sin pérdida de esas notas: no reemplaza al vault de Obsidian. Las fuentes
-editables e individuales de cada sección — y las notas de apoyo (\`_meta/\`) que este documento no
-incluye — siguen viviendo en \`documentacion-final/\`; cualquier corrección de contenido debe
-hacerse ahí y volver a generar este archivo con
-\`node documentacion-final-unico/generar-consolidado.mjs\`.
+// El título de la portada no es una entrada del índice: es la tapa.
+const indiceSinPortada = indiceGeneral
+  .split('\n')
+  .filter((l) => !/^- \[Hosty\]\(#hosty\)$/.test(l))
+  .join('\n')
 
+const indices = `---
+
+## Índice general
+
+${indiceSinPortada}
 
 ---
 
-## Tabla de contenidos
+## Índice de tablas
 
-${TOC.map(([titulo, ancla]) => `- [${titulo}](#${ancla})`).join('\n')}
+Sin numeración de página: el documento se compone en markdown y la paginación la resuelve el
+exportador. Cada entrada indica la sección donde se encuentra la tabla.
 
+| N.º | Título | Sección |
+|---|---|---|
+${indiceTablas}
 
 ---
 
+## Índice de figuras
+
+| N.º | Título | Sección |
+|---|---|---|
+${indiceFiguras}
 `
 
-const documento = encabezado + cuerpos.join('\n\n---\n\n') + '\n'
+const documento = `${preliminar}\n\n${indices}\n---\n\n${cuerpoPrincipal}\n`
 
 // 1. Dentro del vault: rutas `assets/...` tal como las resuelve Obsidian desde la raíz del vault.
 const enVault = documento.replace(/\]\(\.\.\/assets\//g, '](assets/')
@@ -244,6 +312,7 @@ writeFileSync(join(raiz, 'documentacion-final-unico', 'Hosty-Informe-Final.md'),
 
 const lineas = enVault.split('\n').length
 console.log(`OK — ${NOTAS.length} notas consolidadas, ${lineas} líneas`)
+console.log(`  índices generados: ${totales.tablas} tablas, ${totales.figuras} figuras`)
 console.log('  -> documentacion-final/Hosty-Informe-Final.md          (para exportar a PDF desde Obsidian)')
 console.log('  -> documentacion-final-unico/Hosty-Informe-Final.md    (copia portable)')
 if (convertidos.length) {

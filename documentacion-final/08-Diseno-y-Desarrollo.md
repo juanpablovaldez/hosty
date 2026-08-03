@@ -10,7 +10,7 @@ tablas: [T15, T14, T16]
 updated: 2026-07-28
 ---
 
-# 08. Diseño y Desarrollo
+# 8. Diseño y Desarrollo
 
 Esta sección describe el proceso de diseño seguido, el inventario funcional de pantallas
 organizado por tipo de usuario, la arquitectura de carpetas que materializa esas pantallas en

@@ -10,7 +10,7 @@ tablas: [T11, T12, T13]
 updated: 2026-07-28
 ---
 
-# 07. Equipo y Roles
+# 7. Equipo y Roles
 
 ## Composición del equipo
 

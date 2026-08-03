@@ -31,7 +31,7 @@ justificación explícita registrada en GitHub.
 > `CLOSED` (2026-07-28). Detalle de los 5 diferidos: `gh issue list --json
 > number,title,state,labels` filtrado por número.
 
-Las 7 épicas planificadas (E1–E7, ver [[04-Objetivos]] y la sección 09, Planificación Scrum) alcanzaron
+Las 7 épicas planificadas (E1–E7, ver [[04-Objetivos]] y la sección 9, Planificación Scrum) alcanzaron
 estado funcional en el ambiente de DEV: catálogo y búsqueda, autenticación, reserva, panel del
 anfitrión, favoritos y plan destacado, calidad e integración continua, e infraestructura y
 despliegue.
@@ -120,7 +120,7 @@ flowchart LR
 | Mediano plazo | Activar `react-i18next` (`useTranslation`) | `src/i18n/` inicializado sin uso (Tabla 40) |
 | Mediano plazo | Ambientes `staging` y `prod` | Sólo `web-dev.yml` despliega hoy (Tabla 37, sección 14) |
 | Largo plazo | Reviews y ratings, panel de administración | Issue diferido #33 (`post-mvp`) |
-| Largo plazo | Expansión multi-provincia | Extensión natural del catálogo geolocalizado (sección 08) |
+| Largo plazo | Expansión multi-provincia | Extensión natural del catálogo geolocalizado (sección 8) |
 
 *Tabla 41 — Aprendizajes y líneas de evolución futura.*
 
