@@ -199,7 +199,14 @@ const cuerpos = NOTAS.map((nota) => {
   return texto
 })
 
-const hoy = new Date().toISOString().slice(0, 10)
+// Fecha local, no UTC: generar el informe después de las 21 h en Argentina (UTC-3) lo fechaba al
+// día siguiente y lo dejaba en contradicción con las fechas de verificación del propio documento.
+const ahora = new Date()
+const hoy = [
+  ahora.getFullYear(),
+  String(ahora.getMonth() + 1).padStart(2, '0'),
+  String(ahora.getDate()).padStart(2, '0'),
+].join('-')
 
 const encabezado = `# Hosty — Informe Final (versión consolidada)
 

@@ -1,6 +1,6 @@
 # Hosty — Informe Final (versión consolidada)
 
-**Documento consolidado — generado a partir del vault `documentacion-final/`, fecha: 2026-08-03.**
+**Documento consolidado — generado a partir del vault `documentacion-final/`, fecha: 2026-08-02.**
 
 Este archivo reúne, en un único documento portable, las 21 notas de contenido del informe final
 de Hosty (16 secciones numeradas + 5 anexos), en su orden de lectura canónico. Es una
