@@ -4,7 +4,7 @@ seccion: "meta"
 tipo: meta
 tags: [hosty, informe-final, pendientes]
 estado: completo
-updated: 2026-08-02
+updated: 2026-08-04
 ---
 
 # Pendientes — Registro de placeholders y datos simulados
@@ -105,7 +105,7 @@ Los últimos cuatro se cerraron el 2026-08-02:
 `assets/README.md` reproduce, sin numeración propia (nota de apparatus, ver decisión D5 de diseño),
 la misma lista de 4 capturas pendientes (P-15, P-41, P-42, P-43) para referencia rápida del equipo.
 
-## Datos simulados (`SIM-##`) — 20 originales, 16 activos al 2026-08-03
+## Datos simulados (`SIM-##`) — 20 originales, 15 activos al 2026-08-04
 
 ### [[03-Introduccion]], [[05-Problema-a-Resolver]] y [[06-Impacto-de-la-Solucion]] (3, consolidados en una nota — 2026-08-03)
 
@@ -119,21 +119,23 @@ una línea liviana que remite a esa nota. El disclosure sigue estando, sólo baj
 | SIM-02 | Puntos de dolor por actor sin medición directa | Formulados a partir del dominio del problema y de las funcionalidades priorizadas, no de una encuesta |
 | SIM-03 | Indicadores de impacto propuestos, no medidos | Propuestas razonables; el proyecto no tiene analítica de producto instrumentada |
 
-### [[07-Equipo-y-Roles]] (1)
+### [[07-Equipo-y-Roles]] (0 — cerrado el 2026-08-04)
+
+SIM-04 se cerró: el equipo (Mignone, co-liderazgo) confirmó directamente los títulos formales de
+rol —incluido el co-liderazgo compartido entre Valdez (Product Owner + infraestructura) y Mignone
+(diseño de producto y frontend)— y la reconstrucción pasó a cita `[!info] Fuente` en la Tabla 11 de
+[[07-Equipo-y-Roles]]. Ya no depende sólo de evidencia inferida (M33–M35); tiene confirmación
+directa del equipo.
+
+### [[09-Planificacion-Scrum]] (8, 2 acotados el 2026-08-04)
 
 | SIM-## | Descripción | Base de la reconstrucción |
 |---|---|---|
-| SIM-04 | Título formal de cada rol de equipo | Sin acta de asignación; el título se deriva de evidencia verificable (M33–M35) citada en Tabla 11, no de una decisión de equipo documentada |
-
-### [[09-Planificacion-Scrum]] (8)
-
-| SIM-## | Descripción | Base de la reconstrucción |
-|---|---|---|
-| SIM-09 | Ceremonias Scrum y cadencia | Sin acta formal; cadencia plausible para un equipo estudiantil de 5 integrantes |
+| SIM-09 | Ceremonias Scrum y cadencia | Acotado 2026-08-04: la cadencia semanal ("weekly", no diaria) está confirmada por el equipo; el resto de las ceremonias (refinamiento, planning, review, retro) sigue sin acta formal |
 | SIM-10 | Definition of Ready (DoR) | Sin documento de DoR versionado en el repositorio |
 | SIM-11 | Definition of Done (DoD) | Sin acta registrada del equipo |
 | SIM-12 | Ejemplo de criterio de aceptación (Given/When/Then) | Reconstruido a partir del comportamiento observable en `BookingFlow.tsx` y `useCreateBooking` |
-| SIM-13 | Límites y foco de los sprints (S1–S5) | Inferidos de la densidad de commits y de clústeres de fecha de migraciones de Supabase |
+| SIM-13 | Límites y foco de los sprints (S1–S5) | Acotado 2026-08-04: el equipo confirmó que los sprints, story points y objetivos de sprint fueron reales y formales; sólo las etiquetas "S1"–"S5" y sus rangos de fecha en este informe se infieren de la densidad de commits y de clústeres de fecha de migraciones de Supabase |
 | SIM-14 | Retrospectiva S1–S2 | Reconstruida a partir de fricciones observables (retrabajo de migración NestJS→Supabase) |
 | SIM-15 | Retrospectiva S3–S4 | Reconstruida a partir del hallazgo del `CHECK` de `bookings` corregido en curso |
 | SIM-16 | Retrospectiva S5 | Reconstruida a partir de la consolidación de PRs cercana al cierre |
@@ -172,11 +174,11 @@ agente.
 | Lote | P-## usados | SIM-## usados |
 |---|---|---|
 | 0 — Fundación | P-01–P-08 (8) | — |
-| A — Marco del proyecto | P-09 (1) | SIM-01–SIM-04 (4, SIM-04 acotado el 2026-08-03) |
-| B — Gestión y proceso | P-15 (1) | SIM-09–SIM-19 (11) |
+| A — Marco del proyecto | P-09 (1) | SIM-01–SIM-03 (3; SIM-04 cerrado el 2026-08-04) |
+| B — Gestión y proceso | P-15 (1) | SIM-09–SIM-19 (11; SIM-09 y SIM-13 acotados el 2026-08-04) |
 | C — Arquitectura y datos | — | — |
 | D — Calidad, métricas y cierre | P-39, P-40, P-41, P-42, P-43, P-44, P-46 (7) | SIM-37 (1; SIM-33–SIM-36 cerrados el 2026-08-03) |
-| **Total activo** | **17** | **16** (de 20 originales; 4 cerrados) |
+| **Total activo** | **17** | **15** (de 20 originales; 5 cerrados) |
 
 Verificación de unicidad (Lote E, 2026-07-28): `grep -rohE 'PLACEHOLDER P-[0-9]+|Dato simulado
 SIM-[0-9]+'` sobre las 28 notas confirma que cada identificador `P-##` y `SIM-##` está **declarado

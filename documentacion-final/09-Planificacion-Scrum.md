@@ -7,7 +7,7 @@ tags: [hosty, informe-final, scrum]
 estado: con-pendientes
 figuras: [F10, F11, F12]
 tablas: [T17, T18, T19, T20, T21, T22]
-updated: 2026-07-28
+updated: 2026-08-04
 ---
 
 # 9. Planificación Scrum
@@ -23,24 +23,27 @@ mecanismo de seguimiento utilizado.
 ```mermaid
 flowchart LR
     A[Refinamiento] --> B[Planning]
-    B --> C[Daily]
+    B --> C[Weekly]
     C --> D[Review]
     D --> E[Retrospectiva]
     E --> A
 ```
 
-*Figura 10 — Iteración Scrum: refinamiento, planificación, daily, revisión y retrospectiva.*
+*Figura 10 — Iteración Scrum: refinamiento, planificación, weekly, revisión y retrospectiva.*
 
 > [!warning] Dato simulado SIM-09 — Ceremonias Scrum y cadencia
-> No existe un acta formal de ceremonias en el repositorio. La Tabla 17 que aparece a continuación
-> (ceremonias Scrum y cadencia) reconstruye de forma plausible la cadencia y los participantes para
+> El equipo confirmó (2026-08-04) que la sincronización del equipo de desarrollo fue semanal
+> ("*weekly*"), no diaria — ajustada a la disponibilidad real de un equipo part-time/estudiantil —,
+> corregido en la fila correspondiente de la Tabla 17. El resto de las ceremonias (refinamiento,
+> planning, review y retrospectiva) sigue sin acta formal en el repositorio: su frecuencia y
+> participantes, en la Tabla 17 que aparece a continuación, son una reconstrucción plausible para
 > un equipo estudiantil de cinco integrantes que trabaja con Scrum sobre issues de GitHub.
 
 | Ceremonia | Frecuencia | Participantes | Propósito |
 |---|---|---|---|
 | Refinamiento | Semanal | Equipo completo | Detallar y estimar issues antes del siguiente sprint |
 | Planning | Inicio de cada sprint | Equipo completo | Seleccionar y comprometer el alcance del sprint |
-| Daily | Diaria (15 min) | Equipo de desarrollo | Sincronizar avance y destrabar bloqueos |
+| Weekly | Semanal | Equipo de desarrollo | Sincronizar avance y destrabar bloqueos |
 | Review | Cierre de cada sprint | Equipo + Product Owner | Demostrar el incremento funcional |
 | Retrospectiva | Cierre de cada sprint | Equipo completo | Identificar mejoras de proceso |
 
@@ -167,11 +170,14 @@ Fibonacci (1, 2, 3, 5, 8, 13, 21).
 ## Plan de sprints
 
 > [!warning] Dato simulado SIM-13 — Límites y foco de los sprints
-> El equipo no registró formalmente los sprints como "S1"–"S5". En la Tabla 21 que aparece a
-> continuación (plan de sprints), los límites de fecha y el foco de cada sprint se infieren a
-> partir de la densidad real de commits y de los clústeres de fecha de las migraciones de
-> Supabase; los conteos de commits e issues cerradas por sprint sí son reales y verificables
-> (M23, M24).
+> El equipo confirmó (2026-08-04) que trabajó con sprints formalmente definidos, con story points y
+> un objetivo de sprint ("*sprint goal*") explícito por iteración — no es una simulación que el
+> proyecto haya tenido sprints reales. Lo que no está disponible para este informe es el texto
+> puntual de esos objetivos ni los límites de fecha exactos tal como se registraron originalmente:
+> las etiquetas "S1"–"S5", sus rangos de fecha y su foco temático, en la Tabla 21 que aparece a
+> continuación, se infieren a partir de la densidad real de commits y de los clústeres de fecha de
+> las migraciones de Supabase. Los conteos de commits e issues cerradas por sprint sí son reales y
+> verificables (M23, M24).
 
 | Sprint | Rango | Foco | Commits | Issues cerradas | Decisión / resultado |
 |---|---|---|---|---|---|
@@ -188,10 +194,9 @@ Fibonacci (1, 2, 3, 5, 8, 13, 21).
 > --json number,closedAt` por ventana (verificado 2026-07-28). Ver [[Datos-Verificables]]. El
 > detalle cronológico se desarrolla en [[13-Ejecucion-por-Sprint]].
 
-**Herramienta de gestión**: el seguimiento del backlog y del avance de cada sprint se realizó en
-GitHub Projects v2, tablero #4 ("Hosty"), con campos de estado, tamaño (story points) y hito
-(M19). No se utilizó una herramienta externa (Jira, Trello); el tablero está integrado
-directamente con las issues y pull requests del repositorio.
+**Herramienta de gestión**: el seguimiento del backlog y del avance de cada sprint se realiza en
+GitHub Projects v2, tablero #4 ("Hosty"), con campos de estado, tamaño (story points), objetivo de
+sprint e hito (M19), integrado directamente con las issues y *pull requests* del repositorio.
 
 ## Retrospectivas
 
