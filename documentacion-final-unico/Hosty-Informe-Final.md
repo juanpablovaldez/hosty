@@ -68,7 +68,8 @@ seguridad a nivel de fila · Scrum · pruebas automatizadas · integración cont
 | Frontend desplegado | `https://d1ako6y2uvskg7.cloudfront.net` |
 | Backend (Supabase) | `https://gjxextyntxfsztpgkqig.supabase.co` |
 | Fecha de defensa | 2026-08-07 |
-| Versión de este documento | v1.3 (versión de entrega) |
+| Integrantes que exponen en esta instancia | Juan Pablo Valdez, Juan Ignacio Mignone, Juan Pablo Czurylo y Benjamín Garma. Lautaro David Martínez Naglieri, cuya participación en el desarrollo se documenta en las Tablas 11 y 12, defiende en una instancia posterior |
+| Versión de este documento | v1.4 (versión de entrega) |
 
 *Tabla 1 — Ficha técnica del proyecto.*
 
@@ -85,6 +86,7 @@ seguridad a nivel de fila · Scrum · pruebas automatizadas · integración cont
 | v1.1 | 2026-08-02 | Revisión de usabilidad previa a la entrega (Tabla 34b); corrección de los seis casos E2E que fallaban y reejecución de la suite completa sobre el entorno desplegado (Tablas 57b y 57c) | Equipo |
 | v1.2 | 2026-08-02 | Adopción de `@vitest/coverage-v8` y medición de cobertura bajo ambos criterios (Tablas 32 y 32a, Figura 37); cierre de los 17 marcadores de contenido pendiente | Equipo |
 | v1.3 | 2026-08-03 | Versión de entrega: estructura de trabajo final —portada, resumen, índices de tablas y figuras, bibliografía— y numeración corrida de las secciones | Equipo |
+| v1.4 | 2026-08-03 | Fecha de corte de las métricas de proceso incorporada a esta nota metodológica; desglose de los commits fuera de `dev` (sección 14); advertencia sobre el alcance de la Tabla 12; desambiguación del recuento de operaciones de API entre las Tablas 30, 38 y 53 | Equipo |
 
 *Tabla 2 — Control de versiones del documento.*
 
@@ -97,6 +99,17 @@ comando que permite reproducirla. **(b) Contenido reconstruido**: redactado de f
 no existir registro documental del hecho —retrospectivas, entrevistas y estimaciones de esfuerzo y
 presupuesto—; se señaliza como *Dato simulado* e indica la base sobre la que se reconstruyó. Ningún
 contenido reconstruido debe interpretarse como evidencia empírica.
+
+**Fecha de corte de las métricas de proceso.** Las cifras que describen la ejecución del proyecto
+—commits, *issues*, *pull requests* y su distribución por *sprint*— se congelaron el **2026-07-28**,
+al cierre del quinto y último *sprint*. El trabajo posterior a esa fecha corresponde a tareas de
+estabilización previas a la defensa —ampliación de la suite de pruebas, corrección de detalles de
+interfaz y redacción de este informe— y no forma parte del alcance planificado de los *sprints*,
+por lo que se excluye deliberadamente: incorporarlo distorsionaría la lectura de la velocidad del
+equipo durante el desarrollo. Por eso el repositorio, consultado hoy, exhibe más *commits* que los
+que cita la sección 14. Las métricas que describen el **estado actual del producto** —rutas,
+tablas, operaciones de API, cobertura de pruebas— se re-verificaron en cambio el **2026-08-02** y
+reflejan el repositorio tal como se entrega.
 
 ---
 
@@ -244,7 +257,7 @@ exportador. Cada entrada indica la sección donde se encuentra la tabla.
 | Tabla 25 | Costo total, contingencia y supuestos declarados | 10. Presupuesto |
 | Tabla 26 | Stack tecnológico por capa, versión y justificación | 11. Arquitectura |
 | Tabla 29 | Rutas, control de acceso y política RLS asociada | 11. Arquitectura |
-| Tabla 30 | Operaciones de API por módulo y ambientes de despliegue | 11. Arquitectura |
+| Tabla 30 | Operaciones de API expuestas como hooks, por módulo | 11. Arquitectura |
 | Tabla 28 | Estructura de carpetas y responsabilidad | 11. Arquitectura |
 | Tabla 27 | Decisiones arquitectónicas (ADR resumidas) | 11. Arquitectura |
 | Tabla 31 | Tipos de prueba, herramienta y alcance real | 12. Testing y Calidad |
@@ -257,6 +270,7 @@ exportador. Cada entrada indica la sección donde se encuentra la tabla.
 | Tabla 35 | Sprints: foco, entregables, decisiones y fecha de cierre | 13. Ejecución por Sprint |
 | Tabla 36 | Cambios de alcance y de diseño con justificación | 13. Ejecución por Sprint |
 | Tabla 37 | Métricas de repositorio y de gestión | 14. Métricas |
+| Tabla 37a | Distribución de los commits que no integran la rama `dev` | 14. Métricas |
 | Tabla 38 | Métricas de producto y de calidad | 14. Métricas |
 | Tabla 39 | Balance funcional: planificado vs. entregado | 15. Conclusiones |
 | Tabla 40 | Deuda técnica: severidad, impacto y plan de remediación | 15. Conclusiones |
@@ -272,7 +286,7 @@ exportador. Cada entrada indica la sección donde se encuentra la tabla.
 | Tabla 50 | Índice de flujos: actor, precondición y resultado | Anexo II. Diagramas de Flujo Complementarios |
 | Tabla 51 | Backlog completo de user stories con estado (entregada/diferida) | Anexo III. Backlog Completo de User Stories |
 | Tabla 52 | Trazabilidad historia ↔ issue ↔ PR ↔ archivo | Anexo III. Backlog Completo de User Stories |
-| Tabla 53 | Operaciones PostgREST por módulo | Anexo IV. API y Repositorio |
+| Tabla 53 | Invocaciones PostgREST por módulo | Anexo IV. API y Repositorio |
 | Tabla 52b | Documento OpenAPI de la API de datos | Anexo IV. API y Repositorio |
 | Tabla 54 | Estructura del repositorio y convenciones de commits y ramas | Anexo IV. API y Repositorio |
 | Tabla 55 | Workflows de CI/CD: disparador, jobs y resultado | Anexo IV. API y Repositorio |
@@ -522,7 +536,7 @@ confirmar, contra el estado real del repositorio, si la capacidad fue efectivame
 | OE3 | Habilitar un flujo de reserva guiado con validación de disponibilidad y de horarios | Wizard de reserva de 3 pasos (M20), con verificación de bloqueos de disponibilidad |
 | OE4 | Ofrecer al propietario un panel de gestión de sus salones y de las reservas recibidas | Panel del anfitrión con calendario y cotización de precio por reserva |
 | OE5 | Asegurar la calidad mediante pruebas automatizadas e integración continua | 73 pruebas automatizadas (M12) y 3 workflows de CI/CD (M14) |
-| OE6 | Documentar la arquitectura, el proceso y las métricas del proyecto de forma trazable | Este mismo vault: 28 notas con toda métrica citada a su fuente en la nota Datos-Verificables |
+| OE6 | Documentar la arquitectura, el proceso y las métricas del proyecto de forma trazable | Este mismo vault: 35 notas —17 secciones, 5 anexos, 11 notas de apoyo y 2 de índice— con toda métrica citada a su fuente en la nota Datos-Verificables |
 
 *Tabla 6 — Objetivos específicos y criterio de verificación.*
 
@@ -799,6 +813,20 @@ flowchart TD
 > **Fuente.** M05 / M02: `git shortlog -sne --all`. El detalle de cada identidad Git por
 > integrante se documenta en `Datos-Verificables`; esta tabla sólo consolida el porcentaje sobre
 > el total de 236 commits (M02).
+
+**Alcance de esta tabla: qué mide y qué no mide.** El volumen de *commits* describe la actividad
+registrada en el historial, no la magnitud ni el valor del aporte de cada integrante, y tres
+factores verificables lo distorsionan en este proyecto. Primero, **34 de los 140 *commits* del
+integrante con mayor volumen —un 24 %— corresponden a la rama `staging`**, la infraestructura del
+*backend* NestJS que se descartó en el *sprint* 2 (ver la sección 14, Tabla 37a) y que no aportó
+código al producto entregado. Segundo, el historial registra **9 identidades Git para 5 personas**
+(M05), y quien integra las ramas acumula *commits* de fusión que no representan trabajo propio.
+Tercero, el tamaño de un *commit* no está normalizado: los 10 *commits* de Benjamín Garma
+introducen la infraestructura completa de pruebas —Vitest, Playwright y Cypress— y el *workflow* de
+integración continua que hoy bloquea las fusiones que no pasan la suite.
+
+La distribución de responsabilidades por área, que es la lectura pertinente del reparto de trabajo,
+es la de la Tabla 11.
 
 ## Roles de usuario, permisos y mecanismo de autorización
 
@@ -1503,9 +1531,17 @@ un documento OpenAPI auto-generado en `{SUPABASE_URL}/rest/v1/` a partir del esq
 | `favorites` | 2 | 1 | 3 | `user_favorites` |
 | `host` | 6 | 9 | 15 | `salones`, `bookings`, `salon_services`, `salon_availability_blocks`, `salon_subscriptions`, Storage |
 | `auth` (Supabase Auth, no PostgREST) | — | — | 6 (`signInWithPassword`, `signUp`, `signOut`, `getSession`, `onAuthStateChange`, `updateUser`) | `auth.users` |
-| **Total operaciones PostgREST** | 14 | 12 | **26** | |
+| **Total operaciones expuestas como *hooks*** | 14 | 12 | **26** | |
 
-*Tabla 30 — Operaciones de API por módulo y ambientes de despliegue.*
+*Tabla 30 — Operaciones de API expuestas como hooks, por módulo.*
+
+Esta tabla cuenta **operaciones expuestas**: cada *hook* de `api/*.queries.ts` / `*.mutations.ts`
+vale uno, con independencia de cuántas llamadas encadene por dentro. Es una medida de la superficie
+de API que consume la aplicación. La sección 14 (Tabla 38) y el [Anexo IV. API y Repositorio](#anexo-iv-api-y-repositorio)
+(Tabla 53) reportan una magnitud distinta —**35 invocaciones** de `select`, `insert`, `update` y
+`delete`—, que mide el tráfico real contra PostgREST. Los dos recuentos son correctos y no se
+contradicen: un *hook* que resuelve una consulta y luego actualiza una fila cuenta como una
+operación expuesta y como dos invocaciones.
 
 > **Fuente.** conteo verificado directamente sobre `frontend/src/features/*/api/*.ts`
 > (2026-07-28).
@@ -1966,6 +2002,31 @@ pie title Commits por contribuidor (todas las refs, total 236 = M02)
 
 *Figura 25 — Distribución de commits por contribuidor (5 contribuidores).*
 
+### Por qué 236 y 181 no son la misma cifra
+
+La tabla anterior reporta dos totales de *commits* que conviene no confundir: **236 sobre todas las
+referencias del repositorio y 181 sobre la rama `dev`**, la rama de integración del equipo. Los 55
+restantes viven en ramas que nunca se fusionaron a `dev`, y su reparto es en sí mismo un dato del
+proyecto:
+
+| Dónde | *Commits* | Qué son |
+|---|---|---|
+| `staging` | 34 | Infraestructura del *backend* NestJS: EC2, RDS PostgreSQL, Prisma, Docker Compose y despliegue por SSH, concentrados en el 2 y 3 de abril de 2026 |
+| 12 ramas de `feat/`, `fix/`, `qa/` y `test/` | ≈19 | Trabajo de *pull requests* que se cerraron sin fusionar (M07: 20 de 48) |
+| `main` | 0 | Contenida en `dev`; no aporta *commits* propios |
+
+*Tabla 37a — Distribución de los commits que no integran la rama `dev`.*
+
+La rama `staging` es, por lo tanto, el registro fechado de la arquitectura que el equipo probó y
+descartó: todo ese trabajo quedó sin efecto cuando el *commit* `3a89616` (2026-04-29) eliminó el
+*backend* propio y el proyecto migró a Supabase, decisión documentada como ADR-1 en la sección 11.
+No se trata de trabajo perdido por error, sino del costo real de haber evaluado una alternativa
+antes de adoptarla.
+
+> **Fuente.** `git rev-list --count --all` y `git rev-list --count dev` (M01, M02);
+> desglose obtenido con `git rev-list <rama> --not dev` sobre cada referencia remota
+> (verificado 2026-08-03).
+
 > **Fuente.** M05: `git shortlog -sne --all` (2026-07-28), identidades consolidadas por
 > email en `Datos-Verificables`. Un mismo contribuidor puede tener más de una identidad Git
 > (por ejemplo, dos direcciones distintas para Juan Pablo Valdez); la consolidación agrupa por
@@ -1979,7 +2040,7 @@ pie title Commits por contribuidor (todas las refs, total 236 = M02)
 | Archivos de migración | 10 | M11 |
 | Rutas / protegidas | 14 / 8 | M09 |
 | Features del frontend | 8 módulos | M15 |
-| Operaciones PostgREST (invocaciones `select`/`insert`/`update`/`delete` en `api/*.ts`) | 35, repartidas en 4 módulos activos (ver Anexo IV, API y Repositorio, Tabla 53) | Conteo propio, `grep` sobre `frontend/src/features/*/api/*.ts` |
+| Invocaciones PostgREST (`select`/`insert`/`update`/`delete` en `api/*.ts`) | 35, repartidas en 4 módulos activos (ver Anexo IV, API y Repositorio, Tabla 53). **No confundir con las 26 operaciones expuestas como *hooks* de la Tabla 30**: un mismo *hook* puede encadenar más de una invocación | Conteo propio, `grep` sobre `frontend/src/features/*/api/*.ts` |
 | Pruebas automatizadas por tipo | 73 Vitest (14 archivos) + 5 *specs* Playwright E2E (× 3 navegadores) + 1 Mocha + 1 Cypress locales | M12, M13 |
 | Workflows de CI/CD | 3 | M14 |
 
@@ -2789,7 +2850,12 @@ frontend, módulo por módulo:
 | `salones` | 4 | 0 | 0 | 0 | 4 |
 | **Total** | **17** | **6** | **7** | **5** | **35** |
 
-*Tabla 53 — Operaciones PostgREST por módulo.*
+*Tabla 53 — Invocaciones PostgREST por módulo.*
+
+Este recuento mide **invocaciones**: cada `.select()`, `.insert()`, `.update()` o `.delete()` vale
+uno. No debe compararse con las **26 operaciones expuestas como *hooks*** de la Tabla 30 (sección
+11, Arquitectura), que cuenta una magnitud distinta —un *hook* puede encadenar más de una
+invocación—. Ambos recuentos son correctos bajo su propio criterio.
 
 > **Fuente.** conteo propio con
 > `grep -oE '\.(select|insert|update|delete|upsert|rpc)\(' frontend/src/features/<módulo>/api/*.ts`

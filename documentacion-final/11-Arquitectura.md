@@ -208,9 +208,17 @@ un documento OpenAPI auto-generado en `{SUPABASE_URL}/rest/v1/` a partir del esq
 | `favorites` | 2 | 1 | 3 | `user_favorites` |
 | `host` | 6 | 9 | 15 | `salones`, `bookings`, `salon_services`, `salon_availability_blocks`, `salon_subscriptions`, Storage |
 | `auth` (Supabase Auth, no PostgREST) | — | — | 6 (`signInWithPassword`, `signUp`, `signOut`, `getSession`, `onAuthStateChange`, `updateUser`) | `auth.users` |
-| **Total operaciones PostgREST** | 14 | 12 | **26** | |
+| **Total operaciones expuestas como *hooks*** | 14 | 12 | **26** | |
 
-*Tabla 30 — Operaciones de API por módulo y ambientes de despliegue.*
+*Tabla 30 — Operaciones de API expuestas como hooks, por módulo.*
+
+Esta tabla cuenta **operaciones expuestas**: cada *hook* de `api/*.queries.ts` / `*.mutations.ts`
+vale uno, con independencia de cuántas llamadas encadene por dentro. Es una medida de la superficie
+de API que consume la aplicación. La sección 14 (Tabla 38) y el [[Anexo-IV-API-y-Repositorio]]
+(Tabla 53) reportan una magnitud distinta —**35 invocaciones** de `select`, `insert`, `update` y
+`delete`—, que mide el tráfico real contra PostgREST. Los dos recuentos son correctos y no se
+contradicen: un *hook* que resuelve una consulta y luego actualiza una fila cuenta como una
+operación expuesta y como dos invocaciones.
 
 > [!info] Fuente — conteo verificado directamente sobre `frontend/src/features/*/api/*.ts`
 > (2026-07-28).

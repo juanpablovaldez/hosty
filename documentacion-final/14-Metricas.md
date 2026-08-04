@@ -47,6 +47,31 @@ pie title Commits por contribuidor (todas las refs, total 236 = M02)
 
 *Figura 25 — Distribución de commits por contribuidor (5 contribuidores).*
 
+### Por qué 236 y 181 no son la misma cifra
+
+La tabla anterior reporta dos totales de *commits* que conviene no confundir: **236 sobre todas las
+referencias del repositorio y 181 sobre la rama `dev`**, la rama de integración del equipo. Los 55
+restantes viven en ramas que nunca se fusionaron a `dev`, y su reparto es en sí mismo un dato del
+proyecto:
+
+| Dónde | *Commits* | Qué son |
+|---|---|---|
+| `staging` | 34 | Infraestructura del *backend* NestJS: EC2, RDS PostgreSQL, Prisma, Docker Compose y despliegue por SSH, concentrados en el 2 y 3 de abril de 2026 |
+| 12 ramas de `feat/`, `fix/`, `qa/` y `test/` | ≈19 | Trabajo de *pull requests* que se cerraron sin fusionar (M07: 20 de 48) |
+| `main` | 0 | Contenida en `dev`; no aporta *commits* propios |
+
+*Tabla 37a — Distribución de los commits que no integran la rama `dev`.*
+
+La rama `staging` es, por lo tanto, el registro fechado de la arquitectura que el equipo probó y
+descartó: todo ese trabajo quedó sin efecto cuando el *commit* `3a89616` (2026-04-29) eliminó el
+*backend* propio y el proyecto migró a Supabase, decisión documentada como ADR-1 en la sección 11.
+No se trata de trabajo perdido por error, sino del costo real de haber evaluado una alternativa
+antes de adoptarla.
+
+> [!info] Fuente — `git rev-list --count --all` y `git rev-list --count dev` (M01, M02);
+> desglose obtenido con `git rev-list <rama> --not dev` sobre cada referencia remota
+> (verificado 2026-08-03).
+
 > [!info] Fuente — M05: `git shortlog -sne --all` (2026-07-28), identidades consolidadas por
 > email en [[Datos-Verificables]]. Un mismo contribuidor puede tener más de una identidad Git
 > (por ejemplo, dos direcciones distintas para Juan Pablo Valdez); la consolidación agrupa por
@@ -60,7 +85,7 @@ pie title Commits por contribuidor (todas las refs, total 236 = M02)
 | Archivos de migración | 10 | M11 |
 | Rutas / protegidas | 14 / 8 | M09 |
 | Features del frontend | 8 módulos | M15 |
-| Operaciones PostgREST (invocaciones `select`/`insert`/`update`/`delete` en `api/*.ts`) | 35, repartidas en 4 módulos activos (ver Anexo IV, API y Repositorio, Tabla 53) | Conteo propio, `grep` sobre `frontend/src/features/*/api/*.ts` |
+| Invocaciones PostgREST (`select`/`insert`/`update`/`delete` en `api/*.ts`) | 35, repartidas en 4 módulos activos (ver Anexo IV, API y Repositorio, Tabla 53). **No confundir con las 26 operaciones expuestas como *hooks* de la Tabla 30**: un mismo *hook* puede encadenar más de una invocación | Conteo propio, `grep` sobre `frontend/src/features/*/api/*.ts` |
 | Pruebas automatizadas por tipo | 73 Vitest (14 archivos) + 5 *specs* Playwright E2E (× 3 navegadores) + 1 Mocha + 1 Cypress locales | M12, M13 |
 | Workflows de CI/CD | 3 | M14 |
 

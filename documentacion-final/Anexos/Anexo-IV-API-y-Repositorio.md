@@ -46,7 +46,12 @@ frontend, módulo por módulo:
 | `salones` | 4 | 0 | 0 | 0 | 4 |
 | **Total** | **17** | **6** | **7** | **5** | **35** |
 
-*Tabla 53 — Operaciones PostgREST por módulo.*
+*Tabla 53 — Invocaciones PostgREST por módulo.*
+
+Este recuento mide **invocaciones**: cada `.select()`, `.insert()`, `.update()` o `.delete()` vale
+uno. No debe compararse con las **26 operaciones expuestas como *hooks*** de la Tabla 30 (sección
+11, Arquitectura), que cuenta una magnitud distinta —un *hook* puede encadenar más de una
+invocación—. Ambos recuentos son correctos bajo su propio criterio.
 
 > [!info] Fuente — conteo propio con
 > `grep -oE '\.(select|insert|update|delete|upsert|rpc)\(' frontend/src/features/<módulo>/api/*.ts`
