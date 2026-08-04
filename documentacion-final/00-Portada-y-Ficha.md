@@ -1,129 +1,126 @@
 ---
-title: "00 — Portada y Ficha Técnica"
-seccion: "00"
+title: "Portada, resumen y ficha técnica"
+seccion: "front"
 orden: 1
-tipo: seccion
-tags: [hosty, informe-final, portada]
+tipo: front-matter
+tags: [hosty, informe-final, portada, resumen]
 estado: completo
 tablas: [T1, T2]
-updated: 2026-08-02
+updated: 2026-08-03
 ---
-
-# 00. Portada y Ficha Técnica
-
-## Portada
 
 # Hosty
 
-### *Encontrá, compará y reservá salones sin vueltas.*
+**Encontrá, compará y reservá salones sin vueltas**
 
-Hosty es una plataforma web de tipo marketplace para la búsqueda, comparación y reserva de
-salones de eventos en la provincia de Tucumán, Argentina.
+*Marketplace web para la búsqueda y reserva de salones de eventos en Tucumán*
 
-**Institución:** Universidad del Norte Santo Tomás de Aquino (UNSTA)
+**Universidad del Norte Santo Tomás de Aquino**
+Tecnicatura en Desarrollo y Calidad de Software
+Proyecto Final — 2026
 
-**Carrera:** Tecnicatura en Desarrollo y Calidad de Software
+**Autores**
 
-**Materia:** Proyecto Final
+| Integrante | Legajo |
+|---|---|
+| Juan Pablo Valdez | UIA7-0262 |
+| Lautaro David Martínez Naglieri | UIA7-0286 |
+| Juan Ignacio Mignone | UIA7-0298 |
+| Juan Pablo Czurylo | UIA7-0331 |
+| Benjamín Garma | UIA7-0362 |
 
-**Año de presentación:** 2026
+San Miguel de Tucumán, Argentina — 7 de agosto de 2026
 
-**Integrantes:** Juan Pablo Valdez · Lautaro David Martínez Naglieri · Juan Ignacio Mignone ·
-Benjamín Garma · Juan Pablo Czurylo
+## Resumen
+
+La contratación de un salón de eventos en la provincia de Tucumán se resuelve hoy por canales
+dispersos —recomendación personal, grupos de redes sociales y llamadas telefónicas— sin ningún
+espacio donde comparar disponibilidad, precio y condiciones antes de decidir. El organizador no
+llega a conocer el universo real de opciones y no puede saber cuánto cuesta un salón sin contactar
+a cada dueño por separado; el anfitrión, en el otro extremo, depende del boca a boca para conseguir
+clientes y administra cada reserva a mano, con riesgo de comprometer dos veces la misma fecha.
+
+Este trabajo presenta **Hosty**, un *marketplace* web que reúne la búsqueda, la comparación y la
+reserva en un solo lugar, para los dos lados de esa transacción. El producto entrega tres
+capacidades de punta a punta: un catálogo público con filtros y mapa geolocalizado; un asistente de
+reserva en tres pasos que verifica la disponibilidad antes de confirmar; y un panel para el
+anfitrión, con calendario, publicación de salones y gestión de las reservas recibidas.
+
+La solución se construyó como una aplicación de dos capas, sin servidor de aplicación propio: una
+*single-page application* en React sobre Vite y TypeScript, y Supabase como plataforma de datos,
+autenticación y almacenamiento. La autorización no se resuelve con un esquema de roles sino por
+propiedad de la fila, mediante políticas de seguridad a nivel de fila de PostgreSQL. El desarrollo
+siguió Scrum a lo largo de cinco *sprints* entre marzo y junio de 2026, con el tablero, las
+incidencias y las solicitudes de incorporación administrados en GitHub.
+
+El resultado es una aplicación desplegada y funcionando sobre infraestructura real, con 75 pruebas
+automatizadas y 111 ejecuciones de prueba de punta a punta sobre tres navegadores, todas en verde,
+y una canalización de integración y despliegue continuos. Cada cifra de este informe se cita contra
+el comando que permite reproducirla, y el contenido que no pudo verificarse en el repositorio se
+declara explícitamente como reconstruido.
+
+**Palabras clave:** marketplace de servicios · aplicación web · *backend as a service* ·
+seguridad a nivel de fila · Scrum · pruebas automatizadas · integración continua
 
 ## Ficha técnica del proyecto
 
 | Campo | Valor |
 |---|---|
 | Nombre del proyecto | Hosty |
-| Eslogan | *Encontrá, compará y reservá salones sin vueltas.* |
+| Eslogan | Encontrá, compará y reservá salones sin vueltas |
 | Materia | Proyecto Final |
 | Carrera | Tecnicatura en Desarrollo y Calidad de Software |
-| Institución | Universidad del Norte Santo Tomás de Aquino (UNSTA) |
-| Año | 2026 |
-| Integrantes y roles formales | 5 integrantes — detalle de nombre, legajo y rol formal de cátedra en la Tabla 11 de [[07-Equipo-y-Roles]] |
-| Metodología | Scrum, con iteraciones (sprints) |
-| Período de desarrollo | 2026-03-29 – 2026-06-24 (sprints S1–S5) |
+| Institución | Universidad del Norte Santo Tomás de Aquino |
+| Año | 2026 — tercer año (último año) de la Tecnicatura |
+| Integrantes y roles | Ver Tabla 11 en [[07-Equipo-y-Roles]] |
+| Metodología | Scrum, con iteraciones (*sprints*) |
+| Período de desarrollo | 2026-03-29 – 2026-06-24 (*sprints* S1–S5) |
 | Repositorio | `https://github.com/juanpablovaldez/hosty` |
-| Ambiente desplegado (frontend) | `https://d1ako6y2uvskg7.cloudfront.net/` — S3 + CloudFront, ambiente **DEV**, único publicado (ver Tabla 55 en [[Anexo-IV-API-y-Repositorio]]) |
-| Backend / BaaS | `https://gjxextyntxfsztpgkqig.supabase.co` (API PostgREST pública; panel de administración con acceso restringido) |
-| Versión de este documento | v1.0 (final) |
+| Frontend desplegado | `https://d1ako6y2uvskg7.cloudfront.net` |
+| Backend (Supabase) | `https://gjxextyntxfsztpgkqig.supabase.co` |
+| Fecha de defensa | 2026-08-07 |
+| Integrantes que exponen en esta instancia | Juan Pablo Valdez, Juan Ignacio Mignone, Juan Pablo Czurylo y Benjamín Garma. Lautaro David Martínez Naglieri, cuya participación en el desarrollo se documenta en las Tablas 11 y 12, defiende en una instancia posterior |
+| Versión de este documento | v1.4 (versión de entrega) |
 
 *Tabla 1 — Ficha técnica del proyecto.*
 
-> [!info] Fuente — URL del ambiente desplegado verificada en vivo el 2026-08-02 (respuesta HTTP 200
-> del frontend y `HTTP 206` de la API PostgREST, ver Figura 35 en [[Anexo-V-Evidencias-QA]]). El
-> proyecto de Supabase se declara en `frontend/.env` (`VITE_SUPABASE_URL`) y en el pipeline
-> `web-dev.yml`, que sincroniza `dist/` contra el bucket S3 de DEV e invalida la distribución de
-> CloudFront. **Nota honesta:** el repositorio define ramas `dev`, `staging` y `main`, pero sólo
-> existe workflow de despliegue para DEV; no hay, por lo tanto, un ambiente productivo separado.
-
-## Índice numerado
-
-00. Portada y Ficha Técnica
-01. Resumen Ejecutivo
-02. Acrónimos
-03. Introducción
-04. Objetivos
-05. Problema a Resolver
-06. Impacto de la Solución
-07. Equipo y Roles
-08. Diseño y Desarrollo
-09. Planificación Scrum
-10. Presupuesto
-11. Arquitectura
-12. Testing y Calidad
-13. Ejecución por Sprint
-14. Métricas
-15. Conclusiones
-Anexo I. Modelo de Datos
-Anexo II. Diagramas de Flujo Complementarios
-Anexo III. Backlog de User Stories
-Anexo IV. API y Repositorio
-Anexo V. Evidencias de QA
-
-El detalle navegable de este índice, con enlaces a cada nota, se encuentra en [[Indice]].
+> [!info] Fuente — La URL del backend corresponde al identificador de proyecto de Supabase
+> (`hosty`, región `us-west-2`), verificado tanto en la consola del proveedor como en la traza de
+> red real de la aplicación desplegada que documenta la Figura 35.
 
 ## Control de versiones del documento
 
 | Versión | Fecha | Cambios | Responsable |
 |---|---|---|---|
-| v0.1 | 2026-07-28 | Generación inicial del vault `documentacion-final/` (Lote 0 — Fundación) | Equipo |
-| v0.2 | 2026-07-29 | Cierre transversal: índices de figuras y tablas, verificación de trazabilidad de métricas | Equipo |
-| v1.0 | 2026-08-02 | Versión final: datos institucionales y de equipo completados; evidencias de QA incorporadas (cobertura de líneas, reporte E2E, llamada real a la API PostgREST, tablero de gestión); colección Postman anexada | Equipo |
+| v0.1 | 2026-07-28 | Redacción inicial del informe a partir del historial del repositorio | Equipo |
+| v1.0 | 2026-07-29 | Datos institucionales, entornos desplegados y primeras evidencias de QA | Equipo |
+| v1.1 | 2026-08-02 | Revisión de usabilidad previa a la entrega (Tabla 34b); corrección de los seis casos E2E que fallaban y reejecución de la suite completa sobre el entorno desplegado (Tablas 57b y 57c) | Equipo |
+| v1.2 | 2026-08-02 | Adopción de `@vitest/coverage-v8` y medición de cobertura bajo ambos criterios (Tablas 32 y 32a, Figura 37); cierre de los 17 marcadores de contenido pendiente | Equipo |
+| v1.3 | 2026-08-03 | Versión de entrega: estructura de trabajo final —portada, resumen, índices de tablas y figuras, bibliografía— y numeración corrida de las secciones | Equipo |
+| v1.4 | 2026-08-03 | Fecha de corte de las métricas de proceso incorporada a esta nota metodológica; desglose de los commits fuera de `dev` (sección 14); advertencia sobre el alcance de la Tabla 12; desambiguación del recuento de operaciones de API entre las Tablas 30, 38 y 53 | Equipo |
 
 *Tabla 2 — Control de versiones del documento.*
 
-**Versión definitiva:** v1.0 · **Fecha de cierre:** 2026-08-02 · **Fecha de defensa prevista:**
-2026-08-14.
-
-> [!warning] Dato simulado SIM-38 — Fecha de defensa
-> La fecha de defensa consignada arriba es una previsión del equipo y no una fecha confirmada por
-> la cátedra al momento de cerrar esta versión. Debe reemplazarse por la fecha oficial en cuanto
-> sea comunicada.
-
 ## Nota metodológica sobre el origen de la información
 
-> ## Nota metodológica sobre el origen de la información
->
-> Este informe distingue de manera explícita tres tipos de contenido. **(a) Datos verificados**:
-> extraídos del historial Git del repositorio, de la API de GitHub y de los archivos de migración
-> del proyecto; su origen se cita en un bloque `[!info] Fuente` que incluye el identificador de la
-> métrica y el comando que permite reproducirla, y se consolidan en la nota
-> [[Datos-Verificables]]. **(b) Contenido simulado**: redactado de forma plausible por no existir
-> registro documental del hecho (retrospectivas, entrevistas, estimaciones de esfuerzo y
-> presupuesto); se señaliza con `[!warning] Dato simulado` e indica la base sobre la que se
-> reconstruyó. Ningún contenido simulado debe interpretarse como evidencia empírica. **(c)
-> Contenido pendiente**: información que únicamente el equipo puede aportar (denominación
-> institucional, nombres y roles formales, tarifas, capturas de pantalla y URLs productivas); se
-> señaliza con `[!todo] PLACEHOLDER` y se consolida en [[Pendientes]].
+Este informe distingue de manera explícita dos tipos de contenido. **(a) Datos verificados**:
+extraídos del historial Git del repositorio, de la API de GitHub y de los archivos de migración del
+proyecto; su origen se cita en una nota *Fuente* que incluye el identificador de la métrica y el
+comando que permite reproducirla. **(b) Contenido reconstruido**: redactado de forma plausible por
+no existir registro documental del hecho —retrospectivas, entrevistas y estimaciones de esfuerzo y
+presupuesto—; se señaliza como *Dato simulado* e indica la base sobre la que se reconstruyó. Ningún
+contenido reconstruido debe interpretarse como evidencia empírica.
 
-## Instrucción de exportación a PDF
-
-> Markdown no admite encabezados ni pies de página. Al exportar el vault a PDF desde Obsidian
-> (*Archivo → Exportar a PDF*), debe configurarse el pie de página del documento exportado con:
-> nombre del proyecto (Hosty), carrera, y número de página. Ninguna nota de este vault renderiza
-> un pie de página por sí misma.
+**Fecha de corte de las métricas de proceso.** Las cifras que describen la ejecución del proyecto
+—commits, *issues*, *pull requests* y su distribución por *sprint*— se congelaron el **2026-07-28**,
+al cierre del quinto y último *sprint*. El trabajo posterior a esa fecha corresponde a tareas de
+estabilización previas a la defensa —ampliación de la suite de pruebas, corrección de detalles de
+interfaz y redacción de este informe— y no forma parte del alcance planificado de los *sprints*,
+por lo que se excluye deliberadamente: incorporarlo distorsionaría la lectura de la velocidad del
+equipo durante el desarrollo. Por eso el repositorio, consultado hoy, exhibe más *commits* que los
+que cita la sección 14. Las métricas que describen el **estado actual del producto** —rutas,
+tablas, operaciones de API, cobertura de pruebas— se re-verificaron en cambio el **2026-08-02** y
+reflejan el repositorio tal como se entrega.
 
 ---
 [[Indice|Índice]] · [[01-Resumen-Ejecutivo]] →

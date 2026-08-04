@@ -178,7 +178,7 @@ export function CalendarioView({
                     'truncate rounded-md px-1.5 py-1 text-left text-[10.5px] font-semibold transition hover:opacity-80',
                     b.status === 'confirmed'
                       ? 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300'
-                      : 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
+                      : 'bg-amber-light text-amber-dark dark:bg-amber/15 dark:text-amber',
                   )}
                 >
                   {b.startTime.slice(0, 5)} {b.eventType}

@@ -9,7 +9,7 @@ tablas: [T4]
 updated: 2026-07-28
 ---
 
-# 02. Acrónimos
+# 2. Acrónimos
 
 Esta sección reúne, en orden alfabético, las siglas y los términos técnicos utilizados a lo largo
 del informe. Para cada uno se indica su significado y, cuando corresponde, una aclaración sobre su
@@ -28,15 +28,15 @@ desarrolla con mayor detalle.
 | DER | Diagrama de Entidad-Relación | Modelo de datos completo, documentado en el Anexo I. |
 | E2E | End to End | Pruebas automatizadas con Playwright sobre flujos completos de usuario. |
 | JWT | JSON Web Token | Supabase Auth emite internamente un JWT por sesión; Hosty no implementa un servicio de JWT propio ni maneja tokens manualmente, sino que delega la autenticación completa en las sesiones de Supabase Auth. |
-| MVP | Producto Mínimo Viable | Alcance funcional entregado en este proyecto (ver sección 01). |
+| MVP | Producto Mínimo Viable | Alcance funcional entregado en este proyecto (ver sección 1). |
 | ORM/ODM | Object-Relational / Object-Document Mapping | Hosty no utiliza un ORM: accede a los datos mediante `supabase-js` sobre la API PostgREST y tipos TypeScript generados por introspección del esquema. |
 | PR | Pull Request | Unidad de integración de código en GitHub. |
 | QA | Quality Assurance | Aseguramiento de calidad, cubierto por pruebas automatizadas y manuales (ver sección 12). |
-| RBAC | Role-Based Access Control | Hosty **no** implementa RBAC: la autorización es por propiedad (*ownership*) vía RLS (ver sección 07). |
+| RBAC | Role-Based Access Control | Hosty **no** implementa RBAC: la autorización es por propiedad (*ownership*) vía RLS (ver sección 7). |
 | RLS | Row Level Security | Mecanismo de Postgres que restringe las filas visibles o editables según `auth.uid()`. |
 | SPA | Single Page Application | Arquitectura del frontend, construido en React 19. |
 | SQL | Structured Query Language | Lenguaje de consulta de la base de datos Postgres. |
-| UX/UI | Experiencia de usuario / Interfaz de usuario | Diseño funcional y visual del producto (ver sección 08). |
+| UX/UI | Experiencia de usuario / Interfaz de usuario | Diseño funcional y visual del producto (ver sección 8). |
 
 *Tabla 4 — Glosario de acrónimos y términos.*
 

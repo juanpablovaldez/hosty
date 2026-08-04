@@ -1,4 +1,4 @@
----
+| 9 || 8 || 7 || 6 || 5 || 4 || 3 || 2 || 1 |---
 title: "Índice — Mapa de contenidos"
 seccion: "meta"
 tipo: meta
@@ -20,22 +20,23 @@ esta numeración: se listan aparte, al final.
 
 | # | Nota | Descripción |
 |---|---|---|
-| 00 | [[00-Portada-y-Ficha]] | Portada, ficha técnica del proyecto y control de versiones del documento |
-| 01 | [[01-Resumen-Ejecutivo]] | Síntesis del problema, la solución propuesta y los resultados verificables |
-| 02 | [[02-Acronimos]] | Glosario de acrónimos y términos técnicos |
-| 03 | [[03-Introduccion]] | Contexto, dominio y alcance del informe |
-| 04 | [[04-Objetivos]] | Objetivo general, objetivos específicos y su trazabilidad a épicas |
-| 05 | [[05-Problema-a-Resolver]] | Problema central, consecuencias y respuesta del sistema |
-| 06 | [[06-Impacto-de-la-Solucion]] | Impacto de la solución por dimensión y tipo de usuario |
-| 07 | [[07-Equipo-y-Roles]] | Integrantes del equipo, roles y mecanismo de autorización de la aplicación |
-| 08 | [[08-Diseno-y-Desarrollo]] | Proceso de diseño, mapa de navegación y decisiones de UX/UI |
-| 09 | [[09-Planificacion-Scrum]] | Épicas, user stories, ceremonias Scrum y plan de sprints |
+| — | [[00-Portada-y-Ficha]] | Material preliminar: portada, resumen, palabras clave, ficha técnica y control de versiones |
+| 1 | [[01-Resumen-Ejecutivo]] | Síntesis del problema, la solución propuesta y los resultados verificables |
+| 2 | [[02-Acronimos]] | Glosario de acrónimos y términos técnicos |
+| 3 | [[03-Introduccion]] | Contexto, dominio y alcance del informe |
+| 4 | [[04-Objetivos]] | Objetivo general, objetivos específicos y su trazabilidad a épicas |
+| 5 | [[05-Problema-a-Resolver]] | Problema central, consecuencias y respuesta del sistema |
+| 6 | [[06-Impacto-de-la-Solucion]] | Impacto de la solución por dimensión y tipo de usuario |
+| 7 | [[07-Equipo-y-Roles]] | Integrantes del equipo, roles y mecanismo de autorización de la aplicación |
+| 8 | [[08-Diseno-y-Desarrollo]] | Proceso de diseño, mapa de navegación y decisiones de UX/UI |
+| 9 | [[09-Planificacion-Scrum]] | Épicas, user stories, ceremonias Scrum y plan de sprints |
 | 10 | [[10-Presupuesto]] | Estimación de esfuerzo, costos de infraestructura y presupuesto total |
 | 11 | [[11-Arquitectura]] | Arquitectura general, despliegue, seguridad, base de datos y API |
 | 12 | [[12-Testing-y-Calidad]] | Estrategia de pruebas, cobertura, incidencias y criterios de salida |
 | 13 | [[13-Ejecucion-por-Sprint]] | Relato cronológico de la ejecución sprint a sprint |
 | 14 | [[14-Metricas]] | Métricas de repositorio, de gestión y de producto |
 | 15 | [[15-Conclusiones]] | Balance funcional y técnico, aprendizajes y líneas de evolución futura |
+| 16 | [[16-Bibliografia]] | Fuentes que respaldan las decisiones metodológicas y técnicas |
 | Anexo I | [[Anexo-I-Modelo-de-Datos]] | Modelo de datos completo y diccionario de datos |
 | Anexo II | [[Anexo-II-Diagramas-de-Flujo]] | Diagramas de flujo complementarios no incluidos en el cuerpo principal |
 | Anexo III | [[Anexo-III-Backlog-User-Stories]] | Backlog completo de user stories con su estado (entregada/diferida) |
@@ -48,9 +49,14 @@ esta numeración: se listan aparte, al final.
 |---|---|
 | [[Datos-Verificables]] | Fuente única de toda métrica citada en el vault (`M01`–`M22`) |
 | [[Pendientes]] | Agregación de todos los placeholders (`P-##`) y datos simulados (`SIM-##`) |
-| [[Indice-de-Figuras]] | Registro de las 38 figuras del informe (`F1`–`F38`) |
-| [[Indice-de-Tablas]] | Registro de las 70 tablas del informe (`T1`–`T59` más 11 con sufijo alfabético) |
+| [[Indice-de-Figuras]] | Registro de las 36 figuras del informe (`F1`–`F36`) |
+| [[Indice-de-Tablas]] | Registro de las 59 tablas del informe (`T1`–`T59`) |
 | `assets/README.md` | Lista de capturas de pantalla pendientes de incorporar |
+| [[Resumen-Para-Presentar]] | Versión de 2 minutos del resumen ejecutivo, para leer u ofrecer al profesor |
+| [[Guia-de-Presentacion]] | Logística de la defensa, reglas de la demo en vivo, preguntas esperables y checklist técnico |
+| [[Presentacion-Estructura-Slides]] | Contenido slide por slide de la presentación final (21 slides) |
+| [[Presentacion-Reparto-y-Fichas]] | Reparto de bloques entre los 5 integrantes y ficha de apoyo individual para cada uno |
+| [[Entrega-Pendrive]] | Qué código se copia al pendrive, cómo prepararlo y qué revisar antes de entregarlo |
 
 ---
 Este archivo es la entrada de navegación del vault; no lleva pie de navegación propio.

@@ -41,15 +41,11 @@ test.describe('Página de salones', () => {
   })
 
   test('selector de orden actualiza la URL con sortBy', async ({ page }) => {
-    const sortSelect = page.locator('select').first()
-    if (await sortSelect.isVisible()) {
-      await sortSelect.selectOption('price_asc')
-      await expect(page).toHaveURL(/price_asc/)
-    } else {
-      const sortBtn = page.getByRole('combobox').first()
-      await sortBtn.selectOption('price_asc')
-      await expect(page).toHaveURL(/price_asc/)
-    }
+    const sortSelect = page.locator('#salones-sort-select')
+    await expect(sortSelect).toBeVisible()
+
+    await sortSelect.selectOption('price_asc')
+    await expect(page).toHaveURL(/price_asc/)
   })
 
   test('pill "Guardar en favoritos" redirige a /login si no hay sesión', async ({ page }) => {

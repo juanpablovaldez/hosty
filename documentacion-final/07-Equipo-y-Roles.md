@@ -4,22 +4,24 @@ seccion: "07"
 orden: 8
 tipo: seccion
 tags: [hosty, informe-final, equipo-roles]
-estado: completo
+estado: con-pendientes
 figuras: [F6]
 tablas: [T11, T12, T13]
-updated: 2026-08-02
+updated: 2026-07-28
 ---
 
-# 07. Equipo y Roles
+# 7. Equipo y Roles
 
 ## Composición del equipo
 
 El proyecto fue desarrollado por un equipo de 5 integrantes, identificados de forma consolidada a
 partir de 9 identidades Git distintas (M05): Juan Pablo Valdez, Juan Ignacio Mignone, Lautaro
-Naglieri, Benjamín Garma y Juan Pablo Czurylo. La distribución de roles de equipo bajo el marco Scrum
-adoptado —1 Product Owner, 1 Scrum Master y 3 desarrolladores, uno de ellos con foco en calidad
-(QA)— se infiere de la actividad observable en el historial de commits, ya que el proyecto no
-cuenta con un registro documental explícito de la asignación formal de roles. Estas
+Naglieri, Benjamín Garma y Pablo Czurylo. La distribución de roles —1 Product Owner y 4
+desarrolladores, uno con foco en calidad (QA) y otro con foco en diseño de producto— se infiere de
+la actividad observable en el historial de commits, ya que el proyecto no cuenta con un registro
+documental explícito de la asignación formal de roles. El equipo **no designó un Scrum Master
+formal**: la conducción de la iteración se distribuyó entre el Product Owner y el responsable de
+diseño de producto según el período, como se detalla más abajo. Estas
 responsabilidades reflejan, ante todo, el área funcional donde cada integrante concentró su
 trabajo a lo largo del proyecto, verificable directamente en el historial de commits del
 repositorio, y no necesariamente una asignación fija o exclusiva: la naturaleza de un equipo de 5
@@ -28,37 +30,54 @@ personas trabajando sobre un mismo repositorio implica solapamientos razonables 
 ```mermaid
 flowchart TD
     PO["Product Owner"] --> DEV["Equipo de desarrollo (5 integrantes)"]
-    SM["Scrum Master"] --> DEV
-    DEV --> D1["Desarrollador"]
+    DEV --> D1["Diseno de producto y frontend"]
     DEV --> D2["Desarrollador"]
-    DEV --> D3["Desarrollador con foco en QA"]
+    DEV --> D3["Desarrollador"]
+    DEV --> D4["Desarrollador con foco en QA"]
 ```
 
-*Figura 6 — Organigrama Scrum: PO / SM / equipo de desarrollo (5 integrantes).*
+*Figura 6 — Organigrama del equipo: Product Owner y equipo de desarrollo (5 integrantes).*
 
-| Integrante | Legajo | Rol formal (cátedra) | Rol de equipo (Scrum) | Responsabilidades principales |
-|---|---|---|---|---|
-| Juan Pablo Valdez | UIA7-0262 | Líder de proyecto y arquitecto de software | Product Owner | Arquitectura general; catálogo de salones, panel del anfitrión, flujo de reserva y autenticación — mayor volumen de contribuciones del equipo |
-| Juan Ignacio Mignone | UIA7-0298 | Analista funcional | Scrum Master | Catálogo de salones, página de inicio, panel del anfitrión y favoritos |
-| Lautaro David Martínez Naglieri | UIA7-0286 | Desarrollador de interfaz de usuario | Desarrollador | Catálogo de salones, panel del anfitrión y flujo de reserva |
-| Benjamín Garma | UIA7-0362 | Responsable de aseguramiento de la calidad e integración continua | Desarrollador con foco en QA | Infraestructura de pruebas (Vitest, Playwright, Cypress) y el workflow de CI `frontend-tests.yml` |
-| Juan Pablo Czurylo | UIA7-0331 | Desarrollador e integrador de servicios | Desarrollador | Búsqueda de salones, flujo de reserva y notificaciones por email |
+| Integrante | Legajo | Rol de equipo | Responsabilidades principales |
+|---|---|---|---|
+| Valdez, Juan Pablo | UIA7 0262 | Product Owner | Arquitectura general; catálogo de salones, panel del anfitrión, flujo de reserva y autenticación — mayor volumen de contribuciones del equipo |
+| Mignone, Juan Ignacio | UIA7 0298 | Diseño de producto y desarrollo frontend | Sistema de diseño de la aplicación (Brandbook v1.0: isotipo, tokens de marca y tipografía); interfaz del catálogo de salones, página de inicio, panel del anfitrión y favoritos. Ejerció la conducción técnica del equipo y la integración de cambios durante los *sprints* 2 y 4 |
+| Martinez Naglieri, Lautaro David | UIA7 0286 | Desarrollador | Catálogo de salones, panel del anfitrión y flujo de reserva |
+| Garma, Benjamin | UIA7 0362 | Desarrollador con foco en QA | Infraestructura de pruebas (Vitest, Playwright, Cypress) y el workflow de CI `frontend-tests.yml` |
+| Czurylo, Juan Pablo | UIA7 0331 | Desarrollador | Búsqueda y filtrado de salones (paginación, persistencia de filtros en URL); motor de reservas (flujo de reserva, confirmación); sistema de notificaciones de reserva por email, implementado en la rama `feat/email-notifications` (PR #96, aún no fusionada a `dev`) |
 
-*Tabla 11 — Integrantes, legajo, rol formal de cátedra, rol de equipo y responsabilidades.*
+*Tabla 11 — Integrantes, legajo, rol de equipo y responsabilidades.*
 
-> [!warning] Dato simulado SIM-04 — Asignación de rol de equipo
-> La columna "Rol de equipo (Scrum)" es una reconstrucción plausible a partir del volumen y del
-> área de los commits de cada integrante, no un registro documentado de la asignación real de
-> roles. La única excepción es el foco en QA de Benjamín Garma, que se verifica directamente en
-> los archivos de configuración de pruebas (Vitest, Playwright, Cypress) y en el workflow de CI que
-> aportó al repositorio.
+> [!info] Fuente — Evidencia por integrante para la columna "Rol de equipo" y "Responsabilidades
+> principales". **Valdez** (Product Owner): único colaborador con permisos de administrador del
+> repositorio y autor del 90 % de las issues (45 de 50) — M33, M34 —, además de la autoría casi
+> exclusiva del *backend* NestJS y la infraestructura Terraform descartados en el *sprint* 2 (ver
+> Tabla 37a). **Mignone** (Diseño de producto y desarrollo frontend): *commits* que introducen el
+> sistema de diseño —`apply Brandbook v1.0 — isotipo, tokens, typography`, `redesign v2 — Design
+> Handoff tokens, editorial hero, HostyBadge system`, `update HostyLogo isotipo shape`— y mayor
+> volumen de *commits* e integración de *pull requests* en los *sprints* 2 y 4. **Naglieri**
+> (Desarrollador): mayor densidad de *commits* en `features/salones`, `features/host` y
+> `features/bookings`. **Garma** (Desarrollador con foco en QA): archivos de configuración de
+> pruebas (Vitest, Playwright, Cypress) y el *workflow* de CI que aportó. **Czurylo**
+> (Desarrollador): `features/bookings` y `features/salones`, más la rama `feat/email-notifications`
+> (M35). Comandos: `git log --author --since --until`, `git log --merges --author`, `gh api
+> repos/.../collaborators`, `gh issue list --json author` (verificado 2026-08-03; detalle completo
+> en [[Datos-Verificables]] M33–M35).
 
-> [!warning] Dato simulado SIM-39 — Columna "Rol formal (cátedra)"
-> Los legajos de la Tabla 11 son datos reales aportados por el equipo. La columna "Rol formal
-> (cátedra)", en cambio, no proviene de una designación documentada por la asignatura: se derivó
-> del área y del volumen de trabajo efectivamente observable de cada integrante en el repositorio
-> —historial de commits (Tabla 12), autoría de *pull requests* y de los issues resueltos por cada
-> uno— y debe validarse contra la asignación formal si la cátedra la exige por escrito.
+> [!warning] Dato simulado SIM-04 — Título formal de cada rol de equipo
+> Lo único que sigue sin registro documental es el título formal en sí (que el equipo se haya
+> reunido y acordado llamar "Product Owner" a Valdez, por ejemplo): no existe un acta de asignación
+> de roles. Los títulos de esta tabla son la etiqueta que mejor describe la evidencia verificable
+> citada arriba, no una cita textual de una decisión de equipo documentada.
+
+La conducción del equipo, por lo tanto, no fue estática a lo largo del proyecto: en los *sprints* 2
+y 4 la coordinación de la integración recayó en el responsable de diseño de producto. Esa rotación
+no responde a una decisión de proceso documentada, sino a la disponibilidad efectiva de los
+integrantes en cada período, y se refleja tanto en el volumen de *commits* como en quién integró
+los *pull requests* de cada uno.
+
+> [!info] Fuente — `git log --author --since --until` acotado a los rangos de *sprint* de la Tabla
+> 21, y `git log --merges --author` para la integración de *pull requests* (verificado 2026-08-03).
 
 ## Contribuciones por identidad Git
 
@@ -66,15 +85,29 @@ flowchart TD
 |---|---|---|
 | Juan Pablo Valdez | 140 | 59,3 % |
 | Juan Ignacio Mignone | 45 | 19,1 % |
-| Lautaro Martínez Naglieri | 33 | 14,0 % |
+| Lautaro Naglieri | 33 | 14,0 % |
 | Benjamín Garma | 10 | 4,2 % |
-| Juan Pablo Czurylo | 8 | 3,4 % |
+| Pablo Czurylo | 8 | 3,4 % |
 
 *Tabla 12 — Contribuciones por identidad Git.*
 
 > [!info] Fuente — M05 / M02: `git shortlog -sne --all`. El detalle de cada identidad Git por
 > integrante se documenta en [[Datos-Verificables]]; esta tabla sólo consolida el porcentaje sobre
 > el total de 236 commits (M02).
+
+**Alcance de esta tabla: qué mide y qué no mide.** El volumen de *commits* describe la actividad
+registrada en el historial, no la magnitud ni el valor del aporte de cada integrante, y tres
+factores verificables lo distorsionan en este proyecto. Primero, **34 de los 140 *commits* del
+integrante con mayor volumen —un 24 %— corresponden a la rama `staging`**, la infraestructura del
+*backend* NestJS que se descartó en el *sprint* 2 (ver la sección 14, Tabla 37a) y que no aportó
+código al producto entregado. Segundo, el historial registra **9 identidades Git para 5 personas**
+(M05), y quien integra las ramas acumula *commits* de fusión que no representan trabajo propio.
+Tercero, el tamaño de un *commit* no está normalizado: los 10 *commits* de Benjamín Garma
+introducen la infraestructura completa de pruebas —Vitest, Playwright y Cypress— y el *workflow* de
+integración continua que hoy bloquea las fusiones que no pasan la suite.
+
+La distribución de responsabilidades por área, que es la lectura pertinente del reparto de trabajo,
+es la de la Tabla 11.
 
 ## Roles de usuario, permisos y mecanismo de autorización
 

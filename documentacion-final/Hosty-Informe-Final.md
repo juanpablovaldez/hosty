@@ -1146,7 +1146,7 @@ stateDiagram-v2
 > **Fuente.** Captura del tablero #4, vista "Team items" (2026-07-29). La distribución
 > visible (Ready: 4, In review: 1, Done: 45) coincide con la verificación de M19 citada arriba.
 
-![Tablero de gestión — GitHub Projects v2](../documentacion-final/assets/f12-tablero-projects.png)
+![Tablero de gestión — GitHub Projects v2](assets/f12-tablero-projects.png)
 
 *Figura 12 — Tablero de gestión del proyecto en GitHub Projects v2 (board #4).*
 
@@ -3076,8 +3076,8 @@ reales de la tabla `salones`.
 > consulta está paginada mediante el encabezado `Range`, como ocurre aquí con `limit=4`. Es el
 > comportamiento esperado del protocolo, no una condición de error.
 
-![Evidencia API PostgREST — headers](../documentacion-final/assets/f35-evidencia-api-postgrest-headers.png)
-![Evidencia API PostgREST — response](../documentacion-final/assets/f35-evidencia-api-postgrest-response.png)
+![Evidencia API PostgREST — headers](assets/f35-evidencia-api-postgrest-headers.png)
+![Evidencia API PostgREST — response](assets/f35-evidencia-api-postgrest-response.png)
 
 *Figura 35 — Evidencia de pruebas sobre la API PostgREST.*
 
@@ -3146,7 +3146,7 @@ La Figura 36 documenta el flujo de reserva completo sobre el entorno desplegado,
 calcula la duración (6,25 h) y el total estimado ($125.000) a partir del precio por hora del salón.
 El indicador de progreso superior aparece en las tres capturas, mostrando el avance entre pasos.
 
-![Flujo de reserva — 3 pasos](../documentacion-final/assets/f37-flujo-reserva.png)
+![Flujo de reserva — 3 pasos](assets/f37-flujo-reserva.png)
 
 *Figura 36 — Flujo de reserva de la aplicación en ejecución.*
 
@@ -3159,7 +3159,7 @@ dominio en verde (`features/auth/store` al 100 %, `features/bookings/api` al 97,
 presentación en rojo (`features/bookings/components` y `features/home/components` en 0 %) es
 visible de un vistazo y corresponde a la priorización declarada en la sección 12.
 
-![Reporte de cobertura de @vitest/coverage-v8](../documentacion-final/assets/f37-reporte-cobertura.jpg)
+![Reporte de cobertura de @vitest/coverage-v8](assets/f37-reporte-cobertura.jpg)
 
 *Figura 37 — Reporte de cobertura de pruebas (`@vitest/coverage-v8`, 2026-08-02).*
 

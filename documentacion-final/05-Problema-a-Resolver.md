@@ -10,7 +10,7 @@ tablas: [T8, T9]
 updated: 2026-07-28
 ---
 
-# 05. Problema a Resolver
+# 5. Problema a Resolver
 
 ## Problema central
 
@@ -81,11 +81,8 @@ flowchart TD
 
 *Tabla 9 — Puntos de dolor por actor y alternativas actuales.*
 
-> [!warning] Dato simulado SIM-02 — Puntos de dolor sin medición directa
-> Los puntos de dolor de la Tabla 9 se formulan de manera plausible a partir del propio dominio del
-> problema y de las funcionalidades que el producto efectivamente prioriza (ver [[04-Objetivos]]),
-> y no a partir de una encuesta o entrevista documentada con organizadores o propietarios reales.
-> No deben interpretarse como resultados de una investigación de usuarios formal.
+*SIM-02 — reconstrucción razonada a partir del dominio del problema, no de una encuesta o
+entrevista documentada; ver la nota metodológica completa en [[03-Introduccion]].*
 
 Las respuestas concretas que Hosty da a cada uno de estos puntos se retoman, en términos de
 beneficio percibido, en [[06-Impacto-de-la-Solucion]], y se contrastan con los objetivos

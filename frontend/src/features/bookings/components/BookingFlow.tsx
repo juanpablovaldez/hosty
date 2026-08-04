@@ -20,11 +20,11 @@ import { formatARS } from '@/features/salones/lib/pricing'
 
 const EVENT_TYPES = ['Cumpleaños', 'Casamiento', 'Corporativo', 'Baby shower', 'Quince años', 'Graduación']
 
-const isQuarterHour = (v: string) => /^\d{2}:(00|15|30|45)$/.test(v)
+const isHalfHour = (v: string) => /^\d{2}:(00|30)$/.test(v)
 
-const TIME_SLOTS = Array.from({ length: 24 * 4 }, (_, i) => {
-  const h = String(Math.floor(i / 4)).padStart(2, '0')
-  const m = String((i % 4) * 15).padStart(2, '0')
+const TIME_SLOTS = Array.from({ length: 24 * 2 }, (_, i) => {
+  const h = String(Math.floor(i / 2)).padStart(2, '0')
+  const m = i % 2 === 0 ? '00' : '30'
   return `${h}:${m}`
 })
 
@@ -60,11 +60,11 @@ const step1Schema = z.object({
   startTime: z
     .string()
     .min(1, 'Seleccioná hora de inicio')
-    .refine(isQuarterHour, 'Elegí un horario en intervalos de 15 minutos'),
+    .refine(isHalfHour, 'Elegí un horario en intervalos de 30 minutos'),
   endTime: z
     .string()
     .min(1, 'Seleccioná hora de fin')
-    .refine(isQuarterHour, 'Elegí un horario en intervalos de 15 minutos'),
+    .refine(isHalfHour, 'Elegí un horario en intervalos de 30 minutos'),
 })
 
 const step2Schema = z.object({
@@ -374,6 +374,7 @@ export function BookingFlow() {
         {/* Step 2: Event info */}
         {step === 1 && (
           <form
+            noValidate
             onSubmit={(e) => { e.preventDefault(); e.stopPropagation(); void form2.handleSubmit() }}
             className="flex flex-col gap-5"
           >
@@ -407,7 +408,17 @@ export function BookingFlow() {
               )}
             </form2.Field>
 
-            <form2.Field name="attendees">
+            <form2.Field
+              name="attendees"
+              validators={{
+                onChange: ({ value }) => {
+                  if (salon && value > salon.capacity) {
+                    return `El salón tiene capacidad para ${salon.capacity} personas. Reducí la cantidad de asistentes.`
+                  }
+                  return undefined
+                },
+              }}
+            >
               {(field) => (
                 <div className="flex flex-col gap-1.5">
                   <Label htmlFor="attendees">Cantidad de asistentes</Label>
@@ -415,15 +426,22 @@ export function BookingFlow() {
                     id="attendees"
                     type="number"
                     min={1}
-                    max={salon?.capacity}
                     placeholder="Ej: 80"
                     value={field.state.value || ''}
                     onChange={(e) => field.handleChange(e.target.value === '' ? 0 : Number(e.target.value))}
                     onBlur={field.handleBlur}
+                    aria-describedby={field.state.meta.errors.length > 0 ? 'attendees-error' : 'attendees-hint'}
+                    aria-invalid={field.state.meta.errors.length > 0}
                   />
-                  {salon && <p className="text-xs text-muted-foreground">Máximo: {salon.capacity} personas</p>}
+                  {salon && (
+                    <p id="attendees-hint" className="text-xs text-muted-foreground">
+                      Máximo: {salon.capacity} personas
+                    </p>
+                  )}
                   {formError(field.state.meta.errors[0]) && (
-                    <p className="text-xs text-destructive">{formError(field.state.meta.errors[0])}</p>
+                    <p id="attendees-error" role="alert" className="text-sm text-destructive">
+                      {formError(field.state.meta.errors[0])}
+                    </p>
                   )}
                 </div>
               )}

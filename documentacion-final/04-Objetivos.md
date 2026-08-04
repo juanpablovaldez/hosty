@@ -10,7 +10,7 @@ tablas: [T6, T7]
 updated: 2026-07-28
 ---
 
-# 04. Objetivos
+# 4. Objetivos
 
 ## Objetivo general
 
@@ -33,8 +33,8 @@ confirmar, contra el estado real del repositorio, si la capacidad fue efectivame
 | OE2 | Proveer autenticación de usuarios y control de acceso a los datos basado en propiedad | Sesiones de Supabase Auth + guardas `requireAuth` sobre 8 de las 14 rutas del frontend (M09) |
 | OE3 | Habilitar un flujo de reserva guiado con validación de disponibilidad y de horarios | Wizard de reserva de 3 pasos (M20), con verificación de bloqueos de disponibilidad |
 | OE4 | Ofrecer al propietario un panel de gestión de sus salones y de las reservas recibidas | Panel del anfitrión con calendario y cotización de precio por reserva |
-| OE5 | Asegurar la calidad mediante pruebas automatizadas e integración continua | 66 pruebas automatizadas (M12) y 3 workflows de CI/CD (M14) |
-| OE6 | Documentar la arquitectura, el proceso y las métricas del proyecto de forma trazable | Este mismo vault: 28 notas con toda métrica citada a su fuente en la nota Datos-Verificables |
+| OE5 | Asegurar la calidad mediante pruebas automatizadas e integración continua | 75 pruebas automatizadas (M12) y 3 workflows de CI/CD (M14) |
+| OE6 | Documentar la arquitectura, el proceso y las métricas del proyecto de forma trazable | Este mismo vault: 35 notas —17 secciones, 5 anexos, 11 notas de apoyo y 2 de índice— con toda métrica citada a su fuente en la nota Datos-Verificables |
 
 *Tabla 6 — Objetivos específicos y criterio de verificación.*
 
@@ -42,12 +42,13 @@ confirmar, contra el estado real del repositorio, si la capacidad fue efectivame
 
 El objetivo de calidad definido para el proyecto consiste en sostener una suite de pruebas
 automatizadas que cubra los flujos críticos del frontend. A la fecha de verificación de este
-informe existen 66 pruebas automatizadas distribuidas en 18 archivos de prueba — 13 pruebas
+informe existen 75 pruebas automatizadas distribuidas en 20 archivos de prueba — 15 pruebas
 unitarias y de componente con Vitest y Testing Library, más 5 especificaciones end-to-end con
-Playwright — (M12, M13). El proyecto no tiene configurada una herramienta de cobertura de código
-(por ejemplo, un reporte de `@vitest/coverage-v8`), por lo que este informe no reporta ni infiere
-un porcentaje de cobertura: hacerlo sin una fuente verificable contradiría el principio de
-trazabilidad de métricas que rige todo este documento (ver sección 12, Testing y Calidad).
+Playwright — (M12, M13). La cobertura se mide con `@vitest/coverage-v8` y se reporta bajo dos
+criterios —global y sobre el código efectivamente ejercitado— en la Tabla 32 de la sección 12,
+Testing y Calidad, con la medición citada a su comando reproducible. El objetivo no se formuló como
+un umbral porcentual: se priorizó cubrir la lógica de dominio y de acceso a datos antes que la capa
+de presentación, y la Tabla 32a documenta el resultado de esa priorización.
 
 ## Trazabilidad objetivo → épica → funcionalidad
 
@@ -76,7 +77,7 @@ dicha funcionalidad efectivamente existe en el producto.
 | OE2 | E2 — Autenticación y cuenta | Sesiones de Supabase Auth, guarda `requireAuth`, RLS por `auth.uid()` | M09 |
 | OE3 | E3 — Reserva de salones | Wizard de reserva de 3 pasos; estados `pending`/`confirmed`/`declined`/`cancelled` | M17, M20 |
 | OE4 | E4 — Panel del anfitrión; E5 — Favoritos y plan destacado | Panel de calendario y cotización; favoritos; plan Destacado (cobro con Mercado Pago diferido, issue #45 abierto) | M10 |
-| OE5 | E6 — Calidad e integración continua | 66 pruebas automatizadas y 3 workflows de CI/CD | M12, M13, M14 |
+| OE5 | E6 — Calidad e integración continua | 75 pruebas automatizadas y 3 workflows de CI/CD | M12, M13, M14 |
 | OE6 | E7 — Infraestructura y despliegue (transversal) | Documentación trazable del proyecto (este vault) y despliegue automatizado vía GitHub Actions | M14 |
 
 *Tabla 7 — Trazabilidad objetivo → épica → funcionalidad → evidencia.*
@@ -87,7 +88,7 @@ dicha funcionalidad efectivamente existe en el producto.
 > Onboarding", "Phase 1.B: Search & Filtering", "Phase 2: Booking & Payments", "Phase 2.B:
 > Notifications", "Phase 3: Host Features", "Phase 3.B: Admin Panel", "Phase 2+: Polish &
 > Optimization"), no por temática funcional. La correspondencia detallada entre épica, milestone e
-> issues se documenta en la sección 09 (Planificación Scrum, Tabla 18) y en
+> issues se documenta en la sección 9 (Planificación Scrum, Tabla 18) y en
 > [[Anexo-III-Backlog-User-Stories]] (Tabla 51).
 
 Esta trazabilidad explícita —de objetivo a épica, funcionalidad y evidencia— es en sí misma una

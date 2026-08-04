@@ -1,0 +1,360 @@
+/*
+ * Hosty — Informe Final · estilo de impresión formal
+ * ---------------------------------------------------
+ * Pensado para exportar `Hosty-Informe-Final.md` a PDF (A4) y encuadernarlo.
+ *
+ * Para activarlo: Obsidian -> Configuración -> Apariencia -> Fragmentos CSS -> recargar y
+ * encender "impresion-formal".
+ *
+ * Todo lo que sigue está dentro de @media print: no altera cómo se ve el vault mientras se
+ * edita, sólo cómo se imprime.
+ */
+
+@media print {
+  /* --- Página ------------------------------------------------------------ */
+
+  @page {
+    size: A4;
+    margin: 22mm 20mm 20mm 20mm;
+  }
+
+  /* La portada respira más y no lleva numeración corrida. */
+  @page :first {
+    margin-top: 34mm;
+  }
+
+  /* --- Cuerpo del texto -------------------------------------------------- */
+
+  .markdown-preview-view,
+  .markdown-rendered {
+    font-family: 'Source Serif Pro', 'Georgia', 'Cambria', serif;
+    font-size: 10.5pt;
+    line-height: 1.55;
+    color: #000;
+    /* Alineado a la izquierda, no justificado. El texto justificado necesita
+       partir palabras para repartir bien el espacio sobrante, y para eso el
+       navegador tiene que saber que el texto está en español. Obsidian exporta
+       sin declarar el idioma del documento, así que la partición no se activa y
+       el justificado abre huecos enormes entre palabras —los "ríos" visibles en
+       los párrafos largos—. Entre un margen derecho irregular y un texto con
+       agujeros, lo segundo se nota mucho más. */
+    text-align: left;
+    hyphens: none;
+    -webkit-hyphens: none;
+  }
+
+  .markdown-rendered p {
+    margin: 0 0 0.7em;
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* --- Jerarquía de títulos ---------------------------------------------- */
+
+  .markdown-rendered h1,
+  .markdown-rendered h2,
+  .markdown-rendered h3,
+  .markdown-rendered h4 {
+    font-family: 'Inter', 'Calibri', 'Helvetica Neue', sans-serif;
+    color: #000;
+    text-align: left;
+    hyphens: none;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  /* Cada sección numerada arranca en página nueva. */
+  .markdown-rendered h1 {
+    font-size: 19pt;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 0.9em;
+    padding-bottom: 0.28em;
+    border-bottom: 1.6pt solid #000;
+    page-break-before: always;
+    break-before: page;
+  }
+
+  /* …salvo el título de la portada, que ya está en la primera hoja.
+     No sirve `h1:first-of-type`: al exportar, Obsidian envuelve cada bloque en
+     su propio contenedor, así que *todos* los h1 son el primero de su tipo
+     dentro del suyo y la excepción terminaba aplicándose a todos. Resultado: no
+     saltaba ninguna sección de página. Hay que apuntar al primer hijo del
+     documento, sea cual sea el contenedor que Obsidian use. */
+  .markdown-preview-section > :first-child h1,
+  .markdown-rendered > :first-child h1,
+  .markdown-rendered > h1:first-child {
+    page-break-before: avoid !important;
+    break-before: avoid !important;
+  }
+
+  .markdown-rendered h2 {
+    font-size: 13.5pt;
+    font-weight: 700;
+    margin: 1.7em 0 0.6em;
+    padding-bottom: 0.16em;
+    border-bottom: 0.5pt solid #999;
+  }
+
+  .markdown-rendered h3 {
+    font-size: 11.5pt;
+    font-weight: 700;
+    margin: 1.4em 0 0.45em;
+  }
+
+  .markdown-rendered h4 {
+    font-size: 10.5pt;
+    font-weight: 700;
+    font-style: italic;
+    margin: 1em 0 0.3em;
+  }
+
+  /* --- Tablas ------------------------------------------------------------ */
+
+  /* Obsidian envuelve cada tabla en un contenedor con scroll horizontal. En
+     pantalla eso permite arrastrar una tabla ancha; al imprimir no hay dónde
+     arrastrar, así que el contenedor recorta la tabla en el borde de la hoja y
+     las últimas columnas simplemente desaparecen. Se anula el scroll para que
+     la tabla se vea obligada a envolver dentro del ancho de la página. */
+  .markdown-rendered .table-wrapper,
+  .markdown-rendered .markdown-rendered-table,
+  .markdown-rendered .el-table,
+  .markdown-rendered div:has(> table) {
+    overflow: visible !important;
+    overflow-x: visible !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .markdown-rendered table {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    table-layout: auto;
+    border-collapse: collapse;
+    font-family: 'Inter', 'Calibri', 'Helvetica Neue', sans-serif;
+    font-size: 8.5pt;
+    line-height: 1.38;
+    /* Aire arriba y abajo: sin esto la tabla queda pegada al párrafo que la
+       introduce y al epígrafe que la cierra, y el conjunto se lee como un bloque
+       sólido. */
+    margin: 1.4em 0 0.5em;
+    page-break-inside: auto;
+    text-align: left;
+    hyphens: none;
+  }
+
+  /* Cuantas más columnas, menor el cuerpo: una tabla de seis columnas a 8,5 pt
+     deja unos 18 caracteres por columna y queda ilegible de tan quebrada. */
+  .markdown-rendered table:has(> thead > tr > th:nth-child(5)) {
+    font-size: 7.6pt;
+  }
+
+  .markdown-rendered table:has(> thead > tr > th:nth-child(6)) {
+    font-size: 7.1pt;
+    line-height: 1.28;
+  }
+
+  /* El encabezado se repite en cada hoja que la tabla ocupe. */
+  .markdown-rendered thead {
+    display: table-header-group;
+    break-inside: avoid;
+  }
+
+  .markdown-rendered th {
+    background: #ececec !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    font-weight: 700;
+    border: 0.5pt solid #666;
+    padding: 4pt 5pt;
+    vertical-align: bottom;
+  }
+
+  .markdown-rendered td {
+    border: 0.5pt solid #999;
+    padding: 3.5pt 5pt;
+    vertical-align: top;
+    text-align: left;
+  }
+
+  /* `break-word`, no `anywhere`. Los dos permiten cortar una palabra larga cuando
+     no entra, pero `anywhere` además le dice al navegador que el ancho mínimo de
+     la celda es un carácter. Con reparto automático de columnas, eso hace que la
+     columna de texto largo se quede con casi todo el ancho y las demás se
+     aplasten: "Versión" partido en "Ve/rsi/ón" y una fecha en cuatro renglones.
+     Con `break-word`, cada columna conserva como mínimo el ancho de su palabra
+     más larga, que es lo que se quiere. Ninguna de las 68 tablas del informe
+     supera el ancho de la A4 medida así. */
+  .markdown-rendered th,
+  .markdown-rendered td {
+    white-space: normal !important;
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: none;
+    min-width: 0 !important;
+    max-width: none !important;
+  }
+
+  .markdown-rendered th code,
+  .markdown-rendered td code {
+    white-space: normal !important;
+    overflow-wrap: break-word;
+  }
+
+  .markdown-rendered tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* --- Epígrafes de tabla y figura --------------------------------------- */
+
+  /* En el informe, cada tabla y cada figura va seguida de una línea en cursiva
+     (*Tabla 32 — …*). Se compone como epígrafe: centrada, chica y en gris. */
+  .markdown-rendered p > em:only-child {
+    display: block;
+    font-family: 'Inter', 'Calibri', 'Helvetica Neue', sans-serif;
+    font-size: 8pt;
+    font-style: normal;
+    color: #444;
+    text-align: center;
+    margin: 0.15em 0 1.8em;
+    /* El epígrafe pertenece a su tabla o figura: nunca debe quedar solo al pie
+       de una hoja con el objeto que describe en la siguiente. */
+    page-break-before: avoid;
+    break-before: avoid;
+  }
+
+  /* --- Notas de fuente y de dato simulado -------------------------------- */
+
+  /* El generador convierte los callouts de Obsidian en citas planas con
+     entradilla en negrita. Acá se componen como nota al pie: sin color de
+     fondo, con un filete gris y cuerpo menor. */
+  .markdown-rendered blockquote {
+    font-family: 'Inter', 'Calibri', 'Helvetica Neue', sans-serif;
+    font-size: 8.5pt;
+    line-height: 1.4;
+    color: #333;
+    background: none !important;
+    border: none;
+    border-left: 1.5pt solid #bbb;
+    margin: 0.7em 0 1em;
+    padding: 0.1em 0 0.1em 9pt;
+    text-align: left;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .markdown-rendered blockquote p {
+    margin: 0 0 0.35em;
+  }
+
+  .markdown-rendered blockquote strong {
+    color: #000;
+  }
+
+  /* --- Código ------------------------------------------------------------ */
+
+  /* Un identificador dentro de una frase se compone en monoespaciada y nada
+     más. El recuadro gris con borde redondeado lo convierte en una etiqueta de
+     interfaz: en una tabla de catorce rutas el resultado es una grilla de
+     chips, que es lenguaje de aplicación web, no de informe académico.
+     La monoespaciada ya distingue lo suficiente. */
+  .markdown-rendered code {
+    font-family: 'JetBrains Mono', 'Consolas', 'Courier New', monospace;
+    font-size: 0.88em;
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    color: #111;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .markdown-rendered pre {
+    background: #f7f7f7 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    border: 0.5pt solid #ccc;
+    border-radius: 2pt;
+    padding: 6pt 8pt;
+    font-size: 8pt;
+    line-height: 1.35;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .markdown-rendered pre code {
+    background: none !important;
+    border: none;
+    padding: 0;
+    font-size: inherit;
+  }
+
+  /* --- Figuras y diagramas ----------------------------------------------- */
+
+  .markdown-rendered img,
+  .markdown-rendered .mermaid,
+  .markdown-rendered svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 1em auto 0.5em;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .markdown-rendered img {
+    border: 0.5pt solid #ccc;
+  }
+
+  /* --- Listas ------------------------------------------------------------ */
+
+  .markdown-rendered ul,
+  .markdown-rendered ol {
+    margin: 0.4em 0 0.8em;
+    padding-left: 1.5em;
+  }
+
+  .markdown-rendered li {
+    margin-bottom: 0.22em;
+  }
+
+  /* --- Enlaces ------------------------------------------------------------ */
+
+  /* En papel un enlace azul y subrayado es ruido: se compone como texto normal.
+     Los enlaces internos del índice siguen funcionando en el PDF digital. */
+  .markdown-rendered a,
+  .markdown-rendered a.internal-link,
+  .markdown-rendered a.external-link {
+    color: #000 !important;
+    text-decoration: none !important;
+    background: none !important;
+  }
+
+  .markdown-rendered a.external-link::after {
+    content: none !important;
+  }
+
+  /* --- Separadores -------------------------------------------------------- */
+
+  /* Los `---` entre secciones son redundantes: cada sección ya empieza en hoja
+     nueva por el salto de página del h1. */
+  .markdown-rendered hr {
+    display: none;
+  }
+
+  /* --- Cromo de la interfaz ----------------------------------------------- */
+
+  .markdown-embed-title,
+  .frontmatter,
+  .frontmatter-container,
+  .metadata-container,
+  .collapse-indicator,
+  .heading-collapse-indicator {
+    display: none !important;
+  }
+}
