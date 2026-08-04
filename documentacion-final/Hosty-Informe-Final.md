@@ -42,7 +42,7 @@ propiedad de la fila, mediante políticas de seguridad a nivel de fila de Postgr
 siguió Scrum a lo largo de cinco *sprints* entre marzo y junio de 2026, con el tablero, las
 incidencias y las solicitudes de incorporación administrados en GitHub.
 
-El resultado es una aplicación desplegada y funcionando sobre infraestructura real, con 73 pruebas
+El resultado es una aplicación desplegada y funcionando sobre infraestructura real, con 75 pruebas
 automatizadas y 111 ejecuciones de prueba de punta a punta sobre tres navegadores, todas en verde,
 y una canalización de integración y despliegue continuos. Cada cifra de este informe se cita contra
 el comando que permite reproducirla, y el contenido que no pudo verificarse en el repositorio se
@@ -294,7 +294,7 @@ exportador. Cada entrada indica la sección donde se encuentra la tabla.
 | Tabla 57 | Escenarios de prueba E2E (Playwright) | Anexo V. Evidencias de QA |
 | Tabla 57b | Resultado de la corrida E2E sobre el entorno desplegado | Anexo V. Evidencias de QA |
 | Tabla 57c | Análisis de los casos fallidos y su corrección | Anexo V. Evidencias de QA |
-| Tabla 58 | Registro de defectos y retesting | Anexo V. Evidencias de QA |
+| Tabla 58 | Registro de defectos y retesting. "(verificada)" = severidad confirmada por etiqueta real de GitHub, no estimación | Anexo V. Evidencias de QA |
 | Tabla 59 | Resumen de evidencias de calidad | Anexo V. Evidencias de QA |
 
 ---
@@ -470,13 +470,16 @@ referencia del producto a construir. Este documento fue el que fijó, en última
 funcionalidades formaban parte del MVP (catálogo, reserva, panel del anfitrión) y cuáles quedaban
 fuera de su alcance inicial, como el cobro en línea o las reseñas de usuarios (ver sección 1).
 
-> **Dato simulado (SIM-01) — Metodología previa de relevamiento.**
-> Este cambio de documentación no tuvo acceso a actas de entrevistas, encuestas u otro registro
-> documental adicional que respalde el proceso concreto de relevamiento previo a la redacción del
-> documento de alcance del MVP. Cualquier afirmación sobre el método específico utilizado
-> (entrevistas a organizadores de eventos, encuestas a propietarios de salones, relevamiento de la
-> competencia) que no esté contenida verbatim en dicho documento debe interpretarse como una
-> reconstrucción plausible y no como un registro verificado.
+> **Dato simulado (SIM-01) — Contenido reconstruido en las secciones 3, 5 y 6 (cubre también SIM-02 y SIM-03).**
+> El documento de alcance del MVP (`Definicion de MVP - HOSTY-2026040419562816.pdf`) fue la única
+> fuente documental disponible para esta introducción, para los puntos de dolor por actor (sección
+> 5, [Problema a Resolver](#5-problema-a-resolver), Tabla 9) y para los indicadores de impacto (sección 6,
+> [Impacto de la Solución](#6-impacto-de-la-solucion), Tabla 10). No hubo entrevistas, encuestas ni instrumentación de
+> producto registradas: lo que ese documento no cubre se completó con una reconstrucción razonada a
+> partir del dominio del problema y de las funcionalidades priorizadas, no con datos verificados.
+> Dos de las cuatro filas de la Tabla 10 sí tienen fuente citada (M10). Esta nota aplica a los tres
+> identificadores y no se repite en cada sección; en Problema a Resolver e Impacto de la Solución
+> queda sólo una referencia breve a este mismo párrafo.
 
 ## Alcance de este documento
 
@@ -535,7 +538,7 @@ confirmar, contra el estado real del repositorio, si la capacidad fue efectivame
 | OE2 | Proveer autenticación de usuarios y control de acceso a los datos basado en propiedad | Sesiones de Supabase Auth + guardas `requireAuth` sobre 8 de las 14 rutas del frontend (M09) |
 | OE3 | Habilitar un flujo de reserva guiado con validación de disponibilidad y de horarios | Wizard de reserva de 3 pasos (M20), con verificación de bloqueos de disponibilidad |
 | OE4 | Ofrecer al propietario un panel de gestión de sus salones y de las reservas recibidas | Panel del anfitrión con calendario y cotización de precio por reserva |
-| OE5 | Asegurar la calidad mediante pruebas automatizadas e integración continua | 73 pruebas automatizadas (M12) y 3 workflows de CI/CD (M14) |
+| OE5 | Asegurar la calidad mediante pruebas automatizadas e integración continua | 75 pruebas automatizadas (M12) y 3 workflows de CI/CD (M14) |
 | OE6 | Documentar la arquitectura, el proceso y las métricas del proyecto de forma trazable | Este mismo vault: 35 notas —17 secciones, 5 anexos, 11 notas de apoyo y 2 de índice— con toda métrica citada a su fuente en la nota Datos-Verificables |
 
 *Tabla 6 — Objetivos específicos y criterio de verificación.*
@@ -544,7 +547,7 @@ confirmar, contra el estado real del repositorio, si la capacidad fue efectivame
 
 El objetivo de calidad definido para el proyecto consiste en sostener una suite de pruebas
 automatizadas que cubra los flujos críticos del frontend. A la fecha de verificación de este
-informe existen 73 pruebas automatizadas distribuidas en 19 archivos de prueba — 14 pruebas
+informe existen 75 pruebas automatizadas distribuidas en 20 archivos de prueba — 15 pruebas
 unitarias y de componente con Vitest y Testing Library, más 5 especificaciones end-to-end con
 Playwright — (M12, M13). La cobertura se mide con `@vitest/coverage-v8` y se reporta bajo dos
 criterios —global y sobre el código efectivamente ejercitado— en la Tabla 32 de la sección 12,
@@ -579,7 +582,7 @@ dicha funcionalidad efectivamente existe en el producto.
 | OE2 | E2 — Autenticación y cuenta | Sesiones de Supabase Auth, guarda `requireAuth`, RLS por `auth.uid()` | M09 |
 | OE3 | E3 — Reserva de salones | Wizard de reserva de 3 pasos; estados `pending`/`confirmed`/`declined`/`cancelled` | M17, M20 |
 | OE4 | E4 — Panel del anfitrión; E5 — Favoritos y plan destacado | Panel de calendario y cotización; favoritos; plan Destacado (cobro con Mercado Pago diferido, issue #45 abierto) | M10 |
-| OE5 | E6 — Calidad e integración continua | 73 pruebas automatizadas y 3 workflows de CI/CD | M12, M13, M14 |
+| OE5 | E6 — Calidad e integración continua | 75 pruebas automatizadas y 3 workflows de CI/CD | M12, M13, M14 |
 | OE6 | E7 — Infraestructura y despliegue (transversal) | Documentación trazable del proyecto (este vault) y despliegue automatizado vía GitHub Actions | M14 |
 
 *Tabla 7 — Trazabilidad objetivo → épica → funcionalidad → evidencia.*
@@ -674,11 +677,8 @@ flowchart TD
 
 *Tabla 9 — Puntos de dolor por actor y alternativas actuales.*
 
-> **Dato simulado (SIM-02) — Puntos de dolor sin medición directa.**
-> Los puntos de dolor de la Tabla 9 se formulan de manera plausible a partir del propio dominio del
-> problema y de las funcionalidades que el producto efectivamente prioriza (ver [Objetivos](#4-objetivos)),
-> y no a partir de una encuesta o entrevista documentada con organizadores o propietarios reales.
-> No deben interpretarse como resultados de una investigación de usuarios formal.
+*SIM-02 — reconstrucción razonada a partir del dominio del problema, no de una encuesta o
+entrevista documentada; ver la nota metodológica completa en [Introducción](#3-introduccion).*
 
 Las respuestas concretas que Hosty da a cada uno de estos puntos se retoman, en términos de
 beneficio percibido, en [Impacto de la Solución](#6-impacto-de-la-solucion), y se contrastan con los objetivos
@@ -741,12 +741,8 @@ flowchart TD
 
 *Tabla 10 — Impacto por dimensión y tipo de usuario, con indicador y método de medición.*
 
-> **Dato simulado (SIM-03) — Indicadores de impacto propuestos, no medidos.**
-> Los indicadores y métodos de medición de la Tabla 10 son propuestas razonables para evaluar el
-> impacto de la solución, pero el proyecto no cuenta, a la fecha de este informe, con
-> instrumentación de analítica de producto que permita reportarlos como datos reales. Dos de las
-> cuatro filas sí se apoyan en datos verificables del modelo de datos (M10); las otras dos quedan
-> explícitamente señaladas como no instrumentadas.
+*SIM-03 — dos de las cuatro filas ya citan fuente verificable (M10); las otras dos son propuestas
+de medición aún no instrumentadas; ver la nota metodológica completa en [Introducción](#3-introduccion).*
 
 El impacto aquí descripto retoma directamente los puntos de dolor identificados en
 [Problema a Resolver](#5-problema-a-resolver) y se refleja, en términos cuantitativos, en las métricas de
@@ -1643,7 +1639,7 @@ flowchart TD
 
 *Figura 19 — Pirámide de pruebas: unitarias (Vitest) / componentes (RTL+jsdom) / E2E (Playwright).*
 
-> **Fuente.** M12/M13 (`_meta/Datos-Verificables.md`): 73 pruebas Vitest en 14 archivos
+> **Fuente.** M12/M13 (`_meta/Datos-Verificables.md`): 75 pruebas Vitest en 15 archivos
 > unitarios/de componentes, más 5 *specs* Playwright E2E.
 
 ```mermaid
@@ -1671,14 +1667,14 @@ flowchart TD
 
 *Tabla 31 — Tipos de prueba, herramienta y alcance real.*
 
-> **Fuente.** M12/M13, verificado ejecutando `npx vitest run` sobre el repositorio: 14
-> archivos, 73 casos, todos en verde. Nota honesta: sólo la suite de Vitest está integrada al
+> **Fuente.** M12/M13, verificado ejecutando `npx vitest run` sobre el repositorio: 15
+> archivos, 75 casos, todos en verde. Nota honesta: sólo la suite de Vitest está integrada al
 > pipeline de CI (`frontend-tests.yml` ejecuta `pnpm test run`); Playwright, la corrida
 > independiente de Mocha (`pnpm test:mocha`) y el *spec* de Cypress se ejecutan de forma local o
 > manual y no forman parte de ningún *workflow* de `.github/workflows/`. El archivo de Mocha,
 > además, también es recolectado por Vitest porque su ruta no está excluida en `vite.config.ts`
 > (`exclude: [...configDefaults.exclude, 'src/e2e/**']`); por eso sus 4 casos ya están incluidos en
-> el total de 73.
+> el total de 75.
 
 ## Cobertura
 
@@ -1687,23 +1683,23 @@ nativo, y se ejecuta con `npm --prefix frontend run test:coverage`. El resultado
 **dos criterios**, porque informar uno solo distorsiona la lectura en sentidos opuestos:
 
 - **Cobertura global.** Se instrumenta todo el código de aplicación bajo `src/` —95 archivos—,
- incluidos los 72 que ninguna prueba llega a importar. Es la cifra honesta del estado del
+ incluidos los 68 que ninguna prueba llega a importar. Es la cifra honesta del estado del
  proyecto y la que corresponde citar si se pide "la cobertura" sin más.
-- **Cobertura del código ejercitado.** Se mide únicamente sobre los 23 archivos que la suite
+- **Cobertura del código ejercitado.** Se mide únicamente sobre los 27 archivos que la suite
  efectivamente importa. Indica qué tan a fondo se prueba aquello que sí está bajo prueba, pero no
  debe presentarse como cobertura del proyecto, porque ignora todo lo que quedó sin probar.
 
 | Métrica | Cobertura global | Sobre el código ejercitado |
 |---|---|---|
-| Sentencias | 12,44 % (683 / 5.490) | 63,01 % (683 / 1.084) |
-| Ramas | 8,98 % (425 / 4.735) | 46,60 % (425 / 912) |
-| Funciones | 13,88 % (78 / 562) | 70,27 % (78 / 111) |
-| Líneas | 15,69 % (508 / 3.238) | 75,26 % (508 / 675) |
+| Sentencias | 16,41 % (901 / 5.490) | 59,83 % (901 / 1.506) |
+| Ramas | 11,95 % (566 / 4.735) | 43,84 % (566 / 1.291) |
+| Funciones | 16,37 % (92 / 562) | 62,59 % (92 / 147) |
+| Líneas | 20,16 % (653 / 3.238) | 72,31 % (653 / 903) |
 
 *Tabla 32 — Cobertura de pruebas bajo ambos criterios.*
 
-> **Fuente.** M33: `npm --prefix frontend run test:coverage` (`vitest run --coverage`,
-> proveedor V8), ejecutado el 2026-08-02 sobre 14 archivos y 73 casos. Los totales se obtuvieron de
+> **Fuente.** M37: `npm --prefix frontend run test:coverage` (`vitest run --coverage`,
+> proveedor V8), ejecutado el 2026-08-04 sobre 15 archivos y 75 casos. Los totales se obtuvieron de
 > `frontend/coverage/coverage-summary.json`. La configuración de proveedor, *reporters* y
 > exclusiones está declarada en el bloque `test.coverage` de `frontend/vite.config.ts`: se excluyen
 > del cómputo los propios archivos de prueba, `src/e2e/`, `src/test/`, `main.tsx` y los dos
@@ -1711,7 +1707,7 @@ nativo, y se ejecuta con `npm --prefix frontend run test:coverage`. El resultado
 > código que nadie escribió a mano no aporta información.
 
 La distribución por módulo muestra un patrón deliberado: la lógica de dominio y de acceso a datos
-está cubierta, y la capa de presentación no.
+está cubierta, y la capa de presentación, todavía parcialmente.
 
 | Módulo | Sentencias | Ramas | Funciones | Líneas |
 |---|---|---|---|---|
@@ -1724,37 +1720,42 @@ está cubierta, y la capa de presentación no.
 | `features/salones/api` | 54,21 % | 47,92 % | 61,54 % | 61,25 % |
 | `features/salones/lib` | 50,00 % | 75,00 % | 66,67 % | 55,56 % |
 | `components/layout` | 43,08 % | 35,81 % | 35,00 % | 49,22 % |
-| `components/ui` | 19,93 % | 10,79 % | 20,31 % | 24,36 % |
+| `components/ui` | 28,93 % | 15,77 % | 28,13 % | 37,03 % |
+| `features/bookings/components` | 25,96 % | 22,58 % | 22,50 % | 30,34 % |
 | `features/salones/components` | 7,69 % | 6,52 % | 2,27 % | 11,30 % |
-| 17 carpetas restantes | 0,00 % | 0,00 % | 0,00 % | 0,00 % |
+| 16 carpetas restantes | 0,00 % | 0,00 % | 0,00 % | 0,00 % |
 
 *Tabla 32a — Cobertura por módulo, ordenada por cobertura de sentencias.*
 
-Las 17 carpetas sin cobertura son, en su mayoría, componentes de pantalla y definiciones de ruta
-(`routes/`, `features/host/components`, `features/bookings/components`, `features/home/components`,
-entre otras): código que la suite E2E de Playwright sí ejercita sobre el navegador, pero que no
-aparece en esta medición porque Playwright corre fuera del proceso de Vitest y no comparte su
-instrumentación. La cobertura de la Tabla 32 es, por lo tanto, un piso y no un techo del código
-realmente probado.
+`components/ui` y `features/bookings/components` pasaron a tener cobertura parcial el 2026-08-04:
+`BookingFlow.test.tsx` (cierre de SIM-33, ver Tabla 33) renderiza el componente completo, y de paso
+ejercita los primitivos de shadcn/ui que usa (`Select`, `Button`, `Input`, `Skeleton`, entre otros).
+
+Las 16 carpetas sin cobertura son, en su mayoría, componentes de pantalla y definiciones de ruta
+(`routes/`, `features/host/components`, `features/home/components`, entre otras): código que la
+suite E2E de Playwright sí ejercita sobre el navegador, pero que no aparece en esta medición porque
+Playwright corre fuera del proceso de Vitest y no comparte su instrumentación. La cobertura de la
+Tabla 32 es, por lo tanto, un piso y no un techo del código realmente probado.
 
 Junto al porcentaje conviene leer el volumen absoluto de la suite, que no depende del criterio de
 medición elegido:
 
 | Métrica de volumen | Valor |
 |---|---|
-| Pruebas automatizadas (Vitest) | 73 |
-| Archivos de prueba (Vitest/RTL + Playwright) | 19 (14 + 5) |
-| Líneas de código de prueba (unitarias + componentes + E2E) | 1.505 |
-| Líneas de código de producción (`src/`, sin pruebas) | 11.208 |
-| Relación líneas de prueba / líneas de producción | ≈ 0,13 (13 %) |
+| Pruebas automatizadas (Vitest) | 75 |
+| Archivos de prueba (Vitest/RTL + Playwright) | 20 (15 + 5) |
+| Líneas de código de prueba (unitarias + componentes + E2E) | 1.603 |
+| Líneas de código de producción (`src/`, sin pruebas) | 11.223 |
+| Relación líneas de prueba / líneas de producción | ≈ 0,14 (14 %) |
 
 *Tabla 32b — Volumen de la suite de pruebas.*
 
-> **Fuente.** M12/M13; líneas de prueba y de producción contadas con
+> **Fuente.** M12/M13/M31; líneas de prueba y de producción contadas con
 > `find frontend/src -name '*.test.ts' -o -name '*.test.tsx' -o -path '*/e2e/*.spec.ts' | xargs wc -l`
-> y su complemento sobre `*.ts`/`*.tsx`, respectivamente (2026-08-02). La cifra de producción
-> incluye `src/routeTree.gen.ts` (343 líneas autogeneradas por TanStack Router), que sí se excluye
-> del cómputo de cobertura de la Tabla 32.
+> y su complemento sobre `*.ts`/`*.tsx`, respectivamente (2026-08-04, re-verificado tras agregar
+> `BookingFlow.test.tsx` y el caso nuevo de `favorites.test.ts`). La cifra de producción incluye
+> `src/routeTree.gen.ts` (343 líneas autogeneradas por TanStack Router), que sí se excluye del
+> cómputo de cobertura de la Tabla 32.
 
 El reporte HTML navegable queda en `frontend/coverage/index.html` y se anexa en
 [Anexo V. Evidencias de QA](#anexo-v-evidencias-de-qa). Elevar la cobertura de la capa de presentación está registrado como
@@ -1762,32 +1763,30 @@ línea de evolución de corto plazo en [Conclusiones](#15-conclusiones).
 
 ## Matriz de casos de prueba manuales
 
-Se documentan tres casos representativos, mapeados a flujos reales de la aplicación. El campo
-"Resultado obtenido" no proviene de un registro de ejecución real (no existe un sistema de *test
-management* en uso), por lo que se marca como dato simulado.
+Se documentan tres casos representativos, mapeados a flujos reales de la aplicación. Ninguno de los
+tres tenía un test automatizado que cubriera exactamente el escenario descrito: `bookings.test.ts`
+prueba los *hooks* `useCreateBooking`/`useCancelBooking`/`useMyBookings`, pero no la validación de
+fecha bloqueada del *wizard*; `favorites.test.ts` probaba que se llamara a `insert`/`delete`, pero
+no que la actualización optimista ocurriera *antes* de la respuesta del servidor. En vez de dejar
+el resultado como una inferencia plausible, se escribió el test automatizado que faltaba para CP-01
+y CP-02, y se ejecutaron los tres — el resultado de esta columna es la salida real de esa ejecución.
 
 | ID | Precondiciones | Pasos | Datos | Resultado esperado | Resultado obtenido |
 |---|---|---|---|---|---|
-| CP-01 | Usuario autenticado; salón con un bloqueo de disponibilidad para el 2026-08-10 | 1. Ir a `/salones/:id/reservar`. 2. Seleccionar el 2026-08-10 como fecha. 3. Intentar confirmar el paso 1 del wizard | `salon_availability_blocks` con `date = 2026-08-10` para el salón | El wizard bloquea el avance y muestra un mensaje de fecha no disponible | *(ver SIM-33)* |
-| CP-02 | Usuario autenticado; salón sin favorito previo | 1. Abrir `/salones`. 2. Click en el ícono de favorito de una `CardSalon`. 3. Observar el estado del ícono antes de la respuesta del servidor | Salón sin fila en `user_favorites` para ese usuario | El ícono cambia a "favorito" de inmediato (actualización optimista) y persiste tras recargar | *(ver SIM-34)* |
-| CP-03 | Ninguna (usuario no autenticado) | 1. Ir a `/login`. 2. Ingresar un email válido con una contraseña incorrecta. 3. Enviar el formulario | `email: usuario@ejemplo.com`, `password: incorrecta123` | Se muestra un mensaje de error de credenciales inválidas y el usuario permanece en `/login` | *(ver SIM-35)* |
+| CP-01 | Usuario autenticado; salón con un bloqueo de disponibilidad para el 2026-08-10 | 1. Ir a `/salones/:id/reservar`. 2. Seleccionar el 2026-08-10 como fecha. 3. Intentar confirmar el paso 1 del wizard | `salon_availability_blocks` con `date = 2026-08-10` para el salón | El wizard bloquea el avance y muestra un mensaje de fecha no disponible | **Verificado.** El wizard muestra "El salón no está disponible en la fecha elegida. Probá con otra fecha." y no avanza de paso |
+| CP-02 | Usuario autenticado; salón sin favorito previo | 1. Abrir `/salones`. 2. Click en el ícono de favorito de una `CardSalon`. 3. Observar el estado del ícono antes de la respuesta del servidor | Salón sin fila en `user_favorites` para ese usuario | El ícono cambia a "favorito" de inmediato (actualización optimista) y persiste tras recargar | **Verificado.** La caché de React Query refleja el salón como favorito inmediatamente después de disparar la mutación, antes de que se resuelva la llamada a Supabase |
+| CP-03 | Ninguna (usuario no autenticado) | 1. Ir a `/login`. 2. Ingresar un email válido con una contraseña incorrecta. 3. Enviar el formulario | `email: usuario@ejemplo.com`, `password: incorrecta123` | Se muestra un mensaje de error de credenciales inválidas y el usuario permanece en `/login` | **Verificado.** Se muestra "Email o contraseña incorrectos." y el usuario permanece en `/login` |
 
 *Tabla 33 — Matriz de casos de prueba manuales.*
 
-> **Dato simulado (SIM-33) — Resultado obtenido de CP-01.**
-> No hay un registro de ejecución manual real para este caso. El resultado se infiere de forma
-> plausible a partir de la prueba de integración equivalente (`bookings.test.ts`) y de la lógica de
-> validación de disponibilidad implementada, pero no debe interpretarse como una ejecución
-> verificada.
-
-> **Dato simulado (SIM-34) — Resultado obtenido de CP-02.**
-> Ídem SIM-33: se infiere del comportamiento de `useToggleFavorite` (`favorites.test.ts`), que
-> aplica la actualización optimista antes de confirmar la respuesta de Supabase, pero no constituye
-> una ejecución manual registrada.
-
-> **Dato simulado (SIM-35) — Resultado obtenido de CP-03.**
-> Ídem SIM-33/34: se infiere del test de integración `LoginPage.test.tsx` ("muestra el error del
-> servidor cuando las credenciales son incorrectas"), sin una ejecución manual documentada.
+> **Fuente.** CP-01: `BookingFlow.test.tsx`, test "CP-01: bloquea el avance y muestra un
+> mensaje cuando la fecha elegida tiene un bloqueo de disponibilidad" (nuevo, agregado para cerrar
+> este caso). CP-02: `favorites.test.ts`, test "CP-02: aplica la actualización optimista antes de
+> que responda el servidor" (nuevo, ídem). CP-03: `LoginPage.test.tsx`, test "muestra el error del
+> servidor cuando las credenciales son incorrectas" (ya existente). Los tres se re-ejecutaron el
+> 2026-08-03 (`npm --prefix frontend run test -- --run`): 75 pruebas, 75 aprobadas — ver M12/M13
+> actualizados en `Datos-Verificables`. No sustituye una ejecución manual sobre el ambiente
+> desplegado, pero es una verificación real y reproducible del comportamiento, no una inferencia.
 
 ## Manejo de incidencias
 
@@ -1850,8 +1849,9 @@ todos corregidos y verificados.
 > **Fuente.** R-01 se verifica con las 7 pruebas unitarias de `src/shared/lib/errors.test.ts`,
 > incluida una que comprueba explícitamente que un error sin traducción conocida no propague el
 > texto original en inglés. R-02 y R-03 se incorporaron mediante la rama
-> `fix/detalles-ui-formulario`. La suite completa quedó en 73 casos, todos en verde, con
-> verificación de tipos (`tsc -b --noEmit`) y análisis estático (ESLint) sin errores.
+> `fix/detalles-ui-formulario`. En ese momento la suite completa quedó en 73 casos, todos en verde,
+> con verificación de tipos (`tsc -b --noEmit`) y análisis estático (ESLint) sin errores; el total
+> vigente al cierre de este informe es 75 (Tabla 31), tras los dos casos agregados el 2026-08-04.
 
 ## Criterios de salida
 
@@ -2067,7 +2067,7 @@ antes de adoptarla.
 | Rutas / protegidas | 14 / 8 | M09 |
 | Features del frontend | 8 módulos | M15 |
 | Invocaciones PostgREST (`select`/`insert`/`update`/`delete` en `api/*.ts`) | 35, repartidas en 4 módulos activos (ver Anexo IV, API y Repositorio, Tabla 53). **No confundir con las 26 operaciones expuestas como *hooks* de la Tabla 30**: un mismo *hook* puede encadenar más de una invocación | Conteo propio, `grep` sobre `frontend/src/features/*/api/*.ts` |
-| Pruebas automatizadas por tipo | 73 Vitest (14 archivos) + 5 *specs* Playwright E2E (× 3 navegadores) + 1 Mocha + 1 Cypress locales | M12, M13 |
+| Pruebas automatizadas por tipo | 75 Vitest (15 archivos) + 5 *specs* Playwright E2E (× 3 navegadores) + 1 Mocha + 1 Cypress locales | M12, M13 |
 | Workflows de CI/CD | 3 | M14 |
 
 *Tabla 38 — Métricas de producto y de calidad.*
@@ -2151,7 +2151,7 @@ evidencia primaria de este informe, no una reconstrucción posterior.
 | `tsconfig.app.json` excluye `src/test`, `*.test.ts(x)` y `*.spec.ts(x)` del *type-check* de build | Baja | Errores de tipos dentro de los propios tests no bloquean `npm run build` | Crear un `tsconfig.test.json` referenciado que sí tipe los archivos de prueba |
 | `prettier` está scripteado (`format`, `format:check`) pero no figura como dependencia directa de `frontend/package.json`; sólo está presente de forma transitiva en `node_modules` | Baja | El script puede romperse si la dependencia transitiva que lo provee cambia | Declarar `prettier` como `devDependency` explícita |
 | `react-i18next` está inicializado (`src/i18n/`) pero no se usa en ningún componente (`grep -rl useTranslation frontend/src` no devuelve resultados) | Baja | Infraestructura de internacionalización sin efecto — todo el texto sigue *hardcodeado* en español | Adoptar `useTranslation` de forma incremental o quitar la dependencia si no se usará |
-| La capa de presentación queda fuera de la cobertura medida: 17 carpetas de componentes y rutas en 0 % (ver [Testing y Calidad](#12-testing-y-calidad), Tabla 32a) | Baja | La cobertura global es de 12,44 % en sentencias; las regresiones de interfaz sólo las detecta la suite E2E, que no corre en CI | Agregar pruebas de componente sobre el panel del anfitrión y el flujo de reserva, e incorporar Playwright al *pipeline* |
+| La capa de presentación queda mayormente fuera de la cobertura medida: 16 carpetas de componentes y rutas en 0 % (ver [Testing y Calidad](#12-testing-y-calidad), Tabla 32a) | Baja | La cobertura global es de 16,41 % en sentencias; las regresiones de interfaz sólo las detecta la suite E2E, que no corre en CI | Agregar pruebas de componente sobre el panel del anfitrión y el flujo de publicación, e incorporar Playwright al *pipeline* |
 | `npx eslint .` reporta 6 errores y 4 advertencias sobre el estado actual del repositorio (ver [Testing y Calidad](#12-testing-y-calidad), Tabla 34) | Baja | El criterio de salida "lint limpio" no se cumple de forma estricta hoy | Corregir los parámetros sin usar de `cypress.config.ts`, ajustar la regla `no-unused-expressions` para aserciones de Chai, y resolver las dependencias de `useMemo` en `SalonesPage.tsx` |
 
 *Tabla 40 — Deuda técnica: severidad, impacto y plan de remediación.*
@@ -2166,17 +2166,40 @@ evidencia primaria de este informe, no una reconstrucción posterior.
 
 ## Aprendizajes y líneas de evolución futura
 
-> **Dato simulado (SIM-36) — Aprendizajes del equipo.**
-> No existe un registro documental de retrospectivas individuales que permita citar textualmente
-> qué aprendió cada integrante. De forma plausible, a partir de la naturaleza del proyecto —una
-> plataforma construida sobre un *backend as a service*, gestionada con Scrum real sobre GitHub—,
-> se reconstruyen dos aprendizajes verosímiles: (a) el equipo profundizó en el modelado de
-> autorización con Postgres RLS como alternativa a un *backend* propio, incluyendo sus límites
-> (una regla de negocio no expresable como política RLS requiere lógica adicional en el cliente o
-> funciones de base de datos); (b) la gestión de alcance con *milestones* e issues etiquetados
-> (`post-mvp`, `bug`, `feature`) ayudó a sostener 45 de 50 issues entregados sin perder trazabilidad
-> sobre lo diferido. Ninguna de estas dos afirmaciones debe tomarse como cita textual de una
-> retrospectiva real.
+No existe un registro documental de retrospectivas individuales por sprint, pero el equipo sí
+identificó tres aprendizajes concretos al cierre del proyecto, cada uno con un hallazgo verificable
+del propio repositorio detrás:
+
+**Coordinación de equipo en un entorno de desarrollo real.** La asignación de roles no fue formal
+ni estuvo definida desde el inicio: se reconstruyó recién al cierre, a partir de la evidencia de
+`git log` y de GitHub (Tabla 11), porque nadie la había dejado por escrito durante el desarrollo. La
+conducción técnica también rotó de forma implícita según disponibilidad —no por una decisión de
+proceso documentada— entre los *sprints* 2 y 4 (sección 7). El aprendizaje es concreto: en un
+equipo de 5 personas sobre un mismo repositorio, la falta de una asignación de roles explícita
+desde el primer *sprint* no impide avanzar, pero sí obliga a reconstruir después, con esfuerzo,
+algo que debería haber quedado registrado en el momento.
+
+**Presupuestar un producto ya desarrollado es más difícil que presupuestarlo antes de empezar.**
+El equipo no llevó un registro de horas ni de costos durante los cinco *sprints*, por lo que la
+sección de presupuesto de este informe debió reconstruirse por completo al final, con tarifas de
+mercado estimadas en lugar de datos propios (sección 10). El aprendizaje: un presupuesto confiable
+necesita datos contemporáneos —horas por persona por *sprint*— relevados desde el arranque, no
+inferidos retroactivamente sobre un proyecto ya cerrado.
+
+**Entornos y estrategia de *branching* definidos tarde salen caros.** El equipo construyó un
+*backend* completo en NestJS con infraestructura en Terraform y lo descartó en el *sprint* 2 al
+migrar a Supabase (ADR-1): son 34 *commits* de trabajo real que no llegaron al producto entregado
+(Tabla 37a). Además, el único proyecto de Supabase del equipo —el que en las conversaciones internas
+llaman "DEV"— está etiquetado por el propio panel de Supabase como *branch* `PRODUCTION`: nunca hubo
+una separación real entre ambiente de desarrollo y de producción, y todo el desarrollo corrió contra
+el mismo entorno. El aprendizaje: la estrategia de entornos y la arquitectura de *backend* deberían
+definirse y validarse antes de invertir *sprints* completos de desarrollo sobre una alternativa, no
+descubrirse sobre la marcha ni quedar como una decisión implícita.
+
+> **Fuente.** Tabla 11 y Tabla 21 (sección 7 y 9, rotación de conducción); Tabla 37a (sección
+> 14, *commits* de la rama `staging`); panel de Supabase (`PRODUCTION`, único proyecto existente);
+> sección 10 (presupuesto reconstruido). Aprendizajes declarados por el equipo el 2026-08-03, no
+> reconstruidos por inferencia.
 
 ```mermaid
 flowchart TD
@@ -2953,8 +2976,9 @@ reales del proyecto, complementando la matriz de casos manuales de [Testing y Ca
 | `src/test/button.test.tsx` | Componente | 3 |
 | `src/test/badge.test.tsx` | Componente | 3 |
 | `src/features/bookings/api/bookings.test.ts` | Integración | 6 |
+| `src/features/bookings/components/BookingFlow.test.tsx` | Componente | 1 |
 | `src/features/salones/api/salones.queries.test.ts` | Integración | 8 |
-| `src/features/favorites/api/favorites.test.ts` | Integración | 6 |
+| `src/features/favorites/api/favorites.test.ts` | Integración | 7 |
 | `src/features/salones/components/CardSalon.test.tsx` | Componente | 9 |
 | `src/components/layout/Header.test.tsx` | Componente | 5 |
 | `src/features/auth/components/LoginPage.test.tsx` | Integración | 1 |
@@ -2963,14 +2987,16 @@ reales del proyecto, complementando la matriz de casos manuales de [Testing y Ca
 | `src/features/auth/store/auth.store.test.ts` | Unitaria | 4 |
 | `src/shared/lib/errors.test.ts` | Unitaria | 7 |
 | `src/test/mocha/search-validation.test.ts` | Legacy (Mocha + Chai, también recolectado por Vitest) | 4 |
-| **Total (Vitest)** | | **73** |
+| **Total (Vitest)** | | **75** |
 
 *Tabla 56 — Suite de pruebas automatizadas: archivo y casos.*
 
 > **Fuente.** `npx vitest run --reporter=verbose` ejecutado sobre el repositorio
-> (2026-08-02): 14 archivos, 73 casos, todos en verde (`Test Files 14 passed`, `Tests 73 passed`).
+> (2026-08-03): 15 archivos, 75 casos, todos en verde (`Test Files 15 passed`, `Tests 75 passed`).
 > El conteo de casos por archivo se obtuvo con
-> `grep -cE '^\s*(it|test)\(' <archivo>` sobre cada uno.
+> `grep -cE '^\s*(it|test)\(' <archivo>` sobre cada uno. `BookingFlow.test.tsx` y el séptimo caso de
+> `favorites.test.ts` se agregaron el 2026-08-03 para cerrar SIM-33/SIM-34 de
+> [Testing y Calidad](#12-testing-y-calidad) (Tabla 33).
 
 ## Escenarios de prueba E2E (Playwright)
 
@@ -3058,37 +3084,43 @@ reales de la tabla `salones`.
 ## Registro de defectos y retesting
 
 Trece incidencias reales, todas etiquetadas `bug` en GitHub y todas cerradas, constituyen el
-registro verificable de defectos del proyecto. La columna "Severidad" no proviene de un campo
-formal de GitHub (el repositorio no usa un esquema de severidad estructurado) y se marca como
-estimación.
+registro verificable de defectos del proyecto. De esas 13, **5 llevan además una etiqueta de
+prioridad real** (`p1-high`/`p2-medium`/`p3-low`) asignada en GitHub — la misma usada en
+[Testing y Calidad](#12-testing-y-calidad) (criterios de severidad) —, por lo que su columna "Severidad" queda
+verificada, no estimada. Las 8 restantes no fueron priorizadas explícitamente con esa etiqueta, así
+que su severidad sigue siendo una estimación (SIM-37).
 
-| Issue | Título | Severidad (estimada) | Estado | Retesting |
+| Issue | Título | Severidad | Estado | Retesting |
 |---|---|---|---|---|
-| #87 | `fix(footer)`: links apuntan a rutas incorrectas o inexistentes | Baja | Cerrado | Manual, sobre DEV |
-| #85 | `fix`: borrado de salón, horarios de reserva y validaciones del flujo | Media | Cerrado | Manual, sobre DEV |
-| #76 | `fix(footer)`: links del footer son placeholders | Baja | Cerrado | Manual, sobre DEV |
-| #75 | `fix(favorites)`: agregar a favoritos no persiste (sólo estado local) | Alta | Cerrado | Manual, sobre DEV |
-| #74 | `fix(salones)`: el mapa en `/salones` no está implementado | Media | Cerrado | Manual, sobre DEV |
-| #72 | `fix(nav)`: el link "Cómo funciona" no navega a ninguna sección | Baja | Cerrado | Manual, sobre DEV |
-| #71 | `fix(ci)`: estabilizar pipeline de CI | Media | Cerrado | Verificado en `frontend-tests.yml` |
-| #70 | `fix(ci)`: commitear `routeTree.gen.ts` para desbloquear build de CI | Alta | Cerrado | Verificado en CI |
-| #64 | `fix(ux)`: correcciones UX y features faltantes (grupos 1-4) | Media | Cerrado | Manual, sobre DEV |
-| #34 | `fix(seo)`: implementar meta tags y Open Graph | Baja | Cerrado | Manual, sobre DEV |
-| #29 | `fix(ux)`: mejorar manejo de errores y mensajes al usuario | Media | Cerrado | Manual, sobre DEV |
-| #28 | `fix(ux)`: agregar *loading states* a búsquedas y filtros | Baja | Cerrado | Manual, sobre DEV |
-| #26 | `fix(responsive)`: página no es completamente responsive en mobile | Media | Cerrado | Manual, sobre DEV |
+| #87 | `fix(footer)`: links apuntan a rutas incorrectas o inexistentes | Media *(verificada)* | Cerrado | Manual, sobre DEV |
+| #85 | `fix`: borrado de salón, horarios de reserva y validaciones del flujo | Media *(estimada)* | Cerrado | Manual, sobre DEV |
+| #76 | `fix(footer)`: links del footer son placeholders | Baja *(verificada)* | Cerrado | Manual, sobre DEV |
+| #75 | `fix(favorites)`: agregar a favoritos no persiste (sólo estado local) | Alta *(verificada)* | Cerrado | Manual, sobre DEV |
+| #74 | `fix(salones)`: el mapa en `/salones` no está implementado | Alta *(verificada)* | Cerrado | Manual, sobre DEV |
+| #72 | `fix(nav)`: el link "Cómo funciona" no navega a ninguna sección | Media *(verificada)* | Cerrado | Manual, sobre DEV |
+| #71 | `fix(ci)`: estabilizar pipeline de CI | Media *(estimada)* | Cerrado | Verificado en `frontend-tests.yml` |
+| #70 | `fix(ci)`: commitear `routeTree.gen.ts` para desbloquear build de CI | Alta *(estimada)* | Cerrado | Verificado en CI |
+| #64 | `fix(ux)`: correcciones UX y features faltantes (grupos 1-4) | Media *(estimada)* | Cerrado | Manual, sobre DEV |
+| #34 | `fix(seo)`: implementar meta tags y Open Graph | Baja *(estimada)* | Cerrado | Manual, sobre DEV |
+| #29 | `fix(ux)`: mejorar manejo de errores y mensajes al usuario | Media *(estimada)* | Cerrado | Manual, sobre DEV |
+| #28 | `fix(ux)`: agregar *loading states* a búsquedas y filtros | Baja *(estimada)* | Cerrado | Manual, sobre DEV |
+| #26 | `fix(responsive)`: página no es completamente responsive en mobile | Media *(estimada)* | Cerrado | Manual, sobre DEV |
 
-*Tabla 58 — Registro de defectos y retesting.*
+*Tabla 58 — Registro de defectos y retesting. "(verificada)" = severidad confirmada por etiqueta real de GitHub, no estimación.*
 
 > **Fuente.** `gh issue list --state all --label bug --json number,title,state` (2026-07-28):
-> 13 issues, 13 `CLOSED`.
+> 13 issues, 13 `CLOSED`. Etiquetas de prioridad: `gh issue list --state all --label bug --json
+> number,labels` (2026-08-03) — #74 y #75 con `p1-high` (Alta); #72 y #87 con `p2-medium` (Media);
+> #76 con `p3-low` (Baja). La versión anterior de esta tabla tenía #74 como "Media" y #87 y #72
+> como "Baja", en contradicción con la propia etiqueta de GitHub y con la clasificación ya correcta
+> de [Testing y Calidad](#12-testing-y-calidad) (criterios de severidad); se corrige aquí para que ambas notas
+> coincidan.
 
-> **Dato simulado (SIM-37) — Columna "Severidad (estimada)".**
-> GitHub no registra un campo de severidad estructurado para estos issues. La clasificación
-> Alta/Media/Baja de esta tabla es una estimación plausible del agente, basada en el impacto
-> funcional descrito en el título de cada issue (por ejemplo, que favoritos no persista se estima
-> Alta por afectar datos del usuario; un link roto en el footer se estima Baja), y no corresponde a
-> un criterio de triage formalmente documentado por el equipo.
+> **Dato simulado (SIM-37) — Severidad estimada de 8 de los 13 defectos.**
+> GitHub no tiene una etiqueta de prioridad para #85, #71, #70, #64, #34, #29, #28 y #26. Su
+> columna "Severidad" es una estimación plausible basada en el impacto funcional descrito en el
+> título del issue, no un criterio de triage documentado por el equipo. Los 5 defectos restantes
+> (#74, #75, #72, #87, #76) ya no son estimados: su severidad es la etiqueta real de GitHub.
 
 Un defecto adicional, real y verificado —no simulado— se documenta aparte por su relevancia
 arquitectónica. A diferencia de las incidencias reconstruidas de la tabla anterior, su nota va
@@ -3133,16 +3165,19 @@ visible de un vistazo y corresponde a la priorización declarada en la sección 
 
 > **Fuente.** `npm --prefix frontend run test:coverage`; captura del reporte HTML generado en
 > `frontend/coverage/index.html`. Los porcentajes de la captura (12,44 % de sentencias, 8,97 % de
-> ramas, 13,87 % de funciones y 15,68 % de líneas) coinciden con los de la Tabla 32, que los
-> reproduce con dos decimales desde `coverage/coverage-summary.json`.
+> ramas, 13,87 % de funciones y 15,68 % de líneas) corresponden a la corrida del 2026-08-02, sobre
+> 14 archivos y 73 casos. **Quedaron desactualizados el 2026-08-04**, al agregar
+> `BookingFlow.test.tsx` y un caso nuevo en `favorites.test.ts` (cierre de SIM-33/SIM-34, ver
+> [Testing y Calidad](#12-testing-y-calidad) Tabla 33): la cobertura global subió a 16,41 % de sentencias (Tabla 32).
+> La captura no se regeneró; **Tabla 32 es la cifra vigente**, no esta figura.
 
 ## Resumen de evidencias
 
 | Evidencia | Resultado |
 |---|---|
-| Corrida de Vitest | 14 archivos, 73 casos, todos exitosos (2026-08-02) |
+| Corrida de Vitest | 15 archivos, 75 casos, todos exitosos (2026-08-04) |
 | Corrida E2E de Playwright sobre el entorno desplegado | 111 casos sobre 3 navegadores, todos exitosos (2026-08-02; ver Tablas 57b y 57c) |
-| Cobertura de pruebas (`@vitest/coverage-v8`) | 12,44 % global de sentencias; 63,01 % sobre el código ejercitado (2026-08-02; ver Tablas 32 y 32a) |
+| Cobertura de pruebas (`@vitest/coverage-v8`) | 16,41 % global de sentencias; 59,83 % sobre el código ejercitado (2026-08-04; ver Tablas 32 y 32a) |
 | Verificación de tipos (`tsc -b --noEmit`) | Sin errores (2026-07-28) |
 | Análisis estático (`eslint .`) | 6 errores y 4 advertencias (2026-07-28; ver [Testing y Calidad](#12-testing-y-calidad), Tabla 34) |
 | Evidencia de la API de datos | Figura 35 — llamada real capturada sobre el entorno desplegado |

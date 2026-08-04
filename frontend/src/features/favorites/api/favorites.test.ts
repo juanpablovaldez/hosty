@@ -149,6 +149,37 @@ describe('useToggleFavorite', () => {
     })
   })
 
+  it('CP-02: aplica la actualización optimista antes de que responda el servidor', async () => {
+    let resolveInsert!: (v: { error: null }) => void
+    const pendingInsert = new Promise<{ error: null }>((resolve) => {
+      resolveInsert = resolve
+    })
+    const fakeInsertQuery = { insert: vi.fn().mockReturnValue(pendingInsert) }
+    vi.mocked(supabase.from).mockReturnValue(fakeInsertQuery as unknown as ReturnType<typeof supabase.from>)
+
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
+    })
+    queryClient.setQueryData(['favorites', 'ids', 'user-1'], new Set<string>())
+    const wrapper = ({ children }: { children: React.ReactNode }) =>
+      createElement(QueryClientProvider, { client: queryClient }, children)
+
+    const { result } = renderHook(() => useToggleFavorite('user-1'), { wrapper })
+
+    act(() => {
+      result.current.mutate({ salonId: 'salon-1', isFavorite: false })
+    })
+
+    await waitFor(() => {
+      const ids = queryClient.getQueryData<Set<string>>(['favorites', 'ids', 'user-1'])
+      expect(ids?.has('salon-1')).toBe(true)
+    })
+    expect(result.current.isSuccess).toBe(false)
+
+    resolveInsert({ error: null })
+    await waitFor(() => expect(result.current.isSuccess).toBe(true))
+  })
+
   it('falla si userId es null', async () => {
     const { result } = renderHook(() => useToggleFavorite(null), { wrapper: createWrapper() })
 

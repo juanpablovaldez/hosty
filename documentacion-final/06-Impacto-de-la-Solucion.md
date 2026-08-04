@@ -64,12 +64,8 @@ flowchart LR
 
 *Tabla 10 — Impacto por dimensión y tipo de usuario, con indicador y método de medición.*
 
-> [!warning] Dato simulado SIM-03 — Indicadores de impacto propuestos, no medidos
-> Los indicadores y métodos de medición de la Tabla 10 son propuestas razonables para evaluar el
-> impacto de la solución, pero el proyecto no cuenta, a la fecha de este informe, con
-> instrumentación de analítica de producto que permita reportarlos como datos reales. Dos de las
-> cuatro filas sí se apoyan en datos verificables del modelo de datos (M10); las otras dos quedan
-> explícitamente señaladas como no instrumentadas.
+*SIM-03 — dos de las cuatro filas ya citan fuente verificable (M10); las otras dos son propuestas
+de medición aún no instrumentadas; ver la nota metodológica completa en [[03-Introduccion]].*
 
 El impacto aquí descripto retoma directamente los puntos de dolor identificados en
 [[05-Problema-a-Resolver]] y se refleja, en términos cuantitativos, en las métricas de
