@@ -27,13 +27,20 @@ efectivamente concentró su trabajo, verificable en el historial del repositorio
 | 1 | Apertura: idea, problema y qué decidimos construir | Juan Pablo Valdez | 3:30 | 1–7 |
 | 2 | Proceso: Scrum, sprints y evolución del proyecto | Juan Ignacio Mignone | 3:30 | 8–11 |
 | 3 | **Demo en vivo:** buscar salones y reservar | Juan Pablo Czurylo | 5:00 | 12 |
-| 4 | **Demo en vivo:** publicar un salón y gestionar reservas | Lautaro Martinez Naglieri | 4:00 | 13 |
+| 4 | **Demo en vivo:** publicar un salón y gestionar reservas | Juan Pablo Valdez | 4:00 | 13 |
 | 5 | Arquitectura y tecnologías | Juan Pablo Valdez | 3:30 | 14–17 |
 | 6 | Calidad: testing, automatización y CI/CD | Benjamín Garma | 3:30 | 18–19 |
 | 7 | Cierre y roadmap | Juan Ignacio Mignone | 1:00 | 20–21 |
 
 **Total: 24 minutos**, dentro de la ventana de 20 a 25 que pidió el profesor, con un minuto de
 margen. Las preguntas van después y no cuentan.
+
+> [!important] Reasignación del 2026-08-03
+> El bloque 4 lo tenía asignado Lautaro Martinez Naglieri, que no expone en esta instancia. Pasa a
+> **Juan Pablo Valdez**, que trabajó en el panel del anfitrión (Tabla 11) y encadena así con su
+> bloque 5. La consecuencia a tener presente: Valdez queda con **11:00 de los 24:00**, casi la
+> mitad de la exposición, y con los bloques 4 y 5 seguidos. Conviene que el traspaso del bloque 3
+> al 4 sea explícito y que Czurylo le deje el teclado antes de empezar, no en el medio.
 
 Juan Pablo Valdez y Juan Ignacio Mignone hablan dos veces porque son quienes sostienen los dos
 hilos que atraviesan toda la presentación —la visión de producto y el proceso—, y porque cortar sus

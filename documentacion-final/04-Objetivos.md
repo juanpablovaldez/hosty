@@ -34,7 +34,7 @@ confirmar, contra el estado real del repositorio, si la capacidad fue efectivame
 | OE3 | Habilitar un flujo de reserva guiado con validación de disponibilidad y de horarios | Wizard de reserva de 3 pasos (M20), con verificación de bloqueos de disponibilidad |
 | OE4 | Ofrecer al propietario un panel de gestión de sus salones y de las reservas recibidas | Panel del anfitrión con calendario y cotización de precio por reserva |
 | OE5 | Asegurar la calidad mediante pruebas automatizadas e integración continua | 73 pruebas automatizadas (M12) y 3 workflows de CI/CD (M14) |
-| OE6 | Documentar la arquitectura, el proceso y las métricas del proyecto de forma trazable | Este mismo vault: 28 notas con toda métrica citada a su fuente en la nota Datos-Verificables |
+| OE6 | Documentar la arquitectura, el proceso y las métricas del proyecto de forma trazable | Este mismo vault: 35 notas —17 secciones, 5 anexos, 11 notas de apoyo y 2 de índice— con toda métrica citada a su fuente en la nota Datos-Verificables |
 
 *Tabla 6 — Objetivos específicos y criterio de verificación.*
 

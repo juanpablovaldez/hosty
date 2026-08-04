@@ -69,6 +69,20 @@ flowchart TD
 > integrante se documenta en [[Datos-Verificables]]; esta tabla sólo consolida el porcentaje sobre
 > el total de 236 commits (M02).
 
+**Alcance de esta tabla: qué mide y qué no mide.** El volumen de *commits* describe la actividad
+registrada en el historial, no la magnitud ni el valor del aporte de cada integrante, y tres
+factores verificables lo distorsionan en este proyecto. Primero, **34 de los 140 *commits* del
+integrante con mayor volumen —un 24 %— corresponden a la rama `staging`**, la infraestructura del
+*backend* NestJS que se descartó en el *sprint* 2 (ver la sección 14, Tabla 37a) y que no aportó
+código al producto entregado. Segundo, el historial registra **9 identidades Git para 5 personas**
+(M05), y quien integra las ramas acumula *commits* de fusión que no representan trabajo propio.
+Tercero, el tamaño de un *commit* no está normalizado: los 10 *commits* de Benjamín Garma
+introducen la infraestructura completa de pruebas —Vitest, Playwright y Cypress— y el *workflow* de
+integración continua que hoy bloquea las fusiones que no pasan la suite.
+
+La distribución de responsabilidades por área, que es la lectura pertinente del reparto de trabajo,
+es la de la Tabla 11.
+
 ## Roles de usuario, permisos y mecanismo de autorización
 
 A diferencia de los roles de equipo descriptos arriba, Hosty **no tiene una tabla de roles de

@@ -79,7 +79,8 @@ seguridad a nivel de fila · Scrum · pruebas automatizadas · integración cont
 | Frontend desplegado | `https://d1ako6y2uvskg7.cloudfront.net` |
 | Backend (Supabase) | `https://gjxextyntxfsztpgkqig.supabase.co` |
 | Fecha de defensa | 2026-08-07 |
-| Versión de este documento | v1.3 (versión de entrega) |
+| Integrantes que exponen en esta instancia | Juan Pablo Valdez, Juan Ignacio Mignone, Juan Pablo Czurylo y Benjamín Garma. Lautaro David Martínez Naglieri, cuya participación en el desarrollo se documenta en las Tablas 11 y 12, defiende en una instancia posterior |
+| Versión de este documento | v1.4 (versión de entrega) |
 
 *Tabla 1 — Ficha técnica del proyecto.*
 
@@ -96,6 +97,7 @@ seguridad a nivel de fila · Scrum · pruebas automatizadas · integración cont
 | v1.1 | 2026-08-02 | Revisión de usabilidad previa a la entrega (Tabla 34b); corrección de los seis casos E2E que fallaban y reejecución de la suite completa sobre el entorno desplegado (Tablas 57b y 57c) | Equipo |
 | v1.2 | 2026-08-02 | Adopción de `@vitest/coverage-v8` y medición de cobertura bajo ambos criterios (Tablas 32 y 32a, Figura 37); cierre de los 17 marcadores de contenido pendiente | Equipo |
 | v1.3 | 2026-08-03 | Versión de entrega: estructura de trabajo final —portada, resumen, índices de tablas y figuras, bibliografía— y numeración corrida de las secciones | Equipo |
+| v1.4 | 2026-08-03 | Fecha de corte de las métricas de proceso incorporada a esta nota metodológica; desglose de los commits fuera de `dev` (sección 14); advertencia sobre el alcance de la Tabla 12; desambiguación del recuento de operaciones de API entre las Tablas 30, 38 y 53 | Equipo |
 
 *Tabla 2 — Control de versiones del documento.*
 
@@ -108,6 +110,17 @@ comando que permite reproducirla. **(b) Contenido reconstruido**: redactado de f
 no existir registro documental del hecho —retrospectivas, entrevistas y estimaciones de esfuerzo y
 presupuesto—; se señaliza como *Dato simulado* e indica la base sobre la que se reconstruyó. Ningún
 contenido reconstruido debe interpretarse como evidencia empírica.
+
+**Fecha de corte de las métricas de proceso.** Las cifras que describen la ejecución del proyecto
+—commits, *issues*, *pull requests* y su distribución por *sprint*— se congelaron el **2026-07-28**,
+al cierre del quinto y último *sprint*. El trabajo posterior a esa fecha corresponde a tareas de
+estabilización previas a la defensa —ampliación de la suite de pruebas, corrección de detalles de
+interfaz y redacción de este informe— y no forma parte del alcance planificado de los *sprints*,
+por lo que se excluye deliberadamente: incorporarlo distorsionaría la lectura de la velocidad del
+equipo durante el desarrollo. Por eso el repositorio, consultado hoy, exhibe más *commits* que los
+que cita la sección 14. Las métricas que describen el **estado actual del producto** —rutas,
+tablas, operaciones de API, cobertura de pruebas— se re-verificaron en cambio el **2026-08-02** y
+reflejan el repositorio tal como se entrega.
 
 ---
 [[Indice|Índice]] · [[01-Resumen-Ejecutivo]] →
