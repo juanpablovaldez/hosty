@@ -244,17 +244,5 @@ para no alterar ningún valor ya fijado por los Lotes previos.
 > el trabajo de notificaciones por email es real y verificable, pero no forma parte del producto
 > entregado en `dev` — se cita como tal, no como funcionalidad en producción.
 
-## Métrica adicional M36 (2026-08-03, cierre parcial de SIM-37)
-
-| ID | Métrica | Valor | Comando / fuente | Verificado el |
-|---|---|---|---|---|
-| M36 | Issues `bug` con etiqueta de prioridad real (`p1-high`/`p2-medium`/`p3-low`) | 5 de 13 (38 %): #74, #75 → `p1-high`; #72, #87 → `p2-medium`; #76 → `p3-low` | `gh issue list --state all --label bug --json number,labels` | 2026-08-03 |
-
-> [!info] Fuente — M36 se usa en [[Anexo-V-Evidencias-QA]] (Tabla 58) para reemplazar la severidad
-> estimada de 5 de los 13 defectos por la etiqueta real de GitHub, y detectó que la versión anterior
-> de esa tabla tenía a #74 mal clasificado ("Media" en vez de "Alta", en contradicción con
-> [[12-Testing-y-Calidad]], que ya citaba correctamente `p1-high` para #74). Las 8 issues restantes
-> no tienen etiqueta de prioridad y su severidad sigue siendo una estimación (SIM-37).
-
 ---
 [[Indice|Índice]]
