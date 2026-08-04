@@ -1,16 +1,16 @@
-| 9 || 8 || 7 || 6 || 5 || 4 || 3 || 2 || 1 |---
+---
 title: "Índice — Mapa de contenidos"
 seccion: "meta"
 tipo: meta
 tags: [hosty, informe-final, indice]
 estado: completo
-updated: 2026-07-28
+updated: 2026-08-04
 ---
 
 # Índice — Mapa de contenidos (MOC)
 
-Este índice enumera las 21 notas de contenido del informe final de Hosty (16 secciones numeradas
-y 5 anexos) en su orden de lectura recomendado. Cada número de la tabla coincide con el número
+Este índice enumera las 22 notas de contenido del informe final de Hosty (16 secciones numeradas
+y 6 anexos) en su orden de lectura recomendado. Cada número de la tabla coincide con el número
 que la nota lleva en su propio encabezado (`# 0. …`, `# 11. …`, etc.), de modo que una referencia
 como "Figura 3" o "Tabla 26" puede ubicarse siguiendo primero esta tabla y luego el encabezado de
 la nota correspondiente. Las notas de apoyo (`_meta/`) y `assets/README.md` no forman parte de
@@ -42,15 +42,16 @@ esta numeración: se listan aparte, al final.
 | Anexo III | [[Anexo-III-Backlog-User-Stories]] | Backlog completo de user stories con su estado (entregada/diferida) |
 | Anexo IV | [[Anexo-IV-API-y-Repositorio]] | Documentación de la API y del repositorio |
 | Anexo V | [[Anexo-V-Evidencias-QA]] | Evidencias de pruebas y capturas de calidad |
+| Anexo VI | [[Anexos/Anexo-VI-Descubrimiento-y-Mercado]] | Descubrimiento de producto, benchmarking, FODA, TAM/SAM/SOM y modelo de negocio |
 
 ## Notas de apoyo (no numeradas)
 
 | Nota | Descripción |
 |---|---|
-| [[Datos-Verificables]] | Fuente única de toda métrica citada en el vault (`M01`–`M22`) |
+| [[Datos-Verificables]] | Fuente única de toda métrica citada en el vault (`M01`–`M37`) |
 | [[Pendientes]] | Agregación de todos los placeholders (`P-##`) y datos simulados (`SIM-##`) |
-| [[Indice-de-Figuras]] | Registro de las 36 figuras del informe (`F1`–`F36`) |
-| [[Indice-de-Tablas]] | Registro de las 59 tablas del informe (`T1`–`T59`) |
+| [[Indice-de-Figuras]] | Registro de las 39 figuras del informe (`F1`–`F39`) |
+| [[Indice-de-Tablas]] | Registro de las 63 tablas del informe (`T1`–`T63`) |
 | `assets/README.md` | Lista de capturas de pantalla pendientes de incorporar |
 | [[Resumen-Para-Presentar]] | Versión de 2 minutos del resumen ejecutivo, para leer u ofrecer al profesor |
 | [[Guia-de-Presentacion]] | Logística de la defensa, reglas de la demo en vivo, preguntas esperables y checklist técnico |

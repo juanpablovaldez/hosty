@@ -74,7 +74,7 @@ Esta instrucción también se reproduce, palabra por palabra, en [[00-Portada-y-
 
 ## Estructura del vault
 
-El vault agrupa 35 notas en cuatro conjuntos: la portada, las 16 secciones numeradas y los 5 anexos
+El vault agrupa 36 notas en cuatro conjuntos: la portada, las 16 secciones numeradas y los 6 anexos
 que constituyen el cuerpo del informe (raíz de `documentacion-final/` y `Anexos/`); las 11 notas de
 apoyo en `_meta/` ([[Indice]], [[Datos-Verificables]], [[Indice-de-Figuras]], [[Indice-de-Tablas]],
 [[Pendientes]], [[Defensa-2026-08-07]], [[Exportar-PDF]], [[Guia-de-Presentacion]],

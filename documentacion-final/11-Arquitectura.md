@@ -5,9 +5,9 @@ orden: 12
 tipo: seccion
 tags: [hosty, informe-final, arquitectura]
 estado: completo
-figuras: [F14, F15, F16, F17, F18]
+figuras: [F14, F15, F16, F17, F18, F39]
 tablas: [T26, T27, T28, T29, T30]
-updated: 2026-07-28
+updated: 2026-08-04
 ---
 
 # 11. Arquitectura
@@ -29,6 +29,17 @@ commit `3a89616` ("refactor: remove entire backend directory and associated CI/C
 observable de ese cambio es la escala del proyecto: un MVP de marketplace no requiere lógica de
 servidor a medida cuando Postgres + RLS + PostgREST cubren CRUD, autorización por propiedad y
 generación de API sin código adicional.
+
+**Tampoco se evaluó microservicios**, y la razón es la misma escala mirada desde el otro extremo: un
+equipo de cinco personas trabajando part-time no gana nada partiendo la aplicación en servicios
+independientes —cada límite de servicio agrega su propio despliegue, su propia versión de API y su
+propio monitoreo, coordinación que un equipo de este tamaño no tiene capacidad ociosa para sostener—
+y no hay todavía un componente del sistema con una carga o un ciclo de vida lo bastante distinto del
+resto como para justificar aislarlo. Dos capas sobre servicios gestionados es el punto donde la
+complejidad operativa que el equipo asume coincide con la complejidad operativa que el proyecto
+efectivamente necesita en esta etapa; ni un monolito de tres capas con servidor propio (más
+infraestructura para lo mismo) ni microservicios (más coordinación de la que un MVP requiere) la
+mejoran.
 
 ```mermaid
 flowchart TD
@@ -269,6 +280,81 @@ completa (`/*`) en cada push a `dev` en lugar de una invalidación selectiva por
 > `supabase/migrations/20260616000001_add_salon_delete_policy.sql` (comentario verbatim del
 > propio archivo). M22: 0 *enums* de Postgres — los dominios de valores válidos se modelan como
 > `CHECK` más uniones de tipo TypeScript mantenidas a mano, el mecanismo que originó el Hallazgo C.
+
+## 11.9 Camino de escalado
+
+Dos capas sobre servicios gestionados no es un techo: es el punto de partida correcto para un MVP
+que todavía no validó su modelo de negocio (ver [[Anexos/Anexo-VI-Descubrimiento-y-Mercado]]). La
+arquitectura actual soporta tres etapas de crecimiento sin un rediseño completo, cada una disparada
+por una señal concreta y no por un calendario fijo.
+
+```mermaid
+flowchart LR
+  subgraph E1["Hoy — validar"]
+    A1["Dos capas: SPA + Supabase\nCosto real: USD 0"]
+  end
+  subgraph E2["Validado — escalar sin romper el resto"]
+    A2["Pagos y notificaciones como funciones\n(Supabase Edge Functions)\nsin tocar el resto de la app"]
+  end
+  subgraph E3["Escala — Tucumán deja de alcanzar"]
+    A3["Multi-provincia: réplicas de lectura,\nbúsqueda dedicada, ambientes separados"]
+  end
+  E1 -->|"Se valida la comisión y/o el plan Destacado\n(primeras reservas pagas reales)"| E2
+  E2 -->|"El volumen de búsquedas o de escritura\nsatura Postgres de un único proyecto"| E3
+```
+
+*Figura 39 — Camino de escalado: de un MVP de costo cero a una operación multi-provincia, con el
+disparador de cada salto.*
+
+- **Etapa 1 — hoy.** Dos capas, costo de infraestructura real de USD 0 (ver [[10-Presupuesto]]).
+  El objetivo de esta etapa no es soportar escala, es validar que alguien paga por lo que Hosty
+  resuelve.
+- **Etapa 2 — validado.** El disparador es concreto: las primeras reservas pagas reales, sea por
+  comisión o por el plan Destacado. La respuesta no es reescribir la aplicación: Supabase Edge
+  Functions permite agregar cobro (issue #45) y notificaciones como funciones aisladas que se
+  despliegan por separado, sin tocar el resto del sistema ni introducir un servidor propio.
+- **Etapa 3 — escala.** El disparador es que el volumen de búsquedas o de escrituras empiece a
+  saturar un único proyecto de Postgres, o que el producto se expanda a otra provincia con su propio
+  catálogo. Ahí sí conviene evaluar réplicas de lectura, un motor de búsqueda dedicado (el filtrado
+  actual ya usa `ilike`/`overlaps` de Postgres, que no escala indefinidamente) y separar los
+  ambientes de *staging* y producción que hoy son uno solo.
+
+Ninguna de las tres etapas requiere abandonar RLS como mecanismo de autorización ni introducir un
+backend a medida: el camino de escalado extiende la arquitectura actual, no la reemplaza.
+
+## 11.10 Infraestructura como código
+
+**Qué significa.** La infraestructura de Hosty —el bucket S3, la distribución de CloudFront, sus
+permisos— no se configuró a mano en la consola de AWS: está declarada en archivos de texto
+versionados en el repositorio (`infra/*.tf`, lenguaje HCL de Terraform) que describen el estado
+deseado de esa infraestructura. Un comando (`terraform apply`) compara ese estado deseado contra el
+estado real de la cuenta de AWS y aplica sólo la diferencia.
+
+**Por qué conviene, en concreto y no en abstracto:**
+
+- **Reproducible.** Si se perdiera el bucket de S3 hoy, `terraform apply` lo recrea desde cero,
+  igual, sin depender de que alguien recuerde los pasos exactos que se siguieron la primera vez.
+- **Revisable como cualquier código.** Un cambio de infraestructura pasa por un *pull request*, con
+  diff legible línea por línea, en vez de ser un clic en una consola que nadie más ve.
+- **Auditable.** El historial de `git log -- infra/` es, a la vez, el historial de cambios de
+  infraestructura: quién cambió qué y cuándo, sin depender de los logs de auditoría de un proveedor
+  cloud.
+- **Con vista previa antes de aplicar.** `terraform plan` muestra exactamente qué se va a crear,
+  modificar o destruir *antes* de que pase, lo que reduce el margen de un cambio manual accidental
+  con impacto real (por ejemplo, borrar un bucket con contenido).
+
+**Cómo está aplicado en Hosty:** `infra/provider.tf` fija el proveedor (AWS) y la región;
+`infra/frontend.tf` declara el bucket S3 y la distribución de CloudFront que sirven el frontend;
+`infra/variables.tf` y `infra/config/*.tfvars` separan los valores por ambiente; `infra/outputs.tf`
+expone la URL pública resultante. El workflow `infra-ci.yml` corre `terraform fmt -check`, `init`,
+`validate` y `plan` en cada cambio a `infra/` — deliberadamente **sin** `apply` automático: el plan
+se revisa y se aplica a mano, para no dejar que un cambio de infraestructura se dispare solo desde
+un *pull request*.
+
+La misma honestidad que el resto de este informe aplica acá: `infra/backend.tf` e `infra/rds.tf`
+siguen declarando el backend NestJS (EC2 + RDS) que se eliminó en el commit `3a89616` (Hallazgo B,
+Tabla 27). Es infraestructura como código describiendo algo que ya no existe en la aplicación —deuda
+documentada, no escondida.
 
 ---
 [[Indice|Índice]] · ← [[10-Presupuesto]] · [[12-Testing-y-Calidad]] →

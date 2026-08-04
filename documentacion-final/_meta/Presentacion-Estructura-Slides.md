@@ -9,8 +9,13 @@ updated: 2026-08-02
 
 # Presentación final — estructura de slides
 
+> [!warning] Superado por [[Defensa-2026-08-07]]
+> Este documento describe una versión anterior del mazo (21 slides). El mazo actual, auditado slide
+> por slide en la Parte 1 de [[Defensa-2026-08-07]], tiene **15 slides** más una propuesta de slide
+> de Presupuesto sin agregar todavía. Usar esa nota como fuente vigente del contenido de cada slide.
+
 Defensa del **viernes 7 de agosto de 2026**. Duración objetivo: **20 a 25 minutos**, con demo en
-vivo integrada y participación de los cinco integrantes.
+vivo integrada y participación de **cuatro** integrantes — ver la advertencia arriba.
 
 Este documento define **qué va en cada slide**. El reparto de bloques y las fichas de apoyo
 individuales están en [[Presentacion-Reparto-y-Fichas]]; la logística, el guion de la demo y las

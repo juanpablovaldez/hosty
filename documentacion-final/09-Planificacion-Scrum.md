@@ -6,7 +6,7 @@ tipo: seccion
 tags: [hosty, informe-final, scrum]
 estado: con-pendientes
 figuras: [F10, F11, F12]
-tablas: [T17, T18, T19, T20, T21, T22]
+tablas: [T17, T18, T19, T20, T21, T22, T22a]
 updated: 2026-08-04
 ---
 
@@ -197,6 +197,36 @@ Fibonacci (1, 2, 3, 5, 8, 13, 21).
 **Herramienta de gestión**: el seguimiento del backlog y del avance de cada sprint se realiza en
 GitHub Projects v2, tablero #4 ("Hosty"), con campos de estado, tamaño (story points), objetivo de
 sprint e hito (M19), integrado directamente con las issues y *pull requests* del repositorio.
+
+## Validación con usuarios y ciclo de feedback
+
+El backlog no se construyó únicamente hacia adentro del equipo: durante el desarrollo hubo
+instancias de demo con organizadores de eventos y con dueños de salón reales, para contrastar el
+producto contra el uso previsto antes de darlo por terminado. No hay un acta versionada de esas
+instancias —son anteriores a la decisión de llevar un registro formal del proceso—, pero el equipo
+las confirma como parte real del trabajo, y varias de ellas tienen una consecuencia verificable en
+el backlog: un issue concreto abierto y cerrado a partir de lo que se observó.
+
+| Instancia | Con quién | Qué se observó | Cambio derivado en el backlog |
+|---|---|---|---|
+| Demo de búsqueda y filtros | Organizadores potenciales | Sin vista de mapa, costaba ubicar los salones por zona real, no sólo por el nombre del barrio | #74 — implementar el mapa en `/salones` |
+| Demo del listado de resultados | Organizadores potenciales | Con más de una decena de salones, el listado plano se hacía largo de recorrer | #30 — paginación / scroll infinito en el listado |
+| Demo del flujo de búsqueda | Organizadores potenciales | Los filtros tardaban en reflejar resultados sin ninguna señal visual, generando dudas sobre si habían funcionado | #28 — agregar *loading states* a búsquedas y filtros |
+| Demo del panel del anfitrión | Dueños de salón | El precio fijo por hora no alcanzaba para salones que cotizan distinto según el tipo de evento o la temporada | #66 — precios flexibles y catálogo de servicios extra |
+| Demo del panel del anfitrión | Dueños de salón | Sin forma de marcar una fecha como no disponible, el riesgo de doble reserva seguía existiendo dentro de la propia herramienta | #67 — agenda con calendario mensual y bloqueo de fechas |
+
+*Tabla 22a — Instancias de validación con usuarios y su cambio derivado en el backlog.*
+
+> [!info] Fuente — Testimonio directo del equipo (2026-08-04), mismo tratamiento que el resto del
+> contenido del [[Anexos/Anexo-VI-Descubrimiento-y-Mercado]]: información real sin artefacto
+> versionado propio. La columna "Cambio derivado" sí es verificable — cada issue citado existe en
+> el backlog real (ver [[Anexo-III-Backlog-User-Stories]]) y está marcado como entregado.
+
+Esto cierra el ciclo completo del proceso de gestión: **épicas → historias con criterios de
+aceptación → sprint → demo y validación → retrospectiva → ajuste del backlog**. Las secciones
+anteriores de esta nota documentan los primeros tres pasos y el siguiente documenta el quinto; esta
+sección es la que conecta el cuarto paso —la validación— con lo que efectivamente cambió como
+consecuencia, en vez de dejar la demo como un hito aislado sin efecto visible en el plan.
 
 ## Retrospectivas
 

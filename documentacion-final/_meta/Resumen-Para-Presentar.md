@@ -4,7 +4,7 @@ seccion: "meta"
 tipo: meta
 tags: [hosty, informe-final, presentacion, resumen]
 estado: completo
-updated: 2026-07-29
+updated: 2026-08-04
 ---
 
 # Resumen para presentar — versión de 2 minutos
@@ -45,25 +45,27 @@ Mercado Pago (requiere cuenta comercial, fuera del alcance académico) y sistema
 ## Cómo se construyó
 
 - **Metodología:** Scrum real sobre GitHub — 5 sprints, ~12,6 semanas (29/03 – 24/06/2026), tablero
-  de GitHub Projects v2 con 50 issues (45 cerradas), 48 pull requests (26 mergeados).
-- **Equipo:** 5 integrantes — Valdez (Product Owner), Mignone (diseño de producto y frontend), Martinez Naglieri,
-  Garma (foco en QA) y Czurylo (desarrolladores).
+  de GitHub Projects v2 con 50 issues (las 50 cerradas), 48 pull requests (26 mergeados).
+- **Equipo:** 5 integrantes — Valdez (Product Owner), Mignone (diseño de producto y frontend),
+  Martinez Naglieri, Garma (foco en QA) y Czurylo (desarrolladores). Expone el 2026-08-07 con
+  cuatro oradores; Martinez Naglieri defiende en una instancia posterior — ver [[Defensa-2026-08-07]].
 - **Stack:** React 19 + Vite + TypeScript, TanStack Router/Query/Form, Tailwind v4, Supabase como
   backend completo (auth, base de datos Postgres, storage) — sin servidor propio. La autorización
   se resuelve con políticas RLS de Postgres según el dueño de cada fila, no con un esquema de
   roles.
-- **Calidad:** 66 pruebas automatizadas (Vitest) más 30 escenarios end-to-end (Playwright) sobre
-  el entorno real desplegado, 13 incidencias reales registradas y cerradas en GitHub.
+- **Calidad:** ver el conteo vigente de pruebas automatizadas en [[Datos-Verificables]] (M12/M13) —
+  cambia con cada suite nueva, no memorizar un número de esta nota. 13 incidencias reales
+  registradas y cerradas en GitHub.
 
 ## Estado actual — verificable, no una promesa
 
 | Cifra | Valor |
 |---|---|
 | Commits en `dev` | 181 |
-| Issues cerradas / totales | 45 / 50 (90 %) |
+| Issues cerradas / totales | 50 / 50 (100 %) |
 | Pull requests mergeados / totales | 26 / 48 |
 | Rutas totales / protegidas | 14 / 8 |
-| Pruebas automatizadas | 73 (Vitest) + 111 (Playwright, 3 navegadores) — todas en verde |
+| Pruebas automatizadas | ver [[Datos-Verificables]] (M12/M13) — todas en verde |
 | Frontend en vivo | `https://d1ako6y2uvskg7.cloudfront.net` |
 
 ## La frase de cierre

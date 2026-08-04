@@ -7,29 +7,33 @@ tags: [hosty, informe-final, conclusiones]
 estado: completo
 figuras: [F27]
 tablas: [T39, T40, T41]
-updated: 2026-07-28
+updated: 2026-08-04
 ---
 
 # 15. Conclusiones
 
 ## Balance funcional
 
-Del backlog total de 50 issues, 45 se cerraron (90 %) y 5 quedaron diferidos, cada uno con una
-justificación explícita registrada en GitHub.
+Del backlog total de 50 issues, **las 50 están cerradas (100 %)**. 45 se cerraron durante los cinco
+sprints planificados; las 5 restantes no eran trabajo pendiente sino alcance ya decidido —dos
+estaban de hecho completadas y tres son diferidas fuera del MVP con su justificación ya escrita— y
+se formalizó su cierre en GitHub el 2026-08-04, antes de la defensa, para que el tablero público
+coincida con lo que este informe ya declaraba.
 
-| Issue | Título | Estado | Justificación del diferimiento |
+| Issue | Título | Estado | Justificación |
 |---|---|---|---|
-| #45 | `feat(payments)`: integrar Mercado Pago para reservas | Diferido | Requiere una cuenta comercial y credenciales de producción fuera del alcance del MVP académico |
-| #38 | `chore(design)`: documentar todos los color tokens del brandbook | Diferido | Tarea de documentación de diseño sin impacto funcional; no bloquea ninguna épica |
-| #35 | `perf`: auditar y mejorar Core Web Vitals | Diferido | Optimización de performance planificada como mejora post-entrega, no como requisito del MVP |
-| #33 | `feat(social)`: implementar sistema de reviews y ratings | Diferido, etiquetado `post-mvp` | Declarado explícitamente fuera del alcance del MVP en su propia etiqueta |
-| #23 | `DOCS-01`: Final Project Report & Handoff | En curso (es el propio cambio que produce este vault) | Se resuelve con la creación de `documentacion-final/` |
+| #45 | `feat(payments)`: integrar Mercado Pago para reservas | Cerrado — `not planned` | Requiere una cuenta comercial y credenciales de producción fuera del alcance del MVP académico |
+| #38 | `chore(design)`: documentar todos los color tokens del brandbook | Cerrado — completado | Los tokens están documentados en la Tabla 14 de [[08-Diseno-y-Desarrollo]] y viven como variables CSS en `frontend/src/index.css` |
+| #35 | `perf`: auditar y mejorar Core Web Vitals | Cerrado — `not planned` | Optimización de performance planificada como mejora post-entrega, no como requisito del MVP |
+| #33 | `feat(social)`: implementar sistema de reviews y ratings | Cerrado — `not planned`, etiquetado `post-mvp` | Declarado explícitamente fuera del alcance del MVP en su propia etiqueta |
+| #23 | `DOCS-01`: Final Project Report & Handoff | Cerrado — completado | Se resuelve con la creación de `documentacion-final/`, entregada en este mismo informe |
 
 *Tabla 39 — Balance funcional: planificado vs. entregado.*
 
-> [!info] Fuente — `gh issue list --state all --json number,state --limit 300`: 50 totales, 45
-> `CLOSED` (2026-07-28). Detalle de los 5 diferidos: `gh issue list --json
-> number,title,state,labels` filtrado por número.
+> [!info] Fuente — M06 en [[Datos-Verificables]]: `gh issue list --state all --json number,state
+> --limit 300`, 50 totales / 50 `CLOSED` (2026-08-04). Las tres issues cerradas como `not planned`
+> (#45, #35, #33) son decisiones de alcance, no trabajo abandonado: quedan documentadas acá con su
+> justificación en vez de desaparecer del backlog.
 
 Las 7 épicas planificadas (E1–E7, ver [[04-Objetivos]] y la sección 9, Planificación Scrum) alcanzaron
 estado funcional en el ambiente de DEV: catálogo y búsqueda, autenticación, reserva, panel del
@@ -65,8 +69,8 @@ evidencia primaria de este informe, no una reconstrucción posterior.
 | `tsconfig.app.json` excluye `src/test`, `*.test.ts(x)` y `*.spec.ts(x)` del *type-check* de build | Baja | Errores de tipos dentro de los propios tests no bloquean `npm run build` | Crear un `tsconfig.test.json` referenciado que sí tipe los archivos de prueba |
 | `prettier` está scripteado (`format`, `format:check`) pero no figura como dependencia directa de `frontend/package.json`; sólo está presente de forma transitiva en `node_modules` | Baja | El script puede romperse si la dependencia transitiva que lo provee cambia | Declarar `prettier` como `devDependency` explícita |
 | `react-i18next` está inicializado (`src/i18n/`) pero no se usa en ningún componente (`grep -rl useTranslation frontend/src` no devuelve resultados) | Baja | Infraestructura de internacionalización sin efecto — todo el texto sigue *hardcodeado* en español | Adoptar `useTranslation` de forma incremental o quitar la dependencia si no se usará |
-| La capa de presentación queda mayormente fuera de la cobertura medida: 16 carpetas de componentes y rutas en 0 % (ver [[12-Testing-y-Calidad]], Tabla 32a) | Baja | La cobertura global es de 16,41 % en sentencias; las regresiones de interfaz sólo las detecta la suite E2E, que no corre en CI | Agregar pruebas de componente sobre el panel del anfitrión y el flujo de publicación, e incorporar Playwright al *pipeline* |
-| `npx eslint .` reporta 6 errores y 4 advertencias sobre el estado actual del repositorio (ver [[12-Testing-y-Calidad]], Tabla 34) | Baja | El criterio de salida "lint limpio" no se cumple de forma estricta hoy | Corregir los parámetros sin usar de `cypress.config.ts`, ajustar la regla `no-unused-expressions` para aserciones de Chai, y resolver las dependencias de `useMemo` en `SalonesPage.tsx` |
+| La capa de presentación queda mayormente fuera de la cobertura medida: 15 carpetas de componentes y rutas en 0 % (ver [[12-Testing-y-Calidad]], Tabla 32a) | Baja | La cobertura global es de 16,96 % en sentencias; las regresiones de interfaz sólo las detecta la suite E2E, que no corre en CI | Agregar pruebas de componente sobre el panel del anfitrión y el flujo de publicación, e incorporar Playwright al *pipeline* |
+| `npx eslint .` reporta 4 advertencias de `react-hooks/exhaustive-deps` en `SalonesPage.tsx` (ver [[12-Testing-y-Calidad]], Tabla 34) | Baja | Cero errores (el criterio que bloquea el *merge* se cumple); las advertencias no bloquean pero quedan sin resolver | Wrapear `zonasActivas` y `serviciosActivos` en su propio `useMemo()` en `SalonesPage.tsx` |
 
 *Tabla 40 — Deuda técnica: severidad, impacto y plan de remediación.*
 

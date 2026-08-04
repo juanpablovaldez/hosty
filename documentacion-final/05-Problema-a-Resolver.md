@@ -7,7 +7,7 @@ tags: [hosty, informe-final, problema]
 estado: completo
 figuras: [F4]
 tablas: [T8, T9]
-updated: 2026-07-28
+updated: 2026-08-04
 ---
 
 # 5. Problema a Resolver
@@ -24,6 +24,29 @@ contactarlo directamente; y al propietario del salón (el anfitrión), porque no
 propio de visibilidad comercial y debe gestionar cada reserva de forma manual, típicamente por
 WhatsApp, redes sociales o llamadas telefónicas, sin un registro centralizado del estado de cada
 una.
+
+## El problema, en primera persona
+
+El problema no se identificó en abstracto: nació de una experiencia propia del equipo. Organizar el
+festejo de la propia recibida obligó a hacer, uno por uno, todos los pasos que este informe describe
+como "costo de búsqueda elevado" en la sección siguiente: buscar salones en Facebook Marketplace,
+abrir conversación con **más de diez números de WhatsApp distintos** para pedir disponibilidad,
+fotos y referencias, y después repetir la búsqueda por separado para cada proveedor del evento —DJ,
+iluminación, sonido, bebida— porque ninguno de esos rubros tampoco tiene un canal centralizado. El
+resultado fue varios días de mensajes cruzados y comparaciones manuales antes de poder decidir algo
+tan simple como una fecha y un lugar.
+
+> [!info] Fuente — Testimonio directo del equipo (2026-08-04), aportado como parte del origen del
+> proyecto. No hay un acta o registro versionado de esta experiencia —es anterior al propio
+> repositorio—, pero a diferencia de SIM-01/02/03 no es una reconstrucción del agente a partir de
+> otro documento: es un relato de primera mano de quien lo vivió, transmitido directamente en esta
+> sesión de trabajo.
+
+Esa experiencia es el motivo por el que Hosty prioriza exactamente las tres capacidades del MVP
+(catálogo comparable, disponibilidad verificable antes de reservar, gestión centralizada del lado
+del anfitrión): son, en orden, las tres etapas que más tiempo consumieron en esa búsqueda real. El
+razonamiento completo —de esa anécdota a una lista de ideas, y de esa lista a las tres capacidades
+que se construyeron— se documenta en [[Anexos/Anexo-VI-Descubrimiento-y-Mercado]].
 
 ## Consecuencias para el organizador
 

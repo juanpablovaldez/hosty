@@ -6,15 +6,16 @@ tipo: anexo
 tags: [hosty, informe-final, backlog]
 estado: completo
 tablas: [T51, T52]
-updated: 2026-07-28
+updated: 2026-08-04
 ---
 
 # Anexo III. Backlog Completo de User Stories
 
 Este anexo reproduce el backlog completo del proyecto: las 50 issues del repositorio (M06), con
-su hito de GitHub asociado y su estado real, clasificado como **entregada** (issue cerrada) o
-**diferida** (issue abierta al momento de esta verificación). El detalle de las 15 historias
-destacadas y su relación con criterios de aceptación se documenta en
+su hito de GitHub asociado y su estado real, clasificado como **entregada** (funcionalidad
+construida) o **diferida** (issue cerrada como `not planned`, alcance excluido del MVP con su
+justificación escrita). El detalle de las 15 historias destacadas y su relación con criterios de
+aceptación se documenta en
 [[09-Planificacion-Scrum]] (Tabla 19); la ejecución cronológica, en
 [[13-Ejecucion-por-Sprint]].
 
@@ -34,7 +35,7 @@ destacadas y su relación con criterios de aceptación se documenta en
 | #20 | TEST-01: Unit & Component Testing Setup (Vitest) | Phase 2+: Polish & Optimization | Entregada |
 | #21 | TEST-02: E2E Testing for Booking Flow (Playwright) | Phase 2+: Polish & Optimization | Entregada |
 | #22 | INFRA-01: Production Infrastructure (CloudFront + SSL) | Phase 2+: Polish & Optimization | Entregada |
-| #23 | DOCS-01: Final Project Report & Handoff | Phase 2+: Polish & Optimization | Diferida |
+| #23 | DOCS-01: Final Project Report & Handoff | Phase 2+: Polish & Optimization | Entregada |
 | #24 | PERF-01: Performance & SEO Optimization | Phase 2+: Polish & Optimization | Entregada |
 | #25 | chore(types): regenerar database.types.ts desde Supabase | Phase 2+: Polish & Optimization | Entregada |
 | #26 | fix(responsive): página no es completamente responsive en mobile | Phase 2+: Polish & Optimization | Entregada |
@@ -44,13 +45,13 @@ destacadas y su relación con criterios de aceptación se documenta en
 | #30 | feat(salones): implementar paginación o infinite scroll | Phase 1.B: Search & Filtering | Entregada |
 | #31 | feat(booking): completar flujo de reserva | Phase 2: Booking & Payments | Entregada |
 | #32 | feat(backend): implementar notificaciones por email | Phase 2.B: Notifications | Entregada |
-| #33 | feat(social): implementar sistema de reviews y ratings | Phase 2+: Polish & Optimization | Diferida |
+| #33 | feat(social): implementar sistema de reviews y ratings | Phase 2+: Polish & Optimization | Diferida — `not planned` |
 | #34 | fix(seo): implementar meta tags y Open Graph | Phase 2+: Polish & Optimization | Entregada |
-| #35 | perf: auditar y mejorar Core Web Vitals | Phase 2+: Polish & Optimization | Diferida |
+| #35 | perf: auditar y mejorar Core Web Vitals | Phase 2+: Polish & Optimization | Diferida — `not planned` |
 | #36 | feat(i18n): completar traducciones español-inglés | Phase 2+: Polish & Optimization | Entregada |
 | #37 | chore(database): revisar y agregar indexes necesarios | Phase 2+: Polish & Optimization | Entregada |
-| #38 | chore(design): documentar todos los color tokens del brandbook | Phase 2+: Polish & Optimization | Diferida |
-| #45 | feat(payments): integrar Mercado Pago para reservas | Phase 2: Booking & Payments | Diferida |
+| #38 | chore(design): documentar todos los color tokens del brandbook | Phase 2+: Polish & Optimization | Entregada |
+| #45 | feat(payments): integrar Mercado Pago para reservas | Phase 2: Booking & Payments | Diferida — `not planned` |
 | #46 | feat(admin): panel de aprobación y moderación de salones | Phase 3.B: Admin Panel | Entregada |
 | #47 | feat(host): plan Destacado y suscripción de visibilidad para dueños | Phase 3: Host Features | Entregada |
 | #63 | feat(ui): rediseño visual v2 — Design Handoff (tokens, hero editorial, HostyBadge) | Phase 2+: Polish & Optimization | Entregada |
@@ -76,24 +77,26 @@ destacadas y su relación con criterios de aceptación se documenta en
 *Tabla 51 — Backlog completo de user stories con estado (entregada/diferida).*
 
 > [!info] Fuente — M06: `gh issue list --repo juanpablovaldez/hosty --state all --limit 200 --json
-> number,title,state,labels,milestone` (verificado 2026-07-28); 45 entregadas, 5 diferidas. Ver
+> number,title,state,labels,milestone` (verificado 2026-08-04); **50 entregadas de 50 (100 %)**, de
+> las cuales 3 se cerraron como `not planned` (alcance diferido, no trabajo abandonado). Ver
 > [[Datos-Verificables]].
 
-### Sobre las 5 historias diferidas
+### Sobre las 3 historias diferidas
 
-Ninguna de las cinco issues abiertas representa trabajo inconcluso dentro de su propio alcance
-declarado; las cuatro primeras quedaron simplemente sin cerrar al momento de esta verificación, y
-la quinta es este mismo informe:
+Ninguna de estas tres issues representa trabajo inconcluso dentro de su propio alcance declarado:
+las tres son alcance excluido del MVP, decidido y documentado antes de cerrarse formalmente el
+2026-08-04.
 
-- **#45** (Mercado Pago) — integración de pasarela de pago no completada dentro del período
-  relevado.
-- **#38** (tokens de color del brandbook) — tarea de documentación de diseño pendiente.
-- **#35** (Core Web Vitals) — auditoría de rendimiento pendiente.
-- **#33** (reviews y ratings) — con etiqueta real `post-mvp` en el propio repositorio: se trata de
-  una decisión explícita de excluir esta funcionalidad del alcance del MVP, no de trabajo
-  incompleto.
-- **#23** (este informe final) — es la propia tarea de documentación en curso; se cierra al
-  finalizar este cambio.
+- **#45** (Mercado Pago) — integración de pasarela de pago fuera del alcance de un MVP académico;
+  requiere cuenta comercial y credenciales de producción.
+- **#35** (Core Web Vitals) — auditoría de rendimiento planificada como mejora post-entrega.
+- **#33** (reviews y ratings) — con etiqueta real `post-mvp` en el propio repositorio: decisión
+  explícita de excluir esta funcionalidad del alcance del MVP, no trabajo incompleto.
+
+Las otras dos issues que figuraban como abiertas en verificaciones anteriores de este informe
+(**#38**, tokens de color del brandbook; **#23**, este informe final) estaban de hecho completadas
+—los tokens en la Tabla 14 de [[08-Diseno-y-Desarrollo]], el informe en este mismo vault— y se
+cerraron como entregadas, no como diferidas.
 
 ## Trazabilidad: historia → issue → PR → archivo
 

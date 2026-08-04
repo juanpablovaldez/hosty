@@ -105,7 +105,7 @@ Los últimos cuatro se cerraron el 2026-08-02:
 `assets/README.md` reproduce, sin numeración propia (nota de apparatus, ver decisión D5 de diseño),
 la misma lista de 4 capturas pendientes (P-15, P-41, P-42, P-43) para referencia rápida del equipo.
 
-## Datos simulados (`SIM-##`) — 20 originales, 15 activos al 2026-08-04
+## Datos simulados (`SIM-##`) — 22 emitidos, 17 activos al 2026-08-04
 
 ### [[03-Introduccion]], [[05-Problema-a-Resolver]] y [[06-Impacto-de-la-Solucion]] (3, consolidados en una nota — 2026-08-03)
 
@@ -169,6 +169,19 @@ agente.
 |---|---|---|
 | SIM-37 | Severidad estimada de 8 de los 13 defectos (sin etiqueta de prioridad en GitHub) | Estimación plausible por impacto funcional. Los otros 5 (#74, #75, #72, #87, #76) tienen etiqueta real `p1/p2/p3` y ya no son SIM (corregido 2026-08-03, además de un error real: #74 estaba mal clasificado) |
 
+### [[Anexos/Anexo-VI-Descubrimiento-y-Mercado]] (2, agregadas el 2026-08-04)
+
+| SIM-## | Descripción | Base de la reconstrucción |
+|---|---|---|
+| SIM-38 | Tasa de eventos/año que requieren alquilar un salón (0,5 % de la población), usada en el cálculo de TAM/SAM/SOM | Estimación propia sin fuente estadística externa verificada; elegida deliberadamente conservadora, con el método de cálculo a la vista para poder ajustarla |
+| SIM-39 | Reservas pagas por salón por año alcanzables en el corto plazo (8), usada en el cálculo de SOM | Estimación conservadora sin dato histórico propio — la plataforma no tiene todavía un ciclo comercial completo medido |
+
+El resto del contenido del Anexo VI (brainstorming, benchmarking, FODA, discovery → alcance,
+modelo de negocio) es testimonio directo del equipo aportado el 2026-08-04, no una reconstrucción
+del agente — tratamiento equivalente al ya aplicado a SIM-04. No se numera como `SIM-##` porque no
+es una inferencia a falta de evidencia: es información real sin artefacto versionado, igual que la
+confirmación de roles formales que cerró SIM-04.
+
 ## Resumen por lote
 
 | Lote | P-## usados | SIM-## usados |
@@ -178,7 +191,8 @@ agente.
 | B — Gestión y proceso | P-15 (1) | SIM-09–SIM-19 (11; SIM-09 y SIM-13 acotados el 2026-08-04) |
 | C — Arquitectura y datos | — | — |
 | D — Calidad, métricas y cierre | P-39, P-40, P-41, P-42, P-43, P-44, P-46 (7) | SIM-37 (1; SIM-33–SIM-36 cerrados el 2026-08-03) |
-| **Total activo** | **17** | **15** (de 20 originales; 5 cerrados) |
+| F — Descubrimiento y mercado (nuevo, 2026-08-04) | — | SIM-38, SIM-39 (2) |
+| **Total activo** | **17** | **17** (de 22 emitidos; 5 cerrados) |
 
 Verificación de unicidad (Lote E, 2026-07-28): `grep -rohE 'PLACEHOLDER P-[0-9]+|Dato simulado
 SIM-[0-9]+'` sobre las 28 notas confirma que cada identificador `P-##` y `SIM-##` está **declarado

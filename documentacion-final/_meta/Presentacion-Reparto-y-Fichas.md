@@ -9,9 +9,18 @@ updated: 2026-08-02
 
 # Presentación final — reparto de bloques y fichas de apoyo
 
-Defensa del **viernes 7 de agosto de 2026**. El profesor pidió expresamente que **hablen los cinco
-integrantes**. Este documento define quién habla de qué, con cuánto tiempo, y deja una ficha de
-apoyo por persona.
+> [!warning] Superado por [[Defensa-2026-08-07]]
+> Este documento describe una versión anterior del mazo (21 slides, 7 bloques) y todavía asigna un
+> bloque a Lautaro Martinez Naglieri, que **no expone el 2026-08-07** (defiende en diciembre — ver
+> criterio fijado el 2026-08-03 en [[Defensa-2026-08-07]], Parte 4). El mazo actual tiene 15 slides
+> y un reparto distinto entre **cuatro** oradores: Mignone, Valdez, Czurylo y Garma. **La Parte 2 de
+> [[Defensa-2026-08-07]] es la fuente vigente de guiones y reparto — no ensayar desde este
+> documento.** Se conserva sin borrar porque el detalle por bloque (qué decir, en qué orden, anclas
+> de preguntas) sigue siendo un insumo útil para redactar los guiones actualizados, no porque el
+> reparto o los números que contiene sigan siendo válidos.
+
+Defensa del **viernes 7 de agosto de 2026**. Este documento definía quién hablaba de qué, con
+cuánto tiempo, y dejaba una ficha de apoyo por persona — ver la advertencia arriba antes de usarlo.
 
 **Cómo usarlo:** imprimir el documento y que cada uno se quede con su ficha. Las fichas están
 pensadas para mirar de reojo, no para leer: son datos y anclas, no un texto para recitar.

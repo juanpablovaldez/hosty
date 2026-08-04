@@ -213,10 +213,12 @@ visible de un vistazo y corresponde a la priorización declarada en la sección 
 > [!info] Fuente — `npm --prefix frontend run test:coverage`; captura del reporte HTML generado en
 > `frontend/coverage/index.html`. Los porcentajes de la captura (12,44 % de sentencias, 8,97 % de
 > ramas, 13,87 % de funciones y 15,68 % de líneas) corresponden a la corrida del 2026-08-02, sobre
-> 14 archivos y 73 casos. **Quedaron desactualizados el 2026-08-04**, al agregar
-> `BookingFlow.test.tsx` y un caso nuevo en `favorites.test.ts` (cierre de SIM-33/SIM-34, ver
-> [[12-Testing-y-Calidad]] Tabla 33): la cobertura global subió a 16,41 % de sentencias (Tabla 32).
-> La captura no se regeneró; **Tabla 32 es la cifra vigente**, no esta figura.
+> 14 archivos y 73 casos. **Quedaron desactualizados el 2026-08-04, dos veces:** primero al agregar
+> `BookingFlow.test.tsx` y un caso nuevo en `favorites.test.ts` (cierre de SIM-33/SIM-34), y después
+> al agregar `booking-pricing.test.ts` y `host.mutations.test.ts` para ampliar la cobertura de
+> módulos críticos (ver [[12-Testing-y-Calidad]], Tabla 32a). La cobertura global vigente es
+> 16,96 % de sentencias (Tabla 32). La captura no se regeneró; **Tabla 32 es la cifra vigente**, no
+> esta figura.
 
 ## Resumen de evidencias
 
@@ -224,9 +226,9 @@ visible de un vistazo y corresponde a la priorización declarada en la sección 
 |---|---|
 | Corrida de Vitest | 15 archivos, 75 casos, todos exitosos (2026-08-04) |
 | Corrida E2E de Playwright sobre el entorno desplegado | 111 casos sobre 3 navegadores, todos exitosos (2026-08-02; ver Tablas 57b y 57c) |
-| Cobertura de pruebas (`@vitest/coverage-v8`) | 16,41 % global de sentencias; 59,83 % sobre el código ejercitado (2026-08-04; ver Tablas 32 y 32a) |
+| Cobertura de pruebas (`@vitest/coverage-v8`) | 16,96 % global de sentencias; 57,31 % sobre el código ejercitado (2026-08-04; ver Tablas 32 y 32a) |
 | Verificación de tipos (`tsc -b --noEmit`) | Sin errores (2026-07-28) |
-| Análisis estático (`eslint .`) | 6 errores y 4 advertencias (2026-07-28; ver [[12-Testing-y-Calidad]], Tabla 34) |
+| Análisis estático (`eslint .`) | 0 errores, 4 advertencias (2026-08-04; ver [[12-Testing-y-Calidad]], Tabla 34) |
 | Evidencia de la API de datos | Figura 35 — llamada real capturada sobre el entorno desplegado |
 | Evidencia de la aplicación en ejecución | Figura 36 — flujo de reserva de tres pasos |
 | Evidencia de cobertura | Figura 37 — reporte HTML de `@vitest/coverage-v8` |

@@ -45,14 +45,14 @@ métricas que describen el **estado actual del producto** (`M09`–`M22`) sí se
 | M03 | Fecha del primer commit | 2026-03-29 | `git log --reverse --date=short --format=%ad dev \| head -1` | 2026-07-28 |
 | M04 | Fecha del último commit | 2026-06-24 | `git log -1 --date=short --format=%ad dev` | 2026-07-28 |
 | M05 | Contribuidores | 5 (9 identidades Git) | `git shortlog -sne --all` | 2026-07-28 |
-| M06 | Issues totales / cerradas | 50 / 45 | `gh issue list --state all --limit 300 --json number,state` | 2026-07-28 |
+| M06 | Issues totales / cerradas | 50 / 50 (100 %) | `gh issue list --state all --limit 300 --json number,state` | 2026-08-04 |
 | M07 | Pull requests totales / mergeados | 48 / 26 | `gh pr list --state all --limit 300 --json number,mergedAt` | 2026-07-28 |
 | M08 | Milestones | 7 | `gh api repos/juanpablovaldez/hosty/milestones?state=all --jq length` | 2026-07-28 |
 | M09 | Rutas / protegidas | 14 / 8 | `find frontend/src/routes -name '*.tsx' ! -name '__root.tsx'` (14); `grep -rl requireAuth frontend/src/routes` (8) | 2026-07-28 |
 | M10 | Tablas en `public` | 6 (`salones`, `bookings`, `salon_services`, `salon_availability_blocks`, `user_favorites`, `salon_subscriptions`) | `supabase/migrations/*.sql`; `frontend/src/shared/lib/database.types.ts` | 2026-07-28 |
 | M11 | Archivos de migración | 10 | `ls supabase/migrations/*.sql \| wc -l` | 2026-07-28 |
-| M12 | Pruebas automatizadas (Vitest) | 75 | `npm --prefix frontend run test` (`vitest --run`) | 2026-08-03 |
-| M13 | Archivos de prueba | 20 (15 Vitest/RTL + 5 E2E Playwright, excluidos del run de Vitest por `exclude: ['src/e2e/**']`) | `find frontend/src -name '*.test.*' -o -name '*.spec.*'` | 2026-08-03 |
+| M12 | Pruebas automatizadas (Vitest) | 94 | `npm --prefix frontend run test` (`vitest --run`) | 2026-08-04 |
+| M13 | Archivos de prueba | 21 (16 Vitest/RTL + 5 E2E Playwright, excluidos del run de Vitest por `exclude: ['src/e2e/**']`) | `find frontend/src -name '*.test.*' -o -name '*.spec.*'` | 2026-08-04 |
 | M14 | Workflows de CI/CD | 3 (`frontend-tests.yml`, `web-dev.yml`, `infra-ci.yml`) | `ls .github/workflows` | 2026-07-28 |
 | M15 | Features del frontend | 8 (`auth`, `bookings`, `errors`, `favorites`, `home`, `host`, `profile`, `salones`) | `ls frontend/src/features` | 2026-07-28 |
 | M16 | Bucket de Storage | `salon-images` | `supabase/migrations/20260525000001_create_storage_bucket.sql` | 2026-07-28 |
@@ -67,11 +67,27 @@ métricas que describen el **estado actual del producto** (`M09`–`M22`) sí se
 > cita únicamente como aclaración metodológica, para no ocultar los commits que existen en ramas
 > o refs fuera de `dev`.
 
-> [!info] Fuente — M12/M13 se re-verificaron el 2026-08-03 ejecutando la suite completa, después de
-> agregar `BookingFlow.test.tsx` (CP-01) y un test nuevo en `favorites.test.ts` (CP-02) para cerrar
-> SIM-33/SIM-34 en [[12-Testing-y-Calidad]] (Tabla 33). El valor de M12 (75 pruebas) y M13 (20
-> archivos) es el vigente al momento de esta verificación y puede volver a cambiar si se agregan
-> pruebas después de esta fecha.
+> [!info] Fuente — M12/M13 se re-verificaron el 2026-08-04 ejecutando la suite completa, después de
+> agregar `booking-pricing.test.ts` (11 casos, cierra la brecha de cobertura sobre el cálculo del
+> precio de una reserva) y `host.mutations.test.ts` (8 casos, cubre `useUpdateBookingStatus` —
+> aceptar/rechazar una reserva y anular el motivo de rechazo salvo al rechazar— y
+> `useUpdateBookingQuote`). El valor de M12 (94 pruebas) y M13 (21 archivos) es el vigente al
+> momento de esta verificación y puede volver a cambiar si se agregan pruebas después de esta
+> fecha. **Umbrales de cobertura** (`vite.config.ts`, `coverage.thresholds`) fijados sobre los
+> módulos ya bien probados —`features/bookings/lib`, `features/bookings/api`,
+> `features/favorites/api`, `features/auth/lib`— para que una regresión en esos módulos falle el
+> build; no se fijó umbral sobre `host.queries`, el resto de `host.mutations` ni los filtros de
+> `salones.queries`, todavía sin cubrir (ver Tabla 32b de [[12-Testing-y-Calidad]]).
+
+> [!info] Fuente — M06 se recalculó el 2026-08-04, después de la fecha de corte de las métricas de
+> proceso. Las 5 issues que seguían abiertas (#45 Mercado Pago, #33 reseñas, #35 Core Web Vitals, #38
+> documentación de tokens, #23 este mismo informe) correspondían a trabajo diferido con
+> justificación ya escrita, no a trabajo pendiente: #38 y #23 estaban de hecho completadas (tokens en
+> la Tabla 14, informe entregado) y #45/#33/#35 son alcance explícitamente fuera del MVP (ver
+> [[15-Conclusiones]]). Se cerraron formalmente en GitHub el 2026-08-04 (`not planned` para las tres
+> de alcance) para que el estado del tablero coincida con lo que el informe ya declaraba. El backlog
+> queda en 50/50 (100 %); el criterio de cierre de cada una sigue documentado en la Tabla 39 de
+> [[15-Conclusiones]] y no se oculta.
 
 ## Commits por mes (rama `dev`)
 
@@ -215,7 +231,7 @@ este cambio. Se agregan al final para no alterar ningún valor ya fijado por los
 |---|---|---|---|---|
 | M28 | Pull requests abiertos / mergeados por mes | 2026-04: 9/7 · 2026-05: 19/8 · 2026-06: 20/11 (suma 48/26 = M07) | `gh pr list --state all --json number,createdAt,mergedAt`, agrupado por mes | 2026-07-28 |
 | M29 | Invocaciones de operaciones PostgREST (`select`/`insert`/`update`/`delete`) por módulo con carpeta `api/` | `bookings` 5, `favorites` 5, `host` 21, `salones` 4 (total 35) | `grep -oE '\.(select\|insert\|update\|delete\|upsert\|rpc)\(' frontend/src/features/<módulo>/api/*.ts` | 2026-07-28 |
-| M30 | Resultado de `lint`/`typecheck` reproducidos en vivo sobre el estado actual del repositorio | `npx tsc -b --noEmit`: 0 errores · `npx eslint .`: 6 errores, 4 advertencias | Ejecución directa en `frontend/` | 2026-07-28 |
+| M30 | Resultado de `lint`/`typecheck` reproducidos en vivo sobre el estado actual del repositorio | `npx tsc -b --noEmit`: 0 errores · `npx eslint .`: 0 errores, 4 advertencias (`react-hooks/exhaustive-deps` en `SalonesPage.tsx`) | Ejecución directa en `frontend/` | 2026-08-04 |
 | M31 | Relación líneas de código de prueba / líneas de código de producción | 1.603 / 11.223 ≈ 0,14 (14 %) | `find frontend/src -name '*.test.ts' -o -name '*.test.tsx' -o -path '*/e2e/*.spec.ts' \| xargs wc -l`, y su complemento sobre `*.ts`/`*.tsx` | 2026-08-04 |
 | M32 | Issues etiquetadas `bug` (todas / cerradas) | 13 / 13 | `gh issue list --state all --label bug --json number,state` | 2026-07-28 |
 

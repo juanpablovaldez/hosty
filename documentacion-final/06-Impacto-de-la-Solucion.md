@@ -7,7 +7,7 @@ tags: [hosty, informe-final, impacto]
 estado: completo
 figuras: [F5]
 tablas: [T10]
-updated: 2026-07-28
+updated: 2026-08-04
 ---
 
 # 6. Impacto de la Solución
@@ -70,6 +70,22 @@ de medición aún no instrumentadas; ver la nota metodológica completa en [[03-
 El impacto aquí descripto retoma directamente los puntos de dolor identificados en
 [[05-Problema-a-Resolver]] y se refleja, en términos cuantitativos, en las métricas de
 [[14-Metricas]].
+
+## Tamaño del mercado y modelo de negocio
+
+El impacto por usuario de la tabla anterior tiene, además, una lectura de mercado. Con la tasa de
+eventos y el ticket promedio estimados en el Anexo VI, el mercado disponible en Tucumán (SAM) es de
+aproximadamente **ARS 1.060 millones/año**, y el volumen alcanzable en el corto plazo con la base
+actual de +120 salones verificados (SOM) es de unos **ARS 120 millones/año** transaccionados —entre
+ARS 9,6 y 18 millones/año de ingreso potencial sólo por comisión, al 8–15 % ya declarado en el
+issue #45. El desarrollo completo del cálculo, con cada supuesto citado por separado, está en
+[[Anexos/Anexo-VI-Descubrimiento-y-Mercado]].
+
+Ese mismo anexo documenta las tres líneas de ingreso previstas —suscripción "Destacado" (ya
+implementada), comisión por reserva concretada (declarada desde la planificación de la épica E3) y,
+a futuro, reventa del servicio de organización integral del evento— y el proceso de *product
+discovery* que llevó de un brainstorming de treinta ideas a las tres capacidades que efectivamente
+se construyeron.
 
 ---
 [[Indice|Índice]] · ← [[05-Problema-a-Resolver]] · [[07-Equipo-y-Roles]] →

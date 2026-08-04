@@ -4,13 +4,13 @@ seccion: "meta"
 tipo: meta
 tags: [hosty, informe-final, tablas]
 estado: completo
-updated: 2026-07-28
+updated: 2026-08-04
 ---
 
 # Índice de Tablas
 
 Registro global de las tablas del informe, con la nota que las contiene y el epígrafe verbatim tal
-como aparece en el cuerpo de cada nota. La secuencia principal T1–T59 es contigua y no tiene
+como aparece en el cuerpo de cada nota. La secuencia principal T1–T63 es contigua y no tiene
 duplicados; las tablas con sufijo alfabético complementan a la tabla cuyo número comparten.
 
 | Tabla | Nota de origen | Epígrafe | Estado |
@@ -37,6 +37,7 @@ duplicados; las tablas con sufijo alfabético complementan a la tabla cuyo núme
 | T20 | [[09-Planificacion-Scrum]] | Definition of Ready y Definition of Done | Hecho |
 | T21 | [[09-Planificacion-Scrum]] | Plan de sprints: cantidad, duración, foco y resultado | Hecho |
 | T22 | [[09-Planificacion-Scrum]] | Retrospectivas: problema, impacto y acción correctiva | Hecho |
+| T22a | [[09-Planificacion-Scrum]] | Instancias de validación con usuarios y su cambio derivado en el backlog | Hecho |
 | T23 | [[10-Presupuesto]] | Estimación de esfuerzo por perfil, horas y tarifa | Hecho |
 | T24 | [[10-Presupuesto]] | Costos de infraestructura y capas gratuitas | Hecho |
 | T25 | [[10-Presupuesto]] | Costo total, contingencia y supuestos declarados | Hecho |
@@ -80,10 +81,14 @@ duplicados; las tablas con sufijo alfabético complementan a la tabla cuyo núme
 | T57c | [[Anexo-V-Evidencias-QA]] | Análisis de los casos fallidos | Hecho |
 | T58 | [[Anexo-V-Evidencias-QA]] | Registro de defectos y retesting | Hecho |
 | T59 | [[Anexo-V-Evidencias-QA]] | Resumen de evidencias de calidad | Hecho |
+| T60 | [[Anexos/Anexo-VI-Descubrimiento-y-Mercado]] | Del brainstorming a las tres ideas finalistas y el criterio de selección | Hecho |
+| T61 | [[Anexos/Anexo-VI-Descubrimiento-y-Mercado]] | Benchmarking: Hosty frente a las alternativas reales del mercado en Tucumán | Hecho |
+| T62 | [[Anexos/Anexo-VI-Descubrimiento-y-Mercado]] | Análisis FODA | Hecho |
+| T63 | [[Anexos/Anexo-VI-Descubrimiento-y-Mercado]] | Supuestos y fuentes del cálculo de TAM/SAM/SOM | Hecho |
 
-**Total: 65 tablas** — 59 en la secuencia principal T1–T59, contigua y sin huecos, más 6 tablas
-complementarias (T32a, T32b, T34b, T52b, T57b, T57c). Estas últimas se incorporaron una vez fijada la
-numeración principal y conservan el número de la tabla a la que complementan, con sufijo
+**Total: 70 tablas** — 63 en la secuencia principal T1–T63, contigua y sin huecos, más 7 tablas
+complementarias (T22a, T32a, T32b, T34b, T52b, T57b, T57c). Estas últimas se incorporaron una vez
+fijada la numeración principal y conservan el número de la tabla a la que complementan, con sufijo
 alfabético, para no alterar las referencias cruzadas ya establecidas en el resto del informe.
 
 ---

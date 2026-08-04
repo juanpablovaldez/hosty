@@ -6,8 +6,8 @@ tipo: seccion
 tags: [hosty, informe-final, testing, calidad]
 estado: con-pendientes
 figuras: [F19, F20, F21]
-tablas: [T31, T32, T33, T34]
-updated: 2026-07-28
+tablas: [T31, T32, T32a, T32b, T33, T34, T34b]
+updated: 2026-08-04
 ---
 
 # 12. Testing y Calidad
@@ -31,7 +31,7 @@ flowchart TD
 
 *Figura 19 — Pirámide de pruebas: unitarias (Vitest) / componentes (RTL+jsdom) / E2E (Playwright).*
 
-> [!info] Fuente — M12/M13 (`_meta/Datos-Verificables.md`): 75 pruebas Vitest en 15 archivos
+> [!info] Fuente — M12/M13 (`_meta/Datos-Verificables.md`): 94 pruebas Vitest en 16 archivos
 > unitarios/de componentes, más 5 *specs* Playwright E2E.
 
 ```mermaid
@@ -59,14 +59,16 @@ flowchart LR
 
 *Tabla 31 — Tipos de prueba, herramienta y alcance real.*
 
-> [!info] Fuente — M12/M13, verificado ejecutando `npx vitest run` sobre el repositorio: 15
-> archivos, 75 casos, todos en verde. Nota honesta: sólo la suite de Vitest está integrada al
+> [!info] Fuente — M12/M13, verificado ejecutando `npx vitest run` sobre el repositorio: 16
+> archivos, 94 casos, todos en verde. Nota honesta: sólo la suite de Vitest está integrada al
 > pipeline de CI (`frontend-tests.yml` ejecuta `pnpm test run`); Playwright, la corrida
 > independiente de Mocha (`pnpm test:mocha`) y el *spec* de Cypress se ejecutan de forma local o
 > manual y no forman parte de ningún *workflow* de `.github/workflows/`. El archivo de Mocha,
 > además, también es recolectado por Vitest porque su ruta no está excluida en `vite.config.ts`
 > (`exclude: [...configDefaults.exclude, 'src/e2e/**']`); por eso sus 4 casos ya están incluidos en
-> el total de 75.
+> el total de 94. Los 19 casos agregados el 2026-08-04 (`booking-pricing.test.ts`, 11;
+> `host.mutations.test.ts`, 8) cierran la brecha de cobertura sobre el cálculo del precio de una
+> reserva y sobre aceptar/rechazar/cotizar una reserva desde el panel del anfitrión — ver Tabla 32b.
 
 ## Cobertura
 
@@ -74,29 +76,36 @@ La cobertura se mide con `@vitest/coverage-v8`, que instrumenta el código media
 nativo, y se ejecuta con `npm --prefix frontend run test:coverage`. El resultado se reporta bajo
 **dos criterios**, porque informar uno solo distorsiona la lectura en sentidos opuestos:
 
-- **Cobertura global.** Se instrumenta todo el código de aplicación bajo `src/` —95 archivos—,
-  incluidos los 68 que ninguna prueba llega a importar. Es la cifra honesta del estado del
+- **Cobertura global.** Se instrumenta todo el código de aplicación bajo `src/` —96 archivos—,
+  incluidos los 67 que ninguna prueba llega a importar. Es la cifra honesta del estado del
   proyecto y la que corresponde citar si se pide "la cobertura" sin más.
-- **Cobertura del código ejercitado.** Se mide únicamente sobre los 27 archivos que la suite
+- **Cobertura del código ejercitado.** Se mide únicamente sobre los 29 archivos que la suite
   efectivamente importa. Indica qué tan a fondo se prueba aquello que sí está bajo prueba, pero no
   debe presentarse como cobertura del proyecto, porque ignora todo lo que quedó sin probar.
 
 | Métrica | Cobertura global | Sobre el código ejercitado |
 |---|---|---|
-| Sentencias | 16,41 % (901 / 5.490) | 59,83 % (901 / 1.506) |
-| Ramas | 11,95 % (566 / 4.735) | 43,84 % (566 / 1.291) |
-| Funciones | 16,37 % (92 / 562) | 62,59 % (92 / 147) |
-| Líneas | 20,16 % (653 / 3.238) | 72,31 % (653 / 903) |
+| Sentencias | 16,96 % (929 / 5.476) | 57,31 % (929 / 1.621) |
+| Ramas | 12,39 % (585 / 4.721) | 43,62 % (585 / 1.341) |
+| Funciones | 17,55 % (99 / 564) | 57,56 % (99 / 172) |
+| Líneas | 20,83 % (673 / 3.230) | 67,23 % (673 / 1.001) |
 
 *Tabla 32 — Cobertura de pruebas bajo ambos criterios.*
 
 > [!info] Fuente — M37: `npm --prefix frontend run test:coverage` (`vitest run --coverage`,
-> proveedor V8), ejecutado el 2026-08-04 sobre 15 archivos y 75 casos. Los totales se obtuvieron de
+> proveedor V8), ejecutado el 2026-08-04 sobre 16 archivos y 94 casos, después de agregar
+> `booking-pricing.test.ts` y `host.mutations.test.ts`. Los totales se obtuvieron de
 > `frontend/coverage/coverage-summary.json`. La configuración de proveedor, *reporters* y
 > exclusiones está declarada en el bloque `test.coverage` de `frontend/vite.config.ts`: se excluyen
 > del cómputo los propios archivos de prueba, `src/e2e/`, `src/test/`, `main.tsx` y los dos
 > artefactos autogenerados (`routeTree.gen.ts` y `database.types.ts`), porque medir cobertura sobre
-> código que nadie escribió a mano no aporta información.
+> código que nadie escribió a mano no aporta información. **Nota metodológica:** el porcentaje
+> "sobre el código ejercitado" bajó levemente frente a la medición anterior (59,83 % → 57,31 % de
+> sentencias) pese a que la cobertura global subió: al agregar `host.mutations.test.ts`, el
+> denominador de archivos ejercitados creció (27 → 29) con un archivo grande
+> (`host.mutations.ts`, 191 sentencias) del que sólo se cubrió una fracción — dos funciones de
+> ocho. Es el comportamiento esperado del criterio "ejercitado": mide profundidad sobre lo que se
+> toca, no premia tocar más superficie.
 
 La distribución por módulo muestra un patrón deliberado: la lógica de dominio y de acceso a datos
 está cubierta, y la capa de presentación, todavía parcialmente.
@@ -104,6 +113,7 @@ está cubierta, y la capa de presentación, todavía parcialmente.
 | Módulo | Sentencias | Ramas | Funciones | Líneas |
 |---|---|---|---|---|
 | `features/auth/store` | 100,00 % | 100,00 % | 100,00 % | 100,00 % |
+| `features/bookings/lib` | 100,00 % | 100,00 % | 100,00 % | 100,00 % |
 | `features/bookings/api` | 97,06 % | 79,31 % | 100,00 % | 100,00 % |
 | `features/auth/lib` | 93,75 % | 100,00 % | 85,71 % | 93,33 % |
 | `features/favorites/api` | 92,54 % | 85,42 % | 100,00 % | 97,83 % |
@@ -113,17 +123,26 @@ está cubierta, y la capa de presentación, todavía parcialmente.
 | `features/salones/lib` | 50,00 % | 75,00 % | 66,67 % | 55,56 % |
 | `components/layout` | 43,08 % | 35,81 % | 35,00 % | 49,22 % |
 | `components/ui` | 28,93 % | 15,77 % | 28,13 % | 37,03 % |
-| `features/bookings/components` | 25,96 % | 22,58 % | 22,50 % | 30,34 % |
+| `features/bookings/components` | 25,41 % | 21,43 % | 20,51 % | 28,92 % |
+| `features/host/api` | 10,60 % | 10,45 % | 11,43 % | 10,59 % |
 | `features/salones/components` | 7,69 % | 6,52 % | 2,27 % | 11,30 % |
-| 16 carpetas restantes | 0,00 % | 0,00 % | 0,00 % | 0,00 % |
+| 15 carpetas restantes | 0,00 % | 0,00 % | 0,00 % | 0,00 % |
 
 *Tabla 32a — Cobertura por módulo, ordenada por cobertura de sentencias.*
 
-`components/ui` y `features/bookings/components` pasaron a tener cobertura parcial el 2026-08-04:
-`BookingFlow.test.tsx` (cierre de SIM-33, ver Tabla 33) renderiza el componente completo, y de paso
-ejercita los primitivos de shadcn/ui que usa (`Select`, `Button`, `Input`, `Skeleton`, entre otros).
+`features/bookings/lib` es nuevo el 2026-08-04: se extrajo el cálculo puro del precio de una
+reserva (`calcHours`, `calcBookingTotal`) desde `BookingFlow.tsx` a un módulo propio, con 11 casos
+que cubren el cruce de medianoche, duración cero, extras sin precio y las tres variantes de tipo de
+precio — 0 % a 100 % en un mismo cambio. `features/host/api` pasó de 0 % a 10,60 %:
+`host.mutations.test.ts` cubre `useUpdateBookingStatus` (aceptar/rechazar/cotizar una reserva,
+incluida la regla de que `rejection_reason` se anula salvo al rechazar) y `useUpdateBookingQuote`,
+las dos funciones de mayor riesgo del panel del anfitrión; el resto del archivo —siete mutaciones
+de gestión de salones— y `host.queries.ts` completo siguen sin test. `components/ui` y
+`features/bookings/components` tienen cobertura parcial desde el 2026-08-02: `BookingFlow.test.tsx`
+(cierre de SIM-33, ver Tabla 33) renderiza el componente completo, y de paso ejercita los
+primitivos de shadcn/ui que usa (`Select`, `Button`, `Input`, `Skeleton`, entre otros).
 
-Las 16 carpetas sin cobertura son, en su mayoría, componentes de pantalla y definiciones de ruta
+Las 15 carpetas sin cobertura son, en su mayoría, componentes de pantalla y definiciones de ruta
 (`routes/`, `features/host/components`, `features/home/components`, entre otras): código que la
 suite E2E de Playwright sí ejercita sobre el navegador, pero que no aparece en esta medición porque
 Playwright corre fuera del proceso de Vitest y no comparte su instrumentación. La cobertura de la
@@ -134,20 +153,21 @@ medición elegido:
 
 | Métrica de volumen | Valor |
 |---|---|
-| Pruebas automatizadas (Vitest) | 75 |
-| Archivos de prueba (Vitest/RTL + Playwright) | 20 (15 + 5) |
-| Líneas de código de prueba (unitarias + componentes + E2E) | 1.603 |
-| Líneas de código de producción (`src/`, sin pruebas) | 11.223 |
-| Relación líneas de prueba / líneas de producción | ≈ 0,14 (14 %) |
+| Pruebas automatizadas (Vitest) | 94 |
+| Archivos de prueba (Vitest/RTL + Playwright) | 21 (16 + 5) |
+| Líneas de código de prueba (unitarias + componentes + E2E) | 1.838 |
+| Líneas de código de producción (`src/`, sin pruebas) | 11.244 |
+| Relación líneas de prueba / líneas de producción | ≈ 0,16 (16 %) |
 
 *Tabla 32b — Volumen de la suite de pruebas.*
 
 > [!info] Fuente — M12/M13/M31; líneas de prueba y de producción contadas con
 > `find frontend/src -name '*.test.ts' -o -name '*.test.tsx' -o -path '*/e2e/*.spec.ts' | xargs wc -l`
 > y su complemento sobre `*.ts`/`*.tsx`, respectivamente (2026-08-04, re-verificado tras agregar
-> `BookingFlow.test.tsx` y el caso nuevo de `favorites.test.ts`). La cifra de producción incluye
-> `src/routeTree.gen.ts` (343 líneas autogeneradas por TanStack Router), que sí se excluye del
-> cómputo de cobertura de la Tabla 32.
+> `booking-pricing.test.ts` y `host.mutations.test.ts`). La cifra de producción incluye
+> `src/routeTree.gen.ts` (343 líneas autogeneradas por TanStack Router) y el nuevo
+> `booking-pricing.ts`; la primera sí se excluye del cómputo de cobertura de la Tabla 32, la
+> segunda no.
 
 El reporte HTML navegable queda en `frontend/coverage/index.html` y se anexa en
 [[Anexo-V-Evidencias-QA]]. Elevar la cobertura de la capa de presentación está registrado como
@@ -243,7 +263,8 @@ todos corregidos y verificados.
 > texto original en inglés. R-02 y R-03 se incorporaron mediante la rama
 > `fix/detalles-ui-formulario`. En ese momento la suite completa quedó en 73 casos, todos en verde,
 > con verificación de tipos (`tsc -b --noEmit`) y análisis estático (ESLint) sin errores; el total
-> vigente al cierre de este informe es 75 (Tabla 31), tras los dos casos agregados el 2026-08-04.
+> vigente al cierre de este informe es 94 (Tabla 31), tras los 21 casos agregados el 2026-08-04
+> (2 para cerrar SIM-33/SIM-34, 19 para ampliar la cobertura de módulos críticos — ver Tabla 32a).
 
 ## Criterios de salida
 
@@ -267,13 +288,15 @@ por severidad al cierre de cada sprint.
 > number,title,state,labels` (2026-07-28): 13 *issues* con etiqueta `bug`, las 13 cerradas; de
 > ellas, 5 llevan además una etiqueta de prioridad — 2 `p1-high` (#74, #75), 2 `p2-medium` (#72,
 > #87), 1 `p3-low` (#76) — y las 8 restantes no fueron priorizadas explícitamente con esa
-> taxonomía. Verificación en vivo adicional sobre el estado actual del repositorio: `npx tsc -b
-> --noEmit` no reporta errores; `npx eslint .` reporta 6 errores y 4 advertencias
-> (`cypress.config.ts`: parámetros sin usar; `src/test/mocha/search-validation.test.ts`: la regla
-> `no-unused-expressions` no reconoce las aserciones de Chai `expect(...).to.be.true`;
-> `SalonesPage.tsx`: 4 advertencias de `react-hooks/exhaustive-deps`). El criterio de "lint
-> limpio" no se cumple de forma estricta al momento de esta verificación; se documenta como
-> hallazgo de calidad en [[15-Conclusiones]] (Tabla 40).
+> taxonomía. Verificación en vivo adicional sobre el estado actual del repositorio (2026-08-04):
+> `npx tsc -b --noEmit` no reporta errores; `npx eslint .` reporta **0 errores y 4 advertencias**
+> (`SalonesPage.tsx`: `react-hooks/exhaustive-deps`). Los 6 errores registrados en una verificación
+> anterior (`cypress.config.ts`: parámetros sin usar; `src/test/mocha/search-validation.test.ts`:
+> la regla `no-unused-expressions` no reconocía las aserciones de Chai) ya no están presentes — se
+> corrigieron como efecto colateral de `eslint --fix` sobre los archivos tocados en esta sesión. El
+> criterio de "lint limpio" se cumple hoy en la parte que bloquea el *merge* (cero errores); las 4
+> advertencias de dependencias de `useMemo` siguen abiertas y se documentan como hallazgo de
+> calidad en [[15-Conclusiones]] (Tabla 40).
 
 ---
 [[Indice|Índice]] · ← [[11-Arquitectura]] · [[13-Ejecucion-por-Sprint]] →

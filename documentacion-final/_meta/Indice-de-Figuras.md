@@ -4,7 +4,7 @@ seccion: "meta"
 tipo: meta
 tags: [hosty, informe-final, figuras]
 estado: completo
-updated: 2026-07-28
+updated: 2026-08-04
 ---
 
 # Índice de Figuras
@@ -54,9 +54,13 @@ presentes, numeradas de forma contigua y sin duplicados.
 | F34 | [[Anexo-II-Diagramas-de-Flujo]] | Gestión de favoritos y plan destacado | Hecho |
 | F35 | [[Anexo-V-Evidencias-QA]] | Evidencia de pruebas sobre la API PostgREST — captura | Hecho |
 | F36 | [[Anexo-V-Evidencias-QA]] | Flujo de reserva de la aplicación en ejecución — captura | Hecho |
+| F37 | [[Anexo-V-Evidencias-QA]] | Reporte de cobertura de pruebas (`@vitest/coverage-v8`) — captura | Hecho |
+| F38 | [[Anexos/Anexo-VI-Descubrimiento-y-Mercado]] | TAM / SAM / SOM: del mercado nacional al volumen alcanzable con la base de salones actual | Hecho |
+| F39 | [[11-Arquitectura]] | Camino de escalado: de un MVP de costo cero a una operación multi-provincia, con el disparador de cada salto | Hecho |
 
-**Total: 36 figuras** (33 diagramas Mermaid + 3 capturas: F12, F35, F36) — secuencia contigua
-F1–F36 verificada, sin huecos ni duplicados (2026-07-29).
+**Total: 39 figuras** (35 diagramas Mermaid + 4 capturas: F12, F35, F36, F37) — secuencia contigua
+F1–F39, sin huecos ni duplicados (2026-08-04). F37 (captura de cobertura) faltaba en este índice
+pese a estar ya en [[Anexo-V-Evidencias-QA]] desde el cierre de SIM-33/34; se corrige acá.
 
 La figura que en versiones preliminares ocupaba el lugar F36 (reporte de cobertura de líneas) se
 retiró del informe por no existir todavía una herramienta de cobertura configurada en el proyecto;

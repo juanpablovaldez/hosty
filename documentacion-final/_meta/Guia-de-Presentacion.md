@@ -59,10 +59,12 @@ presentación. Cuatro reglas:
    iniciada, sin pestañas personales a la vista.
 2. **Despacio y narrando.** Decir lo que se va a hacer antes de hacerlo. El impulso natural bajo
    presión es apurarse, y es exactamente lo contrario de lo que conviene.
-3. **Las dos cuentas coordinadas.** La reserva que crea Juan Pablo Czurylo en el bloque 3 tiene que
-   caer en el panel del anfitrión que muestra Lautaro en el bloque 4. Es el momento más fuerte de
-   toda la presentación: los dos lados del producto conectados en vivo. **Verificar antes que la
-   cuenta de anfitrión sea la dueña del salón que se va a reservar.**
+3. **Las dos cuentas coordinadas.** La reserva que se crea en el bloque de demo de reserva tiene que
+   caer en el panel del anfitrión que se muestra en el bloque de demo de publicación (ver el reparto
+   vigente en [[Defensa-2026-08-07]], Parte 2 — Valdez absorbe la demo de publicación salvo que se
+   confirme la Decisión D3). Es el momento más fuerte de toda la presentación: los dos lados del
+   producto conectados en vivo. **Verificar antes que la cuenta de anfitrión sea la dueña del salón
+   que se va a reservar.**
 4. **Plan B activo, no teórico.** Si algo no carga: "lo tenemos capturado", se abre la captura y se
    sigue hablando. Sin disculpas y sin pelearse con la pantalla.
 
@@ -72,7 +74,7 @@ presentación. Cuatro reglas:
 |---|---|
 | "¿Esto está en producción?" | Sí: desplegado en AWS S3 + CloudFront, con Supabase como backend real. La URL es pública y funciona desde cualquier dispositivo. |
 | "¿Tienen ambientes de desarrollo y producción separados?" | No todavía. Hoy hay un único proyecto de Supabase, que el panel etiqueta como `PRODUCTION`. Es una decisión de alcance del MVP y está en el roadmap de mediano plazo. No lo nieguen si preguntan directamente. |
-| "¿Todos los tests pasan?" | Sí: 73 de 73 en Vitest y 111 de 111 en Playwright, sobre 3 navegadores. Vale la pena agregar que hasta hace unos días había 6 fallando, y que dos de ellos resultaron ser un defecto real del producto, no un test viejo. Está documentado en la Tabla 57c del Anexo V. |
+| "¿Todos los tests pasan?" | Sí, ver el conteo vigente en [[Datos-Verificables]] (M12/M13) — cambia si se agrega una prueba, así que no memorizarlo de esta guía. Vale la pena agregar que hasta hace unos días había 6 casos fallando en Playwright, y que dos de ellos resultaron ser un defecto real del producto, no un test viejo. Está documentado en la Tabla 57c del Anexo V. |
 | "¿Por qué no tienen backend propio?" | Decisión consciente: velocidad de entrega para un equipo de cinco en unas doce semanas, a cambio de que toda regla de negocio tenga que poder expresarse como política de base de datos. Empezamos con NestJS y migramos a Supabase en el sprint 2. |
 | "¿Cómo controlan quién puede modificar qué?" | Políticas RLS de Postgres, que filtran por fila según `auth.uid()`. No hay tabla de roles: ser anfitrión es consecuencia de tener un salón publicado. |
 | "¿Y si alguien publica contenido inapropiado?" | Hoy requiere intervención manual sobre la base: no hay panel de administración. Está identificado como hallazgo en el informe y priorizado en el roadmap. |
