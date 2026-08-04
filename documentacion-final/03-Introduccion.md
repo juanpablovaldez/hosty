@@ -41,13 +41,16 @@ referencia del producto a construir. Este documento fue el que fijó, en última
 funcionalidades formaban parte del MVP (catálogo, reserva, panel del anfitrión) y cuáles quedaban
 fuera de su alcance inicial, como el cobro en línea o las reseñas de usuarios (ver sección 1).
 
-> [!warning] Dato simulado SIM-01 — Metodología previa de relevamiento
-> Este cambio de documentación no tuvo acceso a actas de entrevistas, encuestas u otro registro
-> documental adicional que respalde el proceso concreto de relevamiento previo a la redacción del
-> documento de alcance del MVP. Cualquier afirmación sobre el método específico utilizado
-> (entrevistas a organizadores de eventos, encuestas a propietarios de salones, relevamiento de la
-> competencia) que no esté contenida verbatim en dicho documento debe interpretarse como una
-> reconstrucción plausible y no como un registro verificado.
+> [!warning] Dato simulado SIM-01 — Contenido reconstruido en las secciones 3, 5 y 6 (cubre también SIM-02 y SIM-03)
+> El documento de alcance del MVP (`Definicion de MVP - HOSTY-2026040419562816.pdf`) fue la única
+> fuente documental disponible para esta introducción, para los puntos de dolor por actor (sección
+> 5, [[05-Problema-a-Resolver]], Tabla 9) y para los indicadores de impacto (sección 6,
+> [[06-Impacto-de-la-Solucion]], Tabla 10). No hubo entrevistas, encuestas ni instrumentación de
+> producto registradas: lo que ese documento no cubre se completó con una reconstrucción razonada a
+> partir del dominio del problema y de las funcionalidades priorizadas, no con datos verificados.
+> Dos de las cuatro filas de la Tabla 10 sí tienen fuente citada (M10). Esta nota aplica a los tres
+> identificadores y no se repite en cada sección; en Problema a Resolver e Impacto de la Solución
+> queda sólo una referencia breve a este mismo párrafo.
 
 ## Alcance de este documento
 

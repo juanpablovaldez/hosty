@@ -470,13 +470,16 @@ referencia del producto a construir. Este documento fue el que fijó, en última
 funcionalidades formaban parte del MVP (catálogo, reserva, panel del anfitrión) y cuáles quedaban
 fuera de su alcance inicial, como el cobro en línea o las reseñas de usuarios (ver sección 1).
 
-> **Dato simulado (SIM-01) — Metodología previa de relevamiento.**
-> Este cambio de documentación no tuvo acceso a actas de entrevistas, encuestas u otro registro
-> documental adicional que respalde el proceso concreto de relevamiento previo a la redacción del
-> documento de alcance del MVP. Cualquier afirmación sobre el método específico utilizado
-> (entrevistas a organizadores de eventos, encuestas a propietarios de salones, relevamiento de la
-> competencia) que no esté contenida verbatim en dicho documento debe interpretarse como una
-> reconstrucción plausible y no como un registro verificado.
+> **Dato simulado (SIM-01) — Contenido reconstruido en las secciones 3, 5 y 6 (cubre también SIM-02 y SIM-03).**
+> El documento de alcance del MVP (`Definicion de MVP - HOSTY-2026040419562816.pdf`) fue la única
+> fuente documental disponible para esta introducción, para los puntos de dolor por actor (sección
+> 5, [Problema a Resolver](#5-problema-a-resolver), Tabla 9) y para los indicadores de impacto (sección 6,
+> [Impacto de la Solución](#6-impacto-de-la-solucion), Tabla 10). No hubo entrevistas, encuestas ni instrumentación de
+> producto registradas: lo que ese documento no cubre se completó con una reconstrucción razonada a
+> partir del dominio del problema y de las funcionalidades priorizadas, no con datos verificados.
+> Dos de las cuatro filas de la Tabla 10 sí tienen fuente citada (M10). Esta nota aplica a los tres
+> identificadores y no se repite en cada sección; en Problema a Resolver e Impacto de la Solución
+> queda sólo una referencia breve a este mismo párrafo.
 
 ## Alcance de este documento
 
@@ -674,11 +677,8 @@ flowchart TD
 
 *Tabla 9 — Puntos de dolor por actor y alternativas actuales.*
 
-> **Dato simulado (SIM-02) — Puntos de dolor sin medición directa.**
-> Los puntos de dolor de la Tabla 9 se formulan de manera plausible a partir del propio dominio del
-> problema y de las funcionalidades que el producto efectivamente prioriza (ver [Objetivos](#4-objetivos)),
-> y no a partir de una encuesta o entrevista documentada con organizadores o propietarios reales.
-> No deben interpretarse como resultados de una investigación de usuarios formal.
+*SIM-02 — reconstrucción razonada a partir del dominio del problema, no de una encuesta o
+entrevista documentada; ver la nota metodológica completa en [Introducción](#3-introduccion).*
 
 Las respuestas concretas que Hosty da a cada uno de estos puntos se retoman, en términos de
 beneficio percibido, en [Impacto de la Solución](#6-impacto-de-la-solucion), y se contrastan con los objetivos
@@ -741,12 +741,8 @@ flowchart TD
 
 *Tabla 10 — Impacto por dimensión y tipo de usuario, con indicador y método de medición.*
 
-> **Dato simulado (SIM-03) — Indicadores de impacto propuestos, no medidos.**
-> Los indicadores y métodos de medición de la Tabla 10 son propuestas razonables para evaluar el
-> impacto de la solución, pero el proyecto no cuenta, a la fecha de este informe, con
-> instrumentación de analítica de producto que permita reportarlos como datos reales. Dos de las
-> cuatro filas sí se apoyan en datos verificables del modelo de datos (M10); las otras dos quedan
-> explícitamente señaladas como no instrumentadas.
+*SIM-03 — dos de las cuatro filas ya citan fuente verificable (M10); las otras dos son propuestas
+de medición aún no instrumentadas; ver la nota metodológica completa en [Introducción](#3-introduccion).*
 
 El impacto aquí descripto retoma directamente los puntos de dolor identificados en
 [Problema a Resolver](#5-problema-a-resolver) y se refleja, en términos cuantitativos, en las métricas de

@@ -107,22 +107,16 @@ la misma lista de 4 capturas pendientes (P-15, P-41, P-42, P-43) para referencia
 
 ## Datos simulados (`SIM-##`) — 20 originales, 16 activos al 2026-08-03
 
-### [[03-Introduccion]] (1)
+### [[03-Introduccion]], [[05-Problema-a-Resolver]] y [[06-Impacto-de-la-Solucion]] (3, consolidados en una nota — 2026-08-03)
+
+Antes eran tres callouts `[!warning] Dato simulado` completos, uno por sección. Se consolidaron en
+una única nota en [[03-Introduccion]] (SIM-01/02/03 juntos); en las otras dos secciones sólo queda
+una línea liviana que remite a esa nota. El disclosure sigue estando, sólo bajó el volumen visual.
 
 | SIM-## | Descripción | Base de la reconstrucción |
 |---|---|---|
 | SIM-01 | Metodología previa de relevamiento | Sin actas de entrevistas o encuestas documentadas; se infiere del documento de alcance del MVP |
-
-### [[05-Problema-a-Resolver]] (1)
-
-| SIM-## | Descripción | Base de la reconstrucción |
-|---|---|---|
 | SIM-02 | Puntos de dolor por actor sin medición directa | Formulados a partir del dominio del problema y de las funcionalidades priorizadas, no de una encuesta |
-
-### [[06-Impacto-de-la-Solucion]] (1)
-
-| SIM-## | Descripción | Base de la reconstrucción |
-|---|---|---|
 | SIM-03 | Indicadores de impacto propuestos, no medidos | Propuestas razonables; el proyecto no tiene analítica de producto instrumentada |
 
 ### [[07-Equipo-y-Roles]] (1)
