@@ -140,13 +140,13 @@ directa del equipo.
 | SIM-15 | Retrospectiva S3–S4 | Reconstruida a partir del hallazgo del `CHECK` de `bookings` corregido en curso |
 | SIM-16 | Retrospectiva S5 | Reconstruida a partir de la consolidación de PRs cercana al cierre |
 
-### [[10-Presupuesto]] (3)
+### [[10-Presupuesto]] (3, acotados el 2026-08-04)
 
 | SIM-## | Descripción | Base de la reconstrucción |
 |---|---|---|
-| SIM-17 | Tarifas y dedicación horaria | Estimación de mercado para perfiles junior/estudiantiles en Tucumán, 2026 |
-| SIM-18 | Costo total del proyecto | Deriva de los supuestos simulados de la Tabla 23 más contingencia |
-| SIM-19 | Estimación de costo de producción comercial | Valores de lista pública de proveedores, no una cotización contratada |
+| SIM-17 | Dedicación horaria por integrante (MVP y mantenimiento) | La tarifa ARS/hora ahora es dato real (Salancy, trusted, 2026-08-04); la dedicación semanal sigue siendo una reconstrucción propia ordenada cualitativamente por la Tabla 12 |
+| SIM-18 | Costo total del proyecto (retrospectivo + prospectivo) | Deriva de la dedicación horaria simulada (SIM-17), el tráfico de AWS estimado (SIM-19) y la dedicación de mantenimiento post-MVP, todos supuestos declarados, más contingencia |
+| SIM-19 | Tráfico estimado de AWS S3 + CloudFront | Único ítem de infraestructura sin precio de lista fijo; Supabase, dominio (.com.ar) y Resend ya tienen precio público verificado y salieron de este disclosure |
 
 ### [[12-Testing-y-Calidad]] (0 — cerrado el 2026-08-03)
 
@@ -175,7 +175,7 @@ agente.
 |---|---|---|
 | 0 — Fundación | P-01–P-08 (8) | — |
 | A — Marco del proyecto | P-09 (1) | SIM-01–SIM-03 (3; SIM-04 cerrado el 2026-08-04) |
-| B — Gestión y proceso | P-15 (1) | SIM-09–SIM-19 (11; SIM-09 y SIM-13 acotados el 2026-08-04) |
+| B — Gestión y proceso | P-15 (1) | SIM-09–SIM-19 (11; SIM-09, SIM-13, SIM-17 y SIM-19 acotados el 2026-08-04) |
 | C — Arquitectura y datos | — | — |
 | D — Calidad, métricas y cierre | P-39, P-40, P-41, P-42, P-43, P-44, P-46 (7) | SIM-37 (1; SIM-33–SIM-36 cerrados el 2026-08-03) |
 | **Total activo** | **17** | **15** (de 20 originales; 5 cerrados) |
