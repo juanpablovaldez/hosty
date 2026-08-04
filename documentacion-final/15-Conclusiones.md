@@ -80,17 +80,40 @@ evidencia primaria de este informe, no una reconstrucción posterior.
 
 ## Aprendizajes y líneas de evolución futura
 
-> [!warning] Dato simulado SIM-36 — Aprendizajes del equipo
-> No existe un registro documental de retrospectivas individuales que permita citar textualmente
-> qué aprendió cada integrante. De forma plausible, a partir de la naturaleza del proyecto —una
-> plataforma construida sobre un *backend as a service*, gestionada con Scrum real sobre GitHub—,
-> se reconstruyen dos aprendizajes verosímiles: (a) el equipo profundizó en el modelado de
-> autorización con Postgres RLS como alternativa a un *backend* propio, incluyendo sus límites
-> (una regla de negocio no expresable como política RLS requiere lógica adicional en el cliente o
-> funciones de base de datos); (b) la gestión de alcance con *milestones* e issues etiquetados
-> (`post-mvp`, `bug`, `feature`) ayudó a sostener 45 de 50 issues entregados sin perder trazabilidad
-> sobre lo diferido. Ninguna de estas dos afirmaciones debe tomarse como cita textual de una
-> retrospectiva real.
+No existe un registro documental de retrospectivas individuales por sprint, pero el equipo sí
+identificó tres aprendizajes concretos al cierre del proyecto, cada uno con un hallazgo verificable
+del propio repositorio detrás:
+
+**Coordinación de equipo en un entorno de desarrollo real.** La asignación de roles no fue formal
+ni estuvo definida desde el inicio: se reconstruyó recién al cierre, a partir de la evidencia de
+`git log` y de GitHub (Tabla 11), porque nadie la había dejado por escrito durante el desarrollo. La
+conducción técnica también rotó de forma implícita según disponibilidad —no por una decisión de
+proceso documentada— entre los *sprints* 2 y 4 (sección 7). El aprendizaje es concreto: en un
+equipo de 5 personas sobre un mismo repositorio, la falta de una asignación de roles explícita
+desde el primer *sprint* no impide avanzar, pero sí obliga a reconstruir después, con esfuerzo,
+algo que debería haber quedado registrado en el momento.
+
+**Presupuestar un producto ya desarrollado es más difícil que presupuestarlo antes de empezar.**
+El equipo no llevó un registro de horas ni de costos durante los cinco *sprints*, por lo que la
+sección de presupuesto de este informe debió reconstruirse por completo al final, con tarifas de
+mercado estimadas en lugar de datos propios (sección 10). El aprendizaje: un presupuesto confiable
+necesita datos contemporáneos —horas por persona por *sprint*— relevados desde el arranque, no
+inferidos retroactivamente sobre un proyecto ya cerrado.
+
+**Entornos y estrategia de *branching* definidos tarde salen caros.** El equipo construyó un
+*backend* completo en NestJS con infraestructura en Terraform y lo descartó en el *sprint* 2 al
+migrar a Supabase (ADR-1): son 34 *commits* de trabajo real que no llegaron al producto entregado
+(Tabla 37a). Además, el único proyecto de Supabase del equipo —el que en las conversaciones internas
+llaman "DEV"— está etiquetado por el propio panel de Supabase como *branch* `PRODUCTION`: nunca hubo
+una separación real entre ambiente de desarrollo y de producción, y todo el desarrollo corrió contra
+el mismo entorno. El aprendizaje: la estrategia de entornos y la arquitectura de *backend* deberían
+definirse y validarse antes de invertir *sprints* completos de desarrollo sobre una alternativa, no
+descubrirse sobre la marcha ni quedar como una decisión implícita.
+
+> [!info] Fuente — Tabla 11 y Tabla 21 (sección 7 y 9, rotación de conducción); Tabla 37a (sección
+> 14, *commits* de la rama `staging`); panel de Supabase (`PRODUCTION`, único proyecto existente);
+> sección 10 (presupuesto reconstruido). Aprendizajes declarados por el equipo el 2026-08-03, no
+> reconstruidos por inferencia.
 
 ```mermaid
 flowchart LR

@@ -105,7 +105,7 @@ Los últimos cuatro se cerraron el 2026-08-02:
 `assets/README.md` reproduce, sin numeración propia (nota de apparatus, ver decisión D5 de diseño),
 la misma lista de 4 capturas pendientes (P-15, P-41, P-42, P-43) para referencia rápida del equipo.
 
-## Datos simulados (`SIM-##`) — 20 en total
+## Datos simulados (`SIM-##`) — 20 originales, 16 activos al 2026-08-03
 
 ### [[03-Introduccion]] (1)
 
@@ -160,11 +160,12 @@ automatizados que faltaban (`BookingFlow.test.tsx` para CP-01, un caso nuevo en
 resultado real como `[!info] Fuente` en lugar de una inferencia. Ver Tabla 33 en
 [[12-Testing-y-Calidad]] y M12/M13 en [[Datos-Verificables]].
 
-### [[15-Conclusiones]] (1)
+### [[15-Conclusiones]] (0 — cerrado el 2026-08-03)
 
-| SIM-## | Descripción | Base de la reconstrucción |
-|---|---|---|
-| SIM-36 | Aprendizajes del equipo | Sin registro de retrospectivas individuales; reconstrucción plausible a partir de la naturaleza del proyecto |
+SIM-36 se cerró: el equipo declaró tres aprendizajes reales (coordinación de equipo, presupuesto
+reconstruido tardíamente, entornos/*branching* definidos tarde), cada uno con un hallazgo
+verificable del repositorio citado como `[!info] Fuente`. Ya no es una reconstrucción plausible del
+agente.
 
 ### [[Anexo-V-Evidencias-QA]] (1)
 
@@ -180,8 +181,8 @@ resultado real como `[!info] Fuente` en lugar de una inferencia. Ver Tabla 33 en
 | A — Marco del proyecto | P-09 (1) | SIM-01–SIM-04 (4, SIM-04 acotado el 2026-08-03) |
 | B — Gestión y proceso | P-15 (1) | SIM-09–SIM-19 (11) |
 | C — Arquitectura y datos | — | — |
-| D — Calidad, métricas y cierre | P-39, P-40, P-41, P-42, P-43, P-44, P-46 (7) | SIM-36, SIM-37 (2; SIM-33–SIM-35 cerrados el 2026-08-03) |
-| **Total activo** | **17** | **17** (de 20 originales; 3 cerrados) |
+| D — Calidad, métricas y cierre | P-39, P-40, P-41, P-42, P-43, P-44, P-46 (7) | SIM-37 (1; SIM-33–SIM-36 cerrados el 2026-08-03) |
+| **Total activo** | **17** | **16** (de 20 originales; 4 cerrados) |
 
 Verificación de unicidad (Lote E, 2026-07-28): `grep -rohE 'PLACEHOLDER P-[0-9]+|Dato simulado
 SIM-[0-9]+'` sobre las 28 notas confirma que cada identificador `P-##` y `SIM-##` está **declarado
