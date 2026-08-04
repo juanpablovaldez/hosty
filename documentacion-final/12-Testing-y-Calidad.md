@@ -150,32 +150,30 @@ línea de evolución de corto plazo en [[15-Conclusiones]].
 
 ## Matriz de casos de prueba manuales
 
-Se documentan tres casos representativos, mapeados a flujos reales de la aplicación. El campo
-"Resultado obtenido" no proviene de un registro de ejecución real (no existe un sistema de *test
-management* en uso), por lo que se marca como dato simulado.
+Se documentan tres casos representativos, mapeados a flujos reales de la aplicación. Ninguno de los
+tres tenía un test automatizado que cubriera exactamente el escenario descrito: `bookings.test.ts`
+prueba los *hooks* `useCreateBooking`/`useCancelBooking`/`useMyBookings`, pero no la validación de
+fecha bloqueada del *wizard*; `favorites.test.ts` probaba que se llamara a `insert`/`delete`, pero
+no que la actualización optimista ocurriera *antes* de la respuesta del servidor. En vez de dejar
+el resultado como una inferencia plausible, se escribió el test automatizado que faltaba para CP-01
+y CP-02, y se ejecutaron los tres — el resultado de esta columna es la salida real de esa ejecución.
 
 | ID | Precondiciones | Pasos | Datos | Resultado esperado | Resultado obtenido |
 |---|---|---|---|---|---|
-| CP-01 | Usuario autenticado; salón con un bloqueo de disponibilidad para el 2026-08-10 | 1. Ir a `/salones/:id/reservar`. 2. Seleccionar el 2026-08-10 como fecha. 3. Intentar confirmar el paso 1 del wizard | `salon_availability_blocks` con `date = 2026-08-10` para el salón | El wizard bloquea el avance y muestra un mensaje de fecha no disponible | *(ver SIM-33)* |
-| CP-02 | Usuario autenticado; salón sin favorito previo | 1. Abrir `/salones`. 2. Click en el ícono de favorito de una `CardSalon`. 3. Observar el estado del ícono antes de la respuesta del servidor | Salón sin fila en `user_favorites` para ese usuario | El ícono cambia a "favorito" de inmediato (actualización optimista) y persiste tras recargar | *(ver SIM-34)* |
-| CP-03 | Ninguna (usuario no autenticado) | 1. Ir a `/login`. 2. Ingresar un email válido con una contraseña incorrecta. 3. Enviar el formulario | `email: usuario@ejemplo.com`, `password: incorrecta123` | Se muestra un mensaje de error de credenciales inválidas y el usuario permanece en `/login` | *(ver SIM-35)* |
+| CP-01 | Usuario autenticado; salón con un bloqueo de disponibilidad para el 2026-08-10 | 1. Ir a `/salones/:id/reservar`. 2. Seleccionar el 2026-08-10 como fecha. 3. Intentar confirmar el paso 1 del wizard | `salon_availability_blocks` con `date = 2026-08-10` para el salón | El wizard bloquea el avance y muestra un mensaje de fecha no disponible | **Verificado.** El wizard muestra "El salón no está disponible en la fecha elegida. Probá con otra fecha." y no avanza de paso |
+| CP-02 | Usuario autenticado; salón sin favorito previo | 1. Abrir `/salones`. 2. Click en el ícono de favorito de una `CardSalon`. 3. Observar el estado del ícono antes de la respuesta del servidor | Salón sin fila en `user_favorites` para ese usuario | El ícono cambia a "favorito" de inmediato (actualización optimista) y persiste tras recargar | **Verificado.** La caché de React Query refleja el salón como favorito inmediatamente después de disparar la mutación, antes de que se resuelva la llamada a Supabase |
+| CP-03 | Ninguna (usuario no autenticado) | 1. Ir a `/login`. 2. Ingresar un email válido con una contraseña incorrecta. 3. Enviar el formulario | `email: usuario@ejemplo.com`, `password: incorrecta123` | Se muestra un mensaje de error de credenciales inválidas y el usuario permanece en `/login` | **Verificado.** Se muestra "Email o contraseña incorrectos." y el usuario permanece en `/login` |
 
 *Tabla 33 — Matriz de casos de prueba manuales.*
 
-> [!warning] Dato simulado SIM-33 — Resultado obtenido de CP-01
-> No hay un registro de ejecución manual real para este caso. El resultado se infiere de forma
-> plausible a partir de la prueba de integración equivalente (`bookings.test.ts`) y de la lógica de
-> validación de disponibilidad implementada, pero no debe interpretarse como una ejecución
-> verificada.
-
-> [!warning] Dato simulado SIM-34 — Resultado obtenido de CP-02
-> Ídem SIM-33: se infiere del comportamiento de `useToggleFavorite` (`favorites.test.ts`), que
-> aplica la actualización optimista antes de confirmar la respuesta de Supabase, pero no constituye
-> una ejecución manual registrada.
-
-> [!warning] Dato simulado SIM-35 — Resultado obtenido de CP-03
-> Ídem SIM-33/34: se infiere del test de integración `LoginPage.test.tsx` ("muestra el error del
-> servidor cuando las credenciales son incorrectas"), sin una ejecución manual documentada.
+> [!info] Fuente — CP-01: `BookingFlow.test.tsx`, test "CP-01: bloquea el avance y muestra un
+> mensaje cuando la fecha elegida tiene un bloqueo de disponibilidad" (nuevo, agregado para cerrar
+> este caso). CP-02: `favorites.test.ts`, test "CP-02: aplica la actualización optimista antes de
+> que responda el servidor" (nuevo, ídem). CP-03: `LoginPage.test.tsx`, test "muestra el error del
+> servidor cuando las credenciales son incorrectas" (ya existente). Los tres se re-ejecutaron el
+> 2026-08-03 (`npm --prefix frontend run test -- --run`): 75 pruebas, 75 aprobadas — ver M12/M13
+> actualizados en [[Datos-Verificables]]. No sustituye una ejecución manual sobre el ambiente
+> desplegado, pero es una verificación real y reproducible del comportamiento, no una inferencia.
 
 ## Manejo de incidencias
 

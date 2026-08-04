@@ -23,8 +23,9 @@ reales del proyecto, complementando la matriz de casos manuales de [[12-Testing-
 | `src/test/button.test.tsx` | Componente | 3 |
 | `src/test/badge.test.tsx` | Componente | 3 |
 | `src/features/bookings/api/bookings.test.ts` | Integración | 6 |
+| `src/features/bookings/components/BookingFlow.test.tsx` | Componente | 1 |
 | `src/features/salones/api/salones.queries.test.ts` | Integración | 8 |
-| `src/features/favorites/api/favorites.test.ts` | Integración | 6 |
+| `src/features/favorites/api/favorites.test.ts` | Integración | 7 |
 | `src/features/salones/components/CardSalon.test.tsx` | Componente | 9 |
 | `src/components/layout/Header.test.tsx` | Componente | 5 |
 | `src/features/auth/components/LoginPage.test.tsx` | Integración | 1 |
@@ -33,14 +34,16 @@ reales del proyecto, complementando la matriz de casos manuales de [[12-Testing-
 | `src/features/auth/store/auth.store.test.ts` | Unitaria | 4 |
 | `src/shared/lib/errors.test.ts` | Unitaria | 7 |
 | `src/test/mocha/search-validation.test.ts` | Legacy (Mocha + Chai, también recolectado por Vitest) | 4 |
-| **Total (Vitest)** | | **73** |
+| **Total (Vitest)** | | **75** |
 
 *Tabla 56 — Suite de pruebas automatizadas: archivo y casos.*
 
 > [!info] Fuente — `npx vitest run --reporter=verbose` ejecutado sobre el repositorio
-> (2026-08-02): 14 archivos, 73 casos, todos en verde (`Test Files 14 passed`, `Tests 73 passed`).
+> (2026-08-03): 15 archivos, 75 casos, todos en verde (`Test Files 15 passed`, `Tests 75 passed`).
 > El conteo de casos por archivo se obtuvo con
-> `grep -cE '^\s*(it|test)\(' <archivo>` sobre cada uno.
+> `grep -cE '^\s*(it|test)\(' <archivo>` sobre cada uno. `BookingFlow.test.tsx` y el séptimo caso de
+> `favorites.test.ts` se agregaron el 2026-08-03 para cerrar SIM-33/SIM-34 de
+> [[12-Testing-y-Calidad]] (Tabla 33).
 
 ## Escenarios de prueba E2E (Playwright)
 
@@ -128,37 +131,43 @@ reales de la tabla `salones`.
 ## Registro de defectos y retesting
 
 Trece incidencias reales, todas etiquetadas `bug` en GitHub y todas cerradas, constituyen el
-registro verificable de defectos del proyecto. La columna "Severidad" no proviene de un campo
-formal de GitHub (el repositorio no usa un esquema de severidad estructurado) y se marca como
-estimación.
+registro verificable de defectos del proyecto. De esas 13, **5 llevan además una etiqueta de
+prioridad real** (`p1-high`/`p2-medium`/`p3-low`) asignada en GitHub — la misma usada en
+[[12-Testing-y-Calidad]] (criterios de severidad) —, por lo que su columna "Severidad" queda
+verificada, no estimada. Las 8 restantes no fueron priorizadas explícitamente con esa etiqueta, así
+que su severidad sigue siendo una estimación (SIM-37).
 
-| Issue | Título | Severidad (estimada) | Estado | Retesting |
+| Issue | Título | Severidad | Estado | Retesting |
 |---|---|---|---|---|
-| #87 | `fix(footer)`: links apuntan a rutas incorrectas o inexistentes | Baja | Cerrado | Manual, sobre DEV |
-| #85 | `fix`: borrado de salón, horarios de reserva y validaciones del flujo | Media | Cerrado | Manual, sobre DEV |
-| #76 | `fix(footer)`: links del footer son placeholders | Baja | Cerrado | Manual, sobre DEV |
-| #75 | `fix(favorites)`: agregar a favoritos no persiste (sólo estado local) | Alta | Cerrado | Manual, sobre DEV |
-| #74 | `fix(salones)`: el mapa en `/salones` no está implementado | Media | Cerrado | Manual, sobre DEV |
-| #72 | `fix(nav)`: el link "Cómo funciona" no navega a ninguna sección | Baja | Cerrado | Manual, sobre DEV |
-| #71 | `fix(ci)`: estabilizar pipeline de CI | Media | Cerrado | Verificado en `frontend-tests.yml` |
-| #70 | `fix(ci)`: commitear `routeTree.gen.ts` para desbloquear build de CI | Alta | Cerrado | Verificado en CI |
-| #64 | `fix(ux)`: correcciones UX y features faltantes (grupos 1-4) | Media | Cerrado | Manual, sobre DEV |
-| #34 | `fix(seo)`: implementar meta tags y Open Graph | Baja | Cerrado | Manual, sobre DEV |
-| #29 | `fix(ux)`: mejorar manejo de errores y mensajes al usuario | Media | Cerrado | Manual, sobre DEV |
-| #28 | `fix(ux)`: agregar *loading states* a búsquedas y filtros | Baja | Cerrado | Manual, sobre DEV |
-| #26 | `fix(responsive)`: página no es completamente responsive en mobile | Media | Cerrado | Manual, sobre DEV |
+| #87 | `fix(footer)`: links apuntan a rutas incorrectas o inexistentes | Media *(verificada)* | Cerrado | Manual, sobre DEV |
+| #85 | `fix`: borrado de salón, horarios de reserva y validaciones del flujo | Media *(estimada)* | Cerrado | Manual, sobre DEV |
+| #76 | `fix(footer)`: links del footer son placeholders | Baja *(verificada)* | Cerrado | Manual, sobre DEV |
+| #75 | `fix(favorites)`: agregar a favoritos no persiste (sólo estado local) | Alta *(verificada)* | Cerrado | Manual, sobre DEV |
+| #74 | `fix(salones)`: el mapa en `/salones` no está implementado | Alta *(verificada)* | Cerrado | Manual, sobre DEV |
+| #72 | `fix(nav)`: el link "Cómo funciona" no navega a ninguna sección | Media *(verificada)* | Cerrado | Manual, sobre DEV |
+| #71 | `fix(ci)`: estabilizar pipeline de CI | Media *(estimada)* | Cerrado | Verificado en `frontend-tests.yml` |
+| #70 | `fix(ci)`: commitear `routeTree.gen.ts` para desbloquear build de CI | Alta *(estimada)* | Cerrado | Verificado en CI |
+| #64 | `fix(ux)`: correcciones UX y features faltantes (grupos 1-4) | Media *(estimada)* | Cerrado | Manual, sobre DEV |
+| #34 | `fix(seo)`: implementar meta tags y Open Graph | Baja *(estimada)* | Cerrado | Manual, sobre DEV |
+| #29 | `fix(ux)`: mejorar manejo de errores y mensajes al usuario | Media *(estimada)* | Cerrado | Manual, sobre DEV |
+| #28 | `fix(ux)`: agregar *loading states* a búsquedas y filtros | Baja *(estimada)* | Cerrado | Manual, sobre DEV |
+| #26 | `fix(responsive)`: página no es completamente responsive en mobile | Media *(estimada)* | Cerrado | Manual, sobre DEV |
 
-*Tabla 58 — Registro de defectos y retesting.*
+*Tabla 58 — Registro de defectos y retesting. "(verificada)" = severidad confirmada por etiqueta real de GitHub, no estimación.*
 
 > [!info] Fuente — `gh issue list --state all --label bug --json number,title,state` (2026-07-28):
-> 13 issues, 13 `CLOSED`.
+> 13 issues, 13 `CLOSED`. Etiquetas de prioridad: `gh issue list --state all --label bug --json
+> number,labels` (2026-08-03) — #74 y #75 con `p1-high` (Alta); #72 y #87 con `p2-medium` (Media);
+> #76 con `p3-low` (Baja). La versión anterior de esta tabla tenía #74 como "Media" y #87 y #72
+> como "Baja", en contradicción con la propia etiqueta de GitHub y con la clasificación ya correcta
+> de [[12-Testing-y-Calidad]] (criterios de severidad); se corrige aquí para que ambas notas
+> coincidan.
 
-> [!warning] Dato simulado SIM-37 — Columna "Severidad (estimada)"
-> GitHub no registra un campo de severidad estructurado para estos issues. La clasificación
-> Alta/Media/Baja de esta tabla es una estimación plausible del agente, basada en el impacto
-> funcional descrito en el título de cada issue (por ejemplo, que favoritos no persista se estima
-> Alta por afectar datos del usuario; un link roto en el footer se estima Baja), y no corresponde a
-> un criterio de triage formalmente documentado por el equipo.
+> [!warning] Dato simulado SIM-37 — Severidad estimada de 8 de los 13 defectos
+> GitHub no tiene una etiqueta de prioridad para #85, #71, #70, #64, #34, #29, #28 y #26. Su
+> columna "Severidad" es una estimación plausible basada en el impacto funcional descrito en el
+> título del issue, no un criterio de triage documentado por el equipo. Los 5 defectos restantes
+> (#74, #75, #72, #87, #76) ya no son estimados: su severidad es la etiqueta real de GitHub.
 
 Un defecto adicional, real y verificado —no simulado— se documenta aparte por su relevancia
 arquitectónica. A diferencia de las incidencias reconstruidas de la tabla anterior, su nota va

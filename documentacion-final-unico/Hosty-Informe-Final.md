@@ -294,7 +294,7 @@ exportador. Cada entrada indica la sección donde se encuentra la tabla.
 | Tabla 57 | Escenarios de prueba E2E (Playwright) | Anexo V. Evidencias de QA |
 | Tabla 57b | Resultado de la corrida E2E sobre el entorno desplegado | Anexo V. Evidencias de QA |
 | Tabla 57c | Análisis de los casos fallidos y su corrección | Anexo V. Evidencias de QA |
-| Tabla 58 | Registro de defectos y retesting | Anexo V. Evidencias de QA |
+| Tabla 58 | Registro de defectos y retesting. "(verificada)" = severidad confirmada por etiqueta real de GitHub, no estimación | Anexo V. Evidencias de QA |
 | Tabla 59 | Resumen de evidencias de calidad | Anexo V. Evidencias de QA |
 
 ---
@@ -1753,32 +1753,30 @@ línea de evolución de corto plazo en [Conclusiones](#15-conclusiones).
 
 ## Matriz de casos de prueba manuales
 
-Se documentan tres casos representativos, mapeados a flujos reales de la aplicación. El campo
-"Resultado obtenido" no proviene de un registro de ejecución real (no existe un sistema de *test
-management* en uso), por lo que se marca como dato simulado.
+Se documentan tres casos representativos, mapeados a flujos reales de la aplicación. Ninguno de los
+tres tenía un test automatizado que cubriera exactamente el escenario descrito: `bookings.test.ts`
+prueba los *hooks* `useCreateBooking`/`useCancelBooking`/`useMyBookings`, pero no la validación de
+fecha bloqueada del *wizard*; `favorites.test.ts` probaba que se llamara a `insert`/`delete`, pero
+no que la actualización optimista ocurriera *antes* de la respuesta del servidor. En vez de dejar
+el resultado como una inferencia plausible, se escribió el test automatizado que faltaba para CP-01
+y CP-02, y se ejecutaron los tres — el resultado de esta columna es la salida real de esa ejecución.
 
 | ID | Precondiciones | Pasos | Datos | Resultado esperado | Resultado obtenido |
 |---|---|---|---|---|---|
-| CP-01 | Usuario autenticado; salón con un bloqueo de disponibilidad para el 2026-08-10 | 1. Ir a `/salones/:id/reservar`. 2. Seleccionar el 2026-08-10 como fecha. 3. Intentar confirmar el paso 1 del wizard | `salon_availability_blocks` con `date = 2026-08-10` para el salón | El wizard bloquea el avance y muestra un mensaje de fecha no disponible | *(ver SIM-33)* |
-| CP-02 | Usuario autenticado; salón sin favorito previo | 1. Abrir `/salones`. 2. Click en el ícono de favorito de una `CardSalon`. 3. Observar el estado del ícono antes de la respuesta del servidor | Salón sin fila en `user_favorites` para ese usuario | El ícono cambia a "favorito" de inmediato (actualización optimista) y persiste tras recargar | *(ver SIM-34)* |
-| CP-03 | Ninguna (usuario no autenticado) | 1. Ir a `/login`. 2. Ingresar un email válido con una contraseña incorrecta. 3. Enviar el formulario | `email: usuario@ejemplo.com`, `password: incorrecta123` | Se muestra un mensaje de error de credenciales inválidas y el usuario permanece en `/login` | *(ver SIM-35)* |
+| CP-01 | Usuario autenticado; salón con un bloqueo de disponibilidad para el 2026-08-10 | 1. Ir a `/salones/:id/reservar`. 2. Seleccionar el 2026-08-10 como fecha. 3. Intentar confirmar el paso 1 del wizard | `salon_availability_blocks` con `date = 2026-08-10` para el salón | El wizard bloquea el avance y muestra un mensaje de fecha no disponible | **Verificado.** El wizard muestra "El salón no está disponible en la fecha elegida. Probá con otra fecha." y no avanza de paso |
+| CP-02 | Usuario autenticado; salón sin favorito previo | 1. Abrir `/salones`. 2. Click en el ícono de favorito de una `CardSalon`. 3. Observar el estado del ícono antes de la respuesta del servidor | Salón sin fila en `user_favorites` para ese usuario | El ícono cambia a "favorito" de inmediato (actualización optimista) y persiste tras recargar | **Verificado.** La caché de React Query refleja el salón como favorito inmediatamente después de disparar la mutación, antes de que se resuelva la llamada a Supabase |
+| CP-03 | Ninguna (usuario no autenticado) | 1. Ir a `/login`. 2. Ingresar un email válido con una contraseña incorrecta. 3. Enviar el formulario | `email: usuario@ejemplo.com`, `password: incorrecta123` | Se muestra un mensaje de error de credenciales inválidas y el usuario permanece en `/login` | **Verificado.** Se muestra "Email o contraseña incorrectos." y el usuario permanece en `/login` |
 
 *Tabla 33 — Matriz de casos de prueba manuales.*
 
-> **Dato simulado (SIM-33) — Resultado obtenido de CP-01.**
-> No hay un registro de ejecución manual real para este caso. El resultado se infiere de forma
-> plausible a partir de la prueba de integración equivalente (`bookings.test.ts`) y de la lógica de
-> validación de disponibilidad implementada, pero no debe interpretarse como una ejecución
-> verificada.
-
-> **Dato simulado (SIM-34) — Resultado obtenido de CP-02.**
-> Ídem SIM-33: se infiere del comportamiento de `useToggleFavorite` (`favorites.test.ts`), que
-> aplica la actualización optimista antes de confirmar la respuesta de Supabase, pero no constituye
-> una ejecución manual registrada.
-
-> **Dato simulado (SIM-35) — Resultado obtenido de CP-03.**
-> Ídem SIM-33/34: se infiere del test de integración `LoginPage.test.tsx` ("muestra el error del
-> servidor cuando las credenciales son incorrectas"), sin una ejecución manual documentada.
+> **Fuente.** CP-01: `BookingFlow.test.tsx`, test "CP-01: bloquea el avance y muestra un
+> mensaje cuando la fecha elegida tiene un bloqueo de disponibilidad" (nuevo, agregado para cerrar
+> este caso). CP-02: `favorites.test.ts`, test "CP-02: aplica la actualización optimista antes de
+> que responda el servidor" (nuevo, ídem). CP-03: `LoginPage.test.tsx`, test "muestra el error del
+> servidor cuando las credenciales son incorrectas" (ya existente). Los tres se re-ejecutaron el
+> 2026-08-03 (`npm --prefix frontend run test -- --run`): 75 pruebas, 75 aprobadas — ver M12/M13
+> actualizados en `Datos-Verificables`. No sustituye una ejecución manual sobre el ambiente
+> desplegado, pero es una verificación real y reproducible del comportamiento, no una inferencia.
 
 ## Manejo de incidencias
 
@@ -2944,8 +2942,9 @@ reales del proyecto, complementando la matriz de casos manuales de [Testing y Ca
 | `src/test/button.test.tsx` | Componente | 3 |
 | `src/test/badge.test.tsx` | Componente | 3 |
 | `src/features/bookings/api/bookings.test.ts` | Integración | 6 |
+| `src/features/bookings/components/BookingFlow.test.tsx` | Componente | 1 |
 | `src/features/salones/api/salones.queries.test.ts` | Integración | 8 |
-| `src/features/favorites/api/favorites.test.ts` | Integración | 6 |
+| `src/features/favorites/api/favorites.test.ts` | Integración | 7 |
 | `src/features/salones/components/CardSalon.test.tsx` | Componente | 9 |
 | `src/components/layout/Header.test.tsx` | Componente | 5 |
 | `src/features/auth/components/LoginPage.test.tsx` | Integración | 1 |
@@ -2954,14 +2953,16 @@ reales del proyecto, complementando la matriz de casos manuales de [Testing y Ca
 | `src/features/auth/store/auth.store.test.ts` | Unitaria | 4 |
 | `src/shared/lib/errors.test.ts` | Unitaria | 7 |
 | `src/test/mocha/search-validation.test.ts` | Legacy (Mocha + Chai, también recolectado por Vitest) | 4 |
-| **Total (Vitest)** | | **73** |
+| **Total (Vitest)** | | **75** |
 
 *Tabla 56 — Suite de pruebas automatizadas: archivo y casos.*
 
 > **Fuente.** `npx vitest run --reporter=verbose` ejecutado sobre el repositorio
-> (2026-08-02): 14 archivos, 73 casos, todos en verde (`Test Files 14 passed`, `Tests 73 passed`).
+> (2026-08-03): 15 archivos, 75 casos, todos en verde (`Test Files 15 passed`, `Tests 75 passed`).
 > El conteo de casos por archivo se obtuvo con
-> `grep -cE '^\s*(it|test)\(' <archivo>` sobre cada uno.
+> `grep -cE '^\s*(it|test)\(' <archivo>` sobre cada uno. `BookingFlow.test.tsx` y el séptimo caso de
+> `favorites.test.ts` se agregaron el 2026-08-03 para cerrar SIM-33/SIM-34 de
+> [Testing y Calidad](#12-testing-y-calidad) (Tabla 33).
 
 ## Escenarios de prueba E2E (Playwright)
 
@@ -3049,37 +3050,43 @@ reales de la tabla `salones`.
 ## Registro de defectos y retesting
 
 Trece incidencias reales, todas etiquetadas `bug` en GitHub y todas cerradas, constituyen el
-registro verificable de defectos del proyecto. La columna "Severidad" no proviene de un campo
-formal de GitHub (el repositorio no usa un esquema de severidad estructurado) y se marca como
-estimación.
+registro verificable de defectos del proyecto. De esas 13, **5 llevan además una etiqueta de
+prioridad real** (`p1-high`/`p2-medium`/`p3-low`) asignada en GitHub — la misma usada en
+[Testing y Calidad](#12-testing-y-calidad) (criterios de severidad) —, por lo que su columna "Severidad" queda
+verificada, no estimada. Las 8 restantes no fueron priorizadas explícitamente con esa etiqueta, así
+que su severidad sigue siendo una estimación (SIM-37).
 
-| Issue | Título | Severidad (estimada) | Estado | Retesting |
+| Issue | Título | Severidad | Estado | Retesting |
 |---|---|---|---|---|
-| #87 | `fix(footer)`: links apuntan a rutas incorrectas o inexistentes | Baja | Cerrado | Manual, sobre DEV |
-| #85 | `fix`: borrado de salón, horarios de reserva y validaciones del flujo | Media | Cerrado | Manual, sobre DEV |
-| #76 | `fix(footer)`: links del footer son placeholders | Baja | Cerrado | Manual, sobre DEV |
-| #75 | `fix(favorites)`: agregar a favoritos no persiste (sólo estado local) | Alta | Cerrado | Manual, sobre DEV |
-| #74 | `fix(salones)`: el mapa en `/salones` no está implementado | Media | Cerrado | Manual, sobre DEV |
-| #72 | `fix(nav)`: el link "Cómo funciona" no navega a ninguna sección | Baja | Cerrado | Manual, sobre DEV |
-| #71 | `fix(ci)`: estabilizar pipeline de CI | Media | Cerrado | Verificado en `frontend-tests.yml` |
-| #70 | `fix(ci)`: commitear `routeTree.gen.ts` para desbloquear build de CI | Alta | Cerrado | Verificado en CI |
-| #64 | `fix(ux)`: correcciones UX y features faltantes (grupos 1-4) | Media | Cerrado | Manual, sobre DEV |
-| #34 | `fix(seo)`: implementar meta tags y Open Graph | Baja | Cerrado | Manual, sobre DEV |
-| #29 | `fix(ux)`: mejorar manejo de errores y mensajes al usuario | Media | Cerrado | Manual, sobre DEV |
-| #28 | `fix(ux)`: agregar *loading states* a búsquedas y filtros | Baja | Cerrado | Manual, sobre DEV |
-| #26 | `fix(responsive)`: página no es completamente responsive en mobile | Media | Cerrado | Manual, sobre DEV |
+| #87 | `fix(footer)`: links apuntan a rutas incorrectas o inexistentes | Media *(verificada)* | Cerrado | Manual, sobre DEV |
+| #85 | `fix`: borrado de salón, horarios de reserva y validaciones del flujo | Media *(estimada)* | Cerrado | Manual, sobre DEV |
+| #76 | `fix(footer)`: links del footer son placeholders | Baja *(verificada)* | Cerrado | Manual, sobre DEV |
+| #75 | `fix(favorites)`: agregar a favoritos no persiste (sólo estado local) | Alta *(verificada)* | Cerrado | Manual, sobre DEV |
+| #74 | `fix(salones)`: el mapa en `/salones` no está implementado | Alta *(verificada)* | Cerrado | Manual, sobre DEV |
+| #72 | `fix(nav)`: el link "Cómo funciona" no navega a ninguna sección | Media *(verificada)* | Cerrado | Manual, sobre DEV |
+| #71 | `fix(ci)`: estabilizar pipeline de CI | Media *(estimada)* | Cerrado | Verificado en `frontend-tests.yml` |
+| #70 | `fix(ci)`: commitear `routeTree.gen.ts` para desbloquear build de CI | Alta *(estimada)* | Cerrado | Verificado en CI |
+| #64 | `fix(ux)`: correcciones UX y features faltantes (grupos 1-4) | Media *(estimada)* | Cerrado | Manual, sobre DEV |
+| #34 | `fix(seo)`: implementar meta tags y Open Graph | Baja *(estimada)* | Cerrado | Manual, sobre DEV |
+| #29 | `fix(ux)`: mejorar manejo de errores y mensajes al usuario | Media *(estimada)* | Cerrado | Manual, sobre DEV |
+| #28 | `fix(ux)`: agregar *loading states* a búsquedas y filtros | Baja *(estimada)* | Cerrado | Manual, sobre DEV |
+| #26 | `fix(responsive)`: página no es completamente responsive en mobile | Media *(estimada)* | Cerrado | Manual, sobre DEV |
 
-*Tabla 58 — Registro de defectos y retesting.*
+*Tabla 58 — Registro de defectos y retesting. "(verificada)" = severidad confirmada por etiqueta real de GitHub, no estimación.*
 
 > **Fuente.** `gh issue list --state all --label bug --json number,title,state` (2026-07-28):
-> 13 issues, 13 `CLOSED`.
+> 13 issues, 13 `CLOSED`. Etiquetas de prioridad: `gh issue list --state all --label bug --json
+> number,labels` (2026-08-03) — #74 y #75 con `p1-high` (Alta); #72 y #87 con `p2-medium` (Media);
+> #76 con `p3-low` (Baja). La versión anterior de esta tabla tenía #74 como "Media" y #87 y #72
+> como "Baja", en contradicción con la propia etiqueta de GitHub y con la clasificación ya correcta
+> de [Testing y Calidad](#12-testing-y-calidad) (criterios de severidad); se corrige aquí para que ambas notas
+> coincidan.
 
-> **Dato simulado (SIM-37) — Columna "Severidad (estimada)".**
-> GitHub no registra un campo de severidad estructurado para estos issues. La clasificación
-> Alta/Media/Baja de esta tabla es una estimación plausible del agente, basada en el impacto
-> funcional descrito en el título de cada issue (por ejemplo, que favoritos no persista se estima
-> Alta por afectar datos del usuario; un link roto en el footer se estima Baja), y no corresponde a
-> un criterio de triage formalmente documentado por el equipo.
+> **Dato simulado (SIM-37) — Severidad estimada de 8 de los 13 defectos.**
+> GitHub no tiene una etiqueta de prioridad para #85, #71, #70, #64, #34, #29, #28 y #26. Su
+> columna "Severidad" es una estimación plausible basada en el impacto funcional descrito en el
+> título del issue, no un criterio de triage documentado por el equipo. Los 5 defectos restantes
+> (#74, #75, #72, #87, #76) ya no son estimados: su severidad es la etiqueta real de GitHub.
 
 Un defecto adicional, real y verificado —no simulado— se documenta aparte por su relevancia
 arquitectónica. A diferencia de las incidencias reconstruidas de la tabla anterior, su nota va

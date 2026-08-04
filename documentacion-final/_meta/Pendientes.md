@@ -152,13 +152,13 @@ la misma lista de 4 capturas pendientes (P-15, P-41, P-42, P-43) para referencia
 | SIM-18 | Costo total del proyecto | Deriva de los supuestos simulados de la Tabla 23 más contingencia |
 | SIM-19 | Estimación de costo de producción comercial | Valores de lista pública de proveedores, no una cotización contratada |
 
-### [[12-Testing-y-Calidad]] (3)
+### [[12-Testing-y-Calidad]] (0 — cerrado el 2026-08-03)
 
-| SIM-## | Descripción | Base de la reconstrucción |
-|---|---|---|
-| SIM-33 | Resultado obtenido de CP-01 (caso manual) | Inferido de la prueba de integración equivalente (`bookings.test.ts`) |
-| SIM-34 | Resultado obtenido de CP-02 (caso manual) | Inferido de `useToggleFavorite` (`favorites.test.ts`) |
-| SIM-35 | Resultado obtenido de CP-03 (caso manual) | Inferido del test de integración `LoginPage.test.tsx` |
+SIM-33, SIM-34 y SIM-35 (resultado de CP-01/CP-02/CP-03) se cerraron agregando los tests
+automatizados que faltaban (`BookingFlow.test.tsx` para CP-01, un caso nuevo en
+`favorites.test.ts` para CP-02; CP-03 ya tenía cobertura en `LoginPage.test.tsx`) y citando su
+resultado real como `[!info] Fuente` en lugar de una inferencia. Ver Tabla 33 en
+[[12-Testing-y-Calidad]] y M12/M13 en [[Datos-Verificables]].
 
 ### [[15-Conclusiones]] (1)
 
@@ -170,18 +170,18 @@ la misma lista de 4 capturas pendientes (P-15, P-41, P-42, P-43) para referencia
 
 | SIM-## | Descripción | Base de la reconstrucción |
 |---|---|---|
-| SIM-37 | Columna "Severidad (estimada)" del registro de defectos | GitHub no registra un campo de severidad estructurado; estimación plausible por impacto funcional |
+| SIM-37 | Severidad estimada de 8 de los 13 defectos (sin etiqueta de prioridad en GitHub) | Estimación plausible por impacto funcional. Los otros 5 (#74, #75, #72, #87, #76) tienen etiqueta real `p1/p2/p3` y ya no son SIM (corregido 2026-08-03, además de un error real: #74 estaba mal clasificado) |
 
 ## Resumen por lote
 
 | Lote | P-## usados | SIM-## usados |
 |---|---|---|
 | 0 — Fundación | P-01–P-08 (8) | — |
-| A — Marco del proyecto | P-09 (1) | SIM-01–SIM-04 (4) |
+| A — Marco del proyecto | P-09 (1) | SIM-01–SIM-04 (4, SIM-04 acotado el 2026-08-03) |
 | B — Gestión y proceso | P-15 (1) | SIM-09–SIM-19 (11) |
 | C — Arquitectura y datos | — | — |
-| D — Calidad, métricas y cierre | P-39, P-40, P-41, P-42, P-43, P-44, P-46 (7) | SIM-33–SIM-37 (5) |
-| **Total** | **17** | **20** |
+| D — Calidad, métricas y cierre | P-39, P-40, P-41, P-42, P-43, P-44, P-46 (7) | SIM-36, SIM-37 (2; SIM-33–SIM-35 cerrados el 2026-08-03) |
+| **Total activo** | **17** | **17** (de 20 originales; 3 cerrados) |
 
 Verificación de unicidad (Lote E, 2026-07-28): `grep -rohE 'PLACEHOLDER P-[0-9]+|Dato simulado
 SIM-[0-9]+'` sobre las 28 notas confirma que cada identificador `P-##` y `SIM-##` está **declarado
