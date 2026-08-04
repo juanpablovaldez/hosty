@@ -15,7 +15,8 @@ import { Input } from '@/components/ui/input'
 import { cn } from '@/shared/lib/utils'
 import type { Booking } from '../types'
 import { useUpdateBookingStatus, useUpdateBookingQuote } from '../api/host.mutations'
-import { STATUS_STYLES, STATUS_LABELS, formatARS, formatBookingPrice, effectivePrice } from '../lib/booking-status'
+import { STATUS_STYLES, STATUS_LABELS, formatBookingPrice, effectivePrice } from '../lib/booking-status'
+import { formatARS } from '@/features/salones/lib/pricing'
 
 function fmtDate(iso: string): string {
   return new Date(iso).toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' })

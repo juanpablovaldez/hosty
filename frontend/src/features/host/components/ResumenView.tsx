@@ -4,7 +4,8 @@ import type { Salon } from '@/features/salones/types'
 import type { Booking } from '../types'
 import { BookingCard } from './BookingCard'
 import { SalonRow } from './SalonRow'
-import { formatARS, effectivePrice } from '../lib/booking-status'
+import { effectivePrice } from '../lib/booking-status'
+import { formatARS } from '@/features/salones/lib/pricing'
 
 function StatCard({
   icon,

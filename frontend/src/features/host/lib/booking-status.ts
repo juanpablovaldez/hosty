@@ -1,3 +1,4 @@
+import { formatARS } from '@/features/salones/lib/pricing'
 import type { Booking } from '../types'
 
 export const STATUS_STYLES: Record<Booking['status'], string> = {
@@ -12,14 +13,6 @@ export const STATUS_LABELS: Record<Booking['status'], string> = {
   confirmed: 'Confirmada',
   declined: 'Rechazada',
   cancelled: 'Cancelada',
-}
-
-export function formatARS(value: number): string {
-  return value.toLocaleString('es-AR', {
-    style: 'currency',
-    currency: 'ARS',
-    maximumFractionDigits: 0,
-  })
 }
 
 export function effectivePrice(booking: Pick<Booking, 'totalPrice' | 'quotedPrice'>): number | null {

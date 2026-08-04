@@ -17,6 +17,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ChevronLeft, ChevronRight, Check, Calendar, Users, FileText, CheckCircle2, ClipboardList, Home } from 'lucide-react'
 import { cn, formError } from '@/shared/lib/utils'
 import { formatARS } from '@/features/salones/lib/pricing'
+import { calcHours, calcBookingTotal } from '../lib/booking-pricing'
 
 const EVENT_TYPES = ['Cumpleaños', 'Casamiento', 'Corporativo', 'Baby shower', 'Quince años', 'Graduación']
 
@@ -81,15 +82,6 @@ const STEPS = [
   { label: 'Confirmar', icon: FileText },
 ] as const
 
-function calcHours(start: string, end: string) {
-  if (!start || !end) return 0
-  const [sh, sm] = start.split(':').map(Number)
-  const [eh, em] = end.split(':').map(Number)
-  let diff = eh * 60 + em - (sh * 60 + sm)
-  if (diff < 0) diff += 24 * 60 // la reserva cruza la medianoche (ej. 22:00 → 03:00)
-  return diff / 60
-}
-
 export function BookingFlow() {
   const { id } = useParams({ from: '/salones/$id_/reservar' })
   const { data: salon, isLoading } = useSalon(id)
@@ -109,10 +101,7 @@ export function BookingFlow() {
 
   const hours = calcHours(step1Snapshot.startTime, step1Snapshot.endTime)
   const chosenServices = salon ? salon.services.filter((s) => selectedServiceNames.includes(s.name)) : []
-  const base = salon && salon.priceType === 'fixed' && salon.pricePerHour != null ? salon.pricePerHour * hours : null
-  const extrasPriced = chosenServices.every((s) => s.price != null)
-  const extrasSum = chosenServices.reduce((acc, s) => acc + (s.price ?? 0), 0)
-  const totalPrice: number | null = base != null && extrasPriced ? base + extrasSum : null
+  const { base, totalPrice } = calcBookingTotal(salon, hours, chosenServices)
 
   const form1 = useForm({
     defaultValues: step1Snapshot,
