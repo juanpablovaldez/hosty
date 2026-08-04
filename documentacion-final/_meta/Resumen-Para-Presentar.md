@@ -46,7 +46,7 @@ Mercado Pago (requiere cuenta comercial, fuera del alcance académico) y sistema
 
 - **Metodología:** Scrum real sobre GitHub — 5 sprints, ~12,6 semanas (29/03 – 24/06/2026), tablero
   de GitHub Projects v2 con 50 issues (45 cerradas), 48 pull requests (26 mergeados).
-- **Equipo:** 5 integrantes — Valdez (Product Owner), Mignone (Scrum Master), Martinez Naglieri,
+- **Equipo:** 5 integrantes — Valdez (Product Owner), Mignone (diseño de producto y frontend), Martinez Naglieri,
   Garma (foco en QA) y Czurylo (desarrolladores).
 - **Stack:** React 19 + Vite + TypeScript, TanStack Router/Query/Form, Tailwind v4, Supabase como
   backend completo (auth, base de datos Postgres, storage) — sin servidor propio. La autorización

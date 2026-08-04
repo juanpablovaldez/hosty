@@ -54,7 +54,7 @@ Conviene que todos la tengan clara, no sólo el que la responda.
 | Integrante | Legajo | Rol en el equipo | Dónde concentró su trabajo | Commits |
 |---|---|---|---|---|
 | Juan Pablo Valdez | UIA7 0262 | Product Owner | Arquitectura general, catálogo de salones, panel del anfitrión, flujo de reserva y autenticación | 140 (59,3 %) |
-| Juan Ignacio Mignone | UIA7 0298 | Scrum Master | Catálogo de salones, página de inicio, panel del anfitrión y favoritos | 45 (19,1 %) |
+| Juan Ignacio Mignone | UIA7 0298 | Diseño de producto y desarrollo frontend | Catálogo de salones, página de inicio, panel del anfitrión y favoritos | 45 (19,1 %) |
 | Lautaro Martinez Naglieri | UIA7 0286 | Desarrollador | Catálogo de salones, panel del anfitrión y flujo de reserva | 33 (14,0 %) |
 | Benjamín Garma | UIA7 0362 | Desarrollador con foco en QA | Infraestructura de pruebas (Vitest, Playwright, Cypress) y el workflow de CI `frontend-tests.yml` | 10 (4,2 %) |
 | Juan Pablo Czurylo | UIA7 0331 | Desarrollador | Búsqueda de salones, flujo de reserva y notificaciones por email | 8 (3,4 %) |
@@ -125,7 +125,7 @@ archivos de migración · 4 estados de reserva (`pending`, `confirmed`, `decline
 
 ---
 
-## Ficha 2 — Juan Ignacio Mignone (Scrum Master)
+## Ficha 2 — Juan Ignacio Mignone (Diseño de producto y desarrollo frontend)
 
 **Tus bloques: 2 (proceso, 3:30) y 7 (cierre, 1:00). Slides 8–11 y 20–21.**
 
