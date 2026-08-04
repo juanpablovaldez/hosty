@@ -77,7 +77,7 @@ presentación. Cuatro reglas:
 | "¿Cómo controlan quién puede modificar qué?" | Políticas RLS de Postgres, que filtran por fila según `auth.uid()`. No hay tabla de roles: ser anfitrión es consecuencia de tener un salón publicado. |
 | "¿Y si alguien publica contenido inapropiado?" | Hoy requiere intervención manual sobre la base: no hay panel de administración. Está identificado como hallazgo en el informe y priorizado en el roadmap. |
 | "¿Qué falta para que esto sea un producto real?" | Cobro con Mercado Pago, reviews y ratings, ambientes separados y panel de administración. Todo identificado y priorizado, no descubierto ahora. |
-| "¿Cómo se repartieron el trabajo?" | Scrum con 5 sprints y tablero en GitHub Projects v2 con 50 issues. Roles: un Product Owner, un Scrum Master y tres desarrolladores, uno con foco en QA. La tabla completa está en [[Presentacion-Reparto-y-Fichas]]. |
+| "¿Cómo se repartieron el trabajo?" | Scrum con 5 sprints y tablero en GitHub Projects v2 con 50 issues. Roles: un Product Owner y cuatro desarrolladores, uno con foco en QA y otro en diseño de producto. No hubo Scrum Master formal: la conducción la ejerció el PO y, en los sprints 2 y 4, Mignone. La tabla completa está en [[Presentacion-Reparto-y-Fichas]]. |
 | "¿Cómo sé que esas cifras son reales?" | Todas están citadas contra comandos reproducibles (`git log`, `gh issue list`) en el informe. No son estimaciones. |
 | "¿Usaron alguna herramienta de asistencia por IA?" | Responder con la verdad y sin incomodidad. Conviene acordar la respuesta entre los cinco **antes** de entrar, para que no haya versiones distintas. Ver la nota de [[Entrega-Pendrive]]. |
 

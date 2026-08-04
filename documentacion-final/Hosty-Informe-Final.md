@@ -308,7 +308,7 @@ exportador. Cada entrada indica la sección donde se encuentra la tabla.
 | Figura 3 | Árbol de objetivos: OG → OE1..OE6, con la épica asociada a cada OE | 4. Objetivos |
 | Figura 4 | Árbol de problemas: causas → problema central → efectos | 5. Problema a Resolver |
 | Figura 5 | Proceso as-is (WhatsApp/Instagram/boca a boca) vs. to-be con Hosty | 6. Impacto de la Solución |
-| Figura 6 | Organigrama Scrum: PO / SM / equipo de desarrollo (5 integrantes) | 7. Equipo y Roles |
+| Figura 6 | Organigrama del equipo: Product Owner y equipo de desarrollo (5 integrantes) | 7. Equipo y Roles |
 | Figura 7 | Proceso de diseño: relevamiento → wireframes → design system → implementación → revisión | 8. Diseño y Desarrollo |
 | Figura 8 | Mapa de navegación: 14 rutas — 6 públicas / 8 protegidas (`requireAuth`) | 8. Diseño y Desarrollo |
 | Figura 9 | Anatomía de una feature: `features/<n>/{components,api,types.ts}` ↔ `routes/` ↔ `shared/lib` | 8. Diseño y Desarrollo |
@@ -761,10 +761,12 @@ El impacto aquí descripto retoma directamente los puntos de dolor identificados
 
 El proyecto fue desarrollado por un equipo de 5 integrantes, identificados de forma consolidada a
 partir de 9 identidades Git distintas (M05): Juan Pablo Valdez, Juan Ignacio Mignone, Lautaro
-Naglieri, Benjamín Garma y Pablo Czurylo. La distribución de roles de equipo bajo el marco Scrum
-adoptado —1 Product Owner, 1 Scrum Master y 3 desarrolladores, uno de ellos con foco en calidad
-(QA)— se infiere de la actividad observable en el historial de commits, ya que el proyecto no
-cuenta con un registro documental explícito de la asignación formal de roles. Estas
+Naglieri, Benjamín Garma y Pablo Czurylo. La distribución de roles —1 Product Owner y 4
+desarrolladores, uno con foco en calidad (QA) y otro con foco en diseño de producto— se infiere de
+la actividad observable en el historial de commits, ya que el proyecto no cuenta con un registro
+documental explícito de la asignación formal de roles. El equipo **no designó un Scrum Master
+formal**: la conducción de la iteración se distribuyó entre el Product Owner y el responsable de
+diseño de producto según el período, como se detalla más abajo. Estas
 responsabilidades reflejan, ante todo, el área funcional donde cada integrante concentró su
 trabajo a lo largo del proyecto, verificable directamente en el historial de commits del
 repositorio, y no necesariamente una asignación fija o exclusiva: la naturaleza de un equipo de 5
@@ -773,18 +775,18 @@ personas trabajando sobre un mismo repositorio implica solapamientos razonables 
 ```mermaid
 flowchart TD
  PO["Product Owner"] --> DEV["Equipo de desarrollo (5 integrantes)"]
- SM["Scrum Master"] --> DEV
- DEV --> D1["Desarrollador"]
+ DEV --> D1["Diseno de producto y frontend"]
  DEV --> D2["Desarrollador"]
- DEV --> D3["Desarrollador con foco en QA"]
+ DEV --> D3["Desarrollador"]
+ DEV --> D4["Desarrollador con foco en QA"]
 ```
 
-*Figura 6 — Organigrama Scrum: PO / SM / equipo de desarrollo (5 integrantes).*
+*Figura 6 — Organigrama del equipo: Product Owner y equipo de desarrollo (5 integrantes).*
 
-| Integrante | Legajo | Rol de equipo (Scrum) | Responsabilidades principales |
+| Integrante | Legajo | Rol de equipo | Responsabilidades principales |
 |---|---|---|---|
 | Valdez, Juan Pablo | UIA7 0262 | Product Owner | Arquitectura general; catálogo de salones, panel del anfitrión, flujo de reserva y autenticación — mayor volumen de contribuciones del equipo |
-| Mignone, Juan Ignacio | UIA7 0298 | Scrum Master | Catálogo de salones, página de inicio, panel del anfitrión y favoritos |
+| Mignone, Juan Ignacio | UIA7 0298 | Diseño de producto y desarrollo frontend | Sistema de diseño de la aplicación (Brandbook v1.0: isotipo, tokens de marca y tipografía); interfaz del catálogo de salones, página de inicio, panel del anfitrión y favoritos. Ejerció la conducción técnica del equipo y la integración de cambios durante los *sprints* 2 y 4 |
 | Martinez Naglieri, Lautaro David | UIA7 0286 | Desarrollador | Catálogo de salones, panel del anfitrión y flujo de reserva |
 | Garma, Benjamin | UIA7 0362 | Desarrollador con foco en QA | Infraestructura de pruebas (Vitest, Playwright, Cypress) y el workflow de CI `frontend-tests.yml` |
 | Czurylo, Juan Pablo | UIA7 0331 | Desarrollador | Búsqueda de salones, flujo de reserva y notificaciones por email |
@@ -792,11 +794,26 @@ flowchart TD
 *Tabla 11 — Integrantes, legajo, rol de equipo y responsabilidades.*
 
 > **Dato simulado (SIM-04) — Asignación de rol de equipo.**
-> La columna "Rol de equipo (Scrum)" es una reconstrucción plausible a partir del volumen y del
-> área de los commits de cada integrante, no un registro documentado de la asignación real de
-> roles. La única excepción es el foco en QA de Benjamín Garma, que se verifica directamente en
-> los archivos de configuración de pruebas (Vitest, Playwright, Cypress) y en el workflow de CI que
-> aportó al repositorio.
+> La columna "Rol de equipo" es, en general, una reconstrucción plausible a partir del volumen y
+> del área de los commits de cada integrante, no un registro documentado de la asignación real de
+> roles. Hay dos excepciones que sí se verifican directamente en el repositorio. La primera es el
+> foco en QA de Benjamín Garma, comprobable en los archivos de configuración de pruebas (Vitest,
+> Playwright, Cypress) y en el *workflow* de CI que aportó. La segunda es el rol de Juan Ignacio
+> Mignone, que se apoya en dos evidencias independientes: los *commits* que introducen el sistema
+> de diseño —`apply Brandbook v1.0 — isotipo, tokens, typography`, `redesign v2 — Design Handoff
+> tokens, editorial hero, HostyBadge system` y `update HostyLogo isotipo shape`— y la distribución
+> de *commits* por *sprint*, que lo señala como el integrante con mayor volumen de contribuciones
+> del equipo en los *sprints* 2 y 4, los dos períodos en los que además integró la mayor parte de
+> los *pull requests*.
+
+La conducción del equipo, por lo tanto, no fue estática a lo largo del proyecto: en los *sprints* 2
+y 4 la coordinación de la integración recayó en el responsable de diseño de producto. Esa rotación
+no responde a una decisión de proceso documentada, sino a la disponibilidad efectiva de los
+integrantes en cada período, y se refleja tanto en el volumen de *commits* como en quién integró
+los *pull requests* de cada uno.
+
+> **Fuente.** `git log --author --since --until` acotado a los rangos de *sprint* de la Tabla
+> 21, y `git log --merges --author` para la integración de *pull requests* (verificado 2026-08-03).
 
 ## Contribuciones por identidad Git
 
