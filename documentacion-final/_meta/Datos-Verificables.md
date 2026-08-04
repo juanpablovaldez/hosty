@@ -51,8 +51,8 @@ métricas que describen el **estado actual del producto** (`M09`–`M22`) sí se
 | M09 | Rutas / protegidas | 14 / 8 | `find frontend/src/routes -name '*.tsx' ! -name '__root.tsx'` (14); `grep -rl requireAuth frontend/src/routes` (8) | 2026-07-28 |
 | M10 | Tablas en `public` | 6 (`salones`, `bookings`, `salon_services`, `salon_availability_blocks`, `user_favorites`, `salon_subscriptions`) | `supabase/migrations/*.sql`; `frontend/src/shared/lib/database.types.ts` | 2026-07-28 |
 | M11 | Archivos de migración | 10 | `ls supabase/migrations/*.sql \| wc -l` | 2026-07-28 |
-| M12 | Pruebas automatizadas (Vitest) | 73 | `npm --prefix frontend run test` (`vitest --run`) | 2026-08-02 |
-| M13 | Archivos de prueba | 19 (14 Vitest/RTL + 5 E2E Playwright, excluidos del run de Vitest por `exclude: ['src/e2e/**']`) | `find frontend/src -name '*.test.*' -o -name '*.spec.*'` | 2026-08-02 |
+| M12 | Pruebas automatizadas (Vitest) | 75 | `npm --prefix frontend run test` (`vitest --run`) | 2026-08-03 |
+| M13 | Archivos de prueba | 20 (15 Vitest/RTL + 5 E2E Playwright, excluidos del run de Vitest por `exclude: ['src/e2e/**']`) | `find frontend/src -name '*.test.*' -o -name '*.spec.*'` | 2026-08-03 |
 | M14 | Workflows de CI/CD | 3 (`frontend-tests.yml`, `web-dev.yml`, `infra-ci.yml`) | `ls .github/workflows` | 2026-07-28 |
 | M15 | Features del frontend | 8 (`auth`, `bookings`, `errors`, `favorites`, `home`, `host`, `profile`, `salones`) | `ls frontend/src/features` | 2026-07-28 |
 | M16 | Bucket de Storage | `salon-images` | `supabase/migrations/20260525000001_create_storage_bucket.sql` | 2026-07-28 |
@@ -67,9 +67,11 @@ métricas que describen el **estado actual del producto** (`M09`–`M22`) sí se
 > cita únicamente como aclaración metodológica, para no ocultar los commits que existen en ramas
 > o refs fuera de `dev`.
 
-> [!info] Fuente — M12/M13 se re-verificaron el 2026-08-02 ejecutando la suite completa. El valor
-> de M12 (73 pruebas) y M13 (19 archivos) es el vigente al momento de esta verificación y puede
-> volver a cambiar si se agregan pruebas después de esta fecha.
+> [!info] Fuente — M12/M13 se re-verificaron el 2026-08-03 ejecutando la suite completa, después de
+> agregar `BookingFlow.test.tsx` (CP-01) y un test nuevo en `favorites.test.ts` (CP-02) para cerrar
+> SIM-33/SIM-34 en [[12-Testing-y-Calidad]] (Tabla 33). El valor de M12 (75 pruebas) y M13 (20
+> archivos) es el vigente al momento de esta verificación y puede volver a cambiar si se agregan
+> pruebas después de esta fecha.
 
 ## Commits por mes (rama `dev`)
 
@@ -224,7 +226,7 @@ este cambio. Se agregan al final para no alterar ningún valor ya fijado por los
 > [[12-Testing-y-Calidad]] (manejo de incidencias) y en [[Anexo-V-Evidencias-QA]] (Tabla 58,
 > registro de defectos).
 
-## Métricas adicionales M33–M35 (2026-08-04, cierre de SIM-04)
+## Métricas adicionales M33–M35 (2026-08-03, cierre de SIM-04)
 
 Estas tres filas reemplazan por evidencia verificable la mayor parte de lo que hasta esta fecha
 [[07-Equipo-y-Roles]] marcaba como SIM-04 ("Asignación de rol de equipo"). Se agregan al final
@@ -232,15 +234,27 @@ para no alterar ningún valor ya fijado por los Lotes previos.
 
 | ID | Métrica | Valor | Comando / fuente | Verificado el |
 |---|---|---|---|---|
-| M33 | Permisos de administrador del repositorio | Juan Pablo Valdez es el único colaborador con `admin: true`; el resto (Mignone, Naglieri, Garma, Czurylo) tiene `push`/`triage` sin `admin` | `gh api repos/juanpablovaldez/hosty/collaborators --jq '.[] \| {login, permissions}'` | 2026-08-04 |
-| M34 | Autoría de issues del repositorio | 45 de 50 (90 %) fueron creadas por Juan Pablo Valdez; el resto por Naglieri (3) y Mignone (2) | `gh issue list --state all --limit 200 --json author --jq '.[].author.login' \| sort \| uniq -c` | 2026-08-04 |
-| M35 | Rama `feat/email-notifications` (PR #96) | Sistema de notificaciones de reserva por email vía Supabase Edge Functions (`supabase/functions/send-emails`, plantillas y migración incluidas), implementado íntegramente por Pablo Czurylo el 2026-06-24. El PR sigue **abierto**, no fusionado a `dev` | `git log --all --author=pabloczurylo10 --name-only -- 'supabase/functions/*'`; `gh pr view 96 --json state,mergedAt,author` | 2026-08-04 |
+| M33 | Permisos de administrador del repositorio | Juan Pablo Valdez es el único colaborador con `admin: true`; el resto (Mignone, Naglieri, Garma, Czurylo) tiene `push`/`triage` sin `admin` | `gh api repos/juanpablovaldez/hosty/collaborators --jq '.[] \| {login, permissions}'` | 2026-08-03 |
+| M34 | Autoría de issues del repositorio | 45 de 50 (90 %) fueron creadas por Juan Pablo Valdez; el resto por Naglieri (3) y Mignone (2) | `gh issue list --state all --limit 200 --json author --jq '.[].author.login' \| sort \| uniq -c` | 2026-08-03 |
+| M35 | Rama `feat/email-notifications` (PR #96) | Sistema de notificaciones de reserva por email vía Supabase Edge Functions (`supabase/functions/send-emails`, plantillas y migración incluidas), implementado íntegramente por Pablo Czurylo el 2026-06-24. El PR sigue **abierto**, no fusionado a `dev` | `git log --all --author=pabloczurylo10 --name-only -- 'supabase/functions/*'`; `gh pr view 96 --json state,mergedAt,author` | 2026-08-03 |
 
 > [!info] Fuente — M33 y M34 se usan en [[07-Equipo-y-Roles]] (Tabla 11, fila de Valdez) para
 > sustanciar el rol de Product Owner con evidencia de administración del repositorio y autoría del
 > backlog, en lugar de inferirlo únicamente del volumen de commits. M35 corrige la fila de Czurylo:
 > el trabajo de notificaciones por email es real y verificable, pero no forma parte del producto
 > entregado en `dev` — se cita como tal, no como funcionalidad en producción.
+
+## Métrica adicional M36 (2026-08-03, cierre parcial de SIM-37)
+
+| ID | Métrica | Valor | Comando / fuente | Verificado el |
+|---|---|---|---|---|
+| M36 | Issues `bug` con etiqueta de prioridad real (`p1-high`/`p2-medium`/`p3-low`) | 5 de 13 (38 %): #74, #75 → `p1-high`; #72, #87 → `p2-medium`; #76 → `p3-low` | `gh issue list --state all --label bug --json number,labels` | 2026-08-03 |
+
+> [!info] Fuente — M36 se usa en [[Anexo-V-Evidencias-QA]] (Tabla 58) para reemplazar la severidad
+> estimada de 5 de los 13 defectos por la etiqueta real de GitHub, y detectó que la versión anterior
+> de esa tabla tenía a #74 mal clasificado ("Media" en vez de "Alta", en contradicción con
+> [[12-Testing-y-Calidad]], que ya citaba correctamente `p1-high` para #74). Las 8 issues restantes
+> no tienen etiqueta de prioridad y su severidad sigue siendo una estimación (SIM-37).
 
 ---
 [[Indice|Índice]]

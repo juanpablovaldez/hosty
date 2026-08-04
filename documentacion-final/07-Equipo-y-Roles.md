@@ -61,7 +61,7 @@ flowchart TD
 > pruebas (Vitest, Playwright, Cypress) y el *workflow* de CI que aportó. **Czurylo**
 > (Desarrollador): `features/bookings` y `features/salones`, más la rama `feat/email-notifications`
 > (M35). Comandos: `git log --author --since --until`, `git log --merges --author`, `gh api
-> repos/.../collaborators`, `gh issue list --json author` (verificado 2026-08-04; detalle completo
+> repos/.../collaborators`, `gh issue list --json author` (verificado 2026-08-03; detalle completo
 > en [[Datos-Verificables]] M33–M35).
 
 > [!warning] Dato simulado SIM-04 — Título formal de cada rol de equipo
