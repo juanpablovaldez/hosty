@@ -77,7 +77,7 @@ Esta instrucción también se reproduce, palabra por palabra, en [[00-Portada-y-
 El vault agrupa 35 notas en cuatro conjuntos: la portada, las 16 secciones numeradas y los 5 anexos
 que constituyen el cuerpo del informe (raíz de `documentacion-final/` y `Anexos/`); las 11 notas de
 apoyo en `_meta/` ([[Indice]], [[Datos-Verificables]], [[Indice-de-Figuras]], [[Indice-de-Tablas]],
-[[Pendientes]], [[Correcciones-Defensa]], [[Exportar-PDF]], [[Guia-de-Presentacion]],
+[[Pendientes]], [[Defensa-2026-08-07]], [[Exportar-PDF]], [[Guia-de-Presentacion]],
 [[Presentacion-Estructura-Slides]], [[Presentacion-Reparto-y-Fichas]] y [[Entrega-Pendrive]]), que
 no forman parte de la rúbrica ni de la numeración de figuras/tablas; y este README junto con
 `assets/README.md`, que documenta las capturas de pantalla del informe.
