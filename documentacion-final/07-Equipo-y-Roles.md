@@ -4,10 +4,10 @@ seccion: "07"
 orden: 8
 tipo: seccion
 tags: [hosty, informe-final, equipo-roles]
-estado: con-pendientes
+estado: completo
 figuras: [F6]
 tablas: [T11, T12, T13]
-updated: 2026-07-28
+updated: 2026-08-04
 ---
 
 # 7. Equipo y Roles
@@ -16,16 +16,17 @@ updated: 2026-07-28
 
 El proyecto fue desarrollado por un equipo de 5 integrantes, identificados de forma consolidada a
 partir de 9 identidades Git distintas (M05): Juan Pablo Valdez, Juan Ignacio Mignone, Lautaro
-Naglieri, Benjamín Garma y Pablo Czurylo. La distribución de roles —1 Product Owner y 4
-desarrolladores, uno con foco en calidad (QA) y otro con foco en diseño de producto— se infiere de
-la actividad observable en el historial de commits, ya que el proyecto no cuenta con un registro
-documental explícito de la asignación formal de roles. El equipo **no designó un Scrum Master
-formal**: la conducción de la iteración se distribuyó entre el Product Owner y el responsable de
-diseño de producto según el período, como se detalla más abajo. Estas
-responsabilidades reflejan, ante todo, el área funcional donde cada integrante concentró su
-trabajo a lo largo del proyecto, verificable directamente en el historial de commits del
-repositorio, y no necesariamente una asignación fija o exclusiva: la naturaleza de un equipo de 5
-personas trabajando sobre un mismo repositorio implica solapamientos razonables entre áreas.
+Naglieri, Benjamín Garma y Pablo Czurylo. La distribución de roles —Product Owner, diseño de
+producto y desarrollo frontend, dos desarrolladores repartidos entre frontend y backend, y un
+integrante con foco en calidad (QA)— fue confirmada directamente por el equipo, y coincide con la
+actividad observable en el historial de commits (detalle por integrante más abajo). El equipo **no
+designó un Scrum Master formal**: la conducción del proyecto fue un co-liderazgo compartido entre
+el Product Owner (Valdez), que además llevó la infraestructura, y el responsable de diseño de
+producto (Mignone), que asumió la conducción técnica de la integración en los *sprints* 2 y 4.
+Estas responsabilidades reflejan tanto la confirmación directa del equipo como el área funcional
+donde cada integrante concentró su trabajo, verificable en el historial de commits del
+repositorio, y no una asignación fija o exclusiva: la naturaleza de un equipo de 5 personas
+trabajando sobre un mismo repositorio implica solapamientos razonables entre áreas.
 
 ```mermaid
 flowchart TD
@@ -40,8 +41,8 @@ flowchart TD
 
 | Integrante | Legajo | Rol de equipo | Responsabilidades principales |
 |---|---|---|---|
-| Valdez, Juan Pablo | UIA7 0262 | Product Owner | Arquitectura general; catálogo de salones, panel del anfitrión, flujo de reserva y autenticación — mayor volumen de contribuciones del equipo |
-| Mignone, Juan Ignacio | UIA7 0298 | Diseño de producto y desarrollo frontend | Sistema de diseño de la aplicación (Brandbook v1.0: isotipo, tokens de marca y tipografía); interfaz del catálogo de salones, página de inicio, panel del anfitrión y favoritos. Ejerció la conducción técnica del equipo y la integración de cambios durante los *sprints* 2 y 4 |
+| Valdez, Juan Pablo | UIA7 0262 | Product Owner | Arquitectura general; catálogo de salones, panel del anfitrión, flujo de reserva y autenticación; infraestructura de despliegue (CI/CD, Terraform); co-liderazgo del equipo junto con Mignone — mayor volumen de contribuciones del equipo |
+| Mignone, Juan Ignacio | UIA7 0298 | Diseño de producto y desarrollo frontend | Sistema de diseño de la aplicación (Brandbook v1.0: isotipo, tokens de marca y tipografía); interfaz del catálogo de salones, página de inicio, panel del anfitrión y favoritos. Ejerció el co-liderazgo del equipo junto con el Product Owner, con conducción técnica de la integración de cambios durante los *sprints* 2 y 4 |
 | Martinez Naglieri, Lautaro David | UIA7 0286 | Desarrollador | Catálogo de salones, panel del anfitrión y flujo de reserva |
 | Garma, Benjamin | UIA7 0362 | Desarrollador con foco en QA | Infraestructura de pruebas (Vitest, Playwright, Cypress) y el workflow de CI `frontend-tests.yml` |
 | Czurylo, Juan Pablo | UIA7 0331 | Desarrollador | Búsqueda y filtrado de salones (paginación, persistencia de filtros en URL); motor de reservas (flujo de reserva, confirmación); sistema de notificaciones de reserva por email, implementado en la rama `feat/email-notifications` (PR #96, aún no fusionada a `dev`) |
@@ -64,11 +65,13 @@ flowchart TD
 > repos/.../collaborators`, `gh issue list --json author` (verificado 2026-08-03; detalle completo
 > en [[Datos-Verificables]] M33–M35).
 
-> [!warning] Dato simulado SIM-04 — Título formal de cada rol de equipo
-> Lo único que sigue sin registro documental es el título formal en sí (que el equipo se haya
-> reunido y acordado llamar "Product Owner" a Valdez, por ejemplo): no existe un acta de asignación
-> de roles. Los títulos de esta tabla son la etiqueta que mejor describe la evidencia verificable
-> citada arriba, no una cita textual de una decisión de equipo documentada.
+> [!info] Fuente — Título formal de cada rol de equipo, confirmado directamente por el equipo
+> (Mignone, co-liderazgo, 2026-08-04): Product Owner e infraestructura (Valdez), diseño de
+> producto y desarrollo frontend con co-liderazgo (Mignone), desarrollo frontend/backend repartido
+> entre Naglieri y Czurylo, y testing (Garma). No existe un acta formal escrita con estos títulos,
+> pero la confirmación directa del equipo, sumada a la evidencia verificable de la columna
+> "Responsabilidades principales" (M33–M35), cierra la brecha que antes dejaba este dato como una
+> reconstrucción no validada.
 
 La conducción del equipo, por lo tanto, no fue estática a lo largo del proyecto: en los *sprints* 2
 y 4 la coordinación de la integración recayó en el responsable de diseño de producto. Esa rotación

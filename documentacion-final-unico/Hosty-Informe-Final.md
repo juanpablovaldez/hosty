@@ -312,7 +312,7 @@ exportador. Cada entrada indica la sección donde se encuentra la tabla.
 | Figura 7 | Proceso de diseño: relevamiento → wireframes → design system → implementación → revisión | 8. Diseño y Desarrollo |
 | Figura 8 | Mapa de navegación: 14 rutas — 6 públicas / 8 protegidas (`requireAuth`) | 8. Diseño y Desarrollo |
 | Figura 9 | Anatomía de una feature: `features/<n>/{components,api,types.ts}` ↔ `routes/` ↔ `shared/lib` | 8. Diseño y Desarrollo |
-| Figura 10 | Iteración Scrum: refinamiento, planificación, daily, revisión y retrospectiva | 9. Planificación Scrum |
+| Figura 10 | Iteración Scrum: refinamiento, planificación, weekly, revisión y retrospectiva | 9. Planificación Scrum |
 | Figura 11 | Ciclo de vida de un issue en GitHub Projects v2: Todo → In Progress → In Review → Done (+ Blocked) | 9. Planificación Scrum |
 | Figura 12 | Tablero de gestión del proyecto en GitHub Projects v2 (board #4) | 9. Planificación Scrum |
 | Figura 13 | Distribución del presupuesto por rubro: RRHH, infraestructura y herramientas, contingencia | 10. Presupuesto |
@@ -757,16 +757,17 @@ El impacto aquí descripto retoma directamente los puntos de dolor identificados
 
 El proyecto fue desarrollado por un equipo de 5 integrantes, identificados de forma consolidada a
 partir de 9 identidades Git distintas (M05): Juan Pablo Valdez, Juan Ignacio Mignone, Lautaro
-Naglieri, Benjamín Garma y Pablo Czurylo. La distribución de roles —1 Product Owner y 4
-desarrolladores, uno con foco en calidad (QA) y otro con foco en diseño de producto— se infiere de
-la actividad observable en el historial de commits, ya que el proyecto no cuenta con un registro
-documental explícito de la asignación formal de roles. El equipo **no designó un Scrum Master
-formal**: la conducción de la iteración se distribuyó entre el Product Owner y el responsable de
-diseño de producto según el período, como se detalla más abajo. Estas
-responsabilidades reflejan, ante todo, el área funcional donde cada integrante concentró su
-trabajo a lo largo del proyecto, verificable directamente en el historial de commits del
-repositorio, y no necesariamente una asignación fija o exclusiva: la naturaleza de un equipo de 5
-personas trabajando sobre un mismo repositorio implica solapamientos razonables entre áreas.
+Naglieri, Benjamín Garma y Pablo Czurylo. La distribución de roles —Product Owner, diseño de
+producto y desarrollo frontend, dos desarrolladores repartidos entre frontend y backend, y un
+integrante con foco en calidad (QA)— fue confirmada directamente por el equipo, y coincide con la
+actividad observable en el historial de commits (detalle por integrante más abajo). El equipo **no
+designó un Scrum Master formal**: la conducción del proyecto fue un co-liderazgo compartido entre
+el Product Owner (Valdez), que además llevó la infraestructura, y el responsable de diseño de
+producto (Mignone), que asumió la conducción técnica de la integración en los *sprints* 2 y 4.
+Estas responsabilidades reflejan tanto la confirmación directa del equipo como el área funcional
+donde cada integrante concentró su trabajo, verificable en el historial de commits del
+repositorio, y no una asignación fija o exclusiva: la naturaleza de un equipo de 5 personas
+trabajando sobre un mismo repositorio implica solapamientos razonables entre áreas.
 
 ```mermaid
 flowchart TD
@@ -781,8 +782,8 @@ flowchart TD
 
 | Integrante | Legajo | Rol de equipo | Responsabilidades principales |
 |---|---|---|---|
-| Valdez, Juan Pablo | UIA7 0262 | Product Owner | Arquitectura general; catálogo de salones, panel del anfitrión, flujo de reserva y autenticación — mayor volumen de contribuciones del equipo |
-| Mignone, Juan Ignacio | UIA7 0298 | Diseño de producto y desarrollo frontend | Sistema de diseño de la aplicación (Brandbook v1.0: isotipo, tokens de marca y tipografía); interfaz del catálogo de salones, página de inicio, panel del anfitrión y favoritos. Ejerció la conducción técnica del equipo y la integración de cambios durante los *sprints* 2 y 4 |
+| Valdez, Juan Pablo | UIA7 0262 | Product Owner | Arquitectura general; catálogo de salones, panel del anfitrión, flujo de reserva y autenticación; infraestructura de despliegue (CI/CD, Terraform); co-liderazgo del equipo junto con Mignone — mayor volumen de contribuciones del equipo |
+| Mignone, Juan Ignacio | UIA7 0298 | Diseño de producto y desarrollo frontend | Sistema de diseño de la aplicación (Brandbook v1.0: isotipo, tokens de marca y tipografía); interfaz del catálogo de salones, página de inicio, panel del anfitrión y favoritos. Ejerció el co-liderazgo del equipo junto con el Product Owner, con conducción técnica de la integración de cambios durante los *sprints* 2 y 4 |
 | Martinez Naglieri, Lautaro David | UIA7 0286 | Desarrollador | Catálogo de salones, panel del anfitrión y flujo de reserva |
 | Garma, Benjamin | UIA7 0362 | Desarrollador con foco en QA | Infraestructura de pruebas (Vitest, Playwright, Cypress) y el workflow de CI `frontend-tests.yml` |
 | Czurylo, Juan Pablo | UIA7 0331 | Desarrollador | Búsqueda y filtrado de salones (paginación, persistencia de filtros en URL); motor de reservas (flujo de reserva, confirmación); sistema de notificaciones de reserva por email, implementado en la rama `feat/email-notifications` (PR #96, aún no fusionada a `dev`) |
@@ -805,11 +806,13 @@ flowchart TD
 > repos/.../collaborators`, `gh issue list --json author` (verificado 2026-08-03; detalle completo
 > en `Datos-Verificables` M33–M35).
 
-> **Dato simulado (SIM-04) — Título formal de cada rol de equipo.**
-> Lo único que sigue sin registro documental es el título formal en sí (que el equipo se haya
-> reunido y acordado llamar "Product Owner" a Valdez, por ejemplo): no existe un acta de asignación
-> de roles. Los títulos de esta tabla son la etiqueta que mejor describe la evidencia verificable
-> citada arriba, no una cita textual de una decisión de equipo documentada.
+> **Fuente.** Título formal de cada rol de equipo, confirmado directamente por el equipo
+> (Mignone, co-liderazgo, 2026-08-04): Product Owner e infraestructura (Valdez), diseño de
+> producto y desarrollo frontend con co-liderazgo (Mignone), desarrollo frontend/backend repartido
+> entre Naglieri y Czurylo, y testing (Garma). No existe un acta formal escrita con estos títulos,
+> pero la confirmación directa del equipo, sumada a la evidencia verificable de la columna
+> "Responsabilidades principales" (M33–M35), cierra la brecha que antes dejaba este dato como una
+> reconstrucción no validada.
 
 La conducción del equipo, por lo tanto, no fue estática a lo largo del proyecto: en los *sprints* 2
 y 4 la coordinación de la integración recayó en el responsable de diseño de producto. Esa rotación
@@ -1079,24 +1082,27 @@ mecanismo de seguimiento utilizado.
 ```mermaid
 flowchart LR
  A[Refinamiento] --> B[Planning]
- B --> C[Daily]
+ B --> C[Weekly]
  C --> D[Review]
  D --> E[Retrospectiva]
  E --> A
 ```
 
-*Figura 10 — Iteración Scrum: refinamiento, planificación, daily, revisión y retrospectiva.*
+*Figura 10 — Iteración Scrum: refinamiento, planificación, weekly, revisión y retrospectiva.*
 
 > **Dato simulado (SIM-09) — Ceremonias Scrum y cadencia.**
-> No existe un acta formal de ceremonias en el repositorio. La Tabla 17 que aparece a continuación
-> (ceremonias Scrum y cadencia) reconstruye de forma plausible la cadencia y los participantes para
+> El equipo confirmó (2026-08-04) que la sincronización del equipo de desarrollo fue semanal
+> ("*weekly*"), no diaria — ajustada a la disponibilidad real de un equipo part-time/estudiantil —,
+> corregido en la fila correspondiente de la Tabla 17. El resto de las ceremonias (refinamiento,
+> planning, review y retrospectiva) sigue sin acta formal en el repositorio: su frecuencia y
+> participantes, en la Tabla 17 que aparece a continuación, son una reconstrucción plausible para
 > un equipo estudiantil de cinco integrantes que trabaja con Scrum sobre issues de GitHub.
 
 | Ceremonia | Frecuencia | Participantes | Propósito |
 |---|---|---|---|
 | Refinamiento | Semanal | Equipo completo | Detallar y estimar issues antes del siguiente sprint |
 | Planning | Inicio de cada sprint | Equipo completo | Seleccionar y comprometer el alcance del sprint |
-| Daily | Diaria (15 min) | Equipo de desarrollo | Sincronizar avance y destrabar bloqueos |
+| Weekly | Semanal | Equipo de desarrollo | Sincronizar avance y destrabar bloqueos |
 | Review | Cierre de cada sprint | Equipo + Product Owner | Demostrar el incremento funcional |
 | Retrospectiva | Cierre de cada sprint | Equipo completo | Identificar mejoras de proceso |
 
@@ -1223,11 +1229,14 @@ Fibonacci (1, 2, 3, 5, 8, 13, 21).
 ## Plan de sprints
 
 > **Dato simulado (SIM-13) — Límites y foco de los sprints.**
-> El equipo no registró formalmente los sprints como "S1"–"S5". En la Tabla 21 que aparece a
-> continuación (plan de sprints), los límites de fecha y el foco de cada sprint se infieren a
-> partir de la densidad real de commits y de los clústeres de fecha de las migraciones de
-> Supabase; los conteos de commits e issues cerradas por sprint sí son reales y verificables
-> (M23, M24).
+> El equipo confirmó (2026-08-04) que trabajó con sprints formalmente definidos, con story points y
+> un objetivo de sprint ("*sprint goal*") explícito por iteración — no es una simulación que el
+> proyecto haya tenido sprints reales. Lo que no está disponible para este informe es el texto
+> puntual de esos objetivos ni los límites de fecha exactos tal como se registraron originalmente:
+> las etiquetas "S1"–"S5", sus rangos de fecha y su foco temático, en la Tabla 21 que aparece a
+> continuación, se infieren a partir de la densidad real de commits y de los clústeres de fecha de
+> las migraciones de Supabase. Los conteos de commits e issues cerradas por sprint sí son reales y
+> verificables (M23, M24).
 
 | Sprint | Rango | Foco | Commits | Issues cerradas | Decisión / resultado |
 |---|---|---|---|---|---|
@@ -1244,10 +1253,9 @@ Fibonacci (1, 2, 3, 5, 8, 13, 21).
 > --json number,closedAt` por ventana (verificado 2026-07-28). Ver `Datos-Verificables`. El
 > detalle cronológico se desarrolla en [Ejecución por Sprint](#13-ejecucion-por-sprint).
 
-**Herramienta de gestión**: el seguimiento del backlog y del avance de cada sprint se realizó en
-GitHub Projects v2, tablero #4 ("Hosty"), con campos de estado, tamaño (story points) y hito
-(M19). No se utilizó una herramienta externa (Jira, Trello); el tablero está integrado
-directamente con las issues y pull requests del repositorio.
+**Herramienta de gestión**: el seguimiento del backlog y del avance de cada sprint se realiza en
+GitHub Projects v2, tablero #4 ("Hosty"), con campos de estado, tamaño (story points), objetivo de
+sprint e hito (M19), integrado directamente con las issues y *pull requests* del repositorio.
 
 ## Retrospectivas
 
