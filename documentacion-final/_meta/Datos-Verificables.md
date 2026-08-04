@@ -214,7 +214,7 @@ este cambio. Se agregan al final para no alterar ningún valor ya fijado por los
 | M28 | Pull requests abiertos / mergeados por mes | 2026-04: 9/7 · 2026-05: 19/8 · 2026-06: 20/11 (suma 48/26 = M07) | `gh pr list --state all --json number,createdAt,mergedAt`, agrupado por mes | 2026-07-28 |
 | M29 | Invocaciones de operaciones PostgREST (`select`/`insert`/`update`/`delete`) por módulo con carpeta `api/` | `bookings` 5, `favorites` 5, `host` 21, `salones` 4 (total 35) | `grep -oE '\.(select\|insert\|update\|delete\|upsert\|rpc)\(' frontend/src/features/<módulo>/api/*.ts` | 2026-07-28 |
 | M30 | Resultado de `lint`/`typecheck` reproducidos en vivo sobre el estado actual del repositorio | `npx tsc -b --noEmit`: 0 errores · `npx eslint .`: 6 errores, 4 advertencias | Ejecución directa en `frontend/` | 2026-07-28 |
-| M31 | Relación líneas de código de prueba / líneas de código de producción | 1.462 / 11.148 ≈ 0,13 (13 %) | `find frontend/src -name '*.test.ts' -o -name '*.test.tsx' -o -path '*/e2e/*.spec.ts' \| xargs wc -l`, y su complemento sobre `*.ts`/`*.tsx` | 2026-07-28 |
+| M31 | Relación líneas de código de prueba / líneas de código de producción | 1.603 / 11.223 ≈ 0,14 (14 %) | `find frontend/src -name '*.test.ts' -o -name '*.test.tsx' -o -path '*/e2e/*.spec.ts' \| xargs wc -l`, y su complemento sobre `*.ts`/`*.tsx` | 2026-08-04 |
 | M32 | Issues etiquetadas `bug` (todas / cerradas) | 13 / 13 | `gh issue list --state all --label bug --json number,state` | 2026-07-28 |
 
 > [!info] Fuente — M28 se usa en [[14-Metricas]] (Figura 26, Tabla 38) para el gráfico de PRs por
@@ -223,6 +223,27 @@ este cambio. Se agregan al final para no alterar ningún valor ya fijado por los
 > 40, deuda técnica); M31 se usa en [[12-Testing-y-Calidad]] (Tabla 32, cobertura); M32 se usa en
 > [[12-Testing-y-Calidad]] (manejo de incidencias) y en [[Anexo-V-Evidencias-QA]] (Tabla 58,
 > registro de defectos).
+
+> [!info] Fuente — M31 se re-verificó el 2026-08-04 después de agregar `BookingFlow.test.tsx` y un
+> caso nuevo en `favorites.test.ts` (cierre de SIM-33/SIM-34, ver [[12-Testing-y-Calidad]] Tabla 33).
+> El valor anterior (1.462 / 11.148) quedó desactualizado por el mismo motivo que M12/M13.
+
+## Métricas adicionales M36–M37 (2026-08-04)
+
+| ID | Métrica | Valor | Comando / fuente | Verificado el |
+|---|---|---|---|---|
+| M36 | Issues `bug` con etiqueta de prioridad real (`p1-high`/`p2-medium`/`p3-low`) | 5 de 13 (38 %): #74, #75 → `p1-high`; #72, #87 → `p2-medium`; #76 → `p3-low` | `gh issue list --state all --label bug --json number,labels` | 2026-08-04 |
+| M37 | Cobertura de pruebas (`@vitest/coverage-v8`), global y sobre el código ejercitado | Global — sentencias 16,41 % (901/5.490), ramas 11,95 % (566/4.735), funciones 16,37 % (92/562), líneas 20,16 % (653/3.238). Ejercitado (27 archivos) — sentencias 59,83 % (901/1.506), ramas 43,84 % (566/1.291), funciones 62,59 % (92/147), líneas 72,31 % (653/903) | `npm --prefix frontend run test:coverage` (`vitest run --coverage`), `frontend/coverage/coverage-summary.json` | 2026-08-04 |
+
+> [!info] Fuente — M36 se usa en [[Anexo-V-Evidencias-QA]] (Tabla 58) para reemplazar la severidad
+> estimada de 5 de los 13 defectos por la etiqueta real de GitHub; detectó que la versión anterior
+> de esa tabla tenía a #74 mal clasificado ("Media" en vez de "Alta", en contradicción con
+> [[12-Testing-y-Calidad]], que ya citaba correctamente `p1-high` para #74). Las 8 issues restantes
+> no tienen etiqueta de prioridad y su severidad sigue siendo una estimación (SIM-37). M37 reemplaza
+> la referencia rota a "M33" que citaba [[12-Testing-y-Calidad]] (Tabla 32) desde antes de este
+> cambio —esa métrica nunca había quedado definida en esta nota— y actualiza los valores de Tabla
+> 32/32a/32b/40 tras agregar `BookingFlow.test.tsx` y el caso nuevo de `favorites.test.ts`, que
+> movieron cobertura hacia `components/ui`, `features/bookings/components` y `features/bookings`.
 
 ---
 [[Indice|Índice]]

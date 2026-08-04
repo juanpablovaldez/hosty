@@ -42,7 +42,7 @@ propiedad de la fila, mediante políticas de seguridad a nivel de fila de Postgr
 siguió Scrum a lo largo de cinco *sprints* entre marzo y junio de 2026, con el tablero, las
 incidencias y las solicitudes de incorporación administrados en GitHub.
 
-El resultado es una aplicación desplegada y funcionando sobre infraestructura real, con 73 pruebas
+El resultado es una aplicación desplegada y funcionando sobre infraestructura real, con 75 pruebas
 automatizadas y 111 ejecuciones de prueba de punta a punta sobre tres navegadores, todas en verde,
 y una canalización de integración y despliegue continuos. Cada cifra de este informe se cita contra
 el comando que permite reproducirla, y el contenido que no pudo verificarse en el repositorio se
@@ -538,7 +538,7 @@ confirmar, contra el estado real del repositorio, si la capacidad fue efectivame
 | OE2 | Proveer autenticación de usuarios y control de acceso a los datos basado en propiedad | Sesiones de Supabase Auth + guardas `requireAuth` sobre 8 de las 14 rutas del frontend (M09) |
 | OE3 | Habilitar un flujo de reserva guiado con validación de disponibilidad y de horarios | Wizard de reserva de 3 pasos (M20), con verificación de bloqueos de disponibilidad |
 | OE4 | Ofrecer al propietario un panel de gestión de sus salones y de las reservas recibidas | Panel del anfitrión con calendario y cotización de precio por reserva |
-| OE5 | Asegurar la calidad mediante pruebas automatizadas e integración continua | 73 pruebas automatizadas (M12) y 3 workflows de CI/CD (M14) |
+| OE5 | Asegurar la calidad mediante pruebas automatizadas e integración continua | 75 pruebas automatizadas (M12) y 3 workflows de CI/CD (M14) |
 | OE6 | Documentar la arquitectura, el proceso y las métricas del proyecto de forma trazable | Este mismo vault: 35 notas —17 secciones, 5 anexos, 11 notas de apoyo y 2 de índice— con toda métrica citada a su fuente en la nota Datos-Verificables |
 
 *Tabla 6 — Objetivos específicos y criterio de verificación.*
@@ -547,7 +547,7 @@ confirmar, contra el estado real del repositorio, si la capacidad fue efectivame
 
 El objetivo de calidad definido para el proyecto consiste en sostener una suite de pruebas
 automatizadas que cubra los flujos críticos del frontend. A la fecha de verificación de este
-informe existen 73 pruebas automatizadas distribuidas en 19 archivos de prueba — 14 pruebas
+informe existen 75 pruebas automatizadas distribuidas en 20 archivos de prueba — 15 pruebas
 unitarias y de componente con Vitest y Testing Library, más 5 especificaciones end-to-end con
 Playwright — (M12, M13). La cobertura se mide con `@vitest/coverage-v8` y se reporta bajo dos
 criterios —global y sobre el código efectivamente ejercitado— en la Tabla 32 de la sección 12,
@@ -582,7 +582,7 @@ dicha funcionalidad efectivamente existe en el producto.
 | OE2 | E2 — Autenticación y cuenta | Sesiones de Supabase Auth, guarda `requireAuth`, RLS por `auth.uid()` | M09 |
 | OE3 | E3 — Reserva de salones | Wizard de reserva de 3 pasos; estados `pending`/`confirmed`/`declined`/`cancelled` | M17, M20 |
 | OE4 | E4 — Panel del anfitrión; E5 — Favoritos y plan destacado | Panel de calendario y cotización; favoritos; plan Destacado (cobro con Mercado Pago diferido, issue #45 abierto) | M10 |
-| OE5 | E6 — Calidad e integración continua | 73 pruebas automatizadas y 3 workflows de CI/CD | M12, M13, M14 |
+| OE5 | E6 — Calidad e integración continua | 75 pruebas automatizadas y 3 workflows de CI/CD | M12, M13, M14 |
 | OE6 | E7 — Infraestructura y despliegue (transversal) | Documentación trazable del proyecto (este vault) y despliegue automatizado vía GitHub Actions | M14 |
 
 *Tabla 7 — Trazabilidad objetivo → épica → funcionalidad → evidencia.*
@@ -1630,7 +1630,7 @@ flowchart TD
 
 *Figura 19 — Pirámide de pruebas: unitarias (Vitest) / componentes (RTL+jsdom) / E2E (Playwright).*
 
-> **Fuente.** M12/M13 (`_meta/Datos-Verificables.md`): 73 pruebas Vitest en 14 archivos
+> **Fuente.** M12/M13 (`_meta/Datos-Verificables.md`): 75 pruebas Vitest en 15 archivos
 > unitarios/de componentes, más 5 *specs* Playwright E2E.
 
 ```mermaid
@@ -1658,14 +1658,14 @@ flowchart TD
 
 *Tabla 31 — Tipos de prueba, herramienta y alcance real.*
 
-> **Fuente.** M12/M13, verificado ejecutando `npx vitest run` sobre el repositorio: 14
-> archivos, 73 casos, todos en verde. Nota honesta: sólo la suite de Vitest está integrada al
+> **Fuente.** M12/M13, verificado ejecutando `npx vitest run` sobre el repositorio: 15
+> archivos, 75 casos, todos en verde. Nota honesta: sólo la suite de Vitest está integrada al
 > pipeline de CI (`frontend-tests.yml` ejecuta `pnpm test run`); Playwright, la corrida
 > independiente de Mocha (`pnpm test:mocha`) y el *spec* de Cypress se ejecutan de forma local o
 > manual y no forman parte de ningún *workflow* de `.github/workflows/`. El archivo de Mocha,
 > además, también es recolectado por Vitest porque su ruta no está excluida en `vite.config.ts`
 > (`exclude: [...configDefaults.exclude, 'src/e2e/**']`); por eso sus 4 casos ya están incluidos en
-> el total de 73.
+> el total de 75.
 
 ## Cobertura
 
@@ -1674,23 +1674,23 @@ nativo, y se ejecuta con `npm --prefix frontend run test:coverage`. El resultado
 **dos criterios**, porque informar uno solo distorsiona la lectura en sentidos opuestos:
 
 - **Cobertura global.** Se instrumenta todo el código de aplicación bajo `src/` —95 archivos—,
- incluidos los 72 que ninguna prueba llega a importar. Es la cifra honesta del estado del
+ incluidos los 68 que ninguna prueba llega a importar. Es la cifra honesta del estado del
  proyecto y la que corresponde citar si se pide "la cobertura" sin más.
-- **Cobertura del código ejercitado.** Se mide únicamente sobre los 23 archivos que la suite
+- **Cobertura del código ejercitado.** Se mide únicamente sobre los 27 archivos que la suite
  efectivamente importa. Indica qué tan a fondo se prueba aquello que sí está bajo prueba, pero no
  debe presentarse como cobertura del proyecto, porque ignora todo lo que quedó sin probar.
 
 | Métrica | Cobertura global | Sobre el código ejercitado |
 |---|---|---|
-| Sentencias | 12,44 % (683 / 5.490) | 63,01 % (683 / 1.084) |
-| Ramas | 8,98 % (425 / 4.735) | 46,60 % (425 / 912) |
-| Funciones | 13,88 % (78 / 562) | 70,27 % (78 / 111) |
-| Líneas | 15,69 % (508 / 3.238) | 75,26 % (508 / 675) |
+| Sentencias | 16,41 % (901 / 5.490) | 59,83 % (901 / 1.506) |
+| Ramas | 11,95 % (566 / 4.735) | 43,84 % (566 / 1.291) |
+| Funciones | 16,37 % (92 / 562) | 62,59 % (92 / 147) |
+| Líneas | 20,16 % (653 / 3.238) | 72,31 % (653 / 903) |
 
 *Tabla 32 — Cobertura de pruebas bajo ambos criterios.*
 
-> **Fuente.** M33: `npm --prefix frontend run test:coverage` (`vitest run --coverage`,
-> proveedor V8), ejecutado el 2026-08-02 sobre 14 archivos y 73 casos. Los totales se obtuvieron de
+> **Fuente.** M37: `npm --prefix frontend run test:coverage` (`vitest run --coverage`,
+> proveedor V8), ejecutado el 2026-08-04 sobre 15 archivos y 75 casos. Los totales se obtuvieron de
 > `frontend/coverage/coverage-summary.json`. La configuración de proveedor, *reporters* y
 > exclusiones está declarada en el bloque `test.coverage` de `frontend/vite.config.ts`: se excluyen
 > del cómputo los propios archivos de prueba, `src/e2e/`, `src/test/`, `main.tsx` y los dos
@@ -1698,7 +1698,7 @@ nativo, y se ejecuta con `npm --prefix frontend run test:coverage`. El resultado
 > código que nadie escribió a mano no aporta información.
 
 La distribución por módulo muestra un patrón deliberado: la lógica de dominio y de acceso a datos
-está cubierta, y la capa de presentación no.
+está cubierta, y la capa de presentación, todavía parcialmente.
 
 | Módulo | Sentencias | Ramas | Funciones | Líneas |
 |---|---|---|---|---|
@@ -1711,37 +1711,42 @@ está cubierta, y la capa de presentación no.
 | `features/salones/api` | 54,21 % | 47,92 % | 61,54 % | 61,25 % |
 | `features/salones/lib` | 50,00 % | 75,00 % | 66,67 % | 55,56 % |
 | `components/layout` | 43,08 % | 35,81 % | 35,00 % | 49,22 % |
-| `components/ui` | 19,93 % | 10,79 % | 20,31 % | 24,36 % |
+| `components/ui` | 28,93 % | 15,77 % | 28,13 % | 37,03 % |
+| `features/bookings/components` | 25,96 % | 22,58 % | 22,50 % | 30,34 % |
 | `features/salones/components` | 7,69 % | 6,52 % | 2,27 % | 11,30 % |
-| 17 carpetas restantes | 0,00 % | 0,00 % | 0,00 % | 0,00 % |
+| 16 carpetas restantes | 0,00 % | 0,00 % | 0,00 % | 0,00 % |
 
 *Tabla 32a — Cobertura por módulo, ordenada por cobertura de sentencias.*
 
-Las 17 carpetas sin cobertura son, en su mayoría, componentes de pantalla y definiciones de ruta
-(`routes/`, `features/host/components`, `features/bookings/components`, `features/home/components`,
-entre otras): código que la suite E2E de Playwright sí ejercita sobre el navegador, pero que no
-aparece en esta medición porque Playwright corre fuera del proceso de Vitest y no comparte su
-instrumentación. La cobertura de la Tabla 32 es, por lo tanto, un piso y no un techo del código
-realmente probado.
+`components/ui` y `features/bookings/components` pasaron a tener cobertura parcial el 2026-08-04:
+`BookingFlow.test.tsx` (cierre de SIM-33, ver Tabla 33) renderiza el componente completo, y de paso
+ejercita los primitivos de shadcn/ui que usa (`Select`, `Button`, `Input`, `Skeleton`, entre otros).
+
+Las 16 carpetas sin cobertura son, en su mayoría, componentes de pantalla y definiciones de ruta
+(`routes/`, `features/host/components`, `features/home/components`, entre otras): código que la
+suite E2E de Playwright sí ejercita sobre el navegador, pero que no aparece en esta medición porque
+Playwright corre fuera del proceso de Vitest y no comparte su instrumentación. La cobertura de la
+Tabla 32 es, por lo tanto, un piso y no un techo del código realmente probado.
 
 Junto al porcentaje conviene leer el volumen absoluto de la suite, que no depende del criterio de
 medición elegido:
 
 | Métrica de volumen | Valor |
 |---|---|
-| Pruebas automatizadas (Vitest) | 73 |
-| Archivos de prueba (Vitest/RTL + Playwright) | 19 (14 + 5) |
-| Líneas de código de prueba (unitarias + componentes + E2E) | 1.505 |
-| Líneas de código de producción (`src/`, sin pruebas) | 11.208 |
-| Relación líneas de prueba / líneas de producción | ≈ 0,13 (13 %) |
+| Pruebas automatizadas (Vitest) | 75 |
+| Archivos de prueba (Vitest/RTL + Playwright) | 20 (15 + 5) |
+| Líneas de código de prueba (unitarias + componentes + E2E) | 1.603 |
+| Líneas de código de producción (`src/`, sin pruebas) | 11.223 |
+| Relación líneas de prueba / líneas de producción | ≈ 0,14 (14 %) |
 
 *Tabla 32b — Volumen de la suite de pruebas.*
 
-> **Fuente.** M12/M13; líneas de prueba y de producción contadas con
+> **Fuente.** M12/M13/M31; líneas de prueba y de producción contadas con
 > `find frontend/src -name '*.test.ts' -o -name '*.test.tsx' -o -path '*/e2e/*.spec.ts' | xargs wc -l`
-> y su complemento sobre `*.ts`/`*.tsx`, respectivamente (2026-08-02). La cifra de producción
-> incluye `src/routeTree.gen.ts` (343 líneas autogeneradas por TanStack Router), que sí se excluye
-> del cómputo de cobertura de la Tabla 32.
+> y su complemento sobre `*.ts`/`*.tsx`, respectivamente (2026-08-04, re-verificado tras agregar
+> `BookingFlow.test.tsx` y el caso nuevo de `favorites.test.ts`). La cifra de producción incluye
+> `src/routeTree.gen.ts` (343 líneas autogeneradas por TanStack Router), que sí se excluye del
+> cómputo de cobertura de la Tabla 32.
 
 El reporte HTML navegable queda en `frontend/coverage/index.html` y se anexa en
 [Anexo V. Evidencias de QA](#anexo-v-evidencias-de-qa). Elevar la cobertura de la capa de presentación está registrado como
@@ -1835,8 +1840,9 @@ todos corregidos y verificados.
 > **Fuente.** R-01 se verifica con las 7 pruebas unitarias de `src/shared/lib/errors.test.ts`,
 > incluida una que comprueba explícitamente que un error sin traducción conocida no propague el
 > texto original en inglés. R-02 y R-03 se incorporaron mediante la rama
-> `fix/detalles-ui-formulario`. La suite completa quedó en 73 casos, todos en verde, con
-> verificación de tipos (`tsc -b --noEmit`) y análisis estático (ESLint) sin errores.
+> `fix/detalles-ui-formulario`. En ese momento la suite completa quedó en 73 casos, todos en verde,
+> con verificación de tipos (`tsc -b --noEmit`) y análisis estático (ESLint) sin errores; el total
+> vigente al cierre de este informe es 75 (Tabla 31), tras los dos casos agregados el 2026-08-04.
 
 ## Criterios de salida
 
@@ -2052,7 +2058,7 @@ antes de adoptarla.
 | Rutas / protegidas | 14 / 8 | M09 |
 | Features del frontend | 8 módulos | M15 |
 | Invocaciones PostgREST (`select`/`insert`/`update`/`delete` en `api/*.ts`) | 35, repartidas en 4 módulos activos (ver Anexo IV, API y Repositorio, Tabla 53). **No confundir con las 26 operaciones expuestas como *hooks* de la Tabla 30**: un mismo *hook* puede encadenar más de una invocación | Conteo propio, `grep` sobre `frontend/src/features/*/api/*.ts` |
-| Pruebas automatizadas por tipo | 73 Vitest (14 archivos) + 5 *specs* Playwright E2E (× 3 navegadores) + 1 Mocha + 1 Cypress locales | M12, M13 |
+| Pruebas automatizadas por tipo | 75 Vitest (15 archivos) + 5 *specs* Playwright E2E (× 3 navegadores) + 1 Mocha + 1 Cypress locales | M12, M13 |
 | Workflows de CI/CD | 3 | M14 |
 
 *Tabla 38 — Métricas de producto y de calidad.*
@@ -2136,7 +2142,7 @@ evidencia primaria de este informe, no una reconstrucción posterior.
 | `tsconfig.app.json` excluye `src/test`, `*.test.ts(x)` y `*.spec.ts(x)` del *type-check* de build | Baja | Errores de tipos dentro de los propios tests no bloquean `npm run build` | Crear un `tsconfig.test.json` referenciado que sí tipe los archivos de prueba |
 | `prettier` está scripteado (`format`, `format:check`) pero no figura como dependencia directa de `frontend/package.json`; sólo está presente de forma transitiva en `node_modules` | Baja | El script puede romperse si la dependencia transitiva que lo provee cambia | Declarar `prettier` como `devDependency` explícita |
 | `react-i18next` está inicializado (`src/i18n/`) pero no se usa en ningún componente (`grep -rl useTranslation frontend/src` no devuelve resultados) | Baja | Infraestructura de internacionalización sin efecto — todo el texto sigue *hardcodeado* en español | Adoptar `useTranslation` de forma incremental o quitar la dependencia si no se usará |
-| La capa de presentación queda fuera de la cobertura medida: 17 carpetas de componentes y rutas en 0 % (ver [Testing y Calidad](#12-testing-y-calidad), Tabla 32a) | Baja | La cobertura global es de 12,44 % en sentencias; las regresiones de interfaz sólo las detecta la suite E2E, que no corre en CI | Agregar pruebas de componente sobre el panel del anfitrión y el flujo de reserva, e incorporar Playwright al *pipeline* |
+| La capa de presentación queda mayormente fuera de la cobertura medida: 16 carpetas de componentes y rutas en 0 % (ver [Testing y Calidad](#12-testing-y-calidad), Tabla 32a) | Baja | La cobertura global es de 16,41 % en sentencias; las regresiones de interfaz sólo las detecta la suite E2E, que no corre en CI | Agregar pruebas de componente sobre el panel del anfitrión y el flujo de publicación, e incorporar Playwright al *pipeline* |
 | `npx eslint .` reporta 6 errores y 4 advertencias sobre el estado actual del repositorio (ver [Testing y Calidad](#12-testing-y-calidad), Tabla 34) | Baja | El criterio de salida "lint limpio" no se cumple de forma estricta hoy | Corregir los parámetros sin usar de `cypress.config.ts`, ajustar la regla `no-unused-expressions` para aserciones de Chai, y resolver las dependencias de `useMemo` en `SalonesPage.tsx` |
 
 *Tabla 40 — Deuda técnica: severidad, impacto y plan de remediación.*
@@ -3150,16 +3156,19 @@ visible de un vistazo y corresponde a la priorización declarada en la sección 
 
 > **Fuente.** `npm --prefix frontend run test:coverage`; captura del reporte HTML generado en
 > `frontend/coverage/index.html`. Los porcentajes de la captura (12,44 % de sentencias, 8,97 % de
-> ramas, 13,87 % de funciones y 15,68 % de líneas) coinciden con los de la Tabla 32, que los
-> reproduce con dos decimales desde `coverage/coverage-summary.json`.
+> ramas, 13,87 % de funciones y 15,68 % de líneas) corresponden a la corrida del 2026-08-02, sobre
+> 14 archivos y 73 casos. **Quedaron desactualizados el 2026-08-04**, al agregar
+> `BookingFlow.test.tsx` y un caso nuevo en `favorites.test.ts` (cierre de SIM-33/SIM-34, ver
+> [Testing y Calidad](#12-testing-y-calidad) Tabla 33): la cobertura global subió a 16,41 % de sentencias (Tabla 32).
+> La captura no se regeneró; **Tabla 32 es la cifra vigente**, no esta figura.
 
 ## Resumen de evidencias
 
 | Evidencia | Resultado |
 |---|---|
-| Corrida de Vitest | 14 archivos, 73 casos, todos exitosos (2026-08-02) |
+| Corrida de Vitest | 15 archivos, 75 casos, todos exitosos (2026-08-04) |
 | Corrida E2E de Playwright sobre el entorno desplegado | 111 casos sobre 3 navegadores, todos exitosos (2026-08-02; ver Tablas 57b y 57c) |
-| Cobertura de pruebas (`@vitest/coverage-v8`) | 12,44 % global de sentencias; 63,01 % sobre el código ejercitado (2026-08-02; ver Tablas 32 y 32a) |
+| Cobertura de pruebas (`@vitest/coverage-v8`) | 16,41 % global de sentencias; 59,83 % sobre el código ejercitado (2026-08-04; ver Tablas 32 y 32a) |
 | Verificación de tipos (`tsc -b --noEmit`) | Sin errores (2026-07-28) |
 | Análisis estático (`eslint .`) | 6 errores y 4 advertencias (2026-07-28; ver [Testing y Calidad](#12-testing-y-calidad), Tabla 34) |
 | Evidencia de la API de datos | Figura 35 — llamada real capturada sobre el entorno desplegado |

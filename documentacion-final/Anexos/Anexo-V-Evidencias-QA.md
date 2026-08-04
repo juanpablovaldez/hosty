@@ -212,16 +212,19 @@ visible de un vistazo y corresponde a la priorización declarada en la sección 
 
 > [!info] Fuente — `npm --prefix frontend run test:coverage`; captura del reporte HTML generado en
 > `frontend/coverage/index.html`. Los porcentajes de la captura (12,44 % de sentencias, 8,97 % de
-> ramas, 13,87 % de funciones y 15,68 % de líneas) coinciden con los de la Tabla 32, que los
-> reproduce con dos decimales desde `coverage/coverage-summary.json`.
+> ramas, 13,87 % de funciones y 15,68 % de líneas) corresponden a la corrida del 2026-08-02, sobre
+> 14 archivos y 73 casos. **Quedaron desactualizados el 2026-08-04**, al agregar
+> `BookingFlow.test.tsx` y un caso nuevo en `favorites.test.ts` (cierre de SIM-33/SIM-34, ver
+> [[12-Testing-y-Calidad]] Tabla 33): la cobertura global subió a 16,41 % de sentencias (Tabla 32).
+> La captura no se regeneró; **Tabla 32 es la cifra vigente**, no esta figura.
 
 ## Resumen de evidencias
 
 | Evidencia | Resultado |
 |---|---|
-| Corrida de Vitest | 14 archivos, 73 casos, todos exitosos (2026-08-02) |
+| Corrida de Vitest | 15 archivos, 75 casos, todos exitosos (2026-08-04) |
 | Corrida E2E de Playwright sobre el entorno desplegado | 111 casos sobre 3 navegadores, todos exitosos (2026-08-02; ver Tablas 57b y 57c) |
-| Cobertura de pruebas (`@vitest/coverage-v8`) | 12,44 % global de sentencias; 63,01 % sobre el código ejercitado (2026-08-02; ver Tablas 32 y 32a) |
+| Cobertura de pruebas (`@vitest/coverage-v8`) | 16,41 % global de sentencias; 59,83 % sobre el código ejercitado (2026-08-04; ver Tablas 32 y 32a) |
 | Verificación de tipos (`tsc -b --noEmit`) | Sin errores (2026-07-28) |
 | Análisis estático (`eslint .`) | 6 errores y 4 advertencias (2026-07-28; ver [[12-Testing-y-Calidad]], Tabla 34) |
 | Evidencia de la API de datos | Figura 35 — llamada real capturada sobre el entorno desplegado |

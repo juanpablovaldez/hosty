@@ -31,7 +31,7 @@ flowchart TD
 
 *Figura 19 — Pirámide de pruebas: unitarias (Vitest) / componentes (RTL+jsdom) / E2E (Playwright).*
 
-> [!info] Fuente — M12/M13 (`_meta/Datos-Verificables.md`): 73 pruebas Vitest en 14 archivos
+> [!info] Fuente — M12/M13 (`_meta/Datos-Verificables.md`): 75 pruebas Vitest en 15 archivos
 > unitarios/de componentes, más 5 *specs* Playwright E2E.
 
 ```mermaid
@@ -59,14 +59,14 @@ flowchart LR
 
 *Tabla 31 — Tipos de prueba, herramienta y alcance real.*
 
-> [!info] Fuente — M12/M13, verificado ejecutando `npx vitest run` sobre el repositorio: 14
-> archivos, 73 casos, todos en verde. Nota honesta: sólo la suite de Vitest está integrada al
+> [!info] Fuente — M12/M13, verificado ejecutando `npx vitest run` sobre el repositorio: 15
+> archivos, 75 casos, todos en verde. Nota honesta: sólo la suite de Vitest está integrada al
 > pipeline de CI (`frontend-tests.yml` ejecuta `pnpm test run`); Playwright, la corrida
 > independiente de Mocha (`pnpm test:mocha`) y el *spec* de Cypress se ejecutan de forma local o
 > manual y no forman parte de ningún *workflow* de `.github/workflows/`. El archivo de Mocha,
 > además, también es recolectado por Vitest porque su ruta no está excluida en `vite.config.ts`
 > (`exclude: [...configDefaults.exclude, 'src/e2e/**']`); por eso sus 4 casos ya están incluidos en
-> el total de 73.
+> el total de 75.
 
 ## Cobertura
 
@@ -75,23 +75,23 @@ nativo, y se ejecuta con `npm --prefix frontend run test:coverage`. El resultado
 **dos criterios**, porque informar uno solo distorsiona la lectura en sentidos opuestos:
 
 - **Cobertura global.** Se instrumenta todo el código de aplicación bajo `src/` —95 archivos—,
-  incluidos los 72 que ninguna prueba llega a importar. Es la cifra honesta del estado del
+  incluidos los 68 que ninguna prueba llega a importar. Es la cifra honesta del estado del
   proyecto y la que corresponde citar si se pide "la cobertura" sin más.
-- **Cobertura del código ejercitado.** Se mide únicamente sobre los 23 archivos que la suite
+- **Cobertura del código ejercitado.** Se mide únicamente sobre los 27 archivos que la suite
   efectivamente importa. Indica qué tan a fondo se prueba aquello que sí está bajo prueba, pero no
   debe presentarse como cobertura del proyecto, porque ignora todo lo que quedó sin probar.
 
 | Métrica | Cobertura global | Sobre el código ejercitado |
 |---|---|---|
-| Sentencias | 12,44 % (683 / 5.490) | 63,01 % (683 / 1.084) |
-| Ramas | 8,98 % (425 / 4.735) | 46,60 % (425 / 912) |
-| Funciones | 13,88 % (78 / 562) | 70,27 % (78 / 111) |
-| Líneas | 15,69 % (508 / 3.238) | 75,26 % (508 / 675) |
+| Sentencias | 16,41 % (901 / 5.490) | 59,83 % (901 / 1.506) |
+| Ramas | 11,95 % (566 / 4.735) | 43,84 % (566 / 1.291) |
+| Funciones | 16,37 % (92 / 562) | 62,59 % (92 / 147) |
+| Líneas | 20,16 % (653 / 3.238) | 72,31 % (653 / 903) |
 
 *Tabla 32 — Cobertura de pruebas bajo ambos criterios.*
 
-> [!info] Fuente — M33: `npm --prefix frontend run test:coverage` (`vitest run --coverage`,
-> proveedor V8), ejecutado el 2026-08-02 sobre 14 archivos y 73 casos. Los totales se obtuvieron de
+> [!info] Fuente — M37: `npm --prefix frontend run test:coverage` (`vitest run --coverage`,
+> proveedor V8), ejecutado el 2026-08-04 sobre 15 archivos y 75 casos. Los totales se obtuvieron de
 > `frontend/coverage/coverage-summary.json`. La configuración de proveedor, *reporters* y
 > exclusiones está declarada en el bloque `test.coverage` de `frontend/vite.config.ts`: se excluyen
 > del cómputo los propios archivos de prueba, `src/e2e/`, `src/test/`, `main.tsx` y los dos
@@ -99,7 +99,7 @@ nativo, y se ejecuta con `npm --prefix frontend run test:coverage`. El resultado
 > código que nadie escribió a mano no aporta información.
 
 La distribución por módulo muestra un patrón deliberado: la lógica de dominio y de acceso a datos
-está cubierta, y la capa de presentación no.
+está cubierta, y la capa de presentación, todavía parcialmente.
 
 | Módulo | Sentencias | Ramas | Funciones | Líneas |
 |---|---|---|---|---|
@@ -112,37 +112,42 @@ está cubierta, y la capa de presentación no.
 | `features/salones/api` | 54,21 % | 47,92 % | 61,54 % | 61,25 % |
 | `features/salones/lib` | 50,00 % | 75,00 % | 66,67 % | 55,56 % |
 | `components/layout` | 43,08 % | 35,81 % | 35,00 % | 49,22 % |
-| `components/ui` | 19,93 % | 10,79 % | 20,31 % | 24,36 % |
+| `components/ui` | 28,93 % | 15,77 % | 28,13 % | 37,03 % |
+| `features/bookings/components` | 25,96 % | 22,58 % | 22,50 % | 30,34 % |
 | `features/salones/components` | 7,69 % | 6,52 % | 2,27 % | 11,30 % |
-| 17 carpetas restantes | 0,00 % | 0,00 % | 0,00 % | 0,00 % |
+| 16 carpetas restantes | 0,00 % | 0,00 % | 0,00 % | 0,00 % |
 
 *Tabla 32a — Cobertura por módulo, ordenada por cobertura de sentencias.*
 
-Las 17 carpetas sin cobertura son, en su mayoría, componentes de pantalla y definiciones de ruta
-(`routes/`, `features/host/components`, `features/bookings/components`, `features/home/components`,
-entre otras): código que la suite E2E de Playwright sí ejercita sobre el navegador, pero que no
-aparece en esta medición porque Playwright corre fuera del proceso de Vitest y no comparte su
-instrumentación. La cobertura de la Tabla 32 es, por lo tanto, un piso y no un techo del código
-realmente probado.
+`components/ui` y `features/bookings/components` pasaron a tener cobertura parcial el 2026-08-04:
+`BookingFlow.test.tsx` (cierre de SIM-33, ver Tabla 33) renderiza el componente completo, y de paso
+ejercita los primitivos de shadcn/ui que usa (`Select`, `Button`, `Input`, `Skeleton`, entre otros).
+
+Las 16 carpetas sin cobertura son, en su mayoría, componentes de pantalla y definiciones de ruta
+(`routes/`, `features/host/components`, `features/home/components`, entre otras): código que la
+suite E2E de Playwright sí ejercita sobre el navegador, pero que no aparece en esta medición porque
+Playwright corre fuera del proceso de Vitest y no comparte su instrumentación. La cobertura de la
+Tabla 32 es, por lo tanto, un piso y no un techo del código realmente probado.
 
 Junto al porcentaje conviene leer el volumen absoluto de la suite, que no depende del criterio de
 medición elegido:
 
 | Métrica de volumen | Valor |
 |---|---|
-| Pruebas automatizadas (Vitest) | 73 |
-| Archivos de prueba (Vitest/RTL + Playwright) | 19 (14 + 5) |
-| Líneas de código de prueba (unitarias + componentes + E2E) | 1.505 |
-| Líneas de código de producción (`src/`, sin pruebas) | 11.208 |
-| Relación líneas de prueba / líneas de producción | ≈ 0,13 (13 %) |
+| Pruebas automatizadas (Vitest) | 75 |
+| Archivos de prueba (Vitest/RTL + Playwright) | 20 (15 + 5) |
+| Líneas de código de prueba (unitarias + componentes + E2E) | 1.603 |
+| Líneas de código de producción (`src/`, sin pruebas) | 11.223 |
+| Relación líneas de prueba / líneas de producción | ≈ 0,14 (14 %) |
 
 *Tabla 32b — Volumen de la suite de pruebas.*
 
-> [!info] Fuente — M12/M13; líneas de prueba y de producción contadas con
+> [!info] Fuente — M12/M13/M31; líneas de prueba y de producción contadas con
 > `find frontend/src -name '*.test.ts' -o -name '*.test.tsx' -o -path '*/e2e/*.spec.ts' | xargs wc -l`
-> y su complemento sobre `*.ts`/`*.tsx`, respectivamente (2026-08-02). La cifra de producción
-> incluye `src/routeTree.gen.ts` (343 líneas autogeneradas por TanStack Router), que sí se excluye
-> del cómputo de cobertura de la Tabla 32.
+> y su complemento sobre `*.ts`/`*.tsx`, respectivamente (2026-08-04, re-verificado tras agregar
+> `BookingFlow.test.tsx` y el caso nuevo de `favorites.test.ts`). La cifra de producción incluye
+> `src/routeTree.gen.ts` (343 líneas autogeneradas por TanStack Router), que sí se excluye del
+> cómputo de cobertura de la Tabla 32.
 
 El reporte HTML navegable queda en `frontend/coverage/index.html` y se anexa en
 [[Anexo-V-Evidencias-QA]]. Elevar la cobertura de la capa de presentación está registrado como
@@ -236,8 +241,9 @@ todos corregidos y verificados.
 > [!info] Fuente — R-01 se verifica con las 7 pruebas unitarias de `src/shared/lib/errors.test.ts`,
 > incluida una que comprueba explícitamente que un error sin traducción conocida no propague el
 > texto original en inglés. R-02 y R-03 se incorporaron mediante la rama
-> `fix/detalles-ui-formulario`. La suite completa quedó en 73 casos, todos en verde, con
-> verificación de tipos (`tsc -b --noEmit`) y análisis estático (ESLint) sin errores.
+> `fix/detalles-ui-formulario`. En ese momento la suite completa quedó en 73 casos, todos en verde,
+> con verificación de tipos (`tsc -b --noEmit`) y análisis estático (ESLint) sin errores; el total
+> vigente al cierre de este informe es 75 (Tabla 31), tras los dos casos agregados el 2026-08-04.
 
 ## Criterios de salida
 

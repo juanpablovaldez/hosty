@@ -53,7 +53,7 @@ propiedad de la fila, mediante políticas de seguridad a nivel de fila de Postgr
 siguió Scrum a lo largo de cinco *sprints* entre marzo y junio de 2026, con el tablero, las
 incidencias y las solicitudes de incorporación administrados en GitHub.
 
-El resultado es una aplicación desplegada y funcionando sobre infraestructura real, con 73 pruebas
+El resultado es una aplicación desplegada y funcionando sobre infraestructura real, con 75 pruebas
 automatizadas y 111 ejecuciones de prueba de punta a punta sobre tres navegadores, todas en verde,
 y una canalización de integración y despliegue continuos. Cada cifra de este informe se cita contra
 el comando que permite reproducirla, y el contenido que no pudo verificarse en el repositorio se

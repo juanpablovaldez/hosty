@@ -86,7 +86,7 @@ antes de adoptarla.
 | Rutas / protegidas | 14 / 8 | M09 |
 | Features del frontend | 8 módulos | M15 |
 | Invocaciones PostgREST (`select`/`insert`/`update`/`delete` en `api/*.ts`) | 35, repartidas en 4 módulos activos (ver Anexo IV, API y Repositorio, Tabla 53). **No confundir con las 26 operaciones expuestas como *hooks* de la Tabla 30**: un mismo *hook* puede encadenar más de una invocación | Conteo propio, `grep` sobre `frontend/src/features/*/api/*.ts` |
-| Pruebas automatizadas por tipo | 73 Vitest (14 archivos) + 5 *specs* Playwright E2E (× 3 navegadores) + 1 Mocha + 1 Cypress locales | M12, M13 |
+| Pruebas automatizadas por tipo | 75 Vitest (15 archivos) + 5 *specs* Playwright E2E (× 3 navegadores) + 1 Mocha + 1 Cypress locales | M12, M13 |
 | Workflows de CI/CD | 3 | M14 |
 
 *Tabla 38 — Métricas de producto y de calidad.*
