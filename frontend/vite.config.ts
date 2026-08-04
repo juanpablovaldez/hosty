@@ -57,6 +57,18 @@ export default defineConfig({
         'src/main.tsx',
         'src/vite-env.d.ts',
       ],
+      // Umbrales acotados a los módulos críticos que ya están bien probados: el cálculo del
+      // precio de una reserva y el ciclo de vida de una reserva (crear, cancelar, listar). No se
+      // fija un umbral sobre carpetas todavía sin cubrir (host.queries, la mayor parte de
+      // host.mutations, los filtros de salones) porque un umbral ahí fallaría contra la realidad
+      // en vez de proteger una regresión real — ver la Tabla 32b de 12-Testing-y-Calidad.md para
+      // el desglose completo por carpeta.
+      thresholds: {
+        'src/features/bookings/lib/**': { statements: 90, branches: 80, functions: 90, lines: 90 },
+        'src/features/bookings/api/**': { statements: 90, branches: 70, functions: 90, lines: 90 },
+        'src/features/favorites/api/**': { statements: 90, branches: 80, functions: 90, lines: 90 },
+        'src/features/auth/lib/**': { statements: 85, branches: 90, functions: 80, lines: 85 },
+      },
     },
   },
 })
