@@ -104,7 +104,7 @@ cifra de mercado externa— para que al menos un extremo del cálculo sea verifi
 | 1 | Población de Argentina | ≈ 47.000.000 | Redondeo de proyecciones INDEC 2022 |
 | 2 | Población de Tucumán | 1.694.656 | Censo Nacional 2022 (INDEC) |
 | 3 | Tasa de eventos/año que requieren alquilar un salón (bodas, XV años, corporativos, aniversarios) | 0,5 % de la población | **SIM-38** — estimación propia, sin fuente estadística verificada; método visible para poder ajustarla |
-| 4 | Ticket promedio por reserva | $125.000 | Figura 36 de [[Anexos/Anexo-V-Evidencias-QA]] — recorrido real del flujo de reserva sobre el entorno desplegado (6,25 h × $20.000/h) |
+| 4 | Ticket promedio por reserva | $125.000 | Figura 36 de [[Anexo-V-Evidencias-QA]] — recorrido real del flujo de reserva sobre el entorno desplegado (6,25 h × $20.000/h) |
 | 5 | Salones activos y verificados en el catálogo hoy | +120 | Copy verificado de la propia aplicación (`HomePage.tsx`, `ComoFunciona.tsx`) |
 | 6 | Reservas pagas por salón por año, alcanzables en el corto plazo | 8 | **SIM-39** — estimación conservadora para una plataforma recién lanzada, sin dato histórico propio |
 | 7 | Comisión por reserva concretada | 8–15 % | Rango ya declarado en el issue #45 (Mercado Pago, diferido) |
@@ -119,8 +119,7 @@ flowchart TD
     TAM --> SAM --> SOM
 ```
 
-*Figura 38 — TAM / SAM / SOM: del mercado nacional al volumen alcanzable con la base de salones
-actual.*
+*Figura 38 — TAM / SAM / SOM: del mercado nacional al volumen alcanzable con la base de salones actual.*
 
 - **TAM** (mercado total, Argentina): 47.000.000 × 0,5 % ≈ 235.000 eventos/año × $125.000 ≈ **ARS
   29.400 millones/año**.
@@ -131,7 +130,7 @@ actual.*
   eso es entre **ARS 9,6 y 18 millones/año** de ingreso potencial sólo por la línea de comisión, sin
   contar publicidad ni reventa de servicios.
 
-> [!warning] Dato simulado SIM-38/SIM-39 — Tasa de eventos y reservas por salón
+> [!warning] Dato simulado SIM-38 — Tasa de eventos y reservas por salón (cubre también SIM-39)
 > Las filas 3 y 6 de la Tabla 63 (0,5 % de tasa de eventos, 8 reservas/salón/año) son supuestos
 > propios sin respaldo estadístico externo verificado, elegidos para que el cálculo sea conservador
 > y no para maximizar el resultado. El resto de la cadena (población, ticket promedio, cantidad de

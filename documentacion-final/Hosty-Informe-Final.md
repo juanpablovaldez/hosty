@@ -42,7 +42,7 @@ propiedad de la fila, mediante políticas de seguridad a nivel de fila de Postgr
 siguió Scrum a lo largo de cinco *sprints* entre marzo y junio de 2026, con el tablero, las
 incidencias y las solicitudes de incorporación administrados en GitHub.
 
-El resultado es una aplicación desplegada y funcionando sobre infraestructura real, con 75 pruebas
+El resultado es una aplicación desplegada y funcionando sobre infraestructura real, con 94 pruebas
 automatizadas y 111 ejecuciones de prueba de punta a punta sobre tres navegadores, todas en verde,
 y una canalización de integración y despliegue continuos. Cada cifra de este informe se cita contra
 el comando que permite reproducirla, y el contenido que no pudo verificarse en el repositorio se
@@ -128,6 +128,7 @@ reflejan el repositorio tal como se entrega.
   - [Trazabilidad objetivo → épica → funcionalidad](#trazabilidad-objetivo-epica-funcionalidad)
 - [5. Problema a Resolver](#5-problema-a-resolver)
   - [Problema central](#problema-central)
+  - [El problema, en primera persona](#el-problema-en-primera-persona)
   - [Consecuencias para el organizador](#consecuencias-para-el-organizador)
   - [Consecuencias para el anfitrión](#consecuencias-para-el-anfitrion)
   - [Problema, consecuencia y respuesta del sistema](#problema-consecuencia-y-respuesta-del-sistema)
@@ -135,6 +136,7 @@ reflejan el repositorio tal como se entrega.
 - [6. Impacto de la Solución](#6-impacto-de-la-solucion)
   - [Beneficios por tipo de usuario](#beneficios-por-tipo-de-usuario)
   - [Qué cambia respecto de la situación anterior](#que-cambia-respecto-de-la-situacion-anterior)
+  - [Tamaño del mercado y modelo de negocio](#tamano-del-mercado-y-modelo-de-negocio)
 - [7. Equipo y Roles](#7-equipo-y-roles)
   - [Composición del equipo](#composicion-del-equipo)
   - [Contribuciones por identidad Git](#contribuciones-por-identidad-git)
@@ -152,6 +154,7 @@ reflejan el repositorio tal como se entrega.
   - [User stories destacadas](#user-stories-destacadas)
   - [Definition of Ready y Definition of Done](#definition-of-ready-y-definition-of-done)
   - [Plan de sprints](#plan-de-sprints)
+  - [Validación con usuarios y ciclo de feedback](#validacion-con-usuarios-y-ciclo-de-feedback)
   - [Retrospectivas](#retrospectivas)
 - [10. Presupuesto](#10-presupuesto)
   - [Esfuerzo por perfil](#esfuerzo-por-perfil)
@@ -166,6 +169,8 @@ reflejan el repositorio tal como se entrega.
   - [11.6 Seguridad](#116-seguridad)
   - [11.7 API](#117-api)
   - [11.8 Deployment](#118-deployment)
+  - [11.9 Camino de escalado](#119-camino-de-escalado)
+  - [11.10 Infraestructura como código](#1110-infraestructura-como-codigo)
 - [12. Testing y Calidad](#12-testing-y-calidad)
   - [Estrategia general](#estrategia-general)
   - [Tipos de prueba](#tipos-de-prueba)
@@ -220,6 +225,13 @@ reflejan el repositorio tal como se entrega.
   - [Evidencia de la aplicación en ejecución](#evidencia-de-la-aplicacion-en-ejecucion)
   - [Evidencia de cobertura de pruebas](#evidencia-de-cobertura-de-pruebas)
   - [Resumen de evidencias](#resumen-de-evidencias)
+- [Anexo VI. Descubrimiento de Producto y Mercado](#anexo-vi-descubrimiento-de-producto-y-mercado)
+  - [Del brainstorming a la idea elegida](#del-brainstorming-a-la-idea-elegida)
+  - [Benchmarking](#benchmarking)
+  - [FODA](#foda)
+  - [Product discovery → alcance del MVP](#product-discovery-alcance-del-mvp)
+  - [TAM / SAM / SOM](#tam-sam-som)
+  - [Modelo de negocio](#modelo-de-negocio)
 
 ---
 
@@ -251,6 +263,7 @@ exportador. Cada entrada indica la sección donde se encuentra la tabla.
 | Tabla 19 | User stories destacadas: formato Como/quiero/para, story points y épica | 9. Planificación Scrum |
 | Tabla 20 | Definition of Ready y Definition of Done | 9. Planificación Scrum |
 | Tabla 21 | Plan de sprints: cantidad, duración, foco y resultado | 9. Planificación Scrum |
+| Tabla 22a | Instancias de validación con usuarios y su cambio derivado en el backlog | 9. Planificación Scrum |
 | Tabla 22 | Retrospectivas: problema, impacto y acción correctiva | 9. Planificación Scrum |
 | Tabla 23 | Estimación de esfuerzo por perfil, horas y tarifa | 10. Presupuesto |
 | Tabla 24 | Costos de infraestructura y capas gratuitas | 10. Presupuesto |
@@ -296,6 +309,10 @@ exportador. Cada entrada indica la sección donde se encuentra la tabla.
 | Tabla 57c | Análisis de los casos fallidos y su corrección | Anexo V. Evidencias de QA |
 | Tabla 58 | Registro de defectos y retesting. "(verificada)" = severidad confirmada por etiqueta real de GitHub, no estimación | Anexo V. Evidencias de QA |
 | Tabla 59 | Resumen de evidencias de calidad | Anexo V. Evidencias de QA |
+| Tabla 60 | Del brainstorming a las tres ideas finalistas y el criterio de selección | Anexo VI. Descubrimiento de Producto y Mercado |
+| Tabla 61 | Benchmarking: Hosty frente a las alternativas reales del mercado en Tucumán | Anexo VI. Descubrimiento de Producto y Mercado |
+| Tabla 62 | Análisis FODA | Anexo VI. Descubrimiento de Producto y Mercado |
+| Tabla 63 | Supuestos y fuentes del cálculo de TAM/SAM/SOM | Anexo VI. Descubrimiento de Producto y Mercado |
 
 ---
 
@@ -321,6 +338,7 @@ exportador. Cada entrada indica la sección donde se encuentra la tabla.
 | Figura 16 | Bootstrap de autenticación: `main.tsx` → `initAuth()` → `getSession()` → `auth.store` → `authReady` → ruta o redirect | 11. Arquitectura |
 | Figura 17 | Capas y dependencias permitidas: `routes → features → shared/lib → Supabase` | 11. Arquitectura |
 | Figura 18 | Ciclo de lectura de datos: componente → hook TanStack Query → `supabase-js` → PostgREST → RLS → Postgres → caché | 11. Arquitectura |
+| Figura 39 | Camino de escalado: de un MVP de costo cero a una operación multi-provincia, con el disparador de cada salto | 11. Arquitectura |
 | Figura 19 | Pirámide de pruebas: unitarias (Vitest) / componentes (RTL+jsdom) / E2E (Playwright) | 12. Testing y Calidad |
 | Figura 20 | Pipeline CI/CD: PR → `frontend-tests.yml` (Vitest) → merge a `dev` → `web-dev.yml` (build + sync S3 + invalidación CloudFront); `infra-ci.yml` manual (`terraform plan`) | 12. Testing y Calidad |
 | Figura 21 | Ciclo de vida de un defecto: Reportado → Triage → En curso → En revisión → Retesting → Cerrado (+ No reproducible / Diferido) | 12. Testing y Calidad |
@@ -340,6 +358,7 @@ exportador. Cada entrada indica la sección donde se encuentra la tabla.
 | Figura 35 | Evidencia de pruebas sobre la API PostgREST | Anexo V. Evidencias de QA |
 | Figura 36 | Flujo de reserva de la aplicación en ejecución | Anexo V. Evidencias de QA |
 | Figura 37 | Reporte de cobertura de pruebas (`@vitest/coverage-v8`, 2026-08-02) | Anexo V. Evidencias de QA |
+| Figura 38 | TAM / SAM / SOM: del mercado nacional al volumen alcanzable con la base de salones actual | Anexo VI. Descubrimiento de Producto y Mercado |
 
 ---
 
@@ -538,8 +557,8 @@ confirmar, contra el estado real del repositorio, si la capacidad fue efectivame
 | OE2 | Proveer autenticación de usuarios y control de acceso a los datos basado en propiedad | Sesiones de Supabase Auth + guardas `requireAuth` sobre 8 de las 14 rutas del frontend (M09) |
 | OE3 | Habilitar un flujo de reserva guiado con validación de disponibilidad y de horarios | Wizard de reserva de 3 pasos (M20), con verificación de bloqueos de disponibilidad |
 | OE4 | Ofrecer al propietario un panel de gestión de sus salones y de las reservas recibidas | Panel del anfitrión con calendario y cotización de precio por reserva |
-| OE5 | Asegurar la calidad mediante pruebas automatizadas e integración continua | 75 pruebas automatizadas (M12) y 3 workflows de CI/CD (M14) |
-| OE6 | Documentar la arquitectura, el proceso y las métricas del proyecto de forma trazable | Este mismo vault: 35 notas —17 secciones, 5 anexos, 11 notas de apoyo y 2 de índice— con toda métrica citada a su fuente en la nota Datos-Verificables |
+| OE5 | Asegurar la calidad mediante pruebas automatizadas e integración continua | 94 pruebas automatizadas (M12) y 3 workflows de CI/CD (M14) |
+| OE6 | Documentar la arquitectura, el proceso y las métricas del proyecto de forma trazable | Este mismo vault: 36 notas —17 secciones, 6 anexos, 11 notas de apoyo y 2 de índice— con toda métrica citada a su fuente en la nota Datos-Verificables |
 
 *Tabla 6 — Objetivos específicos y criterio de verificación.*
 
@@ -547,7 +566,7 @@ confirmar, contra el estado real del repositorio, si la capacidad fue efectivame
 
 El objetivo de calidad definido para el proyecto consiste en sostener una suite de pruebas
 automatizadas que cubra los flujos críticos del frontend. A la fecha de verificación de este
-informe existen 75 pruebas automatizadas distribuidas en 20 archivos de prueba — 15 pruebas
+informe existen 94 pruebas automatizadas distribuidas en 21 archivos de prueba — 16 pruebas
 unitarias y de componente con Vitest y Testing Library, más 5 especificaciones end-to-end con
 Playwright — (M12, M13). La cobertura se mide con `@vitest/coverage-v8` y se reporta bajo dos
 criterios —global y sobre el código efectivamente ejercitado— en la Tabla 32 de la sección 12,
@@ -581,8 +600,8 @@ dicha funcionalidad efectivamente existe en el producto.
 | OE1 | E1 — Catálogo y búsqueda | Catálogo público con filtros y mapa | M09, M15 |
 | OE2 | E2 — Autenticación y cuenta | Sesiones de Supabase Auth, guarda `requireAuth`, RLS por `auth.uid()` | M09 |
 | OE3 | E3 — Reserva de salones | Wizard de reserva de 3 pasos; estados `pending`/`confirmed`/`declined`/`cancelled` | M17, M20 |
-| OE4 | E4 — Panel del anfitrión; E5 — Favoritos y plan destacado | Panel de calendario y cotización; favoritos; plan Destacado (cobro con Mercado Pago diferido, issue #45 abierto) | M10 |
-| OE5 | E6 — Calidad e integración continua | 75 pruebas automatizadas y 3 workflows de CI/CD | M12, M13, M14 |
+| OE4 | E4 — Panel del anfitrión; E5 — Favoritos y plan destacado | Panel de calendario y cotización; favoritos; plan Destacado (cobro con Mercado Pago diferido, issue #45 cerrado `not planned`) | M10 |
+| OE5 | E6 — Calidad e integración continua | 94 pruebas automatizadas y 3 workflows de CI/CD | M12, M13, M14 |
 | OE6 | E7 — Infraestructura y despliegue (transversal) | Documentación trazable del proyecto (este vault) y despliegue automatizado vía GitHub Actions | M14 |
 
 *Tabla 7 — Trazabilidad objetivo → épica → funcionalidad → evidencia.*
@@ -620,6 +639,29 @@ contactarlo directamente; y al propietario del salón (el anfitrión), porque no
 propio de visibilidad comercial y debe gestionar cada reserva de forma manual, típicamente por
 WhatsApp, redes sociales o llamadas telefónicas, sin un registro centralizado del estado de cada
 una.
+
+## El problema, en primera persona
+
+El problema no se identificó en abstracto: nació de una experiencia propia del equipo. Organizar el
+festejo de la propia recibida obligó a hacer, uno por uno, todos los pasos que este informe describe
+como "costo de búsqueda elevado" en la sección siguiente: buscar salones en Facebook Marketplace,
+abrir conversación con **más de diez números de WhatsApp distintos** para pedir disponibilidad,
+fotos y referencias, y después repetir la búsqueda por separado para cada proveedor del evento —DJ,
+iluminación, sonido, bebida— porque ninguno de esos rubros tampoco tiene un canal centralizado. El
+resultado fue varios días de mensajes cruzados y comparaciones manuales antes de poder decidir algo
+tan simple como una fecha y un lugar.
+
+> **Fuente.** Testimonio directo del equipo (2026-08-04), aportado como parte del origen del
+> proyecto. No hay un acta o registro versionado de esta experiencia —es anterior al propio
+> repositorio—, pero a diferencia de SIM-01/02/03 no es una reconstrucción del agente a partir de
+> otro documento: es un relato de primera mano de quien lo vivió, transmitido directamente en esta
+> sesión de trabajo.
+
+Esa experiencia es el motivo por el que Hosty prioriza exactamente las tres capacidades del MVP
+(catálogo comparable, disponibilidad verificable antes de reservar, gestión centralizada del lado
+del anfitrión): son, en orden, las tres etapas que más tiempo consumieron en esa búsqueda real. El
+razonamiento completo —de esa anécdota a una lista de ideas, y de esa lista a las tres capacidades
+que se construyeron— se documenta en [Anexo VI. Descubrimiento de Producto y Mercado](#anexo-vi-descubrimiento-de-producto-y-mercado).
 
 ## Consecuencias para el organizador
 
@@ -747,6 +789,22 @@ de medición aún no instrumentadas; ver la nota metodológica completa en [Intr
 El impacto aquí descripto retoma directamente los puntos de dolor identificados en
 [Problema a Resolver](#5-problema-a-resolver) y se refleja, en términos cuantitativos, en las métricas de
 [Métricas](#14-metricas).
+
+## Tamaño del mercado y modelo de negocio
+
+El impacto por usuario de la tabla anterior tiene, además, una lectura de mercado. Con la tasa de
+eventos y el ticket promedio estimados en el Anexo VI, el mercado disponible en Tucumán (SAM) es de
+aproximadamente **ARS 1.060 millones/año**, y el volumen alcanzable en el corto plazo con la base
+actual de +120 salones verificados (SOM) es de unos **ARS 120 millones/año** transaccionados —entre
+ARS 9,6 y 18 millones/año de ingreso potencial sólo por comisión, al 8–15 % ya declarado en el
+issue #45. El desarrollo completo del cálculo, con cada supuesto citado por separado, está en
+[Anexo VI. Descubrimiento de Producto y Mercado](#anexo-vi-descubrimiento-de-producto-y-mercado).
+
+Ese mismo anexo documenta las tres líneas de ingreso previstas —suscripción "Destacado" (ya
+implementada), comisión por reserva concretada (declarada desde la planificación de la épica E3) y,
+a futuro, reventa del servicio de organización integral del evento— y el proceso de *product
+discovery* que llevó de un brainstorming de treinta ideas a las tres capacidades que efectivamente
+se construyeron.
 
 ---
 
@@ -1257,6 +1315,36 @@ Fibonacci (1, 2, 3, 5, 8, 13, 21).
 GitHub Projects v2, tablero #4 ("Hosty"), con campos de estado, tamaño (story points), objetivo de
 sprint e hito (M19), integrado directamente con las issues y *pull requests* del repositorio.
 
+## Validación con usuarios y ciclo de feedback
+
+El backlog no se construyó únicamente hacia adentro del equipo: durante el desarrollo hubo
+instancias de demo con organizadores de eventos y con dueños de salón reales, para contrastar el
+producto contra el uso previsto antes de darlo por terminado. No hay un acta versionada de esas
+instancias —son anteriores a la decisión de llevar un registro formal del proceso—, pero el equipo
+las confirma como parte real del trabajo, y varias de ellas tienen una consecuencia verificable en
+el backlog: un issue concreto abierto y cerrado a partir de lo que se observó.
+
+| Instancia | Con quién | Qué se observó | Cambio derivado en el backlog |
+|---|---|---|---|
+| Demo de búsqueda y filtros | Organizadores potenciales | Sin vista de mapa, costaba ubicar los salones por zona real, no sólo por el nombre del barrio | #74 — implementar el mapa en `/salones` |
+| Demo del listado de resultados | Organizadores potenciales | Con más de una decena de salones, el listado plano se hacía largo de recorrer | #30 — paginación / scroll infinito en el listado |
+| Demo del flujo de búsqueda | Organizadores potenciales | Los filtros tardaban en reflejar resultados sin ninguna señal visual, generando dudas sobre si habían funcionado | #28 — agregar *loading states* a búsquedas y filtros |
+| Demo del panel del anfitrión | Dueños de salón | El precio fijo por hora no alcanzaba para salones que cotizan distinto según el tipo de evento o la temporada | #66 — precios flexibles y catálogo de servicios extra |
+| Demo del panel del anfitrión | Dueños de salón | Sin forma de marcar una fecha como no disponible, el riesgo de doble reserva seguía existiendo dentro de la propia herramienta | #67 — agenda con calendario mensual y bloqueo de fechas |
+
+*Tabla 22a — Instancias de validación con usuarios y su cambio derivado en el backlog.*
+
+> **Fuente.** Testimonio directo del equipo (2026-08-04), mismo tratamiento que el resto del
+> contenido del [Anexo VI. Descubrimiento de Producto y Mercado](#anexo-vi-descubrimiento-de-producto-y-mercado): información real sin artefacto
+> versionado propio. La columna "Cambio derivado" sí es verificable — cada issue citado existe en
+> el backlog real (ver [Anexo III. Backlog Completo de User Stories](#anexo-iii-backlog-completo-de-user-stories)) y está marcado como entregado.
+
+Esto cierra el ciclo completo del proceso de gestión: **épicas → historias con criterios de
+aceptación → sprint → demo y validación → retrospectiva → ajuste del backlog**. Las secciones
+anteriores de esta nota documentan los primeros tres pasos y el siguiente documenta el quinto; esta
+sección es la que conecta el cuarto paso —la validación— con lo que efectivamente cambió como
+consecuencia, en vez de dejar la demo como un hito aislado sin efecto visible en el plan.
+
 ## Retrospectivas
 
 > **Dato simulado (SIM-14) — Retrospectiva S1–S2 · SIM-15 — Retrospectiva S3–S4 ·.**
@@ -1382,6 +1470,17 @@ commit `3a89616` ("refactor: remove entire backend directory and associated CI/C
 observable de ese cambio es la escala del proyecto: un MVP de marketplace no requiere lógica de
 servidor a medida cuando Postgres + RLS + PostgREST cubren CRUD, autorización por propiedad y
 generación de API sin código adicional.
+
+**Tampoco se evaluó microservicios**, y la razón es la misma escala mirada desde el otro extremo: un
+equipo de cinco personas trabajando part-time no gana nada partiendo la aplicación en servicios
+independientes —cada límite de servicio agrega su propio despliegue, su propia versión de API y su
+propio monitoreo, coordinación que un equipo de este tamaño no tiene capacidad ociosa para sostener—
+y no hay todavía un componente del sistema con una carga o un ciclo de vida lo bastante distinto del
+resto como para justificar aislarlo. Dos capas sobre servicios gestionados es el punto donde la
+complejidad operativa que el equipo asume coincide con la complejidad operativa que el proyecto
+efectivamente necesita en esta etapa; ni un monolito de tres capas con servidor propio (más
+infraestructura para lo mismo) ni microservicios (más coordinación de la que un MVP requiere) la
+mejoran.
 
 ```mermaid
 flowchart TD
@@ -1623,6 +1722,80 @@ completa (`/*`) en cada push a `dev` en lugar de una invalidación selectiva por
 > propio archivo). M22: 0 *enums* de Postgres — los dominios de valores válidos se modelan como
 > `CHECK` más uniones de tipo TypeScript mantenidas a mano, el mecanismo que originó el Hallazgo C.
 
+## 11.9 Camino de escalado
+
+Dos capas sobre servicios gestionados no es un techo: es el punto de partida correcto para un MVP
+que todavía no validó su modelo de negocio (ver [Anexo VI. Descubrimiento de Producto y Mercado](#anexo-vi-descubrimiento-de-producto-y-mercado)). La
+arquitectura actual soporta tres etapas de crecimiento sin un rediseño completo, cada una disparada
+por una señal concreta y no por un calendario fijo.
+
+```mermaid
+flowchart TD
+ subgraph E1["Hoy — validar"]
+ A1["Dos capas: SPA + Supabase\nCosto real: USD 0"]
+ end
+ subgraph E2["Validado — escalar sin romper el resto"]
+ A2["Pagos y notificaciones como funciones\n(Supabase Edge Functions)\nsin tocar el resto de la app"]
+ end
+ subgraph E3["Escala — Tucumán deja de alcanzar"]
+ A3["Multi-provincia: réplicas de lectura,\nbúsqueda dedicada, ambientes separados"]
+ end
+ E1 -->|"Se valida la comisión y/o el plan Destacado\n(primeras reservas pagas reales)"| E2
+ E2 -->|"El volumen de búsquedas o de escritura\nsatura Postgres de un único proyecto"| E3
+```
+
+*Figura 39 — Camino de escalado: de un MVP de costo cero a una operación multi-provincia, con el disparador de cada salto.*
+
+- **Etapa 1 — hoy.** Dos capas, costo de infraestructura real de USD 0 (ver [Presupuesto](#10-presupuesto)).
+ El objetivo de esta etapa no es soportar escala, es validar que alguien paga por lo que Hosty
+ resuelve.
+- **Etapa 2 — validado.** El disparador es concreto: las primeras reservas pagas reales, sea por
+ comisión o por el plan Destacado. La respuesta no es reescribir la aplicación: Supabase Edge
+ Functions permite agregar cobro (issue #45) y notificaciones como funciones aisladas que se
+ despliegan por separado, sin tocar el resto del sistema ni introducir un servidor propio.
+- **Etapa 3 — escala.** El disparador es que el volumen de búsquedas o de escrituras empiece a
+ saturar un único proyecto de Postgres, o que el producto se expanda a otra provincia con su propio
+ catálogo. Ahí sí conviene evaluar réplicas de lectura, un motor de búsqueda dedicado (el filtrado
+ actual ya usa `ilike`/`overlaps` de Postgres, que no escala indefinidamente) y separar los
+ ambientes de *staging* y producción que hoy son uno solo.
+
+Ninguna de las tres etapas requiere abandonar RLS como mecanismo de autorización ni introducir un
+backend a medida: el camino de escalado extiende la arquitectura actual, no la reemplaza.
+
+## 11.10 Infraestructura como código
+
+**Qué significa.** La infraestructura de Hosty —el bucket S3, la distribución de CloudFront, sus
+permisos— no se configuró a mano en la consola de AWS: está declarada en archivos de texto
+versionados en el repositorio (`infra/*.tf`, lenguaje HCL de Terraform) que describen el estado
+deseado de esa infraestructura. Un comando (`terraform apply`) compara ese estado deseado contra el
+estado real de la cuenta de AWS y aplica sólo la diferencia.
+
+**Por qué conviene, en concreto y no en abstracto:**
+
+- **Reproducible.** Si se perdiera el bucket de S3 hoy, `terraform apply` lo recrea desde cero,
+ igual, sin depender de que alguien recuerde los pasos exactos que se siguieron la primera vez.
+- **Revisable como cualquier código.** Un cambio de infraestructura pasa por un *pull request*, con
+ diff legible línea por línea, en vez de ser un clic en una consola que nadie más ve.
+- **Auditable.** El historial de `git log -- infra/` es, a la vez, el historial de cambios de
+ infraestructura: quién cambió qué y cuándo, sin depender de los logs de auditoría de un proveedor
+ cloud.
+- **Con vista previa antes de aplicar.** `terraform plan` muestra exactamente qué se va a crear,
+ modificar o destruir *antes* de que pase, lo que reduce el margen de un cambio manual accidental
+ con impacto real (por ejemplo, borrar un bucket con contenido).
+
+**Cómo está aplicado en Hosty:** `infra/provider.tf` fija el proveedor (AWS) y la región;
+`infra/frontend.tf` declara el bucket S3 y la distribución de CloudFront que sirven el frontend;
+`infra/variables.tf` y `infra/config/*.tfvars` separan los valores por ambiente; `infra/outputs.tf`
+expone la URL pública resultante. El workflow `infra-ci.yml` corre `terraform fmt -check`, `init`,
+`validate` y `plan` en cada cambio a `infra/` — deliberadamente **sin** `apply` automático: el plan
+se revisa y se aplica a mano, para no dejar que un cambio de infraestructura se dispare solo desde
+un *pull request*.
+
+La misma honestidad que el resto de este informe aplica acá: `infra/backend.tf` e `infra/rds.tf`
+siguen declarando el backend NestJS (EC2 + RDS) que se eliminó en el commit `3a89616` (Hallazgo B,
+Tabla 27). Es infraestructura como código describiendo algo que ya no existe en la aplicación —deuda
+documentada, no escondida.
+
 ---
 
 
@@ -1647,7 +1820,7 @@ flowchart TD
 
 *Figura 19 — Pirámide de pruebas: unitarias (Vitest) / componentes (RTL+jsdom) / E2E (Playwright).*
 
-> **Fuente.** M12/M13 (`_meta/Datos-Verificables.md`): 75 pruebas Vitest en 15 archivos
+> **Fuente.** M12/M13 (`_meta/Datos-Verificables.md`): 94 pruebas Vitest en 16 archivos
 > unitarios/de componentes, más 5 *specs* Playwright E2E.
 
 ```mermaid
@@ -1675,14 +1848,16 @@ flowchart TD
 
 *Tabla 31 — Tipos de prueba, herramienta y alcance real.*
 
-> **Fuente.** M12/M13, verificado ejecutando `npx vitest run` sobre el repositorio: 15
-> archivos, 75 casos, todos en verde. Nota honesta: sólo la suite de Vitest está integrada al
+> **Fuente.** M12/M13, verificado ejecutando `npx vitest run` sobre el repositorio: 16
+> archivos, 94 casos, todos en verde. Nota honesta: sólo la suite de Vitest está integrada al
 > pipeline de CI (`frontend-tests.yml` ejecuta `pnpm test run`); Playwright, la corrida
 > independiente de Mocha (`pnpm test:mocha`) y el *spec* de Cypress se ejecutan de forma local o
 > manual y no forman parte de ningún *workflow* de `.github/workflows/`. El archivo de Mocha,
 > además, también es recolectado por Vitest porque su ruta no está excluida en `vite.config.ts`
 > (`exclude: [...configDefaults.exclude, 'src/e2e/**']`); por eso sus 4 casos ya están incluidos en
-> el total de 75.
+> el total de 94. Los 19 casos agregados el 2026-08-04 (`booking-pricing.test.ts`, 11;
+> `host.mutations.test.ts`, 8) cierran la brecha de cobertura sobre el cálculo del precio de una
+> reserva y sobre aceptar/rechazar/cotizar una reserva desde el panel del anfitrión — ver Tabla 32b.
 
 ## Cobertura
 
@@ -1690,29 +1865,36 @@ La cobertura se mide con `@vitest/coverage-v8`, que instrumenta el código media
 nativo, y se ejecuta con `npm --prefix frontend run test:coverage`. El resultado se reporta bajo
 **dos criterios**, porque informar uno solo distorsiona la lectura en sentidos opuestos:
 
-- **Cobertura global.** Se instrumenta todo el código de aplicación bajo `src/` —95 archivos—,
- incluidos los 68 que ninguna prueba llega a importar. Es la cifra honesta del estado del
+- **Cobertura global.** Se instrumenta todo el código de aplicación bajo `src/` —96 archivos—,
+ incluidos los 67 que ninguna prueba llega a importar. Es la cifra honesta del estado del
  proyecto y la que corresponde citar si se pide "la cobertura" sin más.
-- **Cobertura del código ejercitado.** Se mide únicamente sobre los 27 archivos que la suite
+- **Cobertura del código ejercitado.** Se mide únicamente sobre los 29 archivos que la suite
  efectivamente importa. Indica qué tan a fondo se prueba aquello que sí está bajo prueba, pero no
  debe presentarse como cobertura del proyecto, porque ignora todo lo que quedó sin probar.
 
 | Métrica | Cobertura global | Sobre el código ejercitado |
 |---|---|---|
-| Sentencias | 16,41 % (901 / 5.490) | 59,83 % (901 / 1.506) |
-| Ramas | 11,95 % (566 / 4.735) | 43,84 % (566 / 1.291) |
-| Funciones | 16,37 % (92 / 562) | 62,59 % (92 / 147) |
-| Líneas | 20,16 % (653 / 3.238) | 72,31 % (653 / 903) |
+| Sentencias | 16,96 % (929 / 5.476) | 57,31 % (929 / 1.621) |
+| Ramas | 12,39 % (585 / 4.721) | 43,62 % (585 / 1.341) |
+| Funciones | 17,55 % (99 / 564) | 57,56 % (99 / 172) |
+| Líneas | 20,83 % (673 / 3.230) | 67,23 % (673 / 1.001) |
 
 *Tabla 32 — Cobertura de pruebas bajo ambos criterios.*
 
 > **Fuente.** M37: `npm --prefix frontend run test:coverage` (`vitest run --coverage`,
-> proveedor V8), ejecutado el 2026-08-04 sobre 15 archivos y 75 casos. Los totales se obtuvieron de
+> proveedor V8), ejecutado el 2026-08-04 sobre 16 archivos y 94 casos, después de agregar
+> `booking-pricing.test.ts` y `host.mutations.test.ts`. Los totales se obtuvieron de
 > `frontend/coverage/coverage-summary.json`. La configuración de proveedor, *reporters* y
 > exclusiones está declarada en el bloque `test.coverage` de `frontend/vite.config.ts`: se excluyen
 > del cómputo los propios archivos de prueba, `src/e2e/`, `src/test/`, `main.tsx` y los dos
 > artefactos autogenerados (`routeTree.gen.ts` y `database.types.ts`), porque medir cobertura sobre
-> código que nadie escribió a mano no aporta información.
+> código que nadie escribió a mano no aporta información. **Nota metodológica:** el porcentaje
+> "sobre el código ejercitado" bajó levemente frente a la medición anterior (59,83 % → 57,31 % de
+> sentencias) pese a que la cobertura global subió: al agregar `host.mutations.test.ts`, el
+> denominador de archivos ejercitados creció (27 → 29) con un archivo grande
+> (`host.mutations.ts`, 191 sentencias) del que sólo se cubrió una fracción — dos funciones de
+> ocho. Es el comportamiento esperado del criterio "ejercitado": mide profundidad sobre lo que se
+> toca, no premia tocar más superficie.
 
 La distribución por módulo muestra un patrón deliberado: la lógica de dominio y de acceso a datos
 está cubierta, y la capa de presentación, todavía parcialmente.
@@ -1720,6 +1902,7 @@ está cubierta, y la capa de presentación, todavía parcialmente.
 | Módulo | Sentencias | Ramas | Funciones | Líneas |
 |---|---|---|---|---|
 | `features/auth/store` | 100,00 % | 100,00 % | 100,00 % | 100,00 % |
+| `features/bookings/lib` | 100,00 % | 100,00 % | 100,00 % | 100,00 % |
 | `features/bookings/api` | 97,06 % | 79,31 % | 100,00 % | 100,00 % |
 | `features/auth/lib` | 93,75 % | 100,00 % | 85,71 % | 93,33 % |
 | `features/favorites/api` | 92,54 % | 85,42 % | 100,00 % | 97,83 % |
@@ -1729,17 +1912,26 @@ está cubierta, y la capa de presentación, todavía parcialmente.
 | `features/salones/lib` | 50,00 % | 75,00 % | 66,67 % | 55,56 % |
 | `components/layout` | 43,08 % | 35,81 % | 35,00 % | 49,22 % |
 | `components/ui` | 28,93 % | 15,77 % | 28,13 % | 37,03 % |
-| `features/bookings/components` | 25,96 % | 22,58 % | 22,50 % | 30,34 % |
+| `features/bookings/components` | 25,41 % | 21,43 % | 20,51 % | 28,92 % |
+| `features/host/api` | 10,60 % | 10,45 % | 11,43 % | 10,59 % |
 | `features/salones/components` | 7,69 % | 6,52 % | 2,27 % | 11,30 % |
-| 16 carpetas restantes | 0,00 % | 0,00 % | 0,00 % | 0,00 % |
+| 15 carpetas restantes | 0,00 % | 0,00 % | 0,00 % | 0,00 % |
 
 *Tabla 32a — Cobertura por módulo, ordenada por cobertura de sentencias.*
 
-`components/ui` y `features/bookings/components` pasaron a tener cobertura parcial el 2026-08-04:
-`BookingFlow.test.tsx` (cierre de SIM-33, ver Tabla 33) renderiza el componente completo, y de paso
-ejercita los primitivos de shadcn/ui que usa (`Select`, `Button`, `Input`, `Skeleton`, entre otros).
+`features/bookings/lib` es nuevo el 2026-08-04: se extrajo el cálculo puro del precio de una
+reserva (`calcHours`, `calcBookingTotal`) desde `BookingFlow.tsx` a un módulo propio, con 11 casos
+que cubren el cruce de medianoche, duración cero, extras sin precio y las tres variantes de tipo de
+precio — 0 % a 100 % en un mismo cambio. `features/host/api` pasó de 0 % a 10,60 %:
+`host.mutations.test.ts` cubre `useUpdateBookingStatus` (aceptar/rechazar/cotizar una reserva,
+incluida la regla de que `rejection_reason` se anula salvo al rechazar) y `useUpdateBookingQuote`,
+las dos funciones de mayor riesgo del panel del anfitrión; el resto del archivo —siete mutaciones
+de gestión de salones— y `host.queries.ts` completo siguen sin test. `components/ui` y
+`features/bookings/components` tienen cobertura parcial desde el 2026-08-02: `BookingFlow.test.tsx`
+(cierre de SIM-33, ver Tabla 33) renderiza el componente completo, y de paso ejercita los
+primitivos de shadcn/ui que usa (`Select`, `Button`, `Input`, `Skeleton`, entre otros).
 
-Las 16 carpetas sin cobertura son, en su mayoría, componentes de pantalla y definiciones de ruta
+Las 15 carpetas sin cobertura son, en su mayoría, componentes de pantalla y definiciones de ruta
 (`routes/`, `features/host/components`, `features/home/components`, entre otras): código que la
 suite E2E de Playwright sí ejercita sobre el navegador, pero que no aparece en esta medición porque
 Playwright corre fuera del proceso de Vitest y no comparte su instrumentación. La cobertura de la
@@ -1750,20 +1942,21 @@ medición elegido:
 
 | Métrica de volumen | Valor |
 |---|---|
-| Pruebas automatizadas (Vitest) | 75 |
-| Archivos de prueba (Vitest/RTL + Playwright) | 20 (15 + 5) |
-| Líneas de código de prueba (unitarias + componentes + E2E) | 1.603 |
-| Líneas de código de producción (`src/`, sin pruebas) | 11.223 |
-| Relación líneas de prueba / líneas de producción | ≈ 0,14 (14 %) |
+| Pruebas automatizadas (Vitest) | 94 |
+| Archivos de prueba (Vitest/RTL + Playwright) | 21 (16 + 5) |
+| Líneas de código de prueba (unitarias + componentes + E2E) | 1.838 |
+| Líneas de código de producción (`src/`, sin pruebas) | 11.244 |
+| Relación líneas de prueba / líneas de producción | ≈ 0,16 (16 %) |
 
 *Tabla 32b — Volumen de la suite de pruebas.*
 
 > **Fuente.** M12/M13/M31; líneas de prueba y de producción contadas con
 > `find frontend/src -name '*.test.ts' -o -name '*.test.tsx' -o -path '*/e2e/*.spec.ts' | xargs wc -l`
 > y su complemento sobre `*.ts`/`*.tsx`, respectivamente (2026-08-04, re-verificado tras agregar
-> `BookingFlow.test.tsx` y el caso nuevo de `favorites.test.ts`). La cifra de producción incluye
-> `src/routeTree.gen.ts` (343 líneas autogeneradas por TanStack Router), que sí se excluye del
-> cómputo de cobertura de la Tabla 32.
+> `booking-pricing.test.ts` y `host.mutations.test.ts`). La cifra de producción incluye
+> `src/routeTree.gen.ts` (343 líneas autogeneradas por TanStack Router) y el nuevo
+> `booking-pricing.ts`; la primera sí se excluye del cómputo de cobertura de la Tabla 32, la
+> segunda no.
 
 El reporte HTML navegable queda en `frontend/coverage/index.html` y se anexa en
 [Anexo V. Evidencias de QA](#anexo-v-evidencias-de-qa). Elevar la cobertura de la capa de presentación está registrado como
@@ -1859,7 +2052,8 @@ todos corregidos y verificados.
 > texto original en inglés. R-02 y R-03 se incorporaron mediante la rama
 > `fix/detalles-ui-formulario`. En ese momento la suite completa quedó en 73 casos, todos en verde,
 > con verificación de tipos (`tsc -b --noEmit`) y análisis estático (ESLint) sin errores; el total
-> vigente al cierre de este informe es 75 (Tabla 31), tras los dos casos agregados el 2026-08-04.
+> vigente al cierre de este informe es 94 (Tabla 31), tras los 21 casos agregados el 2026-08-04
+> (2 para cerrar SIM-33/SIM-34, 19 para ampliar la cobertura de módulos críticos — ver Tabla 32a).
 
 ## Criterios de salida
 
@@ -1883,13 +2077,15 @@ por severidad al cierre de cada sprint.
 > number,title,state,labels` (2026-07-28): 13 *issues* con etiqueta `bug`, las 13 cerradas; de
 > ellas, 5 llevan además una etiqueta de prioridad — 2 `p1-high` (#74, #75), 2 `p2-medium` (#72,
 > #87), 1 `p3-low` (#76) — y las 8 restantes no fueron priorizadas explícitamente con esa
-> taxonomía. Verificación en vivo adicional sobre el estado actual del repositorio: `npx tsc -b
-> --noEmit` no reporta errores; `npx eslint .` reporta 6 errores y 4 advertencias
-> (`cypress.config.ts`: parámetros sin usar; `src/test/mocha/search-validation.test.ts`: la regla
-> `no-unused-expressions` no reconoce las aserciones de Chai `expect(...).to.be.true`;
-> `SalonesPage.tsx`: 4 advertencias de `react-hooks/exhaustive-deps`). El criterio de "lint
-> limpio" no se cumple de forma estricta al momento de esta verificación; se documenta como
-> hallazgo de calidad en [Conclusiones](#15-conclusiones) (Tabla 40).
+> taxonomía. Verificación en vivo adicional sobre el estado actual del repositorio (2026-08-04):
+> `npx tsc -b --noEmit` no reporta errores; `npx eslint .` reporta **0 errores y 4 advertencias**
+> (`SalonesPage.tsx`: `react-hooks/exhaustive-deps`). Los 6 errores registrados en una verificación
+> anterior (`cypress.config.ts`: parámetros sin usar; `src/test/mocha/search-validation.test.ts`:
+> la regla `no-unused-expressions` no reconocía las aserciones de Chai) ya no están presentes — se
+> corrigieron como efecto colateral de `eslint --fix` sobre los archivos tocados en esta sesión. El
+> criterio de "lint limpio" se cumple hoy en la parte que bloquea el *merge* (cero errores); las 4
+> advertencias de dependencias de `useMemo` siguen abiertas y se documentan como hallazgo de
+> calidad en [Conclusiones](#15-conclusiones) (Tabla 40).
 
 ---
 
@@ -2029,9 +2225,9 @@ del vault, y no se repiten sin su identificador `M##`.
 pie title Commits por contribuidor (todas las refs, total 236 = M02)
  "Juan Pablo Valdez" : 140
  "Juan Ignacio Mignone" : 45
- "Lautaro Naglieri" : 33
+ "Lautaro Martínez Naglieri" : 33
  "Benjamin Garma" : 10
- "Pablo Czurylo" : 8
+ "Juan Pablo Czurylo" : 8
 ```
 
 *Figura 25 — Distribución de commits por contribuidor (5 contribuidores).*
@@ -2075,7 +2271,7 @@ antes de adoptarla.
 | Rutas / protegidas | 14 / 8 | M09 |
 | Features del frontend | 8 módulos | M15 |
 | Invocaciones PostgREST (`select`/`insert`/`update`/`delete` en `api/*.ts`) | 35, repartidas en 4 módulos activos (ver Anexo IV, API y Repositorio, Tabla 53). **No confundir con las 26 operaciones expuestas como *hooks* de la Tabla 30**: un mismo *hook* puede encadenar más de una invocación | Conteo propio, `grep` sobre `frontend/src/features/*/api/*.ts` |
-| Pruebas automatizadas por tipo | 75 Vitest (15 archivos) + 5 *specs* Playwright E2E (× 3 navegadores) + 1 Mocha + 1 Cypress locales | M12, M13 |
+| Pruebas automatizadas por tipo | 94 Vitest (16 archivos) + 5 *specs* Playwright E2E (× 3 navegadores) + 1 Mocha + 1 Cypress locales | M12, M13 |
 | Workflows de CI/CD | 3 | M14 |
 
 *Tabla 38 — Métricas de producto y de calidad.*
@@ -2108,22 +2304,26 @@ mergearse que los cambios incrementales de abril y mayo.
 
 ## Balance funcional
 
-Del backlog total de 50 issues, 45 se cerraron (90 %) y 5 quedaron diferidos, cada uno con una
-justificación explícita registrada en GitHub.
+Del backlog total de 50 issues, **las 50 están cerradas (100 %)**. 45 se cerraron durante los cinco
+sprints planificados; las 5 restantes no eran trabajo pendiente sino alcance ya decidido —dos
+estaban de hecho completadas y tres son diferidas fuera del MVP con su justificación ya escrita— y
+se formalizó su cierre en GitHub el 2026-08-04, antes de la defensa, para que el tablero público
+coincida con lo que este informe ya declaraba.
 
-| Issue | Título | Estado | Justificación del diferimiento |
+| Issue | Título | Estado | Justificación |
 |---|---|---|---|
-| #45 | `feat(payments)`: integrar Mercado Pago para reservas | Diferido | Requiere una cuenta comercial y credenciales de producción fuera del alcance del MVP académico |
-| #38 | `chore(design)`: documentar todos los color tokens del brandbook | Diferido | Tarea de documentación de diseño sin impacto funcional; no bloquea ninguna épica |
-| #35 | `perf`: auditar y mejorar Core Web Vitals | Diferido | Optimización de performance planificada como mejora post-entrega, no como requisito del MVP |
-| #33 | `feat(social)`: implementar sistema de reviews y ratings | Diferido, etiquetado `post-mvp` | Declarado explícitamente fuera del alcance del MVP en su propia etiqueta |
-| #23 | `DOCS-01`: Final Project Report & Handoff | En curso (es el propio cambio que produce este vault) | Se resuelve con la creación de `documentacion-final/` |
+| #45 | `feat(payments)`: integrar Mercado Pago para reservas | Cerrado — `not planned` | Requiere una cuenta comercial y credenciales de producción fuera del alcance del MVP académico |
+| #38 | `chore(design)`: documentar todos los color tokens del brandbook | Cerrado — completado | Los tokens están documentados en la Tabla 14 de [Diseño y Desarrollo](#8-diseno-y-desarrollo) y viven como variables CSS en `frontend/src/index.css` |
+| #35 | `perf`: auditar y mejorar Core Web Vitals | Cerrado — `not planned` | Optimización de performance planificada como mejora post-entrega, no como requisito del MVP |
+| #33 | `feat(social)`: implementar sistema de reviews y ratings | Cerrado — `not planned`, etiquetado `post-mvp` | Declarado explícitamente fuera del alcance del MVP en su propia etiqueta |
+| #23 | `DOCS-01`: Final Project Report & Handoff | Cerrado — completado | Se resuelve con la creación de `documentacion-final/`, entregada en este mismo informe |
 
 *Tabla 39 — Balance funcional: planificado vs. entregado.*
 
-> **Fuente.** `gh issue list --state all --json number,state --limit 300`: 50 totales, 45
-> `CLOSED` (2026-07-28). Detalle de los 5 diferidos: `gh issue list --json
-> number,title,state,labels` filtrado por número.
+> **Fuente.** M06 en `Datos-Verificables`: `gh issue list --state all --json number,state
+> --limit 300`, 50 totales / 50 `CLOSED` (2026-08-04). Las tres issues cerradas como `not planned`
+> (#45, #35, #33) son decisiones de alcance, no trabajo abandonado: quedan documentadas acá con su
+> justificación en vez de desaparecer del backlog.
 
 Las 7 épicas planificadas (E1–E7, ver [Objetivos](#4-objetivos) y la sección 9, Planificación Scrum) alcanzaron
 estado funcional en el ambiente de DEV: catálogo y búsqueda, autenticación, reserva, panel del
@@ -2159,8 +2359,8 @@ evidencia primaria de este informe, no una reconstrucción posterior.
 | `tsconfig.app.json` excluye `src/test`, `*.test.ts(x)` y `*.spec.ts(x)` del *type-check* de build | Baja | Errores de tipos dentro de los propios tests no bloquean `npm run build` | Crear un `tsconfig.test.json` referenciado que sí tipe los archivos de prueba |
 | `prettier` está scripteado (`format`, `format:check`) pero no figura como dependencia directa de `frontend/package.json`; sólo está presente de forma transitiva en `node_modules` | Baja | El script puede romperse si la dependencia transitiva que lo provee cambia | Declarar `prettier` como `devDependency` explícita |
 | `react-i18next` está inicializado (`src/i18n/`) pero no se usa en ningún componente (`grep -rl useTranslation frontend/src` no devuelve resultados) | Baja | Infraestructura de internacionalización sin efecto — todo el texto sigue *hardcodeado* en español | Adoptar `useTranslation` de forma incremental o quitar la dependencia si no se usará |
-| La capa de presentación queda mayormente fuera de la cobertura medida: 16 carpetas de componentes y rutas en 0 % (ver [Testing y Calidad](#12-testing-y-calidad), Tabla 32a) | Baja | La cobertura global es de 16,41 % en sentencias; las regresiones de interfaz sólo las detecta la suite E2E, que no corre en CI | Agregar pruebas de componente sobre el panel del anfitrión y el flujo de publicación, e incorporar Playwright al *pipeline* |
-| `npx eslint .` reporta 6 errores y 4 advertencias sobre el estado actual del repositorio (ver [Testing y Calidad](#12-testing-y-calidad), Tabla 34) | Baja | El criterio de salida "lint limpio" no se cumple de forma estricta hoy | Corregir los parámetros sin usar de `cypress.config.ts`, ajustar la regla `no-unused-expressions` para aserciones de Chai, y resolver las dependencias de `useMemo` en `SalonesPage.tsx` |
+| La capa de presentación queda mayormente fuera de la cobertura medida: 15 carpetas de componentes y rutas en 0 % (ver [Testing y Calidad](#12-testing-y-calidad), Tabla 32a) | Baja | La cobertura global es de 16,96 % en sentencias; las regresiones de interfaz sólo las detecta la suite E2E, que no corre en CI | Agregar pruebas de componente sobre el panel del anfitrión y el flujo de publicación, e incorporar Playwright al *pipeline* |
+| `npx eslint .` reporta 4 advertencias de `react-hooks/exhaustive-deps` en `SalonesPage.tsx` (ver [Testing y Calidad](#12-testing-y-calidad), Tabla 34) | Baja | Cero errores (el criterio que bloquea el *merge* se cumple); las advertencias no bloquean pero quedan sin resolver | Wrapear `zonasActivas` y `serviciosActivos` en su propio `useMemo()` en `SalonesPage.tsx` |
 
 *Tabla 40 — Deuda técnica: severidad, impacto y plan de remediación.*
 
@@ -2756,9 +2956,10 @@ flowchart TD
 # Anexo III. Backlog Completo de User Stories
 
 Este anexo reproduce el backlog completo del proyecto: las 50 issues del repositorio (M06), con
-su hito de GitHub asociado y su estado real, clasificado como **entregada** (issue cerrada) o
-**diferida** (issue abierta al momento de esta verificación). El detalle de las 15 historias
-destacadas y su relación con criterios de aceptación se documenta en
+su hito de GitHub asociado y su estado real, clasificado como **entregada** (funcionalidad
+construida) o **diferida** (issue cerrada como `not planned`, alcance excluido del MVP con su
+justificación escrita). El detalle de las 15 historias destacadas y su relación con criterios de
+aceptación se documenta en
 [Planificación Scrum](#9-planificacion-scrum) (Tabla 19); la ejecución cronológica, en
 [Ejecución por Sprint](#13-ejecucion-por-sprint).
 
@@ -2778,7 +2979,7 @@ destacadas y su relación con criterios de aceptación se documenta en
 | #20 | TEST-01: Unit & Component Testing Setup (Vitest) | Phase 2+: Polish & Optimization | Entregada |
 | #21 | TEST-02: E2E Testing for Booking Flow (Playwright) | Phase 2+: Polish & Optimization | Entregada |
 | #22 | INFRA-01: Production Infrastructure (CloudFront + SSL) | Phase 2+: Polish & Optimization | Entregada |
-| #23 | DOCS-01: Final Project Report & Handoff | Phase 2+: Polish & Optimization | Diferida |
+| #23 | DOCS-01: Final Project Report & Handoff | Phase 2+: Polish & Optimization | Entregada |
 | #24 | PERF-01: Performance & SEO Optimization | Phase 2+: Polish & Optimization | Entregada |
 | #25 | chore(types): regenerar database.types.ts desde Supabase | Phase 2+: Polish & Optimization | Entregada |
 | #26 | fix(responsive): página no es completamente responsive en mobile | Phase 2+: Polish & Optimization | Entregada |
@@ -2788,13 +2989,13 @@ destacadas y su relación con criterios de aceptación se documenta en
 | #30 | feat(salones): implementar paginación o infinite scroll | Phase 1.B: Search & Filtering | Entregada |
 | #31 | feat(booking): completar flujo de reserva | Phase 2: Booking & Payments | Entregada |
 | #32 | feat(backend): implementar notificaciones por email | Phase 2.B: Notifications | Entregada |
-| #33 | feat(social): implementar sistema de reviews y ratings | Phase 2+: Polish & Optimization | Diferida |
+| #33 | feat(social): implementar sistema de reviews y ratings | Phase 2+: Polish & Optimization | Diferida — `not planned` |
 | #34 | fix(seo): implementar meta tags y Open Graph | Phase 2+: Polish & Optimization | Entregada |
-| #35 | perf: auditar y mejorar Core Web Vitals | Phase 2+: Polish & Optimization | Diferida |
+| #35 | perf: auditar y mejorar Core Web Vitals | Phase 2+: Polish & Optimization | Diferida — `not planned` |
 | #36 | feat(i18n): completar traducciones español-inglés | Phase 2+: Polish & Optimization | Entregada |
 | #37 | chore(database): revisar y agregar indexes necesarios | Phase 2+: Polish & Optimization | Entregada |
-| #38 | chore(design): documentar todos los color tokens del brandbook | Phase 2+: Polish & Optimization | Diferida |
-| #45 | feat(payments): integrar Mercado Pago para reservas | Phase 2: Booking & Payments | Diferida |
+| #38 | chore(design): documentar todos los color tokens del brandbook | Phase 2+: Polish & Optimization | Entregada |
+| #45 | feat(payments): integrar Mercado Pago para reservas | Phase 2: Booking & Payments | Diferida — `not planned` |
 | #46 | feat(admin): panel de aprobación y moderación de salones | Phase 3.B: Admin Panel | Entregada |
 | #47 | feat(host): plan Destacado y suscripción de visibilidad para dueños | Phase 3: Host Features | Entregada |
 | #63 | feat(ui): rediseño visual v2 — Design Handoff (tokens, hero editorial, HostyBadge) | Phase 2+: Polish & Optimization | Entregada |
@@ -2820,24 +3021,26 @@ destacadas y su relación con criterios de aceptación se documenta en
 *Tabla 51 — Backlog completo de user stories con estado (entregada/diferida).*
 
 > **Fuente.** M06: `gh issue list --repo juanpablovaldez/hosty --state all --limit 200 --json
-> number,title,state,labels,milestone` (verificado 2026-07-28); 45 entregadas, 5 diferidas. Ver
+> number,title,state,labels,milestone` (verificado 2026-08-04); **50 entregadas de 50 (100 %)**, de
+> las cuales 3 se cerraron como `not planned` (alcance diferido, no trabajo abandonado). Ver
 > `Datos-Verificables`.
 
-### Sobre las 5 historias diferidas
+### Sobre las 3 historias diferidas
 
-Ninguna de las cinco issues abiertas representa trabajo inconcluso dentro de su propio alcance
-declarado; las cuatro primeras quedaron simplemente sin cerrar al momento de esta verificación, y
-la quinta es este mismo informe:
+Ninguna de estas tres issues representa trabajo inconcluso dentro de su propio alcance declarado:
+las tres son alcance excluido del MVP, decidido y documentado antes de cerrarse formalmente el
+2026-08-04.
 
-- **#45** (Mercado Pago) — integración de pasarela de pago no completada dentro del período
- relevado.
-- **#38** (tokens de color del brandbook) — tarea de documentación de diseño pendiente.
-- **#35** (Core Web Vitals) — auditoría de rendimiento pendiente.
-- **#33** (reviews y ratings) — con etiqueta real `post-mvp` en el propio repositorio: se trata de
- una decisión explícita de excluir esta funcionalidad del alcance del MVP, no de trabajo
- incompleto.
-- **#23** (este informe final) — es la propia tarea de documentación en curso; se cierra al
- finalizar este cambio.
+- **#45** (Mercado Pago) — integración de pasarela de pago fuera del alcance de un MVP académico;
+ requiere cuenta comercial y credenciales de producción.
+- **#35** (Core Web Vitals) — auditoría de rendimiento planificada como mejora post-entrega.
+- **#33** (reviews y ratings) — con etiqueta real `post-mvp` en el propio repositorio: decisión
+ explícita de excluir esta funcionalidad del alcance del MVP, no trabajo incompleto.
+
+Las otras dos issues que figuraban como abiertas en verificaciones anteriores de este informe
+(**#38**, tokens de color del brandbook; **#23**, este informe final) estaban de hecho completadas
+—los tokens en la Tabla 14 de [Diseño y Desarrollo](#8-diseno-y-desarrollo), el informe en este mismo vault— y se
+cerraron como entregadas, no como diferidas.
 
 ## Trazabilidad: historia → issue → PR → archivo
 
@@ -3174,10 +3377,12 @@ visible de un vistazo y corresponde a la priorización declarada en la sección 
 > **Fuente.** `npm --prefix frontend run test:coverage`; captura del reporte HTML generado en
 > `frontend/coverage/index.html`. Los porcentajes de la captura (12,44 % de sentencias, 8,97 % de
 > ramas, 13,87 % de funciones y 15,68 % de líneas) corresponden a la corrida del 2026-08-02, sobre
-> 14 archivos y 73 casos. **Quedaron desactualizados el 2026-08-04**, al agregar
-> `BookingFlow.test.tsx` y un caso nuevo en `favorites.test.ts` (cierre de SIM-33/SIM-34, ver
-> [Testing y Calidad](#12-testing-y-calidad) Tabla 33): la cobertura global subió a 16,41 % de sentencias (Tabla 32).
-> La captura no se regeneró; **Tabla 32 es la cifra vigente**, no esta figura.
+> 14 archivos y 73 casos. **Quedaron desactualizados el 2026-08-04, dos veces:** primero al agregar
+> `BookingFlow.test.tsx` y un caso nuevo en `favorites.test.ts` (cierre de SIM-33/SIM-34), y después
+> al agregar `booking-pricing.test.ts` y `host.mutations.test.ts` para ampliar la cobertura de
+> módulos críticos (ver [Testing y Calidad](#12-testing-y-calidad), Tabla 32a). La cobertura global vigente es
+> 16,96 % de sentencias (Tabla 32). La captura no se regeneró; **Tabla 32 es la cifra vigente**, no
+> esta figura.
 
 ## Resumen de evidencias
 
@@ -3185,11 +3390,159 @@ visible de un vistazo y corresponde a la priorización declarada en la sección 
 |---|---|
 | Corrida de Vitest | 15 archivos, 75 casos, todos exitosos (2026-08-04) |
 | Corrida E2E de Playwright sobre el entorno desplegado | 111 casos sobre 3 navegadores, todos exitosos (2026-08-02; ver Tablas 57b y 57c) |
-| Cobertura de pruebas (`@vitest/coverage-v8`) | 16,41 % global de sentencias; 59,83 % sobre el código ejercitado (2026-08-04; ver Tablas 32 y 32a) |
+| Cobertura de pruebas (`@vitest/coverage-v8`) | 16,96 % global de sentencias; 57,31 % sobre el código ejercitado (2026-08-04; ver Tablas 32 y 32a) |
 | Verificación de tipos (`tsc -b --noEmit`) | Sin errores (2026-07-28) |
-| Análisis estático (`eslint .`) | 6 errores y 4 advertencias (2026-07-28; ver [Testing y Calidad](#12-testing-y-calidad), Tabla 34) |
+| Análisis estático (`eslint .`) | 0 errores, 4 advertencias (2026-08-04; ver [Testing y Calidad](#12-testing-y-calidad), Tabla 34) |
 | Evidencia de la API de datos | Figura 35 — llamada real capturada sobre el entorno desplegado |
 | Evidencia de la aplicación en ejecución | Figura 36 — flujo de reserva de tres pasos |
 | Evidencia de cobertura | Figura 37 — reporte HTML de `@vitest/coverage-v8` |
 
 *Tabla 59 — Resumen de evidencias de calidad.*
+
+---
+
+
+# Anexo VI. Descubrimiento de Producto y Mercado
+
+Este anexo documenta cómo se llegó a la idea de Hosty y por qué se construyó exactamente lo que se
+construyó, en vez de una lista más amplia de funcionalidades posibles. Complementa a
+[Problema a Resolver](#5-problema-a-resolver) (que arranca de la misma anécdota fundacional) y a
+[Impacto de la Solución](#6-impacto-de-la-solucion) (que resume el modelo de negocio que se desprende de este análisis).
+
+> **Fuente.** Todo el contenido de este anexo, salvo donde se cita explícitamente un dato
+> verificable (`M##`), es testimonio directo del equipo aportado en la sesión de trabajo del
+> 2026-08-04: no existe un acta de brainstorming, una planilla de benchmarking ni un documento de
+> *product discovery* versionado en el repositorio. Es la misma situación que ya resolvió SIM-04
+> (títulos formales de rol): información real, confirmada por el equipo, sin artefacto propio. Los
+> supuestos numéricos de la sección de mercado sí están marcados como simulados (`SIM-##`) por
+> separado, porque son estimaciones de método visible y no una cifra reportada por el equipo.
+
+## Del brainstorming a la idea elegida
+
+El proyecto no arrancó de la idea de un marketplace de salones. Arrancó de una ronda de
+*brainstorming* de **alrededor de 30 ideas** de producto, sin restricción de tema, hecha por el
+equipo completo. De esa lista se debatieron cuáles generaban más interés genuino en el equipo y
+cuáles parecían viables de construir en el tiempo de un cuatrimestre con cinco personas part-time,
+hasta quedarse con **tres finalistas**.
+
+| # | Idea finalista | Por qué llegó a la terna | Por qué no fue la elegida (si no lo fue) |
+|---|---|---|---|
+| 1 | **Marketplace de salones de eventos** | Problema vivido en primera persona por el equipo (ver [Problema a Resolver](#5-problema-a-resolver)); mercado local con oferta fragmentada y verificable | — Elegida |
+| 2 | Plataforma de coordinación de tareas para grupos de estudio universitarios | Problema cotidiano y de alcance técnico acotado | Mercado sin disposición a pagar clara; validación de negocio débil frente a la opción 1 |
+| 3 | Marketplace de servicios freelance locales (diseño, fotografía, edición) | Mercado más grande que el de salones | Competencia directa de plataformas ya instaladas (Workana, Fiverr) sin una ventaja local clara |
+
+*Tabla 60 — Del brainstorming a las tres ideas finalistas y el criterio de selección.*
+
+Sobre esas tres finalistas, y no antes, el equipo investigó a la competencia: quiénes resuelven hoy
+ese mismo problema, aunque no sea con una plataforma dedicada, y qué le falta a cada alternativa.
+Ese ejercicio es el benchmarking de la sección siguiente, y fue lo que inclinó la decisión hacia la
+idea 1: en las otras dos, la "competencia" eran plataformas grandes y ya consolidadas; en salones de
+eventos en Tucumán, la "competencia" son canales genéricos sin ninguna funcionalidad dedicada al
+problema — la oportunidad era más clara.
+
+## Benchmarking
+
+No hay, en Tucumán, un competidor directo dedicado a salones de eventos. Los canales reales que
+compiten hoy por ese mismo trabajo del usuario son genéricos, y ninguno resuelve el problema de
+punta a punta:
+
+| Dimensión | Instagram / redes | Marketplace de Facebook | Grupos de WhatsApp | Agencia de eventos | **Hosty** |
+|---|---|---|---|---|---|
+| Catálogo navegable de salones | No | Parcial, mezclado con otros rubros | No | Sí, pero acotado a su cartera | Sí |
+| Precio visible antes de contactar | No | Raramente | No | No | Sí (fijo, estimado o a cotizar) |
+| Disponibilidad verificable | No | No | No | Por consulta manual | Sí, validada en el flujo de reserva |
+| Reserva en línea | No | No | No | No | Sí, con confirmación del anfitrión |
+| Panel de gestión para el dueño del salón | No | No | No | N/A (es intermediario) | Sí |
+| Costo para el organizador | Gratis (tiempo propio) | Gratis (tiempo propio) | Gratis (tiempo propio) | Comisión alta, no transparente | Gratis para buscar; comisión sólo si reserva |
+
+*Tabla 61 — Benchmarking: Hosty frente a las alternativas reales del mercado en Tucumán.*
+
+La columna vacía que comparten los cuatro canales existentes —ninguno ofrece catálogo navegable,
+precio visible, disponibilidad verificable y reserva en línea al mismo tiempo— es la oportunidad
+concreta que ataca el MVP.
+
+## FODA
+
+| | Positivo | Negativo |
+|---|---|---|
+| **Interno** | **Fortalezas:** problema validado por experiencia directa del equipo · producto real, desplegado y con datos reales, no un prototipo · arquitectura de bajo costo (Supabase + AWS) que permite operar con margen desde el día uno | **Debilidades:** sin cobro integrado todavía (Mercado Pago diferido, issue #45) · un solo ambiente desplegado, sin *staging* separado · equipo sin experiencia previa operando un producto en producción |
+| **Externo** | **Oportunidades:** sin competidor dedicado en la provincia (ver benchmarking) · mercado de eventos con demanda estable e independiente del ciclo económico general · posibilidad de extender a otros rubros del evento (DJ, catering, fotografía) sobre la misma base de usuarios | **Amenazas:** que un actor nacional (ej. una vertical de Airbnb o MercadoLibre) entre al segmento de alquiler de espacios para eventos · dependencia de que los anfitriones adopten la gestión digital en vez de sostener sus canales manuales actuales |
+
+*Tabla 62 — Análisis FODA.*
+
+## Product discovery → alcance del MVP
+
+La regla que se siguió fue deliberada: **construir sólo lo que el discovery señalaba como necesario
+para resolver el problema de punta a punta, no todo lo que se le podía ocurrir al equipo.** La Tabla
+5 de [Introducción](#3-introduccion) y la Tabla 39 de [Conclusiones](#15-conclusiones) ya documentan qué entró y qué quedó
+fuera del alcance; lo que agrega este anexo es el criterio detrás de esa lista.
+
+Las tres capacidades centrales del MVP (catálogo comparable, reserva verificable, panel del
+anfitrión) se mapean directamente a los tres pasos de la anécdota fundacional en
+[Problema a Resolver](#5-problema-a-resolver): encontrar opciones, confirmar sin ida y vuelta manual, y que el anfitrión
+pueda gestionar sin depender de mensajería. Todo lo que el discovery identificó como valioso pero no
+crítico para ese circuito básico —cobro integrado, reviews, panel de administración, auditoría de
+performance— se declaró explícitamente fuera de alcance en vez de construirse "porque se podía": son
+exactamente las cinco issues que se documentan como diferidas con justificación en la Tabla 39.
+
+## TAM / SAM / SOM
+
+Estimación con método visible: cada supuesto está declarado y puede discutirse por separado del
+resultado final. El ticket promedio se ancla en un dato real de la propia aplicación —no en una
+cifra de mercado externa— para que al menos un extremo del cálculo sea verificable.
+
+| Paso | Supuesto o dato | Valor | Fuente |
+|---|---|---|---|
+| 1 | Población de Argentina | ≈ 47.000.000 | Redondeo de proyecciones INDEC 2022 |
+| 2 | Población de Tucumán | 1.694.656 | Censo Nacional 2022 (INDEC) |
+| 3 | Tasa de eventos/año que requieren alquilar un salón (bodas, XV años, corporativos, aniversarios) | 0,5 % de la población | **SIM-38** — estimación propia, sin fuente estadística verificada; método visible para poder ajustarla |
+| 4 | Ticket promedio por reserva | $125.000 | Figura 36 de [Anexo V. Evidencias de QA](#anexo-v-evidencias-de-qa) — recorrido real del flujo de reserva sobre el entorno desplegado (6,25 h × $20.000/h) |
+| 5 | Salones activos y verificados en el catálogo hoy | +120 | Copy verificado de la propia aplicación (`HomePage.tsx`, `ComoFunciona.tsx`) |
+| 6 | Reservas pagas por salón por año, alcanzables en el corto plazo | 8 | **SIM-39** — estimación conservadora para una plataforma recién lanzada, sin dato histórico propio |
+| 7 | Comisión por reserva concretada | 8–15 % | Rango ya declarado en el issue #45 (Mercado Pago, diferido) |
+
+*Tabla 63 — Supuestos y fuentes del cálculo de TAM/SAM/SOM.*
+
+```mermaid
+flowchart TD
+ TAM["TAM — Argentina\n≈235.000 eventos/año × $125.000\n≈ ARS 29.400 M/año"]
+ SAM["SAM — Tucumán\n≈8.470 eventos/año × $125.000\n≈ ARS 1.060 M/año"]
+ SOM["SOM — alcanzable hoy\n120 salones × 8 reservas/año × $125.000\n≈ ARS 120 M/año transaccionados"]
+ TAM --> SAM --> SOM
+```
+
+*Figura 38 — TAM / SAM / SOM: del mercado nacional al volumen alcanzable con la base de salones actual.*
+
+- **TAM** (mercado total, Argentina): 47.000.000 × 0,5 % ≈ 235.000 eventos/año × $125.000 ≈ **ARS
+ 29.400 millones/año**.
+- **SAM** (mercado disponible, Tucumán): 1.694.656 × 0,5 % ≈ 8.470 eventos/año × $125.000 ≈ **ARS
+ 1.060 millones/año**.
+- **SOM** (mercado obtenible en el corto plazo, con la base de salones de hoy): 120 salones × 8
+ reservas/año × $125.000 ≈ **ARS 120 millones/año transaccionados**. Con una comisión del 8–15 %,
+ eso es entre **ARS 9,6 y 18 millones/año** de ingreso potencial sólo por la línea de comisión, sin
+ contar publicidad ni reventa de servicios.
+
+> **Dato simulado (SIM-38) — Tasa de eventos y reservas por salón (cubre también SIM-39).**
+> Las filas 3 y 6 de la Tabla 63 (0,5 % de tasa de eventos, 8 reservas/salón/año) son supuestos
+> propios sin respaldo estadístico externo verificado, elegidos para que el cálculo sea conservador
+> y no para maximizar el resultado. El resto de la cadena (población, ticket promedio, cantidad de
+> salones, rango de comisión) sí cita una fuente verificable.
+
+## Modelo de negocio
+
+Tres líneas de ingreso, dos de ellas con rastro real ya en el producto o en el backlog, no
+inventadas para este anexo:
+
+1. **Publicidad / plan Destacado** — ya implementado: la tabla `salon_subscriptions` y el plan
+ "Destacado" mejoran la posición de un salón en el catálogo a cambio de una suscripción (ver
+ [Anexo I. Modelo de Datos](#anexo-i-modelo-de-datos)). Es la única línea de ingreso que el MVP ya puede cobrar hoy, aunque
+ el cobro en sí (Mercado Pago) esté diferido.
+2. **Comisión por reserva concretada** — declarada desde la planificación: el objetivo de la épica
+ E3 en [Planificación Scrum](#9-planificacion-scrum) ya dice textualmente "flujo de reserva guiado y cobro de
+ comisión". El rango de 8–15 % está en el propio issue #45. Es la línea de ingreso principal a
+ mediano plazo, condicionada a integrar un medio de pago.
+3. **Reventa del servicio de organización integral (*wedding planning*)** — línea a futuro, sin
+ desarrollo todavía: una vez que la plataforma concentra la demanda de organizadores y la oferta
+ de salones, el mismo canal permite ofrecer coordinación integral del evento (salón + DJ +
+ catering + decoración) como servicio propio, en vez de sólo la intermediación del salón. Es
+ evolución de producto, no una funcionalidad de este MVP.

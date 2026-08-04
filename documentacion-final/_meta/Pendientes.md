@@ -169,7 +169,7 @@ agente.
 |---|---|---|
 | SIM-37 | Severidad estimada de 8 de los 13 defectos (sin etiqueta de prioridad en GitHub) | Estimación plausible por impacto funcional. Los otros 5 (#74, #75, #72, #87, #76) tienen etiqueta real `p1/p2/p3` y ya no son SIM (corregido 2026-08-03, además de un error real: #74 estaba mal clasificado) |
 
-### [[Anexos/Anexo-VI-Descubrimiento-y-Mercado]] (2, agregadas el 2026-08-04)
+### [[Anexo-VI-Descubrimiento-y-Mercado]] (2, agregadas el 2026-08-04)
 
 | SIM-## | Descripción | Base de la reconstrucción |
 |---|---|---|

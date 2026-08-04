@@ -79,7 +79,7 @@ aproximadamente **ARS 1.060 millones/año**, y el volumen alcanzable en el corto
 actual de +120 salones verificados (SOM) es de unos **ARS 120 millones/año** transaccionados —entre
 ARS 9,6 y 18 millones/año de ingreso potencial sólo por comisión, al 8–15 % ya declarado en el
 issue #45. El desarrollo completo del cálculo, con cada supuesto citado por separado, está en
-[[Anexos/Anexo-VI-Descubrimiento-y-Mercado]].
+[[Anexo-VI-Descubrimiento-y-Mercado]].
 
 Ese mismo anexo documenta las tres líneas de ingreso previstas —suscripción "Destacado" (ya
 implementada), comisión por reserva concretada (declarada desde la planificación de la épica E3) y,

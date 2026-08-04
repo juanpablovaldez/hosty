@@ -218,7 +218,7 @@ el backlog: un issue concreto abierto y cerrado a partir de lo que se observó.
 *Tabla 22a — Instancias de validación con usuarios y su cambio derivado en el backlog.*
 
 > [!info] Fuente — Testimonio directo del equipo (2026-08-04), mismo tratamiento que el resto del
-> contenido del [[Anexos/Anexo-VI-Descubrimiento-y-Mercado]]: información real sin artefacto
+> contenido del [[Anexo-VI-Descubrimiento-y-Mercado]]: información real sin artefacto
 > versionado propio. La columna "Cambio derivado" sí es verificable — cada issue citado existe en
 > el backlog real (ver [[Anexo-III-Backlog-User-Stories]]) y está marcado como entregado.
 

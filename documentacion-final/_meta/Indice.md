@@ -42,7 +42,7 @@ esta numeración: se listan aparte, al final.
 | Anexo III | [[Anexo-III-Backlog-User-Stories]] | Backlog completo de user stories con su estado (entregada/diferida) |
 | Anexo IV | [[Anexo-IV-API-y-Repositorio]] | Documentación de la API y del repositorio |
 | Anexo V | [[Anexo-V-Evidencias-QA]] | Evidencias de pruebas y capturas de calidad |
-| Anexo VI | [[Anexos/Anexo-VI-Descubrimiento-y-Mercado]] | Descubrimiento de producto, benchmarking, FODA, TAM/SAM/SOM y modelo de negocio |
+| Anexo VI | [[Anexo-VI-Descubrimiento-y-Mercado]] | Descubrimiento de producto, benchmarking, FODA, TAM/SAM/SOM y modelo de negocio |
 
 ## Notas de apoyo (no numeradas)
 

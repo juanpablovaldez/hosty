@@ -56,6 +56,7 @@ duplicados; las tablas con sufijo alfabético complementan a la tabla cuyo núme
 | T35 | [[13-Ejecucion-por-Sprint]] | Sprints: foco, entregables, decisiones y fecha de cierre | Hecho |
 | T36 | [[13-Ejecucion-por-Sprint]] | Cambios de alcance y de diseño con justificación | Hecho |
 | T37 | [[14-Metricas]] | Métricas de repositorio y de gestión | Hecho |
+| T37a | [[14-Metricas]] | Distribución de los commits que no integran la rama `dev` | Hecho |
 | T38 | [[14-Metricas]] | Métricas de producto y de calidad | Hecho |
 | T39 | [[15-Conclusiones]] | Balance funcional: planificado vs. entregado | Hecho |
 | T40 | [[15-Conclusiones]] | Deuda técnica: severidad, impacto y plan de remediación | Hecho |
@@ -81,15 +82,17 @@ duplicados; las tablas con sufijo alfabético complementan a la tabla cuyo núme
 | T57c | [[Anexo-V-Evidencias-QA]] | Análisis de los casos fallidos | Hecho |
 | T58 | [[Anexo-V-Evidencias-QA]] | Registro de defectos y retesting | Hecho |
 | T59 | [[Anexo-V-Evidencias-QA]] | Resumen de evidencias de calidad | Hecho |
-| T60 | [[Anexos/Anexo-VI-Descubrimiento-y-Mercado]] | Del brainstorming a las tres ideas finalistas y el criterio de selección | Hecho |
-| T61 | [[Anexos/Anexo-VI-Descubrimiento-y-Mercado]] | Benchmarking: Hosty frente a las alternativas reales del mercado en Tucumán | Hecho |
-| T62 | [[Anexos/Anexo-VI-Descubrimiento-y-Mercado]] | Análisis FODA | Hecho |
-| T63 | [[Anexos/Anexo-VI-Descubrimiento-y-Mercado]] | Supuestos y fuentes del cálculo de TAM/SAM/SOM | Hecho |
+| T60 | [[Anexo-VI-Descubrimiento-y-Mercado]] | Del brainstorming a las tres ideas finalistas y el criterio de selección | Hecho |
+| T61 | [[Anexo-VI-Descubrimiento-y-Mercado]] | Benchmarking: Hosty frente a las alternativas reales del mercado en Tucumán | Hecho |
+| T62 | [[Anexo-VI-Descubrimiento-y-Mercado]] | Análisis FODA | Hecho |
+| T63 | [[Anexo-VI-Descubrimiento-y-Mercado]] | Supuestos y fuentes del cálculo de TAM/SAM/SOM | Hecho |
 
-**Total: 70 tablas** — 63 en la secuencia principal T1–T63, contigua y sin huecos, más 7 tablas
-complementarias (T22a, T32a, T32b, T34b, T52b, T57b, T57c). Estas últimas se incorporaron una vez
-fijada la numeración principal y conservan el número de la tabla a la que complementan, con sufijo
-alfabético, para no alterar las referencias cruzadas ya establecidas en el resto del informe.
+**Total: 71 tablas** — 63 en la secuencia principal T1–T63, contigua y sin huecos, más 8 tablas
+complementarias (T22a, T32a, T32b, T34b, T37a, T52b, T57b, T57c). Estas últimas se incorporaron una
+vez fijada la numeración principal y conservan el número de la tabla a la que complementan, con
+sufijo alfabético, para no alterar las referencias cruzadas ya establecidas en el resto del informe.
+T37a existía en el cuerpo del informe desde el cierre de PR #107 pero había quedado fuera de este
+índice; se corrigió el 2026-08-04 al verificar el conteo real de captions contra este registro.
 
 ---
 [[Indice|Índice]]

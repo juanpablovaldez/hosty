@@ -48,6 +48,7 @@ const NOTAS = [
   'Anexos/Anexo-III-Backlog-User-Stories.md',
   'Anexos/Anexo-IV-API-y-Repositorio.md',
   'Anexos/Anexo-V-Evidencias-QA.md',
+  'Anexos/Anexo-VI-Descubrimiento-y-Mercado.md',
 ]
 
 /** nombre de nota -> [texto legible, ancla] para reescribir wikilinks. */
@@ -80,6 +81,10 @@ const DESTINOS = {
   ],
   'Anexo-IV-API-y-Repositorio': ['Anexo IV. API y Repositorio', 'anexo-iv-api-y-repositorio'],
   'Anexo-V-Evidencias-QA': ['Anexo V. Evidencias de QA', 'anexo-v-evidencias-de-qa'],
+  'Anexo-VI-Descubrimiento-y-Mercado': [
+    'Anexo VI. Descubrimiento de Producto y Mercado',
+    'anexo-vi-descubrimiento-de-producto-y-mercado',
+  ],
 }
 
 const sinFrontmatter = (texto) => texto.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '')

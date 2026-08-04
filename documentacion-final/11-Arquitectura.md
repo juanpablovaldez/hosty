@@ -284,7 +284,7 @@ completa (`/*`) en cada push a `dev` en lugar de una invalidación selectiva por
 ## 11.9 Camino de escalado
 
 Dos capas sobre servicios gestionados no es un techo: es el punto de partida correcto para un MVP
-que todavía no validó su modelo de negocio (ver [[Anexos/Anexo-VI-Descubrimiento-y-Mercado]]). La
+que todavía no validó su modelo de negocio (ver [[Anexo-VI-Descubrimiento-y-Mercado]]). La
 arquitectura actual soporta tres etapas de crecimiento sin un rediseño completo, cada una disparada
 por una señal concreta y no por un calendario fijo.
 
@@ -303,8 +303,7 @@ flowchart LR
   E2 -->|"El volumen de búsquedas o de escritura\nsatura Postgres de un único proyecto"| E3
 ```
 
-*Figura 39 — Camino de escalado: de un MVP de costo cero a una operación multi-provincia, con el
-disparador de cada salto.*
+*Figura 39 — Camino de escalado: de un MVP de costo cero a una operación multi-provincia, con el disparador de cada salto.*
 
 - **Etapa 1 — hoy.** Dos capas, costo de infraestructura real de USD 0 (ver [[10-Presupuesto]]).
   El objetivo de esta etapa no es soportar escala, es validar que alguien paga por lo que Hosty

@@ -46,7 +46,7 @@ Esa experiencia es el motivo por el que Hosty prioriza exactamente las tres capa
 (catálogo comparable, disponibilidad verificable antes de reservar, gestión centralizada del lado
 del anfitrión): son, en orden, las tres etapas que más tiempo consumieron en esa búsqueda real. El
 razonamiento completo —de esa anécdota a una lista de ideas, y de esa lista a las tres capacidades
-que se construyeron— se documenta en [[Anexos/Anexo-VI-Descubrimiento-y-Mercado]].
+que se construyeron— se documenta en [[Anexo-VI-Descubrimiento-y-Mercado]].
 
 ## Consecuencias para el organizador
 

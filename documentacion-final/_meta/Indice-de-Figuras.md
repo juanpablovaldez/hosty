@@ -55,7 +55,7 @@ presentes, numeradas de forma contigua y sin duplicados.
 | F35 | [[Anexo-V-Evidencias-QA]] | Evidencia de pruebas sobre la API PostgREST — captura | Hecho |
 | F36 | [[Anexo-V-Evidencias-QA]] | Flujo de reserva de la aplicación en ejecución — captura | Hecho |
 | F37 | [[Anexo-V-Evidencias-QA]] | Reporte de cobertura de pruebas (`@vitest/coverage-v8`) — captura | Hecho |
-| F38 | [[Anexos/Anexo-VI-Descubrimiento-y-Mercado]] | TAM / SAM / SOM: del mercado nacional al volumen alcanzable con la base de salones actual | Hecho |
+| F38 | [[Anexo-VI-Descubrimiento-y-Mercado]] | TAM / SAM / SOM: del mercado nacional al volumen alcanzable con la base de salones actual | Hecho |
 | F39 | [[11-Arquitectura]] | Camino de escalado: de un MVP de costo cero a una operación multi-provincia, con el disparador de cada salto | Hecho |
 
 **Total: 39 figuras** (35 diagramas Mermaid + 4 capturas: F12, F35, F36, F37) — secuencia contigua
