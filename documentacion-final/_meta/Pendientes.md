@@ -129,7 +129,7 @@ la misma lista de 4 capturas pendientes (P-15, P-41, P-42, P-43) para referencia
 
 | SIM-## | Descripción | Base de la reconstrucción |
 |---|---|---|
-| SIM-04 | Asignación de rol de equipo (Scrum) | Reconstrucción por volumen y área de los commits de cada integrante |
+| SIM-04 | Título formal de cada rol de equipo | Sin acta de asignación; el título se deriva de evidencia verificable (M33–M35) citada en Tabla 11, no de una decisión de equipo documentada |
 
 ### [[09-Planificacion-Scrum]] (8)
 

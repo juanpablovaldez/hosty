@@ -124,7 +124,7 @@ en su ausencia, otros archivos de configuración) presentes en los commits de ca
 | Juan Ignacio Mignone | `features/salones` (19), `features/home` (17), `features/host` (14), `features/favorites` (4) |
 | Lautaro Naglieri | `features/salones` (22), `features/host` (22), `features/bookings` (10), `features/home` (6) |
 | Benjamín Garma | Infraestructura de pruebas: `cypress/` (8 archivos), `.github/workflows/frontend-tests.yml` (3), `.mocharc.json`, `playwright.config.ts`, `vite.config.ts` |
-| Pablo Czurylo | `features/salones` (búsqueda), `features/bookings` (flujo de reserva), `supabase/functions/send-emails` (notificaciones por email) |
+| Pablo Czurylo | `features/salones` (búsqueda y paginación), `features/bookings` (flujo de reserva), `supabase/functions/send-emails` (notificaciones por email — rama `feat/email-notifications`, PR #96, no fusionada a `dev`; ver M35) |
 
 > [!info] Fuente — Derivado de `git log --all --author="<email>" --name-only --pretty=format:` por
 > cada email de M05 (2026-07-28). Usado en [[07-Equipo-y-Roles]] (Tabla 11) para fundamentar la
@@ -223,6 +223,24 @@ este cambio. Se agregan al final para no alterar ningún valor ya fijado por los
 > 40, deuda técnica); M31 se usa en [[12-Testing-y-Calidad]] (Tabla 32, cobertura); M32 se usa en
 > [[12-Testing-y-Calidad]] (manejo de incidencias) y en [[Anexo-V-Evidencias-QA]] (Tabla 58,
 > registro de defectos).
+
+## Métricas adicionales M33–M35 (2026-08-04, cierre de SIM-04)
+
+Estas tres filas reemplazan por evidencia verificable la mayor parte de lo que hasta esta fecha
+[[07-Equipo-y-Roles]] marcaba como SIM-04 ("Asignación de rol de equipo"). Se agregan al final
+para no alterar ningún valor ya fijado por los Lotes previos.
+
+| ID | Métrica | Valor | Comando / fuente | Verificado el |
+|---|---|---|---|---|
+| M33 | Permisos de administrador del repositorio | Juan Pablo Valdez es el único colaborador con `admin: true`; el resto (Mignone, Naglieri, Garma, Czurylo) tiene `push`/`triage` sin `admin` | `gh api repos/juanpablovaldez/hosty/collaborators --jq '.[] \| {login, permissions}'` | 2026-08-04 |
+| M34 | Autoría de issues del repositorio | 45 de 50 (90 %) fueron creadas por Juan Pablo Valdez; el resto por Naglieri (3) y Mignone (2) | `gh issue list --state all --limit 200 --json author --jq '.[].author.login' \| sort \| uniq -c` | 2026-08-04 |
+| M35 | Rama `feat/email-notifications` (PR #96) | Sistema de notificaciones de reserva por email vía Supabase Edge Functions (`supabase/functions/send-emails`, plantillas y migración incluidas), implementado íntegramente por Pablo Czurylo el 2026-06-24. El PR sigue **abierto**, no fusionado a `dev` | `git log --all --author=pabloczurylo10 --name-only -- 'supabase/functions/*'`; `gh pr view 96 --json state,mergedAt,author` | 2026-08-04 |
+
+> [!info] Fuente — M33 y M34 se usan en [[07-Equipo-y-Roles]] (Tabla 11, fila de Valdez) para
+> sustanciar el rol de Product Owner con evidencia de administración del repositorio y autoría del
+> backlog, en lugar de inferirlo únicamente del volumen de commits. M35 corrige la fila de Czurylo:
+> el trabajo de notificaciones por email es real y verificable, pero no forma parte del producto
+> entregado en `dev` — se cita como tal, no como funcionalidad en producción.
 
 ---
 [[Indice|Índice]]
