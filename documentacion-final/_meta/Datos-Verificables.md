@@ -51,8 +51,8 @@ métricas que describen el **estado actual del producto** (`M09`–`M22`) sí se
 | M09 | Rutas / protegidas | 14 / 8 | `find frontend/src/routes -name '*.tsx' ! -name '__root.tsx'` (14); `grep -rl requireAuth frontend/src/routes` (8) | 2026-07-28 |
 | M10 | Tablas en `public` | 6 (`salones`, `bookings`, `salon_services`, `salon_availability_blocks`, `user_favorites`, `salon_subscriptions`) | `supabase/migrations/*.sql`; `frontend/src/shared/lib/database.types.ts` | 2026-07-28 |
 | M11 | Archivos de migración | 10 | `ls supabase/migrations/*.sql \| wc -l` | 2026-07-28 |
-| M12 | Pruebas automatizadas (Vitest) | 73 | `npm --prefix frontend run test` (`vitest --run`) | 2026-08-02 |
-| M13 | Archivos de prueba | 19 (14 Vitest/RTL + 5 E2E Playwright, excluidos del run de Vitest por `exclude: ['src/e2e/**']`) | `find frontend/src -name '*.test.*' -o -name '*.spec.*'` | 2026-08-02 |
+| M12 | Pruebas automatizadas (Vitest) | 75 | `npm --prefix frontend run test` (`vitest --run`) | 2026-08-03 |
+| M13 | Archivos de prueba | 20 (15 Vitest/RTL + 5 E2E Playwright, excluidos del run de Vitest por `exclude: ['src/e2e/**']`) | `find frontend/src -name '*.test.*' -o -name '*.spec.*'` | 2026-08-03 |
 | M14 | Workflows de CI/CD | 3 (`frontend-tests.yml`, `web-dev.yml`, `infra-ci.yml`) | `ls .github/workflows` | 2026-07-28 |
 | M15 | Features del frontend | 8 (`auth`, `bookings`, `errors`, `favorites`, `home`, `host`, `profile`, `salones`) | `ls frontend/src/features` | 2026-07-28 |
 | M16 | Bucket de Storage | `salon-images` | `supabase/migrations/20260525000001_create_storage_bucket.sql` | 2026-07-28 |
@@ -67,9 +67,11 @@ métricas que describen el **estado actual del producto** (`M09`–`M22`) sí se
 > cita únicamente como aclaración metodológica, para no ocultar los commits que existen en ramas
 > o refs fuera de `dev`.
 
-> [!info] Fuente — M12/M13 se re-verificaron el 2026-08-02 ejecutando la suite completa. El valor
-> de M12 (73 pruebas) y M13 (19 archivos) es el vigente al momento de esta verificación y puede
-> volver a cambiar si se agregan pruebas después de esta fecha.
+> [!info] Fuente — M12/M13 se re-verificaron el 2026-08-03 ejecutando la suite completa, después de
+> agregar `BookingFlow.test.tsx` (CP-01) y un test nuevo en `favorites.test.ts` (CP-02) para cerrar
+> SIM-33/SIM-34 en [[12-Testing-y-Calidad]] (Tabla 33). El valor de M12 (75 pruebas) y M13 (20
+> archivos) es el vigente al momento de esta verificación y puede volver a cambiar si se agregan
+> pruebas después de esta fecha.
 
 ## Commits por mes (rama `dev`)
 
@@ -124,7 +126,7 @@ en su ausencia, otros archivos de configuración) presentes en los commits de ca
 | Juan Ignacio Mignone | `features/salones` (19), `features/home` (17), `features/host` (14), `features/favorites` (4) |
 | Lautaro Naglieri | `features/salones` (22), `features/host` (22), `features/bookings` (10), `features/home` (6) |
 | Benjamín Garma | Infraestructura de pruebas: `cypress/` (8 archivos), `.github/workflows/frontend-tests.yml` (3), `.mocharc.json`, `playwright.config.ts`, `vite.config.ts` |
-| Pablo Czurylo | `features/salones` (búsqueda), `features/bookings` (flujo de reserva), `supabase/functions/send-emails` (notificaciones por email) |
+| Pablo Czurylo | `features/salones` (búsqueda y paginación), `features/bookings` (flujo de reserva), `supabase/functions/send-emails` (notificaciones por email — rama `feat/email-notifications`, PR #96, no fusionada a `dev`; ver M35) |
 
 > [!info] Fuente — Derivado de `git log --all --author="<email>" --name-only --pretty=format:` por
 > cada email de M05 (2026-07-28). Usado en [[07-Equipo-y-Roles]] (Tabla 11) para fundamentar la
@@ -227,6 +229,24 @@ este cambio. Se agregan al final para no alterar ningún valor ya fijado por los
 > [!info] Fuente — M31 se re-verificó el 2026-08-04 después de agregar `BookingFlow.test.tsx` y un
 > caso nuevo en `favorites.test.ts` (cierre de SIM-33/SIM-34, ver [[12-Testing-y-Calidad]] Tabla 33).
 > El valor anterior (1.462 / 11.148) quedó desactualizado por el mismo motivo que M12/M13.
+
+## Métricas adicionales M33–M35 (2026-08-03, cierre de SIM-04)
+
+Estas tres filas reemplazan por evidencia verificable la mayor parte de lo que hasta esta fecha
+[[07-Equipo-y-Roles]] marcaba como SIM-04 ("Asignación de rol de equipo"). Se agregan al final
+para no alterar ningún valor ya fijado por los Lotes previos.
+
+| ID | Métrica | Valor | Comando / fuente | Verificado el |
+|---|---|---|---|---|
+| M33 | Permisos de administrador del repositorio | Juan Pablo Valdez es el único colaborador con `admin: true`; el resto (Mignone, Naglieri, Garma, Czurylo) tiene `push`/`triage` sin `admin` | `gh api repos/juanpablovaldez/hosty/collaborators --jq '.[] \| {login, permissions}'` | 2026-08-03 |
+| M34 | Autoría de issues del repositorio | 45 de 50 (90 %) fueron creadas por Juan Pablo Valdez; el resto por Naglieri (3) y Mignone (2) | `gh issue list --state all --limit 200 --json author --jq '.[].author.login' \| sort \| uniq -c` | 2026-08-03 |
+| M35 | Rama `feat/email-notifications` (PR #96) | Sistema de notificaciones de reserva por email vía Supabase Edge Functions (`supabase/functions/send-emails`, plantillas y migración incluidas), implementado íntegramente por Pablo Czurylo el 2026-06-24. El PR sigue **abierto**, no fusionado a `dev` | `git log --all --author=pabloczurylo10 --name-only -- 'supabase/functions/*'`; `gh pr view 96 --json state,mergedAt,author` | 2026-08-03 |
+
+> [!info] Fuente — M33 y M34 se usan en [[07-Equipo-y-Roles]] (Tabla 11, fila de Valdez) para
+> sustanciar el rol de Product Owner con evidencia de administración del repositorio y autoría del
+> backlog, en lugar de inferirlo únicamente del volumen de commits. M35 corrige la fila de Czurylo:
+> el trabajo de notificaciones por email es real y verificable, pero no forma parte del producto
+> entregado en `dev` — se cita como tal, no como funcionalidad en producción.
 
 ## Métricas adicionales M36–M37 (2026-08-04)
 

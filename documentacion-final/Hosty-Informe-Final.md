@@ -785,22 +785,31 @@ flowchart TD
 | Mignone, Juan Ignacio | UIA7 0298 | Diseño de producto y desarrollo frontend | Sistema de diseño de la aplicación (Brandbook v1.0: isotipo, tokens de marca y tipografía); interfaz del catálogo de salones, página de inicio, panel del anfitrión y favoritos. Ejerció la conducción técnica del equipo y la integración de cambios durante los *sprints* 2 y 4 |
 | Martinez Naglieri, Lautaro David | UIA7 0286 | Desarrollador | Catálogo de salones, panel del anfitrión y flujo de reserva |
 | Garma, Benjamin | UIA7 0362 | Desarrollador con foco en QA | Infraestructura de pruebas (Vitest, Playwright, Cypress) y el workflow de CI `frontend-tests.yml` |
-| Czurylo, Juan Pablo | UIA7 0331 | Desarrollador | Búsqueda de salones, flujo de reserva y notificaciones por email |
+| Czurylo, Juan Pablo | UIA7 0331 | Desarrollador | Búsqueda y filtrado de salones (paginación, persistencia de filtros en URL); motor de reservas (flujo de reserva, confirmación); sistema de notificaciones de reserva por email, implementado en la rama `feat/email-notifications` (PR #96, aún no fusionada a `dev`) |
 
 *Tabla 11 — Integrantes, legajo, rol de equipo y responsabilidades.*
 
-> **Dato simulado (SIM-04) — Asignación de rol de equipo.**
-> La columna "Rol de equipo" es, en general, una reconstrucción plausible a partir del volumen y
-> del área de los commits de cada integrante, no un registro documentado de la asignación real de
-> roles. Hay dos excepciones que sí se verifican directamente en el repositorio. La primera es el
-> foco en QA de Benjamín Garma, comprobable en los archivos de configuración de pruebas (Vitest,
-> Playwright, Cypress) y en el *workflow* de CI que aportó. La segunda es el rol de Juan Ignacio
-> Mignone, que se apoya en dos evidencias independientes: los *commits* que introducen el sistema
-> de diseño —`apply Brandbook v1.0 — isotipo, tokens, typography`, `redesign v2 — Design Handoff
-> tokens, editorial hero, HostyBadge system` y `update HostyLogo isotipo shape`— y la distribución
-> de *commits* por *sprint*, que lo señala como el integrante con mayor volumen de contribuciones
-> del equipo en los *sprints* 2 y 4, los dos períodos en los que además integró la mayor parte de
-> los *pull requests*.
+> **Fuente.** Evidencia por integrante para la columna "Rol de equipo" y "Responsabilidades
+> principales". **Valdez** (Product Owner): único colaborador con permisos de administrador del
+> repositorio y autor del 90 % de las issues (45 de 50) — M33, M34 —, además de la autoría casi
+> exclusiva del *backend* NestJS y la infraestructura Terraform descartados en el *sprint* 2 (ver
+> Tabla 37a). **Mignone** (Diseño de producto y desarrollo frontend): *commits* que introducen el
+> sistema de diseño —`apply Brandbook v1.0 — isotipo, tokens, typography`, `redesign v2 — Design
+> Handoff tokens, editorial hero, HostyBadge system`, `update HostyLogo isotipo shape`— y mayor
+> volumen de *commits* e integración de *pull requests* en los *sprints* 2 y 4. **Naglieri**
+> (Desarrollador): mayor densidad de *commits* en `features/salones`, `features/host` y
+> `features/bookings`. **Garma** (Desarrollador con foco en QA): archivos de configuración de
+> pruebas (Vitest, Playwright, Cypress) y el *workflow* de CI que aportó. **Czurylo**
+> (Desarrollador): `features/bookings` y `features/salones`, más la rama `feat/email-notifications`
+> (M35). Comandos: `git log --author --since --until`, `git log --merges --author`, `gh api
+> repos/.../collaborators`, `gh issue list --json author` (verificado 2026-08-03; detalle completo
+> en `Datos-Verificables` M33–M35).
+
+> **Dato simulado (SIM-04) — Título formal de cada rol de equipo.**
+> Lo único que sigue sin registro documental es el título formal en sí (que el equipo se haya
+> reunido y acordado llamar "Product Owner" a Valdez, por ejemplo): no existe un acta de asignación
+> de roles. Los títulos de esta tabla son la etiqueta que mejor describe la evidencia verificable
+> citada arriba, no una cita textual de una decisión de equipo documentada.
 
 La conducción del equipo, por lo tanto, no fue estática a lo largo del proyecto: en los *sprints* 2
 y 4 la coordinación de la integración recayó en el responsable de diseño de producto. Esa rotación
