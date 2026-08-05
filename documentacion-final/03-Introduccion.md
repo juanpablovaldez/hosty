@@ -41,7 +41,7 @@ referencia del producto a construir. Este documento fue el que fijó, en última
 funcionalidades formaban parte del MVP (catálogo, reserva, panel del anfitrión) y cuáles quedaban
 fuera de su alcance inicial, como el cobro en línea o las reseñas de usuarios (ver sección 1).
 
-> [!warning] Dato simulado SIM-01 — Contenido reconstruido en las secciones 3, 5 y 6 (cubre también SIM-02 y SIM-03)
+> [!note] Dato simulado SIM-01 — Contenido reconstruido en las secciones 3, 5 y 6 (cubre también SIM-02 y SIM-03)
 > El documento de alcance del MVP (`Definicion de MVP - HOSTY-2026040419562816.pdf`) fue la única
 > fuente documental disponible para esta introducción, para los puntos de dolor por actor (sección
 > 5, [[05-Problema-a-Resolver]], Tabla 9) y para los indicadores de impacto (sección 6,

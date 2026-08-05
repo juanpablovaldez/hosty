@@ -9,7 +9,7 @@ updated: 2026-08-04
 
 # Pendientes — Registro de placeholders y datos simulados
 
-Esta nota agrega todos los callouts `[!todo]` (identificador `P-##`) y `[!warning] Dato simulado`
+Esta nota agrega todos los callouts `[!todo]` (identificador `P-##`) y `[!note] Dato simulado`
 (identificador `SIM-##`) efectivamente usados en las 28 notas del vault. Es la versión final,
 cerrada por el Lote E (cierre transversal) a partir de una relectura completa del vault el
 2026-07-28: agrega los identificadores realmente emitidos por los Lotes 0, A, B, C y D (no los
@@ -20,7 +20,7 @@ rangos reservados en la fase de diseño, que eran más amplios de lo efectivamen
 | Tipo de callout | Significado | Acción requerida |
 |---|---|---|
 | `[!todo]` | Placeholder: dato que sólo el equipo real puede aportar | Completar antes de la entrega/defensa y reemplazar el bloque |
-| `[!warning] Dato simulado` | Contenido plausible pero no verificado en el repositorio | Validar con el equipo o dejar constancia explícita de que es una reconstrucción |
+| `[!note] Dato simulado` | Contenido plausible pero no verificado en el repositorio | Validar con el equipo o dejar constancia explícita de que es una reconstrucción |
 | `[!info] Fuente` | Cita de una métrica o afirmación verificable | Ninguna — ya está trazada a su fuente en [[Datos-Verificables]] |
 
 > [!important] Los marcadores `P-##` ya no existen en las 21 notas de contenido del informe. El
@@ -109,7 +109,7 @@ la misma lista de 4 capturas pendientes (P-15, P-41, P-42, P-43) para referencia
 
 ### [[03-Introduccion]], [[05-Problema-a-Resolver]] y [[06-Impacto-de-la-Solucion]] (3, consolidados en una nota — 2026-08-03)
 
-Antes eran tres callouts `[!warning] Dato simulado` completos, uno por sección. Se consolidaron en
+Antes eran tres callouts `[!note] Dato simulado` completos, uno por sección. Se consolidaron en
 una única nota en [[03-Introduccion]] (SIM-01/02/03 juntos); en las otras dos secciones sólo queda
 una línea liviana que remite a esa nota. El disclosure sigue estando, sólo bajó el volumen visual.
 

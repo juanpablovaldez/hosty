@@ -37,7 +37,7 @@ resto del equipo en un perfil Junior.
 > deriva dividiendo el sueldo mensual por 176 horas (22 días hábiles × 8 h), una convención estándar
 > declarada, no un dato de la encuesta.
 
-> [!warning] Dato simulado SIM-17 — Dedicación horaria por integrante
+> [!note] Dato simulado SIM-17 — Dedicación horaria por integrante
 > La dedicación semanal de la Tabla 23 (15 h Valdez, 12 h Mignone, 10 h Naglieri, 8 h Czurylo, 6 h
 > Garma) es una reconstrucción propia, no un registro de horas trabajadas: se ordenó cualitativamente
 > según el volumen de contribuciones de la Tabla 12, sin ser proporcional a él. La tarifa (fuente real,
@@ -77,7 +77,7 @@ incertidumbre futura.
 > (máx. 100/día), suficiente para el volumen esperado de un MVP; upgrade a Pro (USD 20/mes, 50.000
 > emails) sólo si el volumen de reservas lo justifica.
 
-> [!warning] Dato simulado SIM-19 — Tráfico estimado de AWS S3 + CloudFront
+> [!note] Dato simulado SIM-19 — Tráfico estimado de AWS S3 + CloudFront
 > A diferencia de Supabase, el dominio y Resend (precios de lista fijos, arriba), AWS S3 + CloudFront
 > no tiene plan fijo: cobra por uso real. El monto de USD 10-15/mes (punto medio USD 12,50 usado en la
 > Tabla 24) es un rango de tráfico moderado tomado de la Tabla 24 original de este informe, no una
@@ -93,14 +93,14 @@ incertidumbre futura.
 
 *Tabla 24 — Infraestructura estimada para producción comercial, mensual.*
 
-> [!warning] Dato simulado — Mercado Pago no forma parte del subtotal fijo anterior
+> [!note] Dato simulado — Mercado Pago no forma parte del subtotal fijo anterior
 > El plan Destacado del anfitrión (Tabla 13, suscripción paga) requeriría una integración de cobro —
 > Mercado Pago Checkout API cobra entre 3,99 % y 6,49 % + IVA (21 %) por transacción, según el plazo
 > de acreditación (inmediata vs. diferida a 7-30 días). Es un costo variable proporcional a la
 > facturación, no un monto fijo mensual: no se proyecta aquí sin un supuesto de cantidad de
 > suscripciones vendidas, que el equipo no tiene.
 
-> [!warning] Dato simulado SIM-18 — Dedicación de mantenimiento post-MVP
+> [!note] Dato simulado SIM-18 — Dedicación de mantenimiento post-MVP
 > No existe un plan de soporte formal para después del MVP. Se asume, como supuesto declarado, una
 > dedicación combinada del equipo de 8 horas semanales (soporte, monitoreo, corrección de errores) a
 > la tarifa Junior promedio de la Tabla 23 (ARS 11.739/hora) — no una decisión de negocio tomada, sino
@@ -140,7 +140,7 @@ pie showData
 *Figura 13 — Distribución del presupuesto prospectivo mensual: infraestructura, RRHH de
 mantenimiento, contingencia.*
 
-> [!warning] Dato simulado — ver SIM-18. La distribución de la Figura 13 anterior (gráfico de
+> [!note] Dato simulado — ver SIM-18. La distribución de la Figura 13 anterior (gráfico de
 > presupuesto) proviene de la Tabla 25, de carácter parcialmente simulado (RRHH de mantenimiento y
 > tráfico de AWS).
 

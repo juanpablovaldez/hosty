@@ -185,9 +185,10 @@ const sinPieDeNavegacion = (texto) =>
 
 /**
  * Estilo formal de impresión. En el vault, las notas de fuente y los avisos de dato simulado se
- * escriben como callouts de Obsidian (`> [!info]`, `> [!warning]`), que al exportar se renderizan
- * como recuadros de color con un ícono. Eso es útil para editar, pero en un documento impreso y
- * encuadernado 142 bloques de color compiten con el texto y le dan aspecto de wiki, no de informe.
+ * escriben como callouts de Obsidian/GitHub (`> [!info]`, `> [!note]`), que tanto al exportar como
+ * al navegar el repositorio en GitHub se renderizan como recuadros de color con un ícono. Eso es
+ * útil para editar, pero en un documento impreso y encuadernado 142 bloques de color compiten con
+ * el texto y le dan aspecto de wiki, no de informe.
  *
  * Aquí se convierten en citas planas con una entradilla en negrita: se conserva íntegro el
  * contenido y la distinción entre "fuente verificable" y "dato reconstruido" —que es lo que
@@ -197,10 +198,10 @@ function formalizarCallouts(texto, nota) {
   let salida = texto
     .replace(/^> \[!info\][ \t]*Fuente[ \t]*—[ \t]*/gm, '> **Fuente.** ')
     .replace(
-      /^> \[!warning\][ \t]*Dato simulado[ \t]+(SIM-\d+)[ \t]*—[ \t]*(.*)$/gm,
+      /^> \[!(?:warning|note)\][ \t]*Dato simulado[ \t]+(SIM-\d+)[ \t]*—[ \t]*(.*)$/gm,
       (_, id, titulo) => `> **Dato simulado (${id}) — ${titulo.trim().replace(/\.\s*$/, '')}.**`,
     )
-    .replace(/^> \[!warning\][ \t]*Dato simulado[ \t]*—[ \t]*/gm, '> **Dato simulado.** ')
+    .replace(/^> \[!(?:warning|note)\][ \t]*Dato simulado[ \t]*—[ \t]*/gm, '> **Dato simulado.** ')
 
   salida = salida.replace(/^> \[!(\w+)\][ \t]*/gm, (_, tipo) => {
     calloutsSinRegla.push(`  ${nota}: [!${tipo}] sin regla de formalización -> "Nota."`)

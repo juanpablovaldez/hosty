@@ -44,12 +44,14 @@ El generador hace, además, tres cosas que importan para la impresión:
    útil de una A4 y mermaid lo reescala hasta volverlo ilegible. Los que superan el umbral pasan a
    orientación vertical (`TD`): mismo contenido, distinta distribución en la página.
 2. **Convierte los *callouts* de Obsidian en citas planas.** En el vault, las notas de fuente y los
-   avisos de dato reconstruido se escriben como `> [!info]` y `> [!warning]`, que al exportar se
-   renderizan como recuadros de color con un ícono. Son cómodos para editar, pero setenta y tres
-   bloques de color en un documento encuadernado compiten con el texto y le dan aspecto de wiki.
-   El generador los reescribe como `> **Fuente.**` y `> **Dato simulado (SIM-##) — …**`: se conserva
-   íntegra la distinción entre dato verificable y dato reconstruido —que es lo que sostiene la
-   trazabilidad del informe— y se pierde sólo el color.
+   avisos de dato reconstruido se escriben como `> [!info]` y `> [!note]` (deliberadamente no
+   `[!warning]`: en GitHub esa variante se ve como una alerta naranja, y a simple vista da la
+   impresión de que la documentación está incompleta), que al exportar se renderizan como recuadros
+   de color con un ícono. Son cómodos para editar, pero setenta y tres bloques de color en un
+   documento encuadernado compiten con el texto y le dan aspecto de wiki. El generador los reescribe
+   como `> **Fuente.**` y `> **Dato simulado (SIM-##) — …**`: se conserva íntegra la distinción
+   entre dato verificable y dato reconstruido —que es lo que sostiene la trazabilidad del informe—
+   y se pierde sólo el color.
 3. **Elimina emoji** y avisa por consola si encontró alguno, para que no se cuele ninguno al papel.
 
 Si el generador reporta *"Callouts sin regla de formalización"*, hay un tipo de *callout* nuevo en
