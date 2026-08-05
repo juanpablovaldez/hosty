@@ -160,8 +160,8 @@ resultado real como `[!info] Fuente` en lugar de una inferencia. Ver Tabla 33 en
 
 SIM-36 se cerró: el equipo declaró tres aprendizajes reales (coordinación de equipo, presupuesto
 reconstruido tardíamente, entornos/*branching* definidos tarde), cada uno con un hallazgo
-verificable del repositorio citado como `[!info] Fuente`. Ya no es una reconstrucción plausible del
-agente.
+verificable del repositorio citado como `[!info] Fuente`. Ya no es una reconstrucción plausible sin
+respaldo.
 
 ### [[Anexo-V-Evidencias-QA]] (1)
 
