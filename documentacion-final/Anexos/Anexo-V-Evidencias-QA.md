@@ -163,7 +163,7 @@ que su severidad sigue siendo una estimación (SIM-37).
 > de [[12-Testing-y-Calidad]] (criterios de severidad); se corrige aquí para que ambas notas
 > coincidan.
 
-> [!warning] Dato simulado SIM-37 — Severidad estimada de 8 de los 13 defectos
+> [!note] Dato simulado SIM-37 — Severidad estimada de 8 de los 13 defectos
 > GitHub no tiene una etiqueta de prioridad para #85, #71, #70, #64, #34, #29, #28 y #26. Su
 > columna "Severidad" es una estimación plausible basada en el impacto funcional descrito en el
 > título del issue, no un criterio de triage documentado por el equipo. Los 5 defectos restantes
