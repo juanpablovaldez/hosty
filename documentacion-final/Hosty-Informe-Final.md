@@ -100,6 +100,14 @@ no existir registro documental del hecho —retrospectivas, entrevistas y estima
 presupuesto—; se señaliza como *Dato simulado* e indica la base sobre la que se reconstruyó. Ningún
 contenido reconstruido debe interpretarse como evidencia empírica.
 
+Esta necesidad de reconstrucción es consecuencia directa de la naturaleza del proyecto: Hosty es un
+**MVP académico**, sin cliente real ni instancias formales de relevamiento, entrevista o ceremonia
+documentada de punta a punta durante los cuatro meses de desarrollo. Para que el informe igual
+describa un proceso de trabajo completo y coherente —con su planificación, sus ceremonias y su
+presupuesto—, el equipo optó por reconstruir de forma explícita el contenido que no quedó
+documentado en su momento, en lugar de dejar esas secciones vacías. Esa decisión editorial es la que
+señaliza el sistema *Dato simulado* descripto arriba.
+
 **Fecha de corte de las métricas de proceso.** Las cifras que describen la ejecución del proyecto
 —commits, *issues*, *pull requests* y su distribución por *sprint*— se congelaron el **2026-07-28**,
 al cierre del quinto y último *sprint*. El trabajo posterior a esa fecha corresponde a tareas de
@@ -157,9 +165,8 @@ reflejan el repositorio tal como se entrega.
   - [Validación con usuarios y ciclo de feedback](#validacion-con-usuarios-y-ciclo-de-feedback)
   - [Retrospectivas](#retrospectivas)
 - [10. Presupuesto](#10-presupuesto)
-  - [Esfuerzo por perfil](#esfuerzo-por-perfil)
-  - [Infraestructura y capas gratuitas](#infraestructura-y-capas-gratuitas)
-  - [Costo total y supuestos](#costo-total-y-supuestos)
+  - [10.1 Retrospectivo — costo de desarrollo del MVP a valor de mercado](#101-retrospectivo-costo-de-desarrollo-del-mvp-a-valor-de-mercado)
+  - [10.2 Prospectivo — costo de sostener Hosty en producción](#102-prospectivo-costo-de-sostener-hosty-en-produccion)
 - [11. Arquitectura](#11-arquitectura)
   - [11.1 Patrón arquitectónico](#111-patron-arquitectonico)
   - [11.2 Despliegue (visión general)](#112-despliegue-vision-general)
@@ -265,9 +272,8 @@ exportador. Cada entrada indica la sección donde se encuentra la tabla.
 | Tabla 21 | Plan de sprints: cantidad, duración, foco y resultado | 9. Planificación Scrum |
 | Tabla 22a | Instancias de validación con usuarios y su cambio derivado en el backlog | 9. Planificación Scrum |
 | Tabla 22 | Retrospectivas: problema, impacto y acción correctiva | 9. Planificación Scrum |
-| Tabla 23 | Estimación de esfuerzo por perfil, horas y tarifa | 10. Presupuesto |
-| Tabla 24 | Costos de infraestructura y capas gratuitas | 10. Presupuesto |
-| Tabla 25 | Costo total, contingencia y supuestos declarados | 10. Presupuesto |
+| Tabla 24 | Infraestructura estimada para producción comercial, mensual | 10. Presupuesto |
+| Tabla 25 | Costo mensual y proyectado de sostener Hosty en producción, con contingencia | 10. Presupuesto |
 | Tabla 26 | Stack tecnológico por capa, versión y justificación | 11. Arquitectura |
 | Tabla 29 | Rutas, control de acceso y política RLS asociada | 11. Arquitectura |
 | Tabla 30 | Operaciones de API expuestas como hooks, por módulo | 11. Arquitectura |
@@ -332,7 +338,6 @@ exportador. Cada entrada indica la sección donde se encuentra la tabla.
 | Figura 10 | Iteración Scrum: refinamiento, planificación, weekly, revisión y retrospectiva | 9. Planificación Scrum |
 | Figura 11 | Ciclo de vida de un issue en GitHub Projects v2: Todo → In Progress → In Review → Done (+ Blocked) | 9. Planificación Scrum |
 | Figura 12 | Tablero de gestión del proyecto en GitHub Projects v2 (board #4) | 9. Planificación Scrum |
-| Figura 13 | Distribución del presupuesto por rubro: RRHH, infraestructura y herramientas, contingencia | 10. Presupuesto |
 | Figura 14 | Arquitectura general: SPA React ↔ Supabase (Auth/PostgREST/Storage/Postgres+RLS) | 11. Arquitectura |
 | Figura 15 | Despliegue: repo → GitHub Actions → build → S3+CloudFront (DEV); Supabase Cloud; Terraform | 11. Arquitectura |
 | Figura 16 | Bootstrap de autenticación: `main.tsx` → `initAuth()` → `getSession()` → `auth.store` → `authReady` → ruta o redirect | 11. Arquitectura |
@@ -1367,86 +1372,137 @@ consecuencia, en vez de dejar la demo como un hito aislado sin efecto visible en
 
 # 10. Presupuesto
 
-Esta sección presenta una estimación de costos del proyecto bajo dos componentes: el esfuerzo de
-las personas involucradas (recursos humanos) y la infraestructura tecnológica utilizada. El primer
-componente es una simulación con supuestos declarados, dado que el equipo no facturó horas reales;
-el segundo es un dato verificado, ya que el proyecto operó dentro de capas gratuitas durante todo
-el desarrollo.
+Esta sección presenta el presupuesto en dos componentes con naturaleza distinta. El primero,
+**retrospectivo**, estima cuánto costaría a valor de mercado el esfuerzo que el equipo ya invirtió en
+construir el MVP — un ejercicio de costo de oportunidad, no un desembolso real, ya que el equipo no
+facturó horas entre sí. El segundo, **prospectivo**, estima cuánto costaría sostener Hosty en
+producción una vez superado el MVP: infraestructura a escala comercial más una dedicación de
+mantenimiento reducida. Ambos componentes comparten el mismo supuesto de fondo: los cinco
+integrantes descriptos en [Equipo y Roles](#7-equipo-y-roles) (Tabla 11), con Valdez en un perfil Semi Senior y el
+resto del equipo en un perfil Junior.
 
-## Esfuerzo por perfil
+## 10.1 Retrospectivo — costo de desarrollo del MVP a valor de mercado
 
-> **Dato simulado (SIM-17) — Tarifas y dedicación horaria.**
-> Las tarifas por hora y la dedicación semanal son una estimación de mercado para perfiles
-> junior/estudiantiles en Tucumán durante 2026; no provienen de una factura o cotización real. La
-> Tabla 23 que aparece a continuación (estimación de esfuerzo por perfil) reagrupa a los mismos
-> cinco integrantes de [Equipo y Roles](#7-equipo-y-roles) (Tabla 11) por perfil de costeo, que no coincide
-> necesariamente con el rol Scrum de cada persona.
+> **Fuente.** Tarifas de mercado por integrante
+> Las tarifas ARS/mes de la Tabla 23 provienen de [Salancy](https://salarios.gonzalopozzo.com)
+> (encuesta comunitaria de sueldos IT en Argentina, Gonzalo Pozzo), filtradas por categoría
+> "Software Development" / "Quality Assurance", con "Ocultar salarios con pocos reportes" activado
+> (`trusted=true`, oculta muestras con menos de 2 reportes) y ajuste de inflación por defecto del
+> sitio (+15,8 % desde que cada persona reportó su sueldo). Datos registrados el 1/1/26 sobre 2.344
+> salarios reportados; consultado el 2026-08-04. Cada integrante se mapeó a la categoría/seniority
+> más cercana a su rol real (Tabla 11): Valdez → *Backend Developer*, Semi Senior (PO con foco en
+> infraestructura, sin categoría propia de "Product Owner" en el sitio); Mignone → *Frontend
+> Developer*, Junior; Naglieri y Czurylo → *Fullstack Developer*, Junior (reparto frontend/backend);
+> Garma → *QA Automation Engineer*, Junior (Vitest, Playwright, Cypress, CI). La tarifa horaria se
+> deriva dividiendo el sueldo mensual por 176 horas (22 días hábiles × 8 h), una convención estándar
+> declarada, no un dato de la encuesta.
 
-| Perfil | Dedicación semanal | Horas totales (12,6 semanas) | Tarifa (ARS/hora) | Subtotal (ARS) |
-|---|---|---|---|---|
-| Product Owner / Scrum Master | 5 h | 63 | 8.000 | 504.000 |
-| Desarrollador/a Frontend (1) | 15 h | 189 | 10.000 | 1.890.000 |
-| Desarrollador/a Frontend (2) | 15 h | 189 | 10.000 | 1.890.000 |
-| QA | 8 h | 101 | 9.000 | 909.000 |
-| Diseño UX/UI | 6 h | 76 | 9.000 | 684.000 |
-| **Subtotal RRHH** | | **618** | | **5.877.000** |
+> **Dato simulado (SIM-17) — Dedicación horaria por integrante.**
+> La dedicación semanal de la Tabla 23 (15 h Valdez, 12 h Mignone, 10 h Naglieri, 8 h Czurylo, 6 h
+> Garma) es una reconstrucción propia, no un registro de horas trabajadas: se ordenó cualitativamente
+> según el volumen de contribuciones de la Tabla 12, sin ser proporcional a él. La tarifa (fuente real,
+> ver el callout anterior) y la dedicación (simulada) son dos ejes independientes de esta tabla.
 
-*Tabla 23 — Estimación de esfuerzo por perfil, horas y tarifa.*
+| Integrante | Categoría de mercado (Salancy) | Dedicación semanal | Horas totales (12,6 semanas) | Tarifa (ARS/hora) | Subtotal (ARS) |
+|---|---|---|---|---|---|
+| Valdez, Juan Pablo | Backend Developer — Semi Senior | 15 h | 189 | 19.221 | 3.632.769 |
+| Mignone, Juan Ignacio | Frontend Developer — Junior | 12 h | 151 | 11.339 | 1.712.189 |
+| Martinez Naglieri, Lautaro | Fullstack Developer — Junior | 10 h | 126 | 11.087 | 1.396.962 |
+| Czurylo, Juan Pablo | Fullstack Developer — Junior | 8 h | 101 | 11.087 | 1.119.787 |
+| Garma, Benjamín | QA Automation Engineer — Junior | 6 h | 76 | 13.444 | 1.021.744 |
+| **Subtotal RRHH (MVP, a valor de mercado)** | | | **643** | | **8.883.451** |
 
-## Infraestructura y capas gratuitas
+*Tabla 23 — Estimación de esfuerzo por integrante a tarifa de mercado real (Salancy), horas y
+tarifa.*
 
-| Servicio | Costo real durante el desarrollo | Estimación de producción comercial |
-|---|---|---|
-| Supabase (Auth, Postgres, Storage) | USD 0 — plan Free | USD ≈ 25/mes — plan Pro |
-| AWS S3 + CloudFront | USD 0 — Free Tier (12 meses) | USD ≈ 10-15/mes — tráfico moderado |
-| Dominio propio | — (no adquirido) | USD ≈ 12/año |
-| Nominatim (geocodificación) | USD 0 — API pública | USD 0 dentro de límites de tasa |
-
-*Tabla 24 — Costos de infraestructura y capas gratuitas.*
+La infraestructura real durante el desarrollo del MVP fue **USD 0**: el proyecto operó dentro de las
+capas gratuitas de Supabase y de AWS (S3 + CloudFront) durante las 12,6 semanas del proyecto.
 
 > **Fuente.** Costo real de infraestructura durante el desarrollo: USD 0, dado que el
 > proyecto operó dentro de las capas gratuitas de Supabase y de AWS (S3 + CloudFront) —
 > `infra/*.tf` (Terraform del proyecto), sin facturación registrada (verificado 2026-07-28).
 
-> **Dato simulado (SIM-19) — Estimación de costo de producción comercial.**
-> En la Tabla 24 anterior (costos de infraestructura y capas gratuitas), los montos de la columna
-> "Estimación de producción comercial" son valores de lista pública de los proveedores al momento
-> de redactar este informe, no una cotización contratada.
+**Total retrospectivo (MVP, a valor de mercado): ARS 8.883.451** (≈ USD 5.863 al tipo de cambio
+oficial vendedor del 2026-08-04, ARS 1.515 = USD 1, Banco Nación). No lleva contingencia: es una
+reconstrucción de costo de oportunidad sobre trabajo ya realizado, no una proyección con
+incertidumbre futura.
 
-## Costo total y supuestos
+## 10.2 Prospectivo — costo de sostener Hosty en producción
 
-> **Dato simulado (SIM-18) — Costo total del proyecto.**
-> El total de la Tabla 25 que aparece a continuación (costo total, contingencia y supuestos) surge
-> de aplicar los supuestos de la Tabla 23 (simulados) más una contingencia; no refleja un
-> desembolso real, ya que el equipo no facturó honorarios entre sí.
+> **Fuente.** Precios de lista de infraestructura para producción (consultados 2026-08-04)
+> **Supabase Pro**: USD 25/mes + USD 10 de crédito de cómputo incluido (supabase.com/pricing).
+> **Dominio `.com.ar`**: ARS 8.500/año, arancel vigente publicado por NIC Argentina
+> (nic.ar/es/dominios/aranceles), amortizado a mensual. **Resend** (notificaciones de reserva por
+> email, rama `feat/email-notifications`, PR #96 sin fusionar): tier gratuito hasta 3.000 emails/mes
+> (máx. 100/día), suficiente para el volumen esperado de un MVP; upgrade a Pro (USD 20/mes, 50.000
+> emails) sólo si el volumen de reservas lo justifica.
 
-| Concepto | Monto (ARS) |
+> **Dato simulado (SIM-19) — Tráfico estimado de AWS S3 + CloudFront.**
+> A diferencia de Supabase, el dominio y Resend (precios de lista fijos, arriba), AWS S3 + CloudFront
+> no tiene plan fijo: cobra por uso real. El monto de USD 10-15/mes (punto medio USD 12,50 usado en la
+> Tabla 24) es un rango de tráfico moderado tomado de la Tabla 24 original de este informe, no una
+> cotización de la calculadora de AWS con el tráfico real proyectado de Hosty en producción.
+
+| Servicio | Costo mensual (USD) | Costo mensual (ARS, TC 1.515) |
+|---|---|---|
+| Supabase (Auth, Postgres, Storage) — plan Pro | 25,00 | 37.875 |
+| AWS S3 + CloudFront — tráfico moderado (estimado) | 12,50 | 18.938 |
+| Dominio `.com.ar` (NIC Argentina, amortizado) | 0,47 | 708 |
+| Resend (notificaciones por email) — tier gratuito | 0,00 | 0 |
+| **Subtotal infraestructura fija** | **37,97** | **57.521** |
+
+*Tabla 24 — Infraestructura estimada para producción comercial, mensual.*
+
+> **Dato simulado.** Mercado Pago no forma parte del subtotal fijo anterior
+> El plan Destacado del anfitrión (Tabla 13, suscripción paga) requeriría una integración de cobro —
+> Mercado Pago Checkout API cobra entre 3,99 % y 6,49 % + IVA (21 %) por transacción, según el plazo
+> de acreditación (inmediata vs. diferida a 7-30 días). Es un costo variable proporcional a la
+> facturación, no un monto fijo mensual: no se proyecta aquí sin un supuesto de cantidad de
+> suscripciones vendidas, que el equipo no tiene.
+
+> **Dato simulado (SIM-18) — Dedicación de mantenimiento post-MVP.**
+> No existe un plan de soporte formal para después del MVP. Se asume, como supuesto declarado, una
+> dedicación combinada del equipo de 8 horas semanales (soporte, monitoreo, corrección de errores) a
+> la tarifa Junior promedio de la Tabla 23 (ARS 11.739/hora) — no una decisión de negocio tomada, sino
+> un piso razonable para poder presentar un número.
+
+| Concepto | Monto mensual (ARS) |
 |---|---|
-| Subtotal RRHH | 5.877.000 |
-| Infraestructura y herramientas (provisión) | 50.000 |
-| Contingencia (15% sobre RRHH + infraestructura) | 889.050 |
-| **Total estimado** | **6.816.050** |
+| Infraestructura fija (Tabla 24) | 57.521 |
+| RRHH de mantenimiento (8 h/semana × 4,33 semanas × ARS 11.739/h) | 406.680 |
+| Subtotal prospectivo mensual | 464.201 |
+| Contingencia (15 %) | 69.630 |
+| **Total prospectivo mensual** | **533.831** |
+| **Proyección a 12 meses** | **6.405.972** |
 
-*Tabla 25 — Costo total, contingencia y supuestos declarados.*
+*Tabla 25 — Costo mensual y proyectado de sostener Hosty en producción, con contingencia.*
 
-**Supuestos declarados**: (a) tarifas de mercado junior/estudiantil de Tucumán, 2026, sin
-facturación real; (b) dedicación part-time compatible con cursada, entre 5 y 15 horas semanales
-según perfil; (c) duración de 12,6 semanas (M03/M04, 88 días corridos); (d) infraestructura
-excluida del subtotal de RRHH y presentada por separado (Tabla 24), dado que su costo real fue
-nulo; (e) contingencia del 15% para cubrir retrabajo e imprevistos de alcance no planificados.
+**Total prospectivo: ARS 533.831/mes** (≈ USD 352/mes), **≈ ARS 6.405.972/año** (≈ USD 4.228/año),
+sin contar la comisión variable de Mercado Pago sobre los cobros del plan Destacado.
+
+**Supuestos declarados**: (a) tarifas de RRHH de mercado real (Salancy, trusted, 2026-08-04), no
+facturadas; (b) dedicación horaria del MVP ordenada cualitativamente por volumen de contribuciones
+(Tabla 12), no medida; (c) duración de 12,6 semanas (M03/M04, 88 días corridos); (d) tipo de cambio
+oficial vendedor ARS 1.515 = USD 1 (BNA, 2026-08-04) como referencia declarada, no contractual; (e)
+tráfico de AWS S3 + CloudFront estimado como moderado, no medido sobre uso real; (f) dedicación de
+mantenimiento post-MVP de 8 h/semana, supuesto propio sin plan de soporte formal; (g) contingencia
+del 15 % sólo sobre el componente prospectivo, para cubrir imprevistos de una proyección a futuro —
+no se aplica al retrospectivo, que reconstruye un costo ya incurrido.
 
 ```mermaid
 pie showData
- title Distribución del presupuesto (ARS)
- "RRHH" : 5877000
- "Infraestructura y herramientas" : 50000
- "Contingencia (15%)" : 889050
+ title Presupuesto prospectivo mensual (ARS)
+ "Infraestructura fija" : 57521
+ "RRHH de mantenimiento" : 406680
+ "Contingencia (15%)" : 69630
 ```
 
-*Figura 13 — Distribución del presupuesto por rubro: RRHH, infraestructura y herramientas, contingencia.*
+*Figura 13 — Distribución del presupuesto prospectivo mensual: infraestructura, RRHH de
+mantenimiento, contingencia.*
 
 > **Dato simulado.** ver SIM-18. La distribución de la Figura 13 anterior (gráfico de
-> presupuesto) proviene íntegramente de la Tabla 25, de carácter simulado.
+> presupuesto) proviene de la Tabla 25, de carácter parcialmente simulado (RRHH de mantenimiento y
+> tráfico de AWS).
 
 ---
 

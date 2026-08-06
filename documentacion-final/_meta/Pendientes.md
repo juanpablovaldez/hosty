@@ -9,7 +9,7 @@ updated: 2026-08-04
 
 # Pendientes — Registro de placeholders y datos simulados
 
-Esta nota agrega todos los callouts `[!todo]` (identificador `P-##`) y `[!warning] Dato simulado`
+Esta nota agrega todos los callouts `[!todo]` (identificador `P-##`) y `[!note] Dato simulado`
 (identificador `SIM-##`) efectivamente usados en las 28 notas del vault. Es la versión final,
 cerrada por el Lote E (cierre transversal) a partir de una relectura completa del vault el
 2026-07-28: agrega los identificadores realmente emitidos por los Lotes 0, A, B, C y D (no los
@@ -20,7 +20,7 @@ rangos reservados en la fase de diseño, que eran más amplios de lo efectivamen
 | Tipo de callout | Significado | Acción requerida |
 |---|---|---|
 | `[!todo]` | Placeholder: dato que sólo el equipo real puede aportar | Completar antes de la entrega/defensa y reemplazar el bloque |
-| `[!warning] Dato simulado` | Contenido plausible pero no verificado en el repositorio | Validar con el equipo o dejar constancia explícita de que es una reconstrucción |
+| `[!note] Dato simulado` | Contenido plausible pero no verificado en el repositorio | Validar con el equipo o dejar constancia explícita de que es una reconstrucción |
 | `[!info] Fuente` | Cita de una métrica o afirmación verificable | Ninguna — ya está trazada a su fuente en [[Datos-Verificables]] |
 
 > [!important] Los marcadores `P-##` ya no existen en las 21 notas de contenido del informe. El
@@ -109,7 +109,7 @@ la misma lista de 4 capturas pendientes (P-15, P-41, P-42, P-43) para referencia
 
 ### [[03-Introduccion]], [[05-Problema-a-Resolver]] y [[06-Impacto-de-la-Solucion]] (3, consolidados en una nota — 2026-08-03)
 
-Antes eran tres callouts `[!warning] Dato simulado` completos, uno por sección. Se consolidaron en
+Antes eran tres callouts `[!note] Dato simulado` completos, uno por sección. Se consolidaron en
 una única nota en [[03-Introduccion]] (SIM-01/02/03 juntos); en las otras dos secciones sólo queda
 una línea liviana que remite a esa nota. El disclosure sigue estando, sólo bajó el volumen visual.
 
@@ -140,13 +140,13 @@ directa del equipo.
 | SIM-15 | Retrospectiva S3–S4 | Reconstruida a partir del hallazgo del `CHECK` de `bookings` corregido en curso |
 | SIM-16 | Retrospectiva S5 | Reconstruida a partir de la consolidación de PRs cercana al cierre |
 
-### [[10-Presupuesto]] (3)
+### [[10-Presupuesto]] (3, acotados el 2026-08-04)
 
 | SIM-## | Descripción | Base de la reconstrucción |
 |---|---|---|
-| SIM-17 | Tarifas y dedicación horaria | Estimación de mercado para perfiles junior/estudiantiles en Tucumán, 2026 |
-| SIM-18 | Costo total del proyecto | Deriva de los supuestos simulados de la Tabla 23 más contingencia |
-| SIM-19 | Estimación de costo de producción comercial | Valores de lista pública de proveedores, no una cotización contratada |
+| SIM-17 | Dedicación horaria por integrante (MVP y mantenimiento) | La tarifa ARS/hora ahora es dato real (Salancy, trusted, 2026-08-04); la dedicación semanal sigue siendo una reconstrucción propia ordenada cualitativamente por la Tabla 12 |
+| SIM-18 | Costo total del proyecto (retrospectivo + prospectivo) | Deriva de la dedicación horaria simulada (SIM-17), el tráfico de AWS estimado (SIM-19) y la dedicación de mantenimiento post-MVP, todos supuestos declarados, más contingencia |
+| SIM-19 | Tráfico estimado de AWS S3 + CloudFront | Único ítem de infraestructura sin precio de lista fijo; Supabase, dominio (.com.ar) y Resend ya tienen precio público verificado y salieron de este disclosure |
 
 ### [[12-Testing-y-Calidad]] (0 — cerrado el 2026-08-03)
 
@@ -160,8 +160,8 @@ resultado real como `[!info] Fuente` en lugar de una inferencia. Ver Tabla 33 en
 
 SIM-36 se cerró: el equipo declaró tres aprendizajes reales (coordinación de equipo, presupuesto
 reconstruido tardíamente, entornos/*branching* definidos tarde), cada uno con un hallazgo
-verificable del repositorio citado como `[!info] Fuente`. Ya no es una reconstrucción plausible del
-agente.
+verificable del repositorio citado como `[!info] Fuente`. Ya no es una reconstrucción plausible sin
+respaldo.
 
 ### [[Anexo-V-Evidencias-QA]] (1)
 
@@ -188,7 +188,7 @@ confirmación de roles formales que cerró SIM-04.
 |---|---|---|
 | 0 — Fundación | P-01–P-08 (8) | — |
 | A — Marco del proyecto | P-09 (1) | SIM-01–SIM-03 (3; SIM-04 cerrado el 2026-08-04) |
-| B — Gestión y proceso | P-15 (1) | SIM-09–SIM-19 (11; SIM-09 y SIM-13 acotados el 2026-08-04) |
+| B — Gestión y proceso | P-15 (1) | SIM-09–SIM-19 (11; SIM-09, SIM-13, SIM-17 y SIM-19 acotados el 2026-08-04) |
 | C — Arquitectura y datos | — | — |
 | D — Calidad, métricas y cierre | P-39, P-40, P-41, P-42, P-43, P-44, P-46 (7) | SIM-37 (1; SIM-33–SIM-36 cerrados el 2026-08-03) |
 | F — Descubrimiento y mercado (nuevo, 2026-08-04) | — | SIM-38, SIM-39 (2) |

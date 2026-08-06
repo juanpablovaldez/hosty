@@ -35,11 +35,13 @@ tres callouts de Obsidian. Ningún otro tipo de callout debe usarse en las notas
   ejemplo, el nombre de la institución, la carrera o las URLs de producción). Lleva un
   identificador `P-##` y se agrega a [[Pendientes]]. Puede verse un ejemplo real en
   [[00-Portada-y-Ficha]].
-- **`[!warning] Dato simulado`** marca contenido plausible pero no verificado en el repositorio
+- **`[!note] Dato simulado`** marca contenido plausible pero no verificado en el repositorio
   (por ejemplo, una retrospectiva de sprint reconstruida a partir de la actividad observable, o
   una estimación de presupuesto). Lleva un identificador `SIM-##` e indica la base sobre la que
   se reconstruyó. Este vault reutiliza el mismo marcador en las notas de planificación y
-  presupuesto que se agregan en fases posteriores del cambio.
+  presupuesto que se agregan en fases posteriores del cambio. Se usa `[!note]` en vez de
+  `[!warning]` a propósito: en GitHub, `[!warning]` se renderiza como una alerta naranja que, a
+  simple vista y fuera de contexto, sugiere que la documentación está incompleta.
 - **`[!info] Fuente`** cita la métrica (`M##`) y el comando o archivo que la reproduce,
   inmediatamente después de la figura, tabla o afirmación numérica que respalda. Puede verse un
   ejemplo real en [[Datos-Verificables]].
@@ -54,8 +56,11 @@ tres callouts de Obsidian. Ningún otro tipo de callout debe usarse en las notas
 > métrica y el comando que permite reproducirla, y se consolidan en la nota
 > [[Datos-Verificables]]. **(b) Contenido simulado**: redactado de forma plausible por no existir
 > registro documental del hecho (retrospectivas, entrevistas, estimaciones de esfuerzo y
-> presupuesto); se señaliza con `[!warning] Dato simulado` e indica la base sobre la que se
-> reconstruyó. Ningún contenido simulado debe interpretarse como evidencia empírica. **(c)
+> presupuesto); se señaliza con `[!note] Dato simulado` e indica la base sobre la que se
+> reconstruyó. Ningún contenido simulado debe interpretarse como evidencia empírica. Esta
+> necesidad de reconstrucción es consecuencia de que Hosty es un MVP académico, sin cliente real ni
+> instancias formales de relevamiento o ceremonias documentadas de punta a punta: el equipo optó
+> por reconstruir explícitamente lo no documentado en vez de dejar esas secciones vacías. **(c)
 > Contenido pendiente**: información que únicamente el equipo puede aportar (denominación
 > institucional, nombres y roles formales, tarifas, capturas de pantalla y URLs productivas); se
 > señaliza con `[!todo] PLACEHOLDER` y se consolida en [[Pendientes]].

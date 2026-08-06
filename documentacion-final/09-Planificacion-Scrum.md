@@ -31,7 +31,7 @@ flowchart LR
 
 *Figura 10 — Iteración Scrum: refinamiento, planificación, weekly, revisión y retrospectiva.*
 
-> [!warning] Dato simulado SIM-09 — Ceremonias Scrum y cadencia
+> [!note] Dato simulado SIM-09 — Ceremonias Scrum y cadencia
 > El equipo confirmó (2026-08-04) que la sincronización del equipo de desarrollo fue semanal
 > ("*weekly*"), no diaria — ajustada a la disponibilidad real de un equipo part-time/estudiantil —,
 > corregido en la fila correspondiente de la Tabla 17. El resto de las ceremonias (refinamiento,
@@ -130,7 +130,7 @@ Fibonacci (1, 2, 3, 5, 8, 13, 21).
 
 ### Ejemplo de criterio de aceptación
 
-> [!warning] Dato simulado SIM-12 — Ejemplo de criterio de aceptación (formato Given/When/Then)
+> [!note] Dato simulado SIM-12 — Ejemplo de criterio de aceptación (formato Given/When/Then)
 > El issue original no registra sus criterios de aceptación en formato Given/When/Then. La
 > redacción siguiente se reconstruye a partir del comportamiento observable en
 > `BookingFlow.tsx` y `useCreateBooking` para ilustrar el método de trabajo del equipo, sin
@@ -148,12 +148,12 @@ Fibonacci (1, 2, 3, 5, 8, 13, 21).
 
 ## Definition of Ready y Definition of Done
 
-> [!warning] Dato simulado SIM-10 — Definition of Ready (DoR)
+> [!note] Dato simulado SIM-10 — Definition of Ready (DoR)
 > No hay un documento de DoR versionado en el repositorio. Las filas "DoR" de la Tabla 20 que
 > aparece a continuación (Definition of Ready y Definition of Done) reconstruyen un criterio
 > plausible para un equipo estudiantil de cinco integrantes.
 
-> [!warning] Dato simulado SIM-11 — Definition of Done (DoD)
+> [!note] Dato simulado SIM-11 — Definition of Done (DoD)
 > Ídem SIM-10: las filas "DoD" de la misma Tabla 20 son una reconstrucción plausible, no un acta
 > registrada del equipo.
 
@@ -169,7 +169,7 @@ Fibonacci (1, 2, 3, 5, 8, 13, 21).
 
 ## Plan de sprints
 
-> [!warning] Dato simulado SIM-13 — Límites y foco de los sprints
+> [!note] Dato simulado SIM-13 — Límites y foco de los sprints
 > El equipo confirmó (2026-08-04) que trabajó con sprints formalmente definidos, con story points y
 > un objetivo de sprint ("*sprint goal*") explícito por iteración — no es una simulación que el
 > proyecto haya tenido sprints reales. Lo que no está disponible para este informe es el texto
@@ -230,7 +230,7 @@ consecuencia, en vez de dejar la demo como un hito aislado sin efecto visible en
 
 ## Retrospectivas
 
-> [!warning] Dato simulado SIM-14 — Retrospectiva S1–S2 · SIM-15 — Retrospectiva S3–S4 ·
+> [!note] Dato simulado SIM-14 — Retrospectiva S1–S2 · SIM-15 — Retrospectiva S3–S4 ·
 > SIM-16 — Retrospectiva S5
 > No existe acta de retrospectiva registrada. La Tabla 22 que aparece a continuación
 > (retrospectivas) reconstruye de forma plausible el contenido a partir de fricciones observables

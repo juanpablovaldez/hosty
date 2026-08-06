@@ -111,6 +111,14 @@ no existir registro documental del hecho —retrospectivas, entrevistas y estima
 presupuesto—; se señaliza como *Dato simulado* e indica la base sobre la que se reconstruyó. Ningún
 contenido reconstruido debe interpretarse como evidencia empírica.
 
+Esta necesidad de reconstrucción es consecuencia directa de la naturaleza del proyecto: Hosty es un
+**MVP académico**, sin cliente real ni instancias formales de relevamiento, entrevista o ceremonia
+documentada de punta a punta durante los cuatro meses de desarrollo. Para que el informe igual
+describa un proceso de trabajo completo y coherente —con su planificación, sus ceremonias y su
+presupuesto—, el equipo optó por reconstruir de forma explícita el contenido que no quedó
+documentado en su momento, en lugar de dejar esas secciones vacías. Esa decisión editorial es la que
+señaliza el sistema *Dato simulado* descripto arriba.
+
 **Fecha de corte de las métricas de proceso.** Las cifras que describen la ejecución del proyecto
 —commits, *issues*, *pull requests* y su distribución por *sprint*— se congelaron el **2026-07-28**,
 al cierre del quinto y último *sprint*. El trabajo posterior a esa fecha corresponde a tareas de
