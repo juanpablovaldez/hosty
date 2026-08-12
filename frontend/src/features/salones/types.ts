@@ -23,6 +23,7 @@ export interface Salon {
   amenities: string[]
   availabilityStatus: 'disponible' | 'reservado' | 'no disponible'
   eventTypes: string[]
+  hostId: string | null
 }
 
 export interface SalonSearchParams {

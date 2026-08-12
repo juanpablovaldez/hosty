@@ -20,7 +20,7 @@ ahora.
 | # | Funcionalidad | Origen | Estado |
 |---|---|---|---|
 | 1 | Prevención de doble reserva | Defecto detectado post-entrega | Implementada |
-| 2 | Reseñas y ratings | Issue #33 diferido (`post-mvp`) | Pendiente |
+| 2 | Reseñas y ratings | Issue #33 diferido (`post-mvp`) | Implementada |
 | 3 | Notificaciones (in-app + email) | Funcionalidad nueva | Pendiente |
 | 4 | Pagos con Mercado Pago (sandbox) | Issue #45 diferido | Pendiente |
 
@@ -136,6 +136,89 @@ reserva confirmada— que **sí** debe poder avanzar.
 
 > [!todo] P-18 — Adjuntar la captura de pantalla del mensaje de conflicto en el flujo de reserva y
 > del *toast* de error del anfitrión, una vez aplicada la migración sobre el proyecto de Supabase.
+
+## 17.2 Reseñas y ratings
+
+### El punto de partida
+
+El informe original registra las reseñas como issue diferido #33, etiquetado `post-mvp` (sección 15,
+Figura 27). Mientras tanto, las columnas `salones.rating_value` y `salones.rating_count` existían y
+se mostraban en la interfaz —en la tarjeta de cada salón, en el detalle y como criterio de
+ordenamiento del catálogo— pero **su contenido era dato de seed**: números plausibles sin ninguna
+reseña detrás, cargados en `20240101000000_init_hosty.sql`.
+
+Es decir que el producto exhibía una reputación que no existía. Esta funcionalidad convierte esas
+dos columnas en el resultado calculado de reseñas reales.
+
+### Reglas de negocio
+
+1. **Sólo reseña quien tuvo una reserva confirmada cuya fecha ya pasó.** La regla se valida en RLS,
+   no en la interfaz: esconder el botón no es una defensa, porque cualquiera puede llamar a la API
+   con el token de su sesión.
+2. **Una reseña por reserva**, no por usuario ni por salón: quien alquiló tres veces el mismo salón
+   puede dejar tres reseñas. Se garantiza con `unique (booking_id)`.
+3. **El anfitrión puede responder públicamente cada reseña.**
+
+### Decisiones de diseño
+
+**RLS no alcanza para separar columnas.** Las políticas de *row level security* deciden qué **filas**
+puede tocar cada rol, pero no qué **columnas**. Con sólo las políticas, la de `update` del anfitrión
+—que existe para que pueda escribir su respuesta— le permitiría además reescribir el puntaje y el
+comentario de la reseña que le dejaron, y la del autor le permitiría falsificar la respuesta del
+anfitrión. Se resuelve con un trigger `before update` que revierte al valor anterior cualquier
+columna fuera del alcance de cada rol, en vez de rechazar la operación completa.
+
+**El promedio lo mantiene la base, no la aplicación.** Un trigger `after insert or delete or update
+of rating` recalcula `rating_value` y `rating_count` del salón afectado. La alternativa —calcular el
+promedio al vuelo en cada consulta— habría obligado a modificar todas las consultas del catálogo y a
+pagar una agregación en cada listado. Con el trigger, ninguna consulta existente cambia. La función
+lleva `security definer` porque quien reseña no es el dueño del salón y la política de `update` de
+`salones` exige `host_id = auth.uid()`.
+
+**El nombre del autor sale de una función, no de una columna duplicada.** Los nombres viven en
+`auth.users.raw_user_meta_data`, que el cliente no puede leer. Se repite el patrón de
+`salon_busy_slots`: una función `security definer` (`salon_reviews_list`) que expone únicamente el
+nombre público de quien reseñó, nunca su email ni el resto de sus metadatos. La alternativa habría
+sido copiar el nombre dentro de cada reseña al momento de crearla, lo que deja el dato desactualizado
+si la persona luego lo cambia.
+
+**El huso horario importa.** La habilitación de la reseña compara la fecha del evento contra "hoy".
+`toISOString()` devuelve la fecha en UTC y Argentina está en UTC−3: a partir de las 21:00 informaría
+el día siguiente, y una reserva de hoy pasaría por vencida, habilitando la reseña antes de tiempo.
+La función `localToday` construye la fecha a partir de los componentes locales.
+
+### Archivos que intervienen
+
+| Archivo | Rol |
+|---|---|
+| `supabase/migrations/20260812000002_salon_reviews.sql` | Tabla, RLS, triggers y funciones |
+| `frontend/src/features/reviews/lib/reviews.ts` | Lógica pura: elegibilidad, promedio, distribución, fecha local |
+| `frontend/src/features/reviews/api/reviews.queries.ts` | Listado de reseñas y reservas ya reseñadas |
+| `frontend/src/features/reviews/api/reviews.mutations.ts` | Alta, edición, borrado y respuesta del anfitrión |
+| `frontend/src/features/reviews/components/StarRating.tsx` | Estrellas de lectura y de carga |
+| `frontend/src/features/reviews/components/ReviewFormDialog.tsx` | Formulario de alta y edición |
+| `frontend/src/features/reviews/components/SalonReviews.tsx` | Listado, resumen con distribución y respuesta |
+| `frontend/src/features/salones/components/SalonDetailPage.tsx` | Sección de reseñas en el detalle |
+| `frontend/src/features/bookings/components/MyBookingsPage.tsx` | Acceso a reseñar desde la reserva |
+
+### Verificación
+
+> [!info] Fuente — `frontend/src/features/reviews/lib/reviews.test.ts`. Suite completa tras el
+> cambio: **124 pruebas en 19 archivos**, todas en verde (`npm --prefix frontend run test`,
+> ejecutado el 2026-08-12). El informe original registraba 75 pruebas.
+
+Los casos cubren la réplica de la regla de elegibilidad —incluido que el **mismo día** del evento
+todavía no habilita la reseña, y que ningún estado distinto de `confirmed` la habilita aunque la
+fecha haya pasado—, el promedio, la distribución por puntaje y el cálculo de la fecha local.
+
+> [!note] Dato simulado — SIM-37
+> Las reseñas visibles en el ambiente desplegado se sembraron con
+> `supabase/seed-resenas-demo.sql`: son reservas y reseñas creadas por script, no interacciones
+> reales de usuarios. Lo que **no** es simulado es el mecanismo: el promedio y la cantidad que
+> muestra cada salón los calcula el trigger `trg_salon_reviews_sync_rating` a partir de esas
+> reseñas, no están escritos a mano. Los valores de `rating_value` anteriores a este cambio —esos
+> sí inventados y sin nada detrás— fueron reemplazados al ejecutar `refresh_salon_rating` sobre
+> todos los salones. El script `seed-resenas-demo-limpiar.sql` revierte la siembra por completo.
 
 ---
 [[Indice|Índice]] · [[15-Conclusiones]] · [[12-Testing-y-Calidad]] · [[Anexo-I-Modelo-de-Datos]]

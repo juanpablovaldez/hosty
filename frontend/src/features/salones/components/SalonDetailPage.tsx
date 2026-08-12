@@ -11,6 +11,7 @@ import {
   Calendar, Images, X,
 } from 'lucide-react'
 import { cn } from '@/shared/lib/utils'
+import { SalonReviews } from '@/features/reviews/components/SalonReviews'
 import type { Salon } from '../types'
 import { salonPriceDisplay, formatARS } from '../lib/pricing'
 
@@ -586,6 +587,8 @@ export function SalonDetailPage() {
             <ChevronRight className="w-4 h-4" strokeWidth={1.5} />
           </a>
         </section>
+
+        <SalonReviews salonId={salon.id} salonName={salon.name} hostId={salon.hostId} />
 
       </div>
     </div>

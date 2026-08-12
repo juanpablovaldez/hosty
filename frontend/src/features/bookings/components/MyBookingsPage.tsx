@@ -27,8 +27,12 @@ import {
   XCircle,
   ClipboardList,
   AlertTriangle,
+  Star,
 } from 'lucide-react'
 import { cn } from '@/shared/lib/utils'
+import { useMyReviewedBookingIds } from '@/features/reviews/api/reviews.queries'
+import { ReviewFormDialog } from '@/features/reviews/components/ReviewFormDialog'
+import { isBookingReviewable } from '@/features/reviews/lib/reviews'
 
 type FilterTab = 'all' | BookingStatus
 
@@ -73,12 +77,23 @@ function formatDate(dateStr: string) {
   })
 }
 
-function BookingCard({ booking, onCancel }: { booking: Booking; onCancel: (b: Booking) => void }) {
+function BookingCard({
+  booking,
+  onCancel,
+  onReview,
+  isReviewed,
+}: {
+  booking: Booking
+  onCancel: (b: Booking) => void
+  onReview: (b: Booking) => void
+  isReviewed: boolean
+}) {
   const config = STATUS_CONFIG[booking.status]
   const StatusIcon = config.icon
   const canCancel = booking.status === 'pending' || booking.status === 'confirmed'
 
   const isPast = new Date(booking.eventDate + 'T23:59:59') < new Date()
+  const canReview = isBookingReviewable(booking) && !isReviewed
 
   return (
     <div className="group relative overflow-hidden rounded-2xl border bg-card shadow-sm transition-all hover:shadow-md">
@@ -148,17 +163,28 @@ function BookingCard({ booking, onCancel }: { booking: Booking; onCancel: (b: Bo
           </p>
         )}
 
-        {canCancel && !isPast && (
-          <div className="flex justify-end">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onCancel(booking)}
-              className="gap-1.5 text-destructive hover:bg-destructive/10 hover:text-destructive"
-            >
-              <XCircle className="h-4 w-4" strokeWidth={1.5} />
-              Cancelar reserva
-            </Button>
+        {((canCancel && !isPast) || canReview || isReviewed) && (
+          <div className="flex flex-wrap items-center justify-end gap-2">
+            {isReviewed && (
+              <span className="mr-auto text-xs text-muted-foreground">Ya dejaste tu reseña</span>
+            )}
+            {canReview && (
+              <Button variant="outline" size="sm" onClick={() => onReview(booking)} className="gap-1.5">
+                <Star className="h-4 w-4" strokeWidth={1.5} />
+                Dejar reseña
+              </Button>
+            )}
+            {canCancel && !isPast && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => onCancel(booking)}
+                className="gap-1.5 text-destructive hover:bg-destructive/10 hover:text-destructive"
+              >
+                <XCircle className="h-4 w-4" strokeWidth={1.5} />
+                Cancelar reserva
+              </Button>
+            )}
           </div>
         )}
       </div>
@@ -243,10 +269,12 @@ export function MyBookingsPage() {
   const user = useAuthStore((s) => s.user)
   const [activeTab, setActiveTab] = useState<FilterTab>('all')
   const [cancelTarget, setCancelTarget] = useState<Booking | null>(null)
+  const [reviewTarget, setReviewTarget] = useState<Booking | null>(null)
 
   const cancelBooking = useCancelBooking()
 
   const { data: bookings, isLoading } = useMyBookings(user?.id ?? null)
+  const { data: reviewedBookingIds = [] } = useMyReviewedBookingIds(user?.id ?? null)
 
   const filteredBookings = useMemo(() => {
     if (!bookings) return []
@@ -322,7 +350,13 @@ export function MyBookingsPage() {
       ) : (
         <div className="flex flex-col gap-4">
           {filteredBookings.map((booking) => (
-            <BookingCard key={booking.id} booking={booking} onCancel={setCancelTarget} />
+            <BookingCard
+              key={booking.id}
+              booking={booking}
+              onCancel={setCancelTarget}
+              onReview={setReviewTarget}
+              isReviewed={reviewedBookingIds.includes(booking.id)}
+            />
           ))}
         </div>
       )}
@@ -355,6 +389,16 @@ export function MyBookingsPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {reviewTarget && user && (
+        <ReviewFormDialog
+          salonId={reviewTarget.salonId}
+          salonName={reviewTarget.salonName}
+          bookingId={reviewTarget.id}
+          userId={user.id}
+          onClose={() => setReviewTarget(null)}
+        />
+      )}
     </div>
   )
 }
