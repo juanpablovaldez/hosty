@@ -77,6 +77,7 @@ export function rowToSalon(row: SalonRowWithServices): Salon {
     amenities: row.amenities,
     availabilityStatus: row.availability_status as Salon['availabilityStatus'],
     eventTypes: row.event_types,
+    hostId: row.host_id,
   }
 }
 

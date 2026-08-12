@@ -102,6 +102,60 @@ export type Database = {
           },
         ]
       }
+      salon_reviews: {
+        Row: {
+          comment: string | null
+          created_at: string
+          host_replied_at: string | null
+          host_reply: string | null
+          booking_id: string
+          id: string
+          rating: number
+          salon_id: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          host_replied_at?: string | null
+          host_reply?: string | null
+          booking_id: string
+          id?: string
+          rating: number
+          salon_id: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          host_replied_at?: string | null
+          host_reply?: string | null
+          booking_id?: string
+          id?: string
+          rating?: number
+          salon_id?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "salon_reviews_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salones"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "salon_reviews_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: true
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_favorites: {
         Row: {
           created_at: string
@@ -317,9 +371,28 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_review_booking: {
+        Args: { p_booking_id: string; p_user_id: string }
+        Returns: boolean
+      }
+      refresh_salon_rating: { Args: { p_salon_id: string }; Returns: undefined }
       salon_busy_slots: {
         Args: { p_salon_id: string }
         Returns: { event_date: string; start_time: string; end_time: string }[]
+      }
+      salon_reviews_list: {
+        Args: { p_salon_id: string }
+        Returns: {
+          id: string
+          created_at: string
+          updated_at: string | null
+          rating: number
+          comment: string | null
+          host_reply: string | null
+          host_replied_at: string | null
+          user_id: string
+          author_name: string
+        }[]
       }
       show_limit: { Args: never; Returns: number }
       show_trgm: { Args: { "": string }; Returns: string[] }
