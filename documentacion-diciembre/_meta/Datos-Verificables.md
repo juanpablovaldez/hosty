@@ -1,0 +1,285 @@
+---
+title: "Datos verificables — fuente única de métricas"
+seccion: "meta"
+tipo: meta
+tags: [hosty, informe-final, metricas]
+estado: completo
+updated: 2026-07-28
+---
+
+# Datos verificables — fuente única de métricas
+
+Esta nota es la fuente única de verdad para toda métrica citada en el vault. Cualquier nota del
+informe que mencione una cifra debe citar el identificador `M##` correspondiente en un callout
+`[!info] Fuente` y remitir aquí, sin repetir el comando ni el valor crudo. El esquema de
+identificadores `M01`–`M22` fue fijado en la fase de diseño de este cambio y se reutiliza sin
+modificaciones; los Lotes A–D deben citar estos mismos identificadores y no crear otros.
+
+Todas las cifras de esta nota fueron reproducidas ejecutando los comandos indicados sobre el estado
+real del repositorio (`git`, `gh`, lectura de archivos).
+
+**Fecha de corte de las métricas de proceso.** Las métricas que describen la ejecución del proyecto
+—commits, issues, pull requests y su distribución por sprint (`M01`, `M06`, `M07`, `M23`, `M24`,
+`M26`, `M28`)— se congelaron el **2026-07-28**, al cierre del quinto y último sprint. El trabajo
+posterior a esa fecha corresponde a tareas de estabilización previas a la defensa (ampliación de la
+suite de pruebas, corrección de detalles de interfaz y redacción de este informe) y no forma parte
+del alcance planificado de los sprints, por lo que se excluye deliberadamente de esas cifras:
+incorporarlo distorsionaría la lectura de la velocidad del equipo durante el desarrollo. Las
+métricas que describen el **estado actual del producto** (`M09`–`M22`) sí se re-verificaron el
+**2026-08-02** y reflejan el repositorio tal como se entrega.
+
+## Repositorio
+
+| Dato | Valor | Fuente |
+|---|---|---|
+| URL | `https://github.com/juanpablovaldez/hosty` | `git remote -v` |
+| Fecha de creación | 2026-03-29 | `gh repo view juanpablovaldez/hosty --json createdAt` |
+| Rama de trabajo principal | `dev` | `git branch --show-current` |
+
+## Tabla de métricas M01–M22
+
+| ID | Métrica | Valor | Comando / fuente | Verificado el |
+|---|---|---|---|---|
+| M01 | Commits en `dev` | 181 | `git rev-list --count dev` | 2026-07-28 |
+| M02 | Commits en todas las refs | 236 | `git rev-list --count --all` | 2026-07-28 |
+| M03 | Fecha del primer commit | 2026-03-29 | `git log --reverse --date=short --format=%ad dev \| head -1` | 2026-07-28 |
+| M04 | Fecha del último commit | 2026-06-24 | `git log -1 --date=short --format=%ad dev` | 2026-07-28 |
+| M05 | Contribuidores | 5 (9 identidades Git) | `git shortlog -sne --all` | 2026-07-28 |
+| M06 | Issues totales / cerradas | 50 / 50 (100 %) | `gh issue list --state all --limit 300 --json number,state` | 2026-08-04 |
+| M07 | Pull requests totales / mergeados | 48 / 26 | `gh pr list --state all --limit 300 --json number,mergedAt` | 2026-07-28 |
+| M08 | Milestones | 7 | `gh api repos/juanpablovaldez/hosty/milestones?state=all --jq length` | 2026-07-28 |
+| M09 | Rutas / protegidas | 14 / 8 | `find frontend/src/routes -name '*.tsx' ! -name '__root.tsx'` (14); `grep -rl requireAuth frontend/src/routes` (8) | 2026-07-28 |
+| M10 | Tablas en `public` | 6 (`salones`, `bookings`, `salon_services`, `salon_availability_blocks`, `user_favorites`, `salon_subscriptions`) | `supabase/migrations/*.sql`; `frontend/src/shared/lib/database.types.ts` | 2026-07-28 |
+| M11 | Archivos de migración | 10 | `ls supabase/migrations/*.sql \| wc -l` | 2026-07-28 |
+| M12 | Pruebas automatizadas (Vitest) | 94 | `npm --prefix frontend run test` (`vitest --run`) | 2026-08-04 |
+| M13 | Archivos de prueba | 21 (16 Vitest/RTL + 5 E2E Playwright, excluidos del run de Vitest por `exclude: ['src/e2e/**']`) | `find frontend/src -name '*.test.*' -o -name '*.spec.*'` | 2026-08-04 |
+| M14 | Workflows de CI/CD | 3 (`frontend-tests.yml`, `web-dev.yml`, `infra-ci.yml`) | `ls .github/workflows` | 2026-07-28 |
+| M15 | Features del frontend | 8 (`auth`, `bookings`, `errors`, `favorites`, `home`, `host`, `profile`, `salones`) | `ls frontend/src/features` | 2026-07-28 |
+| M16 | Bucket de Storage | `salon-images` | `supabase/migrations/20260525000001_create_storage_bucket.sql` | 2026-07-28 |
+| M17 | Estados de reserva | 4 (`pending`, `confirmed`, `declined`, `cancelled`) | `supabase/migrations/20260609233130_host_booking_management.sql`; `frontend/src/features/host/lib/booking-status.ts` | 2026-07-28 |
+| M18 | Tipos de precio | 3 (`fixed`, `estimated`, `on_request`) | `frontend/src/features/host/lib/salon-wizard.ts` | 2026-07-28 |
+| M19 | Tablero GitHub Projects v2 | #4 ("Hosty") | `gh project list --owner juanpablovaldez` | 2026-07-28 |
+| M20 | Pasos del wizard de reserva | 3 | `frontend/src/features/bookings/components/BookingFlow.tsx` | 2026-07-28 |
+| M21 | Pasos del wizard de publicación | 4 | `frontend/src/features/host/components/SalonWizard.tsx` | 2026-07-28 |
+| M22 | Enums Postgres | 0 (se usan `CHECK` + tipos de dominio TS) | `grep -rn "CREATE TYPE\|ENUM" supabase/migrations/*.sql` (sin resultados) | 2026-07-28 |
+
+> [!info] Fuente — M01 es la cifra de referencia usada en el resto del informe (T3, T37); M02 se
+> cita únicamente como aclaración metodológica, para no ocultar los commits que existen en ramas
+> o refs fuera de `dev`.
+
+> [!info] Fuente — M12/M13 se re-verificaron el 2026-08-04 ejecutando la suite completa, después de
+> agregar `booking-pricing.test.ts` (11 casos, cierra la brecha de cobertura sobre el cálculo del
+> precio de una reserva) y `host.mutations.test.ts` (8 casos, cubre `useUpdateBookingStatus` —
+> aceptar/rechazar una reserva y anular el motivo de rechazo salvo al rechazar— y
+> `useUpdateBookingQuote`). El valor de M12 (94 pruebas) y M13 (21 archivos) es el vigente al
+> momento de esta verificación y puede volver a cambiar si se agregan pruebas después de esta
+> fecha. **Umbrales de cobertura** (`vite.config.ts`, `coverage.thresholds`) fijados sobre los
+> módulos ya bien probados —`features/bookings/lib`, `features/bookings/api`,
+> `features/favorites/api`, `features/auth/lib`— para que una regresión en esos módulos falle el
+> build; no se fijó umbral sobre `host.queries`, el resto de `host.mutations` ni los filtros de
+> `salones.queries`, todavía sin cubrir (ver Tabla 32b de [[12-Testing-y-Calidad]]).
+
+> [!info] Fuente — M06 se recalculó el 2026-08-04, después de la fecha de corte de las métricas de
+> proceso. Las 5 issues que seguían abiertas (#45 Mercado Pago, #33 reseñas, #35 Core Web Vitals, #38
+> documentación de tokens, #23 este mismo informe) correspondían a trabajo diferido con
+> justificación ya escrita, no a trabajo pendiente: #38 y #23 estaban de hecho completadas (tokens en
+> la Tabla 14, informe entregado) y #45/#33/#35 son alcance explícitamente fuera del MVP (ver
+> [[15-Conclusiones]]). Se cerraron formalmente en GitHub el 2026-08-04 (`not planned` para las tres
+> de alcance) para que el estado del tablero coincida con lo que el informe ya declaraba. El backlog
+> queda en 50/50 (100 %); el criterio de cierre de cada una sigue documentado en la Tabla 39 de
+> [[15-Conclusiones]] y no se oculta.
+
+## Commits por mes (rama `dev`)
+
+| Mes | Commits |
+|---|---|
+| 2026-03 | 1 |
+| 2026-04 | 63 |
+| 2026-05 | 63 |
+| 2026-06 | 54 |
+
+> [!info] Fuente — `git log dev --date=format:'%Y-%m' --format=%ad | sort | uniq -c` (2026-07-28).
+
+## Contribuidores — identidades Git consolidadas (M05)
+
+| Persona | Identidades Git (email) | Commits por identidad | Total |
+|---|---|---|---|
+| Juan Pablo Valdez | `Orbitado <juanpaavaldezz@gmail.com>`; `Juan Pablo Valdez <105684685+juanpablovaldez@users.noreply.github.com>` | 130 + 10 | 140 |
+| Juan Ignacio Mignone | `Juan Ignacio Mignone <mignonejuanignacio@gmail.com>`; `nachomignone <137121859+nachomignone@users.noreply.github.com>` | 37 + 8 | 45 |
+| Lautaro Naglieri | `Lautaro <laaumartinez28@gmail.com>`; `Lautaro Naglieri <laaumartinez28@gmail.com>`; `LautaroNaglieri <laaumartinez28@gmail.com>` | 28 + 4 + 1 | 33 |
+| Benjamín Garma | `benjamingarma <benjamingarma3@gmail.com>` | 10 | 10 |
+| Pablo Czurylo | `Pablo Czurylo <pabloczurylo10@gmail.com>` | 8 | 8 |
+| **Total** | 9 identidades Git | | **236** (= M02) |
+
+> [!info] Fuente — M05: `git shortlog -sne --all` (2026-07-28). La consolidación de identidades se
+> realizó agrupando por dirección de email. Los nombres formales, legajos y roles de equipo
+> quedan como pendiente en [[00-Portada-y-Ficha]] (P-06).
+
+## Modelo de datos — resumen de 6 tablas (M10)
+
+| Tabla | Propósito |
+|---|---|
+| `salones` | Catálogo de salones publicados por los anfitriones (ubicación, capacidad, precio, estado) |
+| `bookings` | Reservas realizadas por huéspedes sobre un salón, con estado y precio cotizado |
+| `salon_services` | Servicios adicionales ofrecidos por un salón |
+| `salon_availability_blocks` | Bloqueos de disponibilidad definidos por el anfitrión |
+| `user_favorites` | Relación de salones marcados como favoritos por un usuario |
+| `salon_subscriptions` | Suscripción de un anfitrión al plan destacado |
+
+El diccionario de datos completo (columnas, tipos, claves foráneas) se documenta en
+[[Anexo-I-Modelo-de-Datos]] (T42–T47).
+
+## Áreas de contribución principal por integrante (Lote A, derivado de `git log`)
+
+Nota agregada en la Fase 1 (Lote A) de este cambio, sin alterar ninguna sección previa de este
+documento. Se derivó ejecutando `git log --all --author="<email>" --name-only --pretty=format:` por
+cada identidad Git de M05, y contando la frecuencia de directorios `frontend/src/features/<n>` (o,
+en su ausencia, otros archivos de configuración) presentes en los commits de cada persona.
+
+| Integrante | Áreas principales (top directorios por frecuencia de commit) |
+|---|---|
+| Juan Pablo Valdez | `features/salones` (14), `features/host` (8), `features/home` (6), `features/bookings` (6), `features/auth` (4) |
+| Juan Ignacio Mignone | `features/salones` (19), `features/home` (17), `features/host` (14), `features/favorites` (4) |
+| Lautaro Naglieri | `features/salones` (22), `features/host` (22), `features/bookings` (10), `features/home` (6) |
+| Benjamín Garma | Infraestructura de pruebas: `cypress/` (8 archivos), `.github/workflows/frontend-tests.yml` (3), `.mocharc.json`, `playwright.config.ts`, `vite.config.ts` |
+| Pablo Czurylo | `features/salones` (búsqueda y paginación), `features/bookings` (flujo de reserva), `supabase/functions/send-emails` (notificaciones por email — rama `feat/email-notifications`, PR #96, no fusionada a `dev`; ver M35) |
+
+> [!info] Fuente — Derivado de `git log --all --author="<email>" --name-only --pretty=format:` por
+> cada email de M05 (2026-07-28). Usado en [[07-Equipo-y-Roles]] (Tabla 11) para fundamentar la
+> columna "Responsabilidades principales" con evidencia verificable en lugar de una atribución
+> arbitraria.
+
+## Hallazgos adicionales verificados (Lote A, Fase 1)
+
+- **Integración de cobro con Mercado Pago no implementada**: el issue #45 ("feat(payments):
+  integrar Mercado Pago para reservas", milestone "Phase 2: Booking & Payments") figura **abierto**
+  a la fecha de este informe. En el código, `frontend/src/features/host/components/PlanCard.tsx`
+  muestra el mensaje "La integración con Mercado Pago estará disponible próximamente" al intentar
+  suscribirse al plan Destacado, y la columna `mercadopago_subscription_id` existe en el esquema
+  pero no se completa mediante un flujo de pago real.
+- **Sistema de reseñas y calificaciones no implementado**: el issue #33 ("feat(social):
+  implementar sistema de reviews y ratings", milestone "Phase 2+: Polish & Optimization") figura
+  **abierto**. `frontend/src/features/salones/components/SalonDetailPage.tsx` renderiza una
+  constante `SAMPLE_REVIEWS` con datos de ejemplo fijos, no reseñas reales de usuarios.
+- **Panel de administrador cerrado sin implementación**: el issue #46 ("feat(admin): panel de
+  aprobación y moderación de salones", milestone "Phase 3.B: Admin Panel") figura **cerrado**, pero
+  no existe en el repositorio ninguna ruta, componente ni columna de aprobación/moderación asociada
+  (`grep` sobre `frontend/src/` y `supabase/migrations/*.sql` sin resultados).
+
+> [!info] Fuente — Verificado con `gh issue view <número> --json state,milestone,body` y `grep`
+> sobre el árbol de trabajo (2026-07-28). Usado en [[01-Resumen-Ejecutivo]], [[04-Objetivos]] y
+> [[07-Equipo-y-Roles]] para documentar el alcance realmente entregado frente al planificado.
+
+## Hallazgo verificado: estados de reserva (M17)
+
+El estado `declined` de `bookings` fue utilizado por la aplicación **antes** de que la
+restricción `CHECK` de la base de datos lo permitiera. La migración inicial sólo aceptaba tres
+valores:
+
+> [!info] Fuente — `supabase/migrations/20240101000000_init_hosty.sql:57-58`:
+> ```sql
+> status      text not null default 'pending'
+>               check (status in ('pending', 'confirmed', 'cancelled'))
+> ```
+
+La migración `20260609233130_host_booking_management.sql` (líneas 7–11) corrige la restricción y
+documenta el motivo en un comentario verbatim del propio archivo:
+
+> [!info] Fuente — `supabase/migrations/20260609233130_host_booking_management.sql:7-11`:
+> ```sql
+> -- 'declined' was used by the app but missing from the DB check.
+> alter table public.bookings drop constraint if exists bookings_status_check;
+> alter table public.bookings
+>   add constraint bookings_status_check
+>   check (status in ('pending', 'confirmed', 'declined', 'cancelled'));
+> ```
+
+El tipo TypeScript en `frontend/src/features/host/lib/booking-status.ts` ya modelaba las 4
+variantes (`pending`, `confirmed`, `declined`, `cancelled`) antes de que la base de datos las
+aceptara: un defecto real de sincronización entre el `CHECK` de Postgres y el dominio TS, sin
+ningún `enum` de Postgres de por medio (M22). Este hallazgo se desarrolla como defecto documentado
+en [[Anexo-II-Diagramas-de-Flujo]] (F33), [[Anexo-I-Modelo-de-Datos]] (T43) y como deuda técnica
+en [[15-Conclusiones]] (T40).
+
+## Métricas adicionales M23–M27 (calculadas en el Lote B, 2026-07-28)
+
+Estas filas extienden la tabla M01–M22 con cifras requeridas por [[09-Planificacion-Scrum]] y
+[[13-Ejecucion-por-Sprint]] que no estaban pre-calculadas en el diseño de este cambio. Se agregan
+al final para no alterar ningún valor ya fijado por el Lote 0.
+
+| ID | Métrica | Valor | Comando / fuente | Verificado el |
+|---|---|---|---|---|
+| M23 | Commits por sprint (S1–S5, ventanas del calendario de sprints pinneado) | 50, 38, 39, 13, 41 (suma 181 = M01) | `git log dev --since <inicio> --until <fin> --oneline \| wc -l` por ventana | 2026-07-28 |
+| M24 | Issues cerradas por sprint (S1–S5, por fecha real de cierre) | 0, 4, 16, 12, 13 (suma 45 = M06) | `gh issue list --state closed --json number,closedAt` | 2026-07-28 |
+| M25 | Story points (escala Fibonacci) registrados en GitHub Projects v2, campo "Size" | 40 de 50 issues con el campo cargado | `gh project item-list 4 --owner juanpablovaldez --format json` | 2026-07-28 |
+| M26 | Pull requests cerradas sin fusionar | 20 de 48 (41,7 %); 7 de ellas por la consolidación de la PR #93 | `gh pr list --state all --json number,state,mergedAt` | 2026-07-28 |
+| M27 | Duración total del proyecto en semanas | 88 días ÷ 7 ≈ 12,6 semanas | Calculado a partir de M03/M04 | 2026-07-28 |
+
+> [!info] Fuente — Las ventanas de sprint usadas para M23/M24 son las mismas fijadas en el
+> diseño de este cambio (S1: 2026-03-29–2026-04-19; S2: 2026-04-20–2026-05-15; S3:
+> 2026-05-16–2026-06-05; S4: 2026-06-06–2026-06-13; S5: 2026-06-14–2026-06-24); ver
+> [[09-Planificacion-Scrum]] (Tabla 21, con el límite de sprint marcado como inferencia simulada) y
+> [[13-Ejecucion-por-Sprint]].
+
+## Métricas adicionales M28–M32 (calculadas en el Lote D, 2026-07-28)
+
+Estas filas extienden la tabla M01–M27 con cifras requeridas por [[12-Testing-y-Calidad]],
+[[14-Metricas]] y [[Anexo-IV-API-y-Repositorio]] que no estaban pre-calculadas en el diseño de
+este cambio. Se agregan al final para no alterar ningún valor ya fijado por los Lotes 0, A y B.
+
+| ID | Métrica | Valor | Comando / fuente | Verificado el |
+|---|---|---|---|---|
+| M28 | Pull requests abiertos / mergeados por mes | 2026-04: 9/7 · 2026-05: 19/8 · 2026-06: 20/11 (suma 48/26 = M07) | `gh pr list --state all --json number,createdAt,mergedAt`, agrupado por mes | 2026-07-28 |
+| M29 | Invocaciones de operaciones PostgREST (`select`/`insert`/`update`/`delete`) por módulo con carpeta `api/` | `bookings` 5, `favorites` 5, `host` 21, `salones` 4 (total 35) | `grep -oE '\.(select\|insert\|update\|delete\|upsert\|rpc)\(' frontend/src/features/<módulo>/api/*.ts` | 2026-07-28 |
+| M30 | Resultado de `lint`/`typecheck` reproducidos en vivo sobre el estado actual del repositorio | `npx tsc -b --noEmit`: 0 errores · `npx eslint .`: 0 errores, 4 advertencias (`react-hooks/exhaustive-deps` en `SalonesPage.tsx`) | Ejecución directa en `frontend/` | 2026-08-04 |
+| M31 | Relación líneas de código de prueba / líneas de código de producción | 1.603 / 11.223 ≈ 0,14 (14 %) | `find frontend/src -name '*.test.ts' -o -name '*.test.tsx' -o -path '*/e2e/*.spec.ts' \| xargs wc -l`, y su complemento sobre `*.ts`/`*.tsx` | 2026-08-04 |
+| M32 | Issues etiquetadas `bug` (todas / cerradas) | 13 / 13 | `gh issue list --state all --label bug --json number,state` | 2026-07-28 |
+
+> [!info] Fuente — M28 se usa en [[14-Metricas]] (Figura 26, Tabla 38) para el gráfico de PRs por
+> mes; M29 se usa en [[14-Metricas]] (Tabla 38) y en [[Anexo-IV-API-y-Repositorio]] (Tabla 53); M30
+> se usa en [[12-Testing-y-Calidad]] (Tabla 34, criterios de salida) y en [[15-Conclusiones]] (Tabla
+> 40, deuda técnica); M31 se usa en [[12-Testing-y-Calidad]] (Tabla 32, cobertura); M32 se usa en
+> [[12-Testing-y-Calidad]] (manejo de incidencias) y en [[Anexo-V-Evidencias-QA]] (Tabla 58,
+> registro de defectos).
+
+> [!info] Fuente — M31 se re-verificó el 2026-08-04 después de agregar `BookingFlow.test.tsx` y un
+> caso nuevo en `favorites.test.ts` (cierre de SIM-33/SIM-34, ver [[12-Testing-y-Calidad]] Tabla 33).
+> El valor anterior (1.462 / 11.148) quedó desactualizado por el mismo motivo que M12/M13.
+
+## Métricas adicionales M33–M35 (2026-08-03, cierre de SIM-04)
+
+Estas tres filas reemplazan por evidencia verificable la mayor parte de lo que hasta esta fecha
+[[07-Equipo-y-Roles]] marcaba como SIM-04 ("Asignación de rol de equipo"). Se agregan al final
+para no alterar ningún valor ya fijado por los Lotes previos.
+
+| ID | Métrica | Valor | Comando / fuente | Verificado el |
+|---|---|---|---|---|
+| M33 | Permisos de administrador del repositorio | Juan Pablo Valdez es el único colaborador con `admin: true`; el resto (Mignone, Naglieri, Garma, Czurylo) tiene `push`/`triage` sin `admin` | `gh api repos/juanpablovaldez/hosty/collaborators --jq '.[] \| {login, permissions}'` | 2026-08-03 |
+| M34 | Autoría de issues del repositorio | 45 de 50 (90 %) fueron creadas por Juan Pablo Valdez; el resto por Naglieri (3) y Mignone (2) | `gh issue list --state all --limit 200 --json author --jq '.[].author.login' \| sort \| uniq -c` | 2026-08-03 |
+| M35 | Rama `feat/email-notifications` (PR #96) | Sistema de notificaciones de reserva por email vía Supabase Edge Functions (`supabase/functions/send-emails`, plantillas y migración incluidas), implementado íntegramente por Pablo Czurylo el 2026-06-24. El PR sigue **abierto**, no fusionado a `dev` | `git log --all --author=pabloczurylo10 --name-only -- 'supabase/functions/*'`; `gh pr view 96 --json state,mergedAt,author` | 2026-08-03 |
+
+> [!info] Fuente — M33 y M34 se usan en [[07-Equipo-y-Roles]] (Tabla 11, fila de Valdez) para
+> sustanciar el rol de Product Owner con evidencia de administración del repositorio y autoría del
+> backlog, en lugar de inferirlo únicamente del volumen de commits. M35 corrige la fila de Czurylo:
+> el trabajo de notificaciones por email es real y verificable, pero no forma parte del producto
+> entregado en `dev` — se cita como tal, no como funcionalidad en producción.
+
+## Métricas adicionales M36–M37 (2026-08-04)
+
+| ID | Métrica | Valor | Comando / fuente | Verificado el |
+|---|---|---|---|---|
+| M36 | Issues `bug` con etiqueta de prioridad real (`p1-high`/`p2-medium`/`p3-low`) | 5 de 13 (38 %): #74, #75 → `p1-high`; #72, #87 → `p2-medium`; #76 → `p3-low` | `gh issue list --state all --label bug --json number,labels` | 2026-08-04 |
+| M37 | Cobertura de pruebas (`@vitest/coverage-v8`), global y sobre el código ejercitado | Global — sentencias 16,41 % (901/5.490), ramas 11,95 % (566/4.735), funciones 16,37 % (92/562), líneas 20,16 % (653/3.238). Ejercitado (27 archivos) — sentencias 59,83 % (901/1.506), ramas 43,84 % (566/1.291), funciones 62,59 % (92/147), líneas 72,31 % (653/903) | `npm --prefix frontend run test:coverage` (`vitest run --coverage`), `frontend/coverage/coverage-summary.json` | 2026-08-04 |
+
+> [!info] Fuente — M36 se usa en [[Anexo-V-Evidencias-QA]] (Tabla 58) para reemplazar la severidad
+> estimada de 5 de los 13 defectos por la etiqueta real de GitHub; detectó que la versión anterior
+> de esa tabla tenía a #74 mal clasificado ("Media" en vez de "Alta", en contradicción con
+> [[12-Testing-y-Calidad]], que ya citaba correctamente `p1-high` para #74). Las 8 issues restantes
+> no tienen etiqueta de prioridad y su severidad sigue siendo una estimación (SIM-37). M37 reemplaza
+> la referencia rota a "M33" que citaba [[12-Testing-y-Calidad]] (Tabla 32) desde antes de este
+> cambio —esa métrica nunca había quedado definida en esta nota— y actualiza los valores de Tabla
+> 32/32a/32b/40 tras agregar `BookingFlow.test.tsx` y el caso nuevo de `favorites.test.ts`, que
+> movieron cobertura hacia `components/ui`, `features/bookings/components` y `features/bookings`.
+
+---
+[[Indice|Índice]]
