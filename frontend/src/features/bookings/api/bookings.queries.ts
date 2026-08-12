@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/shared/lib/supabase'
 import type { Booking, BookingStatus } from '../types'
+import type { BusySlot } from '../lib/booking-availability'
 
 interface BookingRow {
   id: string
@@ -38,6 +39,22 @@ function rowToBooking(row: BookingRow): Booking {
     status: row.status as BookingStatus,
     createdAt: row.created_at,
   }
+}
+
+export function useSalonBusySlots(salonId: string) {
+  return useQuery({
+    queryKey: ['salon', salonId, 'busy-slots'],
+    queryFn: async (): Promise<BusySlot[]> => {
+      const { data, error } = await supabase.rpc('salon_busy_slots', { p_salon_id: salonId })
+      if (error) throw error
+      return (data ?? []).map((row) => ({
+        eventDate: row.event_date,
+        startTime: row.start_time,
+        endTime: row.end_time,
+      }))
+    },
+    enabled: !!salonId,
+  })
 }
 
 export function useMyBookings(userId: string | null) {

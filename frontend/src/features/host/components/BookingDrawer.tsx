@@ -13,6 +13,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/shared/lib/utils'
+import { mensajeDeError } from '@/shared/lib/errors'
 import type { Booking } from '../types'
 import { useUpdateBookingStatus, useUpdateBookingQuote } from '../api/host.mutations'
 import { STATUS_STYLES, STATUS_LABELS, formatBookingPrice, effectivePrice } from '../lib/booking-status'
@@ -76,8 +77,8 @@ function ActionDialog({
       })
       toast.success(isConfirm ? 'Reserva confirmada' : 'Reserva rechazada')
       onResolved()
-    } catch {
-      toast.error('No se pudo actualizar la reserva')
+    } catch (error) {
+      toast.error(mensajeDeError(error, 'No se pudo actualizar la reserva'))
     }
   }
 

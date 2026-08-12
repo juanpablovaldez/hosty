@@ -12,6 +12,7 @@ const TRADUCCIONES: ReadonlyArray<readonly [RegExp, string]> = [
   [/rate limit exceeded|too many requests/i, 'Hiciste demasiados intentos seguidos. Esperá unos minutos y probá de nuevo.'],
   [/auth session missing|jwt expired|invalid claim/i, 'Tu sesión expiró. Iniciá sesión de nuevo para continuar.'],
   [/row-level security policy/i, 'No tenés permiso para realizar esta acción.'],
+  [/conflicting key value violates exclusion constraint|bookings_no_overlap/i, 'Ya hay otra reserva confirmada que se superpone con ese horario. Rechazá o cancelá la otra antes de confirmar esta.'],
   [/duplicate key value violates unique constraint/i, 'Ese registro ya existe.'],
   [/violates foreign key constraint/i, 'No se pudo guardar porque falta un dato relacionado.'],
   [/failed to fetch|network ?error|networkerror/i, 'No pudimos conectarnos al servidor. Revisá tu conexión a internet.'],

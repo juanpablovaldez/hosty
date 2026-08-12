@@ -317,6 +317,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      salon_busy_slots: {
+        Args: { p_salon_id: string }
+        Returns: { event_date: string; start_time: string; end_time: string }[]
+      }
       show_limit: { Args: never; Returns: number }
       show_trgm: { Args: { "": string }; Returns: string[] }
     }

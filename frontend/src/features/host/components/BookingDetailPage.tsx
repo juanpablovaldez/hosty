@@ -13,6 +13,7 @@ import {
   ChevronLeft, Calendar, Clock, Users, CheckCircle, XCircle, Building2,
 } from 'lucide-react'
 import { cn } from '@/shared/lib/utils'
+import { mensajeDeError } from '@/shared/lib/errors'
 
 const STATUS_STYLES: Record<Booking['status'], string> = {
   pending: 'bg-amber-light text-amber-dark dark:bg-amber/15 dark:text-amber',
@@ -48,8 +49,8 @@ export function BookingDetailPage({ bookingId }: BookingDetailPageProps) {
     try {
       await update.mutateAsync({ id: bookingId, status })
       toast.success(status === 'confirmed' ? 'Reserva confirmada' : 'Reserva rechazada')
-    } catch {
-      toast.error('No se pudo actualizar la reserva')
+    } catch (err) {
+      toast.error(mensajeDeError(err, 'No se pudo actualizar la reserva'))
     }
   }
 
