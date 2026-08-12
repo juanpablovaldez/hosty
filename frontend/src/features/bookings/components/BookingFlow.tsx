@@ -5,6 +5,8 @@ import { z } from 'zod'
 import { toast } from 'sonner'
 import { useSalon, useSalonBlockedDates } from '@/features/salones/api/salones.queries'
 import { useCreateBooking } from '../api/bookings.mutations'
+import { useSalonBusySlots } from '../api/bookings.queries'
+import { busySlotsForDate, findBookingConflict, formatSlotRange } from '../lib/booking-availability'
 import { useAuthStore } from '@/features/auth/store/auth.store'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -86,6 +88,7 @@ export function BookingFlow() {
   const { id } = useParams({ from: '/salones/$id_/reservar' })
   const { data: salon, isLoading } = useSalon(id)
   const { data: blockedList = [] } = useSalonBlockedDates(id)
+  const { data: busySlots = [] } = useSalonBusySlots(id)
   const createBooking = useCreateBooking()
   const user = useAuthStore((s) => s.user)
 
@@ -118,6 +121,16 @@ export function BookingFlow() {
       }
       if (blockedDates.has(value.eventDate)) {
         setStep1Error('El salón no está disponible en la fecha elegida. Probá con otra fecha.')
+        return
+      }
+      const conflict = findBookingConflict(
+        { eventDate: value.eventDate, startTime: value.startTime, endTime: value.endTime },
+        busySlots,
+      )
+      if (conflict) {
+        setStep1Error(
+          `Ese horario ya está reservado (de ${formatSlotRange(conflict)}). Elegí otro horario u otra fecha.`,
+        )
         return
       }
       setStep1Error(null)
@@ -308,6 +321,18 @@ export function BookingFlow() {
                 </div>
               )}
             </form1.Field>
+
+            <form1.Subscribe selector={(s) => s.values.eventDate}>
+              {(eventDate) => {
+                const taken = busySlotsForDate(busySlots, eventDate)
+                if (taken.length === 0) return null
+                return (
+                  <p className="text-xs text-muted-foreground">
+                    Horarios ya reservados ese día: {taken.map(formatSlotRange).join(' · ')}
+                  </p>
+                )
+              }}
+            </form1.Subscribe>
 
             <div className="grid grid-cols-2 gap-4">
               <form1.Field name="startTime">

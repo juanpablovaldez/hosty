@@ -9,6 +9,15 @@ vi.mock('@tanstack/react-router', () => ({
   Link: ({ children }: { children: ReactNode }) => children,
 }))
 
+const { BLOCKED_DATE, BUSY_DATE } = vi.hoisted(() => {
+  const futureDate = (days: number) => {
+    const d = new Date()
+    d.setDate(d.getDate() + days)
+    return d.toISOString().split('T')[0]
+  }
+  return { BLOCKED_DATE: futureDate(7), BUSY_DATE: futureDate(14) }
+})
+
 vi.mock('@/features/salones/api/salones.queries', () => ({
   useSalon: () => ({
     data: {
@@ -22,11 +31,17 @@ vi.mock('@/features/salones/api/salones.queries', () => ({
     },
     isLoading: false,
   }),
-  useSalonBlockedDates: () => ({ data: ['2026-08-10'] }),
+  useSalonBlockedDates: () => ({ data: [BLOCKED_DATE] }),
 }))
 
 vi.mock('../api/bookings.mutations', () => ({
   useCreateBooking: () => ({ mutateAsync: vi.fn(), isPending: false }),
+}))
+
+vi.mock('../api/bookings.queries', () => ({
+  useSalonBusySlots: () => ({
+    data: [{ eventDate: BUSY_DATE, startTime: '10:00:00', endTime: '14:00:00' }],
+  }),
 }))
 
 vi.mock('@/features/auth/store/auth.store', () => ({
@@ -53,7 +68,7 @@ describe('BookingFlow — paso 1 (fecha y hora)', () => {
     const user = userEvent.setup()
     renderWithClient()
 
-    await user.type(screen.getByLabelText('Fecha del evento'), '2026-08-10')
+    await user.type(screen.getByLabelText('Fecha del evento'), BLOCKED_DATE)
 
     await user.click(screen.getByLabelText('Hora de inicio'))
     await user.click(await screen.findByRole('option', { name: '10:00' }))
@@ -67,5 +82,48 @@ describe('BookingFlow — paso 1 (fecha y hora)', () => {
       await screen.findByText('El salón no está disponible en la fecha elegida. Probá con otra fecha.'),
     ).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Fecha y hora' })).toBeInTheDocument()
+  })
+
+  it('CP-02: bloquea el avance cuando el horario se superpone con una reserva ya confirmada', async () => {
+    const user = userEvent.setup()
+    renderWithClient()
+
+    await user.type(screen.getByLabelText('Fecha del evento'), BUSY_DATE)
+
+    expect(
+      await screen.findByText(/Horarios ya reservados ese día: 10:00 a 14:00/),
+    ).toBeInTheDocument()
+
+    await user.click(screen.getByLabelText('Hora de inicio'))
+    await user.click(await screen.findByRole('option', { name: '12:00' }))
+
+    await user.click(screen.getByLabelText('Hora de fin'))
+    await user.click(await screen.findByRole('option', { name: '16:00' }))
+
+    await user.click(screen.getByRole('button', { name: /siguiente/i }))
+
+    expect(
+      await screen.findByText(
+        'Ese horario ya está reservado (de 10:00 a 14:00). Elegí otro horario u otra fecha.',
+      ),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Fecha y hora' })).toBeInTheDocument()
+  })
+
+  it('CP-03: deja avanzar cuando el horario elegido arranca justo cuando termina la reserva confirmada', async () => {
+    const user = userEvent.setup()
+    renderWithClient()
+
+    await user.type(screen.getByLabelText('Fecha del evento'), BUSY_DATE)
+
+    await user.click(screen.getByLabelText('Hora de inicio'))
+    await user.click(await screen.findByRole('option', { name: '14:00' }))
+
+    await user.click(screen.getByLabelText('Hora de fin'))
+    await user.click(await screen.findByRole('option', { name: '18:00' }))
+
+    await user.click(screen.getByRole('button', { name: /siguiente/i }))
+
+    expect(await screen.findByRole('heading', { name: 'Datos del evento' })).toBeInTheDocument()
   })
 })

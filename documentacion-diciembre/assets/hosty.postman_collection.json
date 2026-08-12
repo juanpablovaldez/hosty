@@ -1,0 +1,515 @@
+{
+  "info": {
+    "_postman_id": "b7f1c2a4-6d3e-4a91-9f22-8c5e0a1d47b3",
+    "name": "Hosty — API PostgREST (Supabase)",
+    "description": "Colección curada de la API REST de Hosty.\n\nLa API no está escrita a mano: PostgREST la autogenera a partir del esquema de Postgres versionado en `supabase/migrations/*.sql`. El mismo servicio publica su contrato como documento **OpenAPI 2.0 (Swagger)** en `{{baseUrl}}/rest/v1/` — ver la carpeta «00 · Contrato OpenAPI (Swagger)».\n\nEsta colección documenta únicamente las operaciones efectivamente invocadas por el frontend (35 invocaciones, ver Tabla 53 del Anexo IV).\n\n## Configuración\n\n1. Definir la variable de entorno `apikey` con la clave publicable (anon) del proyecto de Supabase. **No versionar esa clave dentro de esta colección.**\n2. Para los endpoints marcados como *autenticados*, ejecutar primero `Auth › Sign in with password`: su script de test guarda el `access_token` en la variable `accessToken`, que el resto de las peticiones usa en el encabezado `Authorization`.\n3. Las peticiones anónimas usan `Authorization: Bearer {{apikey}}`; las autenticadas, `Authorization: Bearer {{accessToken}}`. Las políticas RLS de Postgres resuelven la autorización por propiedad (`auth.uid()`), sin RBAC.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://gjxextyntxfsztpgkqig.supabase.co",
+      "type": "string"
+    },
+    {
+      "key": "apikey",
+      "value": "",
+      "type": "string",
+      "description": "Clave publicable (anon) del proyecto. Cargar como variable de entorno; no versionar."
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string",
+      "description": "JWT de sesión. Lo completa automáticamente el request 'Sign in with password'."
+    },
+    {
+      "key": "salonId",
+      "value": "22d6e8d4-7162-4d94-a1e8-1fe1d25d241a",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "00 · Contrato OpenAPI (Swagger)",
+      "description": "PostgREST publica el contrato completo de la API en formato OpenAPI (Swagger). Es el equivalente autogenerado de un `swagger.json` escrito a mano: enumera cada tabla como recurso, cada columna como parámetro de filtro y los verbos disponibles.",
+      "item": [
+        {
+          "name": "GET Documento OpenAPI del esquema public",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Authorization", "value": "Bearer {{apikey}}" },
+              { "key": "Accept", "value": "application/openapi+json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/",
+              "host": ["{{baseUrl}}"],
+              "path": ["rest", "v1", ""]
+            },
+            "description": "Devuelve el documento Swagger/OpenAPI autogenerado. Puede importarse directamente en Postman (Import → Link) o en Swagger UI."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "01 · Salones",
+      "description": "Catálogo público. Lectura anónima permitida por política RLS de `SELECT`.",
+      "item": [
+        {
+          "name": "GET Listar salones (paginado)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Authorization", "value": "Bearer {{apikey}}" },
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Prefer", "value": "count=exact" },
+              { "key": "Range", "value": "0-8" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/salones?select=id,name,location,capacity,price_per_hour,price_type,is_verified,is_featured,rating_value,rating_count,images&order=is_featured.desc,rating_value.desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["rest", "v1", "salones"],
+              "query": [
+                { "key": "select", "value": "id,name,location,capacity,price_per_hour,price_type,is_verified,is_featured,rating_value,rating_count,images" },
+                { "key": "order", "value": "is_featured.desc,rating_value.desc" }
+              ]
+            },
+            "description": "El encabezado `Prefer: count=exact` hace que PostgREST devuelva `Content-Range: 0-8/<total>`, usado por la paginación del catálogo. Respuesta esperada: `206 Partial Content`."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Detalle de un salón",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Authorization", "value": "Bearer {{apikey}}" },
+              { "key": "Accept", "value": "application/vnd.pgrst.object+json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/salones?select=*,salon_services(*)&id=eq.{{salonId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["rest", "v1", "salones"],
+              "query": [
+                { "key": "select", "value": "*,salon_services(*)" },
+                { "key": "id", "value": "eq.{{salonId}}" }
+              ]
+            },
+            "description": "`Accept: application/vnd.pgrst.object+json` fuerza a PostgREST a devolver un objeto en vez de un array de un elemento. La proyección anidada `salon_services(*)` resuelve la relación por clave foránea en una sola petición."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Buscar por nombre (ilike)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Authorization", "value": "Bearer {{apikey}}" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/salones?select=id,name,location&name=ilike.*quinta*",
+              "host": ["{{baseUrl}}"],
+              "path": ["rest", "v1", "salones"],
+              "query": [
+                { "key": "select", "value": "id,name,location" },
+                { "key": "name", "value": "ilike.*quinta*" }
+              ]
+            },
+            "description": "Búsqueda por texto insensible a mayúsculas. En el frontend corresponde a `.ilike('name', `%${q}%`)`."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Filtrar por capacidad, zona y tipo de evento",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Authorization", "value": "Bearer {{apikey}}" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/salones?select=id,name,capacity,location,event_types&capacity=gte.100&location=in.(\"Yerba Buena\",\"San Miguel de Tucumán\")&event_types=ov.{casamientos,corporativo}",
+              "host": ["{{baseUrl}}"],
+              "path": ["rest", "v1", "salones"],
+              "query": [
+                { "key": "select", "value": "id,name,capacity,location,event_types" },
+                { "key": "capacity", "value": "gte.100" },
+                { "key": "location", "value": "in.(\"Yerba Buena\",\"San Miguel de Tucumán\")" },
+                { "key": "event_types", "value": "ov.{casamientos,corporativo}" }
+              ]
+            },
+            "description": "Combina tres operadores de PostgREST: `gte` (numérico), `in` (conjunto) y `ov` (solapamiento de arrays de Postgres, equivalente a `.overlaps()` en el cliente supabase-js)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "02 · Auth (GoTrue)",
+      "description": "Supabase Auth (GoTrue) es un servicio distinto de PostgREST: cuelga de `/auth/v1`, no de `/rest/v1`.",
+      "item": [
+        {
+          "name": "POST Sign in with password",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  pm.collectionVariables.set('accessToken', pm.response.json().access_token);",
+                  "  pm.test('Devuelve un access_token', function () {",
+                  "    pm.expect(pm.response.json()).to.have.property('access_token');",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"<usuario-de-prueba>\",\n  \"password\": \"<contraseña-de-prueba>\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/token?grant_type=password",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "v1", "token"],
+              "query": [{ "key": "grant_type", "value": "password" }]
+            },
+            "description": "Guarda el JWT en `accessToken`. Las credenciales de prueba se cargan como variables de entorno y no se versionan."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Usuario de la sesión actual",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/user",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "v1", "user"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "03 · Reservas (bookings) — autenticado",
+      "description": "Todas las operaciones exigen sesión: RLS filtra por `auth.uid()` contra el organizador de la reserva o el anfitrión del salón.",
+      "item": [
+        {
+          "name": "GET Mis reservas",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/bookings?select=*,salones(id,name,location,images)&order=event_date.desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["rest", "v1", "bookings"],
+              "query": [
+                { "key": "select", "value": "*,salones(id,name,location,images)" },
+                { "key": "order", "value": "event_date.desc" }
+              ]
+            },
+            "description": "No lleva filtro por usuario: la política RLS ya restringe las filas visibles a las del usuario autenticado."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Verificar disponibilidad de una fecha",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/bookings?select=id,start_time,end_time,status&salon_id=eq.{{salonId}}&event_date=eq.2026-09-12&status=in.(pending,confirmed)",
+              "host": ["{{baseUrl}}"],
+              "path": ["rest", "v1", "bookings"],
+              "query": [
+                { "key": "select", "value": "id,start_time,end_time,status" },
+                { "key": "salon_id", "value": "eq.{{salonId}}" },
+                { "key": "event_date", "value": "eq.2026-09-12" },
+                { "key": "status", "value": "in.(pending,confirmed)" }
+              ]
+            },
+            "description": "Sustenta el paso 1 del wizard de reserva: si la respuesta trae filas con horarios solapados, el paso rechaza la franja elegida."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Crear reserva",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Prefer", "value": "return=representation" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"salon_id\": \"{{salonId}}\",\n  \"event_date\": \"2026-09-12\",\n  \"start_time\": \"20:00\",\n  \"end_time\": \"02:00\",\n  \"attendees\": 80,\n  \"event_type\": \"Casamiento\",\n  \"contact_name\": \"Nombre de prueba\",\n  \"contact_phone\": \"+54 381 000 0000\",\n  \"notes\": \"Reserva creada desde la colección Postman de documentación\",\n  \"status\": \"pending\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/bookings",
+              "host": ["{{baseUrl}}"],
+              "path": ["rest", "v1", "bookings"]
+            },
+            "description": "`Prefer: return=representation` hace que PostgREST devuelva la fila creada (`201 Created`). El campo `status` sólo admite `pending`, `confirmed`, `declined` o `cancelled`: la restricción `bookings_status_check` rechaza cualquier otro valor con `400`."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH Cancelar reserva",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Prefer", "value": "return=representation" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"cancelled\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/bookings?id=eq.<id-de-la-reserva>",
+              "host": ["{{baseUrl}}"],
+              "path": ["rest", "v1", "bookings"],
+              "query": [{ "key": "id", "value": "eq.<id-de-la-reserva>" }]
+            },
+            "description": "Un PATCH sin filtro afectaría todas las filas visibles: PostgREST exige el filtro `id=eq.` explícito."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "04 · Favoritos (user_favorites) — autenticado",
+      "item": [
+        {
+          "name": "GET Mis favoritos",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/user_favorites?select=salon_id,salones(id,name,location,price_per_hour,images)",
+              "host": ["{{baseUrl}}"],
+              "path": ["rest", "v1", "user_favorites"],
+              "query": [{ "key": "select", "value": "salon_id,salones(id,name,location,price_per_hour,images)" }]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST Agregar a favoritos",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Prefer", "value": "return=representation" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"salon_id\": \"{{salonId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/user_favorites",
+              "host": ["{{baseUrl}}"],
+              "path": ["rest", "v1", "user_favorites"]
+            },
+            "description": "`user_id` no se envía: lo completa el valor por defecto `auth.uid()` de la columna. Repetir la operación devuelve `409 Conflict` por la clave única (`user_id`, `salon_id`)."
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE Quitar de favoritos",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/user_favorites?salon_id=eq.{{salonId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["rest", "v1", "user_favorites"],
+              "query": [{ "key": "salon_id", "value": "eq.{{salonId}}" }]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "05 · Panel del anfitrión — autenticado",
+      "item": [
+        {
+          "name": "GET Salones publicados por el anfitrión",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/salones?select=*,bookings(count)&order=created_at.desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["rest", "v1", "salones"],
+              "query": [
+                { "key": "select", "value": "*,bookings(count)" },
+                { "key": "order", "value": "created_at.desc" }
+              ]
+            },
+            "description": "Ser anfitrión no es un rol: es una consecuencia de poseer filas en `salones`. La política RLS de escritura compara `host_id` con `auth.uid()`."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH Responder una reserva recibida",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Prefer", "value": "return=representation" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"confirmed\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/bookings?id=eq.<id-de-la-reserva>",
+              "host": ["{{baseUrl}}"],
+              "path": ["rest", "v1", "bookings"],
+              "query": [{ "key": "id", "value": "eq.<id-de-la-reserva>" }]
+            },
+            "description": "Valores válidos: `confirmed` o `declined`. `declined` sólo es aceptado desde la migración `20260609233130_host_booking_management.sql`, que recreó la restricción `bookings_status_check` (ver defecto documentado en el Anexo V)."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Bloquear una fecha del calendario",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Prefer", "value": "return=representation" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"salon_id\": \"{{salonId}}\",\n  \"blocked_date\": \"2026-12-25\",\n  \"reason\": \"Mantenimiento\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/salon_availability_blocks",
+              "host": ["{{baseUrl}}"],
+              "path": ["rest", "v1", "salon_availability_blocks"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "06 · Casos negativos (verificación de RLS)",
+      "description": "Peticiones cuyo resultado esperado es un error. Documentan que la autorización se resuelve en la base de datos y no en el cliente.",
+      "item": [
+        {
+          "name": "GET Reservas sin sesión → 200 con array vacío",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Authorization", "value": "Bearer {{apikey}}" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/bookings?select=*",
+              "host": ["{{baseUrl}}"],
+              "path": ["rest", "v1", "bookings"],
+              "query": [{ "key": "select", "value": "*" }]
+            },
+            "description": "Con la clave anónima, RLS no expone ninguna fila: PostgREST responde `200 OK` con `[]`, no `401`. Es el comportamiento esperado y la razón por la que la ausencia de filas no debe interpretarse como una tabla vacía."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Reserva con status inválido → 400",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"salon_id\": \"{{salonId}}\",\n  \"event_date\": \"2026-09-12\",\n  \"start_time\": \"20:00\",\n  \"end_time\": \"23:00\",\n  \"attendees\": 10,\n  \"status\": \"rejected\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/bookings",
+              "host": ["{{baseUrl}}"],
+              "path": ["rest", "v1", "bookings"]
+            },
+            "description": "`rejected` no pertenece al dominio de `bookings_status_check`. Respuesta esperada: `400` con código `23514` (violación de restricción CHECK)."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Tabla inexistente → 404",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Authorization", "value": "Bearer {{apikey}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/reservas",
+              "host": ["{{baseUrl}}"],
+              "path": ["rest", "v1", "reservas"],
+              "description": "El recurso se llama `bookings`, no `reservas`: PostgREST responde `404` con código `PGRST205`."
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
